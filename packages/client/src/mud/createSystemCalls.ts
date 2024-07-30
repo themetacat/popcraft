@@ -213,6 +213,7 @@ export function createSystemCalls(
       const txData = await worldContract.write.call([resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData])
 
       hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
+      
     } catch (error) {
       console.error("Failed to setup network:", error.message);
       return [null, null];
@@ -271,11 +272,11 @@ export function createSystemCalls(
             name: system_name,
           }),
           encodeData,
-        ], {gas: 50000000n});
+        ], {gas: 30000000n});
         
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
-        // console.log(await publicClient.waitForTransactionReceipt({ hash: txData }));
-        
+        console.log(await publicClient.waitForTransactionReceipt({ hash: txData }));
+      
       }else{
         const txData = await worldContract.write.callFrom([
           account,
@@ -287,8 +288,9 @@ export function createSystemCalls(
           encodeData,
         ]);
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
+        console.log(await publicClient.waitForTransactionReceipt({ hash: txData }));
+
       }
-     
     } catch (error) {
       console.error("Failed to setup network:", error.message);
       return [null, null];

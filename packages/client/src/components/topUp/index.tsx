@@ -39,7 +39,7 @@ export default function TopUp({
   const [privateKey, setprivateKey] = useState("");
   const [withDrawHashVal, setwithDrawHashVal] = useState(undefined);
   const {
-    network: { walletClient },
+    network: { walletClient, publicClient },
   } = useMUD();
   const { address, isConnected } = useAccount();
   const MIN_SESSION_WALLET_BALANCE = parseEther("0.0000003");
@@ -52,6 +52,8 @@ export default function TopUp({
     error,
     isPending,
     sendTransaction,
+    sendTransactionAsync,
+    status
   } = useSendTransaction();
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
@@ -148,8 +150,10 @@ export default function TopUp({
   async function submit() {
     const to = palyerAddress;
     const value = inputValue;
-
-    const a = sendTransaction({ to, value: parseEther(inputValue) });
+    
+    const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue) });
+    const result = await publicClient.waitForTransactionReceipt({hash: result_hash})
+    
   }
   return (
     <div className={style.topBox}>

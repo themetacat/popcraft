@@ -21,7 +21,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 let chainIndex = supportedChains.findIndex((c) => c.id === 690);
 const redstone = supportedChains[chainIndex];
-chainIndex = supportedChains.findIndex((c) => c.id ===31338);
+chainIndex = supportedChains.findIndex((c) => c.id ===31337);
 const local = supportedChains[chainIndex];
 
 const config = getDefaultConfig({

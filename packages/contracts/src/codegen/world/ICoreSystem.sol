@@ -32,6 +32,8 @@ interface ICoreSystem {
 
   function update_pixel(PixelUpdateData memory pixel_update) external;
 
+  function update_pixel_batch(PixelUpdateData[] memory pixelUpdate) external;
+
   function set_instruction(bytes4 selector, string memory instruction) external;
 
   function schedule_queue(uint256 timestamp, bytes calldata call_data) external;
