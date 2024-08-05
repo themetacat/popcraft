@@ -136,7 +136,7 @@ export function createSystemCalls(
       functionName: "initDelegation",
       args: [palyerAddress, SYSTEM_ID, 2],
     });
-    
+    let hashValpublic;
     const eoaWalletClient = await getEoaContractFun();
     try {
       const hash = await eoaWalletClient.writeContract({
@@ -146,9 +146,12 @@ export function createSystemCalls(
         functionName: "registerDelegation",
         args: [palyerAddress, SYSTEMBOUND_DELEGATION, callData],
       });
+      hashValpublic = publicClient.waitForTransactionReceipt({ hash: hash });
+
     } catch (error) {
       console.error("Failed to setup network:", error.message);
     }
+    return hashValpublic
   };
 
   const getEoaContractFun = async () => {
@@ -257,6 +260,8 @@ export function createSystemCalls(
       const [account] = await window.ethereum!.request({
         method: "eth_requestAccounts",
       });
+      // console.log(account);
+      
 
       const encodeData = encodeFunctionData({
         abi: abi_json[app_name],
@@ -276,7 +281,7 @@ export function createSystemCalls(
         
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
         console.log(await publicClient.waitForTransactionReceipt({ hash: txData }));
-      
+        
       }else{
         const txData = await worldContract.write.callFrom([
           account,
@@ -287,9 +292,10 @@ export function createSystemCalls(
           }),
           encodeData,
         ]);
+        // console.log(account);
+        
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
         console.log(await publicClient.waitForTransactionReceipt({ hash: txData }));
-
       }
     } catch (error) {
       console.error("Failed to setup network:", error.message);

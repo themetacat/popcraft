@@ -6,6 +6,7 @@
   height: calc(100vh - 60px);
 }
 .contBox1 {
+  z-index: 10;
   padding-left: 15px;
   padding-right: 15px;
   flex: 1 1 0%;
@@ -157,6 +158,9 @@ p {
   bottom: 12px;
   font-family: Arial, Helvetica, sans-serif !important;
   color: #fff;
+  p{
+    margin: 10px;
+  }
 }
 .overlay {
   background-color: #200d2f;

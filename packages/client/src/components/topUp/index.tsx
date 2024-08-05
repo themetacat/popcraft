@@ -23,12 +23,14 @@ interface Props {
   setTopUpType: any;
   palyerAddress: any;
   mainContent: any;
+  onTopUpSuccess: () => void;
 }
 
 export default function TopUp({
   setTopUpType,
   palyerAddress,
   mainContent,
+   onTopUpSuccess, 
 }: Props) {
   const [warningModel, setWarningModel] = useState(false);
   const [withDrawType, setWithDrawType] = useState(false);
@@ -38,15 +40,24 @@ export default function TopUp({
   const [heightNum, setHeightNum] = useState("555");
   const [privateKey, setprivateKey] = useState("");
   const [withDrawHashVal, setwithDrawHashVal] = useState(undefined);
+  const [balance, setBalance] = useState(0);
   const {
     network: { walletClient, publicClient },
   } = useMUD();
   const { address, isConnected } = useAccount();
-  const MIN_SESSION_WALLET_BALANCE = parseEther("0.0000003");
+  const MIN_SESSION_WALLET_BALANCE = parseEther("0.0003");
   const balanceResultSW = useBalance({
     address: palyerAddress,
   });
-  const [inputValue, setInputValue] = useState("0.0003");
+   
+   useEffect(() => {
+    publicClient.getBalance({ address: palyerAddress }).then((balance: any) => {
+      setBalance(Number(balance));
+     })
+   },[])
+
+  
+  const [inputValue, setInputValue] = useState("0.000003");
   const {
     data: hash,
     error,
@@ -66,17 +77,23 @@ export default function TopUp({
   } = useWaitForTransactionReceipt({
     hash: withDrawHashVal,
   });
+  
   const balanceSW = balanceResultSW.data?.value ?? 0n;
+  
   const balanceResultEOA = useBalance({
     address: address,
   });
+  
   async function withDraw() {
-    if (balanceSW > MIN_SESSION_WALLET_BALANCE) {
-      const value = balanceSW - MIN_SESSION_WALLET_BALANCE;
+    if (parseEther(balance.toString()) > MIN_SESSION_WALLET_BALANCE) {
+      const value = parseEther(balance.toString()) - MIN_SESSION_WALLET_BALANCE;
+      
       const hash = await walletClient.sendTransaction({
         to: address,
         value: value,
       });
+      console.log(hash);
+      
       setwithDrawHashVal(hash);
     } else {
       toast.error("BALANCE not enough");
@@ -153,6 +170,9 @@ export default function TopUp({
     
     const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue) });
     const result = await publicClient.waitForTransactionReceipt({hash: result_hash})
+    if (result.status === "success") {
+      onTopUpSuccess(); // 调用回调函数
+    }
     
   }
   return (
@@ -165,7 +185,7 @@ export default function TopUp({
           alt=""
           onClick={() => {
             setTopUpType(false);
-          }}
+          }} 
         />
       </div>
       <ConnectButton.Custom>
@@ -303,7 +323,7 @@ export default function TopUp({
                       />
                       <span className={style.ConfirmingFont}>
                         {!isConfirmingWith && (
-                          <>{(Number(balanceSW) / 1e18).toFixed(8)}</>
+                          <>{(Number(balance) / 1e18).toFixed(8)}</>
                         )}
                       </span>
                     </div>
