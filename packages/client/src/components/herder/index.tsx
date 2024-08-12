@@ -92,7 +92,6 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [boxPrompt, setBoxPrompt] = useState(false);
   const [topUpType, setTopUpType] = useState(false);
   const [topUpTypeto, setTopUpTypeto] = useState(false);
-
   const [balance, setBalance] = useState<bigint | null>(null);
   const [translateX, setTranslateX] = useState(0);
   const [translateY, setTranslateY] = useState(0);
@@ -137,23 +136,27 @@ export default function Header({ hoveredData, handleData }: Props) {
   const playAction = localStorage.getItem('playAction');
 
 
-  useEffect ( () => {
+
+
+
+
+  useEffect(() => {
     const playAction = localStorage.getItem('playAction');
     if (playAction === 'gameContinue') {
       setPopStar(true);
       setPlayFun(true)
-    }else if (playAction === 'play') {
+    } else if (playAction === 'play') {
       setPopStar(true);
-    setPlayFun(false);
-    }else{
+      setPlayFun(false);
+    } else {
       setPopStar(false);
     }
-  },[])
+  }, [])
 
   const handleTopUpClick = () => {
     setShowTopUp(true);
   };
-  
+
   const handleTopUpSuccess = () => {
     setPlayFun(true);
     setPopStar(true);
@@ -166,7 +169,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       balanceFN.then((a: any) => {
         setBalance(a);
       });
-    }else{
+    } else {
       setBalance(0n);
     }
   }, [isConnected, palyerAddress, publicClient]);
@@ -186,18 +189,18 @@ export default function Header({ hoveredData, handleData }: Props) {
           const elapsedTime = currentTime - Number(TCMPopStarData.startTime);
           const updatedTimeLeft = Math.max(300 - elapsedTime, 0);
           if (updatedTimeLeft > 0) {
-            localStorage.setItem('playAction', 'gameContinue'); 
+            localStorage.setItem('playAction', 'gameContinue');
           } else {
             localStorage.setItem('playAction', 'play')
           }
         } else {
-          if(localStorage.getItem("playAction") !== "gameContinue"){
+          if (localStorage.getItem("playAction") !== "gameContinue") {
             localStorage.setItem('playAction', 'play')
           }
         }
       }
     }
-    else{
+    else {
       localStorage.setItem('money', 'nomoney')
       localStorage.setItem('playAction', 'noplay')
     }
@@ -389,7 +392,6 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   //画布
   const drawGrid2 = useCallback(
-
     (
       ctx: CanvasRenderingContext2D,
       hoveredSquare: { x: number; y: number } | null,
@@ -422,7 +424,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           ? baseFontSize
           : baseFontSize + (numberData - 25) * fontSizeIncrement;
       ctx.font = `${fontWeight} ${fontSize}px Arial`;
-      
+
       const visibleArea = {
         x: Math.max(0, Math.floor(scrollOffset.x / GRID_SIZE)),
         y: Math.max(0, Math.floor(scrollOffset.y / GRID_SIZE)),
@@ -435,8 +437,8 @@ export default function Header({ hoveredData, handleData }: Props) {
           j < 10;
           j++
         ) {
-          const currentX = (i + 23) * GRID_SIZE - scrollOffset.x;
-          const currentY = (j + 10) * GRID_SIZE - scrollOffset.y;
+          const currentX = (i + 16) * GRID_SIZE - scrollOffset.x;
+          const currentY = (j + 5) * GRID_SIZE - scrollOffset.y;
           ctx.lineWidth = 3;
           ctx.strokeStyle = "#2e1043";
           ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
@@ -485,6 +487,25 @@ export default function Header({ hoveredData, handleData }: Props) {
       scrollOffset,
     ]
   );
+
+
+  useEffect(() => {
+    if (appName === "BASE/PopCraftSystem") {
+      setNumberData(35);
+      setGRID_SIZE(44);
+      setScrollOffset({ x: 0, y: 0 });
+      setTranslateX(0);
+      setTranslateY(0);
+    } else {
+      setNumberData(25);
+      setGRID_SIZE(32);
+      setScrollOffset({ x: 0, y: 0 });
+      setTranslateX(0);
+      setTranslateY(0);
+    }
+  }, [appName]);
+
+
 
   let tcmTokenAddrDict = {}
   const drawGrid = useCallback(
@@ -642,6 +663,8 @@ export default function Header({ hoveredData, handleData }: Props) {
   const action =
     pixel_value && pixel_value.action ? pixel_value.action : "interact";
   const ClickThreshold = 150;
+
+
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -657,10 +680,19 @@ export default function Header({ hoveredData, handleData }: Props) {
     if (pageClick === true) {
       return;
     }
-    setIsDragging(true);
+    if (appName === "BASE/PopCraftSystem") {
+      // setIsDragging(true);
+      // setTranslateX(event.clientX);
+      // setTranslateY(event.clientY);
 
-    setTranslateX(event.clientX);
-    setTranslateY(event.clientY);
+    } else {
+      setIsDragging(true);
+      setTranslateX(event.clientX);
+      setTranslateY(event.clientY);
+    }
+    // setIsDragging(true);
+    // setTranslateX(event.clientX);
+    // setTranslateY(event.clientY);
     get_function_param(action);
     downTimerRef.current = setTimeout(() => {
       setIsLongPress(true);
@@ -712,8 +744,8 @@ export default function Header({ hoveredData, handleData }: Props) {
               // if (action === "pop") {
               if (TCMPopStarData) {
                 const new_coor = {
-                  x: coordinates.x - 23 + TCMPopStarData.x,
-                  y: coordinates.y - 10 + TCMPopStarData.y,
+                  x: coordinates.x - 16 + TCMPopStarData.x,
+                  y: coordinates.y - 5 + TCMPopStarData.y,
                 }
                 if (new_coor.x >= 0 && new_coor.y >= 0) {
                   interactHandleTCM(
@@ -826,7 +858,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       if (increDataVal[1]) {
         increDataVal[1].then((a: any) => {
           if (a.status === "success") {
-   
+
             setLoading(false);
             setLoadingpaly(false)
             setTimeControl(true);
@@ -845,7 +877,8 @@ export default function Header({ hoveredData, handleData }: Props) {
   const handleEoaContractData = (data) => {
     setTCMPopStarData(data);
   };
-  const playFun =  () => {
+  //创建游戏实例
+  const playFun = () => {
     let deldata = localStorage.getItem('deleGeData')
     let money = localStorage.getItem('money')
     setLoadingpaly(true)
@@ -865,7 +898,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     } else {
       playData()
     }
-    // localStorage.setItem('playAction', 'play'); // 设置 playAction 为 play
+    localStorage.setItem('playAction', 'play'); // 设置 playAction 为 play
   };
   const playData = () => {
     let EmptyRegionNum = 0
@@ -897,10 +930,11 @@ export default function Header({ hoveredData, handleData }: Props) {
     localStorage.setItem('playAction', 'gameContinue'); // 设置 playAction 为 gameContinue
   };
 
+
+  //拖拽函数 
   const handleMouseEnter = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       if (!visibleAreaRef.current || !canvasRef.current) return;
-
       const rect = visibleAreaRef.current.getBoundingClientRect();
       mouseXRef.current = event.clientX - rect.left;
       mouseYRef.current = event.clientY - rect.top;
@@ -924,21 +958,23 @@ export default function Header({ hoveredData, handleData }: Props) {
     [drawGrid, hoveredSquare, drawGrid2]
   );
 
-
+  //鼠标移动事件
   const handleMouseMoveData = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       if (!visibleAreaRef.current || !isDragging) return;
+      if (appName === "BASE/PopCraftSystem") {
+      } else {
+        const dx = translateX - event.clientX;
+        const dy = translateY - event.clientY;
 
-      const dx = translateX - event.clientX;
-      const dy = translateY - event.clientY;
+        setTranslateX(event.clientX);
+        setTranslateY(event.clientY);
 
-      setTranslateX(event.clientX);
-      setTranslateY(event.clientY);
-
-      setScrollOffset((prevOffset) => ({
-        x: Math.max(0, prevOffset.x + dx),
-        y: Math.max(0, prevOffset.y + dy),
-      }));
+        setScrollOffset((prevOffset) => ({
+          x: Math.max(0, prevOffset.x + dx),
+          y: Math.max(0, prevOffset.y + dy),
+        }));
+      }
 
       const canvas = canvasRef.current;
       if (canvas) {
@@ -1191,7 +1227,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   ]);
 
   useEffect(() => {
-    
+
     const canvas = canvasRef.current as any;
     const handleMouseMove = (event: any) => {
       const rect = canvas.getBoundingClientRect();

@@ -10,9 +10,11 @@ import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { useMUD } from "../../MUDContext";
 import { abi_json } from "../../mud/createSystemCalls";
 import { resourceToHex, ContractWrite, getContract } from "@latticexyz/common";
-import { useAccount, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi';
+import { useAccount, useDisconnect, useEnsAvatar, useEnsName, useBalance } from 'wagmi';
 import RightPart, { addressToEntityID } from "../rightPart";
 import loadingImg from "../../images/loading.png";
+
+
 
 import {
   Abi,
@@ -45,7 +47,6 @@ interface Props {
   setPopStar: any;
   loadingplay: any;
 }
-
 export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, loadingplay }: Props) {
   const {
     components: {
@@ -86,7 +87,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [selectedOption, setSelectedOption] = useState("option1");
   const { address } = useAccount();
   const [loading, setLoading] = useState(false);
-
+  const resultBugs = useBalance({
+    address: address,
+    token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
+  })
 
   const handlePlayAgain = () => {
     setLoading(true);
@@ -308,7 +312,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }
   }, []);
 
-
   return (
     <>
       <div className={style.container}>
@@ -327,8 +330,12 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           <p>REWARDS</p>
         </div>
         <div className={style.threePart}>
-          <p>350$bugs</p>
-          <p>REWARDS</p>
+          <p>
+            {resultBugs.data?.value
+              ? ` ${Math.floor(Number(resultBugs.data?.value) / 1e18)}`
+              : "0"}$bugs
+          </p>
+          <p>BALANCE</p>
         </div>
         <div className={style.imgContent}>
 

@@ -125,7 +125,7 @@ export default function TopUp({
   const handleChange = (event) => {
     const value = event.target.value;
     const balanceEOA = Number(balanceResultEOA.data?.value) / 1e18;
-
+    
     if (parseFloat(value) < 0) {
       setInputValue("0");
     }
