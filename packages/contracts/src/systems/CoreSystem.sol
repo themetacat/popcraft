@@ -157,6 +157,12 @@ contract CoreSystem is System, IWorldErrors {
 
   }
 
+  function update_pixel_batch(PixelUpdateData[] memory pixelUpdate) public{
+    for(uint256 i; i < pixelUpdate.length; i++){
+      update_pixel(pixelUpdate[i]);
+    }
+  }
+
   function set_instruction(bytes4 selector, string memory instruction) public {
     bytes32 bytes_app_name = convertToBytes32(AppName.getApp_name(address(_msgSender())));
     AppData memory app = App.get(bytes_app_name);
@@ -234,8 +240,8 @@ contract CoreSystem is System, IWorldErrors {
   }
 
   function setTokenBalanceForNamespace(address[] memory tokenAddressArr, uint256[] memory tokenAddressBalance, ResourceId fromNamespaceId) public {
-    // AccessControl.requireOwner(WorldResourceIdLib.encodeNamespace("root"), _msgSender());
-
+    AccessControl.requireOwner(WorldResourceIdLib.encodeNamespace(""), _msgSender());
+ 
     require(tokenAddressArr.length == tokenAddressBalance.length, "Different lengths");
     for(uint256 i; i < tokenAddressArr.length; i++){
       uint256 world_balance = IERC20(tokenAddressArr[i]).balanceOf(_world());

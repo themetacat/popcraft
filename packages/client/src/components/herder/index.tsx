@@ -715,6 +715,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       clearTimeout(downTimerRef.current);
       downTimerRef.current = null;
     }
+    
     const a = get_function_param(action);
     a.then((x) => {
       const isEmpty = Object.keys(x).length === 0;
