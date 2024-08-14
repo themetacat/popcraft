@@ -187,7 +187,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         if (TCMPopStarData && TCMPopStarData.startTime) {
           const currentTime = Math.floor(Date.now() / 1000);
           const elapsedTime = currentTime - Number(TCMPopStarData.startTime);
-          const updatedTimeLeft = Math.max(60 - elapsedTime, 0);
+          const updatedTimeLeft = Math.max(303 - elapsedTime, 0);
           if (updatedTimeLeft > 0) {
             localStorage.setItem('playAction', 'gameContinue');
           } else {
@@ -892,7 +892,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           if (data && data.startTime) {
             const currentTime = Math.floor(Date.now() / 1000);
             const elapsedTime = currentTime - Number(data.startTime);
-            const updatedTimeLeft = Math.max(60 - elapsedTime, 0);
+            const updatedTimeLeft = Math.max(303 - elapsedTime, 0);
             if (updatedTimeLeft > 0) {
               //游戏没结束 popstart不显示 
               // console.log('游戏没结束 popstart不显示');

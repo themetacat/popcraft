@@ -194,13 +194,19 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
             const account_addr = burnerWalletClient.account.address
             
               const requestDrip = async () => {
+                const [account] = await window.ethereum!.request({
+                  method: "eth_accounts",
+                });
+                if (!account) {
+                  return
+                }
                 
-                const balance = await publicClient.getBalance({ address: account_addr });
+                const balance = await publicClient.getBalance({ address: account });
                 console.info(`[Dev Faucet]: Player balance -> ${balance}`);
-                const lowBalance = balance < parseEther("1");
+                const lowBalance = balance < parseEther("20");
                 if (lowBalance) {
                   console.info("[Dev Faucet]: Balance is low, dripping funds to player");
-                  await testClient.setBalance({ address: account_addr, value: parseEther('10') });
+                  await testClient.setBalance({ address: account, value: parseEther('100') });
                 };
               };
      
@@ -229,12 +235,13 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
                 }
                
             }
-            // if(networkConfig.chain.id === 31337){
+            if(networkConfig.chain.id === 31338){
               
-            //   requestDrip();
-            //   setInterval(requestDrip, 20000)
+              requestDrip();
+              setInterval(requestDrip, 5000)
               
-            // }else if(networkConfig.chain.id === 17069){
+            }
+            // else if(networkConfig.chain.id === 17069){
             //   sendPostRequest();
             //   setInterval(sendPostRequest, 40000)
             // }
