@@ -43,8 +43,8 @@ const holesky = defineChain({
 
 const core_foundry = defineChain({
   id: 31_338,
-  name: 'Core Anvil',
-  network: 'core anvil',
+  name: 'MetaCat Devnet',
+  network: 'MetaCat Devnet',
   nativeCurrency: {
     decimals: 18,
     name: 'Ether',
