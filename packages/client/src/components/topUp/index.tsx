@@ -195,7 +195,8 @@ export default function TopUp({
     const value = inputValue;
 
     try {
-      const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue) });
+      const nonce = await publicClient.getTransactionCount({address:address});
+      const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue), nonce});
       const result = await publicClient.waitForTransactionReceipt({ hash: result_hash });
       console.log(result);
       if (result.status === "success") {
