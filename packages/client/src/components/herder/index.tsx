@@ -91,6 +91,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [popExhibit, setPopExhibit] = useState(false);
   const [boxPrompt, setBoxPrompt] = useState(false);
   const [topUpType, setTopUpType] = useState(false);
+  const [topUpTypeto, setTopUpTypeto] = useState(false);
   const [balance, setBalance] = useState<bigint | null>(null);
   const [translateX, setTranslateX] = useState(0);
   const [translateY, setTranslateY] = useState(0);
@@ -112,6 +113,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [mouseY, setMouseY] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadingplay, setLoadingpaly] = useState(false);
+  const [loadingGameOver, setLoadingGameOver] = useState(false);
   const [panningFromChild, setPanningFromChild] = useState(false);
   const [popStar, setPopStar] = useState(false);
   const [pageClick, setPageClick] = useState(false);
@@ -133,6 +135,24 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [playFuntop, setPlayFun] = useState(false);
   const playAction = localStorage.getItem('playAction');
 
+
+
+
+
+
+  useEffect(() => {
+    const playAction = localStorage.getItem('playAction');
+    if (playAction === 'gameContinue') {
+      setPopStar(true);
+      setPlayFun(true)
+    } else if (playAction === 'play') {
+      setPopStar(true);
+      setPlayFun(false);
+    } else {
+      setPopStar(false);
+    }
+  }, [])
+
   const handleTopUpClick = () => {
     setShowTopUp(true);
   };
@@ -140,18 +160,16 @@ export default function Header({ hoveredData, handleData }: Props) {
   const handleTopUpSuccess = () => {
     setPlayFun(true);
     setPopStar(true);
+    localStorage.setItem('playAction', 'play');
   };
 
   useEffect(() => {
     if (isConnected) {
       const balanceFN = publicClient.getBalance({ address: palyerAddress });
-
       balanceFN.then((a: any) => {
-
         setBalance(a);
-       
       });
-    }else{
+    } else {
       setBalance(0n);
     }
   }, [isConnected, palyerAddress, publicClient]);
@@ -164,26 +182,25 @@ export default function Header({ hoveredData, handleData }: Props) {
         localStorage.setItem('playAction', 'noplay')
       } else {
         setTopUpType(false);
-        setPlayFun(false); // 如果余额大于0.000001，设置playFun为true
+        setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
         localStorage.setItem('money', 'toomoney')
-        
         if (TCMPopStarData && TCMPopStarData.startTime) {
           const currentTime = Math.floor(Date.now() / 1000);
           const elapsedTime = currentTime - Number(TCMPopStarData.startTime);
           const updatedTimeLeft = Math.max(300 - elapsedTime, 0);
-          
           if (updatedTimeLeft > 0) {
             localStorage.setItem('playAction', 'gameContinue');
           } else {
             localStorage.setItem('playAction', 'play')
           }
         } else {
-          if(localStorage.getItem("playAction")!== "gameContinue"){
+          if (localStorage.getItem("playAction") !== "gameContinue") {
             localStorage.setItem('playAction', 'play')
           }
         }
       }
-    }else{
+    }
+    else {
       localStorage.setItem('money', 'nomoney')
       localStorage.setItem('playAction', 'noplay')
     }
@@ -375,7 +392,6 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   //画布
   const drawGrid2 = useCallback(
-
     (
       ctx: CanvasRenderingContext2D,
       hoveredSquare: { x: number; y: number } | null,
@@ -383,8 +399,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     ) => {
       let pix_text;
       // const scrollOffset = { x: 23, y: 10 };
-
-
       ctx.fillRect(0, 0, 10, 10);
       ctx.lineWidth = 10;
       ctx.strokeStyle = "#000000";
@@ -410,7 +424,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           ? baseFontSize
           : baseFontSize + (numberData - 25) * fontSizeIncrement;
       ctx.font = `${fontWeight} ${fontSize}px Arial`;
-      
+
       const visibleArea = {
         x: Math.max(0, Math.floor(scrollOffset.x / GRID_SIZE)),
         y: Math.max(0, Math.floor(scrollOffset.y / GRID_SIZE)),
@@ -423,8 +437,8 @@ export default function Header({ hoveredData, handleData }: Props) {
           j < 10;
           j++
         ) {
-          const currentX = (i + 23) * GRID_SIZE - scrollOffset.x;
-          const currentY = (j + 10) * GRID_SIZE - scrollOffset.y;
+          const currentX = (i + 16) * GRID_SIZE - scrollOffset.x;
+          const currentY = (j + 5) * GRID_SIZE - scrollOffset.y;
           ctx.lineWidth = 3;
           ctx.strokeStyle = "#2e1043";
           ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
@@ -473,6 +487,25 @@ export default function Header({ hoveredData, handleData }: Props) {
       scrollOffset,
     ]
   );
+
+
+  useEffect(() => {
+    if (appName === "BASE/PopCraftSystem") {
+      setNumberData(35);
+      setGRID_SIZE(44);
+      setScrollOffset({ x: 0, y: 0 });
+      setTranslateX(0);
+      setTranslateY(0);
+    } else {
+      setNumberData(25);
+      setGRID_SIZE(32);
+      setScrollOffset({ x: 0, y: 0 });
+      setTranslateX(0);
+      setTranslateY(0);
+    }
+  }, [appName]);
+
+
 
   let tcmTokenAddrDict = {}
   const drawGrid = useCallback(
@@ -630,6 +663,8 @@ export default function Header({ hoveredData, handleData }: Props) {
   const action =
     pixel_value && pixel_value.action ? pixel_value.action : "interact";
   const ClickThreshold = 150;
+
+
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -645,10 +680,19 @@ export default function Header({ hoveredData, handleData }: Props) {
     if (pageClick === true) {
       return;
     }
-    setIsDragging(true);
+    if (appName === "BASE/PopCraftSystem") {
+      // setIsDragging(true);
+      // setTranslateX(event.clientX);
+      // setTranslateY(event.clientY);
 
-    setTranslateX(event.clientX);
-    setTranslateY(event.clientY);
+    } else {
+      setIsDragging(true);
+      setTranslateX(event.clientX);
+      setTranslateY(event.clientY);
+    }
+    // setIsDragging(true);
+    // setTranslateX(event.clientX);
+    // setTranslateY(event.clientY);
     get_function_param(action);
     downTimerRef.current = setTimeout(() => {
       setIsLongPress(true);
@@ -694,19 +738,15 @@ export default function Header({ hoveredData, handleData }: Props) {
         setHoveredSquare(newHoveredSquare);
 
         if (isEmpty) {
-
           if (selectedColor && coordinates) {
             hoveredSquareRef.current = coordinates;
-
             setIsDragging(false);
             if (appName === "BASE/PopCraftSystem") {
-
               // if (action === "pop") {
-
               if (TCMPopStarData) {
                 const new_coor = {
-                  x: coordinates.x - 23 + TCMPopStarData.x,
-                  y: coordinates.y - 10 + TCMPopStarData.y,
+                  x: coordinates.x - 16 + TCMPopStarData.x,
+                  y: coordinates.y - 5 + TCMPopStarData.y,
                 }
                 if (new_coor.x >= 0 && new_coor.y >= 0) {
                   interactHandleTCM(
@@ -819,7 +859,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       if (increDataVal[1]) {
         increDataVal[1].then((a: any) => {
           if (a.status === "success") {
-   
+
             setLoading(false);
             setLoadingpaly(false)
             setTimeControl(true);
@@ -838,99 +878,39 @@ export default function Header({ hoveredData, handleData }: Props) {
   const handleEoaContractData = (data) => {
     setTCMPopStarData(data);
   };
-  // const playFun =  () => {
-  //   let deldata = localStorage.getItem('deleGeData')
-  //   let money = localStorage.getItem('money')
-  //   setLoadingpaly(true)
-  //   if (deldata == "undefined") {
-  //     if (money == "toomoney") {
-  //       const delegationData = registerDelegation();
-  //       delegationData.then((data) => {
-  //         if (data != undefined && data.status == "success") {
-  //           playData() //渲染游戏画布+图片
-  //         } else {
-  //           setLoadingpaly(false)
-  //         }
-  //       });
-  //     } else {
-  //       setLoadingpaly(false)
-  //     }
-  //   } else {
-  //     playData()
-  //   }
-  // };
-  // const playData = () => {
-  //   let EmptyRegionNum = 0
-  //   if (TCMPopStarData === undefined) {
-  //     const emptyRegion = findEmptyRegion();
-  //     EmptyRegionNum = emptyRegion
-  //     setEmptyRegionNum({ x: emptyRegion, y: 0 });
-  //   } else {
-
-  //     setEmptyRegionNum({ x: 0, y: 0 });
-  //   }
-  //   localStorage.setItem("showGameOver", "false");
-  //   const ctx = canvasRef?.current?.getContext("2d");
-  //   if (ctx && canvasRef) {
-
-  //     if (appName === "BASE/PopCraftSystem") {
-
-  //       // drawGrid2
-  //       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  //       drawGrid2(ctx, coordinates, true);
-  //     } else {
-  //       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  //       drawGrid(ctx, coordinates, true);
-  //     }
-
-  //     interactHandleTCM(
-  //       { x: EmptyRegionNum, y: 0 },
-  //       palyerAddress,
-  //       selectedColor,
-  //       "interact",
-  //       null
-  //     );
-  //   }
-  // }
-
-
-  const playFun = async () => {
-    let deldata = localStorage.getItem('deleGeData');
-    let money = localStorage.getItem('money');
-    setLoadingpaly(true);
-  
-    if (deldata === "undefined") {
-      if (money === "toomoney") {
-        try {
-          const delegationData = await registerDelegation();
-          if (delegationData && delegationData.status === "success") {
-            playData(); // 渲染游戏画布+图片
+  //创建游戏实例
+  const playFun = () => {
+    let deldata = localStorage.getItem('deleGeData')
+    let money = localStorage.getItem('money')
+    setLoadingpaly(true)
+    if (deldata == "undefined") {
+      if (money == "toomoney") {
+        const delegationData = registerDelegation();
+        delegationData.then((data) => {
+          if (data != undefined && data.status == "success") {
+            playData() //渲染游戏画布+图片
           } else {
-            setLoadingpaly(false);
+            setLoadingpaly(false)
           }
-        } catch (error) {
-          setLoadingpaly(false);
-          console.error("Error registering delegation:", error);
-        }
+        });
       } else {
-        setLoadingpaly(false);
+        setLoadingpaly(false)
       }
     } else {
-      playData();
+      playData()
     }
+    localStorage.setItem('playAction', 'play'); // 设置 playAction 为 play
   };
-  
   const playData = () => {
-    let EmptyRegionNum = 0;
-    if (!TCMPopStarData) {
+    let EmptyRegionNum = 0
+    if (TCMPopStarData === undefined) {
       const emptyRegion = findEmptyRegion();
-      EmptyRegionNum = emptyRegion;
+      EmptyRegionNum = emptyRegion
       setEmptyRegionNum({ x: emptyRegion, y: 0 });
     } else {
       setEmptyRegionNum({ x: 0, y: 0 });
     }
     localStorage.setItem("showGameOver", "false");
-  
     const ctx = canvasRef?.current?.getContext("2d");
     if (ctx && canvasRef) {
       if (appName === "BASE/PopCraftSystem") {
@@ -940,7 +920,6 @@ export default function Header({ hoveredData, handleData }: Props) {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         drawGrid(ctx, coordinates, true);
       }
-  
       interactHandleTCM(
         { x: EmptyRegionNum, y: 0 },
         palyerAddress,
@@ -949,12 +928,14 @@ export default function Header({ hoveredData, handleData }: Props) {
         null
       );
     }
+    localStorage.setItem('playAction', 'gameContinue'); // 设置 playAction 为 gameContinue
   };
-  
+
+
+  //拖拽函数 
   const handleMouseEnter = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       if (!visibleAreaRef.current || !canvasRef.current) return;
-
       const rect = visibleAreaRef.current.getBoundingClientRect();
       mouseXRef.current = event.clientX - rect.left;
       mouseYRef.current = event.clientY - rect.top;
@@ -978,21 +959,23 @@ export default function Header({ hoveredData, handleData }: Props) {
     [drawGrid, hoveredSquare, drawGrid2]
   );
 
-
+  //鼠标移动事件
   const handleMouseMoveData = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       if (!visibleAreaRef.current || !isDragging) return;
+      if (appName === "BASE/PopCraftSystem") {
+      } else {
+        const dx = translateX - event.clientX;
+        const dy = translateY - event.clientY;
 
-      const dx = translateX - event.clientX;
-      const dy = translateY - event.clientY;
+        setTranslateX(event.clientX);
+        setTranslateY(event.clientY);
 
-      setTranslateX(event.clientX);
-      setTranslateY(event.clientY);
-
-      setScrollOffset((prevOffset) => ({
-        x: Math.max(0, prevOffset.x + dx),
-        y: Math.max(0, prevOffset.y + dy),
-      }));
+        setScrollOffset((prevOffset) => ({
+          x: Math.max(0, prevOffset.x + dx),
+          y: Math.max(0, prevOffset.y + dy),
+        }));
+      }
 
       const canvas = canvasRef.current;
       if (canvas) {
@@ -1245,6 +1228,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   ]);
 
   useEffect(() => {
+
     const canvas = canvasRef.current as any;
     const handleMouseMove = (event: any) => {
       const rect = canvas.getBoundingClientRect();
@@ -1538,6 +1522,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         >
           <TopUpContent
             setTopUpType={setTopUpType}
+            setTopUpTypeto={setTopUpTypeto}
             mainContent={mainContent}
             palyerAddress={palyerAddress}
             onTopUpSuccess={handleTopUpSuccess}  // 传递回调函数
@@ -1571,7 +1556,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           timeControl={timeControl}
           playFun={playFun}
           handleEoaContractData={handleEoaContractData}
-
+          setPopStar={setPopStar}
         />
       ) : null}
     </>

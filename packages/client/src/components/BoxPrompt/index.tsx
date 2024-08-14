@@ -10,8 +10,12 @@ import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { useMUD } from "../../MUDContext";
 import { abi_json } from "../../mud/createSystemCalls";
 import { resourceToHex, ContractWrite, getContract } from "@latticexyz/common";
-import { useAccount, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi';
+import { useAccount, useDisconnect, useEnsAvatar, useEnsName, useBalance } from 'wagmi';
 import RightPart, { addressToEntityID } from "../rightPart";
+import loadingImg from "../../images/loading.png";
+
+
+
 import {
   Abi,
   encodeFunctionData,
@@ -34,15 +38,16 @@ import {
 } from "@latticexyz/recs";
 import { spanish } from "viem/accounts";
 import { flare } from "viem/chains";
+
 interface Props {
   coordinates: any;
   timeControl: any;
   playFun: any;
-  // handlematchedData: any;
   handleEoaContractData: any;
+  setPopStar: any;
+  loadingplay: any;
 }
-
-export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData }: Props) {
+export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, loadingplay }: Props) {
   const {
     components: {
       App,
@@ -56,7 +61,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     network: { playerEntity, publicClient, palyerAddress },
     systemCalls: { interact, forMent, payFunction, registerDelegation },
   } = useMUD();
-  const [timeLeft, setTimeLeft] = useState(300);
+  const [timeLeft, setTimeLeft] = useState(303);
   const [warnBox, setWarnBox] = useState(false);
   const [dataq, setdataq] = useState(false);
   const [cresa, setcresa] = useState(false);
@@ -77,36 +82,56 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [startTime, setStartTime] = useState(null);
   const pixel_value = getComponentValue(Pixel, coor_entity) as any;
   const entities_app = useEntityQuery([Has(App)]);
-  const minutes = Math.floor(timeLeft / 300);
-  const seconds = timeLeft % 300;
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
   const [selectedOption, setSelectedOption] = useState("option1");
   const { address } = useAccount();
-  
+  const [loading, setLoading] = useState(false);
+  const resultBugs = useBalance({
+    address: address,
+    token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
+  })
+
+  const handlePlayAgain = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setdataq(false);
+      playFun();
+      setPopStar(false);
+    }, 2000);
+  };
+
   const handlePayMent = () => {
     if (data1) {
       const payFunctionTwo = payFunction(data1?.key, numberData);
       setcresa(true);
       payFunctionTwo.then((result) => {
         if (result.status === "success") {
-
+          toast.success("Payment successed!");
           setcresa(false);
           setpay1(true);
+          setTimeout(() => {
+            setpay1(false);
+            setdataq(false);
+          }, 3000);
         } else {
-
+          toast.error("Payment failed! Try again!");
           setcresa(false);
           setpay(true);
+          setTimeout(() => {
+            setpay(false);
+          }, 3000);
         }
       })
         .catch((error) => {
-
+          toast.error("Payment failed! Try again!");
           setcresa(false);
-          // setpay(true);
+          setpay(true);
+          setTimeout(() => {
+            setpay(false);
+          }, 3000);
         });
-      setTimeout(() => {
-        setdataq(false);
-        setpay1(false);
-        setpay(false);
-      }, 2000);
     }
   };
 
@@ -114,11 +139,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     const [account] = await window.ethereum!.request({
       method: "eth_accounts",
     });
-    
-
-    // const { address, connector } = useAccount();
-    // console.log(address);
-    
     return account;
   };
 
@@ -127,14 +147,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       { address: "address", addressTwo: "address" },
       { address, addressTwo }
     );
-
   const panningType = window.localStorage.getItem("panning");
-  
+
   const fetchData = async () => {
     try {
-
       const account = await getEoaContract();
-
       const TCMPopStarData = getComponentValue(
         TCMPopStar,
         addressToEntityID(account)
@@ -161,14 +178,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         UserDelegationControl,
         addressToEntityIDTwo(account, palyerAddress)
       );
-      
-      localStorage.setItem('deleGeData',JSON.stringify(deleGeData))
-
+      localStorage.setItem('deleGeData', JSON.stringify(deleGeData))
       // if (deleGeData === undefined) {
       //   registerDelegation()
       // }
       return TCMPopStarData;
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -179,75 +193,58 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     imageIconData,
     balanceData
   );
+
   function getMatchedData(tokenAddresses, imageData, balanceData) {
     const result = {};
-
     tokenAddresses?.forEach((address) => {
       if (imageData[address]) {
         const balanceObj = Object.values(balanceData).find(
           (obj) => obj[address]
         );
         let balance = balanceObj ? balanceObj[address] : 0;
-
         if (typeof balance.balance === "bigint") {
           balance = (balance.balance / BigInt(10 ** 18)).toString();
         } else {
           balance = balance.balance || "0";
         }
-
         result[address] = {
           ...imageData[address],
           balance: balance,
         };
       }
     });
-
     return result;
   }
 
   const handleSelectChange = (event: any) => {
     setSelectedOption(event.target.value);
   };
-
-  const downHandleNumber =
-    (val: any) => {
-
-      setNumberData(numberData - 1);
-
-    };
+  const downHandleNumber = (val: any) => {
+    setNumberData(numberData - 1);
+  };
   const upHandleNumber = (val: any) => {
-    setNumberData(numberData + 1);
+    if (data !== 0) {
+      setNumberData(numberData + 1);
+    }
   };
 
   const updateTCMPopStarData = () => {
     const fetchDataTotal = fetchData();
-
-
     fetchDataTotal.then((TCMPopStarData) => {
       if (palyerAddress !== undefined) {
         handleEoaContractData(TCMPopStarData);
-
-
         if (TCMPopStarData) {
           setGetEoaContractData(TCMPopStarData?.tokenAddressArr);
           const blockchainStartTime = Number(TCMPopStarData.startTime) as any;
           setStartTime(blockchainStartTime);
-
           const currentTime = Math.floor(Date.now() / 1000);
-          
           const elapsedTime = currentTime - blockchainStartTime;
-          
-          const updatedTimeLeft = Math.max(300 - elapsedTime, 0);
-          
+          const updatedTimeLeft = Math.max(303 - elapsedTime, 0);
           setTimeLeft(updatedTimeLeft);
-
           const allZeros = TCMPopStarData.matrixArray.every((data) => data === 0n);
-
           if (allZeros) {
             setGameSuccess(true)
-
           } else {
-
             setGameSuccess(false)
             if (TCMPopStarData.gameFinished === true) {
               seta(true)
@@ -257,33 +254,27 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       }
     });
   };
- 
+
   useEffect(() => {
     updateTCMPopStarData();
   }, [balanceData, address]);
 
-
   useEffect(() => {
-
     if (timeControl === true && gameSuccess === false) {
       if (datan !== null) {
         const currentTime = Math.floor(Date.now() / 1000);
         const timeElapsed = currentTime - datan;
-        const newTimeLeft = 300 - timeElapsed;
+        const newTimeLeft = 303 - timeElapsed;
         setTimeLeft(newTimeLeft > 0 ? newTimeLeft : 0);
         if (localStorage.getItem('showGameOver') === 'false') {
           localStorage.setItem('showGameOver', 'true')
         }
-
       }
     }
   }, [datan, timeControl, a, gameSuccess]);
 
   useEffect(() => {
-    // console.log(timeLeft, gameSuccess);
-
     if (timeControl === true && gameSuccess === false) {
-      
       if (timeLeft > 0) {
         const timer = setTimeout(() => {
           setTimeLeft(timeLeft - 1);
@@ -291,13 +282,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             localStorage.setItem('showGameOver', 'true')
           }
         }, 1000);
-
         return () => clearTimeout(timer);
       }
-
     }
   }, [timeLeft, timeControl, a, gameSuccess]);
-
 
   useEffect(() => {
     const payFor = forMent(data1?.key, numberData)
@@ -308,13 +296,28 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     })
   }, [data1, numberData])
 
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60).toString().padStart(2, '0');
+    const seconds = (time % 60).toString().padStart(2, '0');
+    return `${minutes}:${seconds}`;
+  };
+
+  useEffect(() => {
+    localStorage.setItem('showGameOver', 'false');
+    const showGameOver = localStorage.getItem('showGameOver');
+    if (showGameOver === 'true') {
+      setGameSuccess(true);
+    } else {
+      setGameSuccess(false);
+    }
+  }, []);
 
   return (
     <>
       <div className={style.container}>
         <div className={style.firstPart}>
           <p style={{ cursor: "pointer" }}>
-            {timeLeft !== 0 && gameSuccess === false ? timeLeft :
+            {timeLeft !== 0 && gameSuccess === false ? formatTime(timeLeft) :
               <div onClick={() => {
                 playFun()
               }}>New<br />Game</div>
@@ -327,8 +330,12 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           <p>REWARDS</p>
         </div>
         <div className={style.threePart}>
-          <p>350$bugs</p>
-          <p>REWARDS</p>
+          <p>
+            {resultBugs.data?.value
+              ? ` ${Math.floor(Number(resultBugs.data?.value) / 1e18)}`
+              : "0"}$bugs
+          </p>
+          <p>BALANCE</p>
         </div>
         <div className={style.imgContent}>
 
@@ -390,7 +397,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                   onClick={() => {
                     upHandleNumber(numberData);
                   }}
-                  className={numberData === 300 ? style.disabled : (null as any)}
+                  disabled={data === 0}
+                  className={data === 0 ? style.disabled : (null as any)}
                 >
                   +
                 </button>
@@ -426,7 +434,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             {pay === true ? (
               <div className={style.patment}>payment failed! try again!</div>
             ) : null}
-
             <button
               className={style.payBtn}
               onClick={() => {
@@ -469,7 +476,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           </div>
         </div>
       ) : null}
-
       {warnBox === true ? (
         <div
           className={panningType !== "false" ? style.overlayBuy : style.overlay}
@@ -501,22 +507,20 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               className={panningType !== "false" ? style.overlayBuy : style.overlay}
             >
               <div className={style.contentSuccess}>
-                <img
-                  className={style.turnOff}
-                  src={trunOff}
-                  alt=""
-                  onClick={() => {
-                    localStorage.setItem('showGameOver', 'false')
-                  }}
-                />
                 <p>Game Over!</p>
                 <button
-                  onClick={() => {
-
-                    playFun()
-                  }}
+                  onClick={handlePlayAgain}
+                  disabled={loading}
+                  style={{ cursor: loading ? "not-allowed" : "auto" }}
                 >
-                  Play Again
+                  {loading ? (
+                    <img
+                      src={loadingImg}
+                      className={`${style.commonCls2} ${style.spinAnimation}`}
+                    />
+                  ) : (
+                    "Play Again"
+                  )}
                 </button>
               </div>
             </div>
