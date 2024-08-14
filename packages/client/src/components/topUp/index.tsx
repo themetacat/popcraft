@@ -84,12 +84,10 @@ export default function TopUp({
   });
 
 
-
   async function withDraw() {
     const balance_eth = balance / 1e18;
     if (parseEther(balance_eth.toString()) > Number(MIN_SESSION_WALLET_BALANCE)) {
       const value = parseEther(balance_eth.toString()) - MIN_SESSION_WALLET_BALANCE;
-      console.log(value);
       setIsWithdrawing(true);
       setWithdrawButtonText("Waiting for confirmation...");
       const hash = await walletClient.sendTransaction({
@@ -197,9 +195,9 @@ export default function TopUp({
     try {
       const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue) });
       const result = await publicClient.waitForTransactionReceipt({ hash: result_hash });
-      console.log(result);
+      // console.log(result,'1111111111111111');
       if (result.status === "success") {
-        // onTopUpSuccess(); // 调用回调函数
+        onTopUpSuccess(); // 调用回调函数
         toast.success("Top up successful!"); // 显示成功消息
       } else {
         setTransferPayType(true);
@@ -368,30 +366,6 @@ export default function TopUp({
                       </span>
                     </div>
                   </div>
-
-                  {/* <div
-                    className={
-                      withDrawType === true ? style.btnMeB : style.btnMe
-                    }
-                    onClick={withDraw}
-                    onMouseMove={() => {
-                      setWithDrawType(true);
-                    }}
-                    onMouseLeave={() => {
-                      setWithDrawType(false);
-                    }}
-                    disabled={isConfirmingWith}
-                  >
-                    {withDrawType === true
-                      ? "   waiting for confirmation..."
-                      : "WITHDRAW ALL"}
-
-                    {isConfirmingWith && (
-                      <div style={{ fontSize: "11px" }}>
-                        Waiting for confirmation...
-                      </div>
-                    )}
-                  </div> */}
                   <div
                     className={style.btnMe}
                     onClick={withDraw}

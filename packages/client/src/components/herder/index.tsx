@@ -24,6 +24,7 @@ import pixeLawlogo from '../../images/pixeLawlogo.png'
 import backgroundMusic from '../../audio/1.mp3';
 import effectSound from '../../audio/2.mp3';
 import { flare } from "viem/chains";
+import { F } from "@latticexyz/store/dist/store-e0caabe3";
 
 const colorOptionsData = [
   { color: "#4d4d4d", title: "Option 1" },
@@ -64,12 +65,10 @@ const colorOptionsData = [
   { color: "#ab149e", title: "Option 3" },
   // 其他颜色选项...
 ];
-
 interface Props {
   hoveredData: { x: number; y: number } | null;
   handleData: (data: { x: number; y: number }) => void;
 }
-
 export default function Header({ hoveredData, handleData }: Props) {
   const {
     components: {
@@ -134,33 +133,32 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [showTopUp, setShowTopUp] = useState(false); //控制弹出层的显示与隐藏
   const [playFuntop, setPlayFun] = useState(false);
   const playAction = localStorage.getItem('playAction');
+  const [isFirst, setIsFirst] = useState(true);
 
 
-
-
-
-
-  useEffect(() => {
-    const playAction = localStorage.getItem('playAction');
-    if (playAction === 'gameContinue') {
-      setPopStar(true);
-      setPlayFun(true)
-    } else if (playAction === 'play') {
-      setPopStar(true);
-      setPlayFun(false);
-    } else {
-      setPopStar(false);
-    }
-  }, [])
+  // useEffect(() => {
+  //   const playAction = localStorage.getItem('playAction');
+  //   if (playAction === 'gameContinue') {
+  //     setPopStar(true);
+  //     setPlayFun(true)
+  //   } else if (playAction === 'play') {
+  //     setPopStar(true);
+  //     setPlayFun(false);
+  //   } else {
+  //     setPopStar(false);
+  //   }
+  // }, [])
 
   const handleTopUpClick = () => {
     setShowTopUp(true);
   };
 
-  const handleTopUpSuccess = () => {
-    setPlayFun(true);
-    setPopStar(true);
-    localStorage.setItem('playAction', 'play');
+  const handleTopupSuccess = () => {
+    const balanceFN = publicClient.getBalance({ address: palyerAddress });
+    balanceFN.then((a: any) => {
+      setBalance(a);
+    });
+    setTopUpType(true)
   };
 
   useEffect(() => {
@@ -174,12 +172,14 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
   }, [isConnected, palyerAddress, publicClient]);
 
+  // 判断用户临时钱包有没有钱 
   useEffect(() => {
     if (isConnected) {
-      if ((Number(balance) / 1e18) < 0.00001) {
+      if ((Number(balance) / 1e18) < 3) {
         setTopUpType(true);
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
+        setPopStar(true);
       } else {
         setTopUpType(false);
         setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
@@ -187,25 +187,28 @@ export default function Header({ hoveredData, handleData }: Props) {
         if (TCMPopStarData && TCMPopStarData.startTime) {
           const currentTime = Math.floor(Date.now() / 1000);
           const elapsedTime = currentTime - Number(TCMPopStarData.startTime);
-          const updatedTimeLeft = Math.max(300 - elapsedTime, 0);
+          const updatedTimeLeft = Math.max(60 - elapsedTime, 0);
           if (updatedTimeLeft > 0) {
             localStorage.setItem('playAction', 'gameContinue');
           } else {
             localStorage.setItem('playAction', 'play')
+            setPopStar(true);
           }
         } else {
-          if (localStorage.getItem("playAction") !== "gameContinue") {
-            localStorage.setItem('playAction', 'play')
-          }
+          localStorage.setItem('playAction', 'play')
+          setPopStar(true);
         }
       }
     }
     else {
       localStorage.setItem('money', 'nomoney')
       localStorage.setItem('playAction', 'noplay')
+      setPopStar(false);
     }
+
   }, [isConnected, balance,]);
 
+  //音乐播放
   useEffect(() => {
     const handleMouseMove = () => {
       if (audioRef.current) {
@@ -213,7 +216,6 @@ export default function Header({ hoveredData, handleData }: Props) {
         const playPromise = audioRef.current.play();
         if (playPromise !== undefined) {
           playPromise.then(_ => {
-            // 自动播放成功
             window.removeEventListener('mousemove', handleMouseMove); // 移除事件监听器
           }).catch(error => {
           });
@@ -248,18 +250,21 @@ export default function Header({ hoveredData, handleData }: Props) {
       }
     });
   };
+
   const playEffect = async () => {
     const effectUrl = effectSound
     const audio = await loadAudio(effectUrl);
     audio.currentTime = 0;
     audio.play();
   };
+
   const getEoaContract = async () => {
     const [account] = await window.ethereum!.request({
       method: "eth_requestAccounts",
     });
     return account;
   };
+
   const [hoveredSquare, setHoveredSquare] = useState<{
     x: number;
     y: number;
@@ -270,7 +275,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [selectedColor, setSelectedColor] = useState(
     colorSession !== null ? colorSession : "#ffffff"
   );
-  const onHandleOwner = (data) => {
+  const onHandleOwner = (data: any) => {
     setOwnerData(data)
   }
   const mouseXRef = useRef(0);
@@ -506,7 +511,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   }, [appName]);
 
 
-
+  //第一层画布
   let tcmTokenAddrDict = {}
   const drawGrid = useCallback(
     (
@@ -578,7 +583,6 @@ export default function Header({ hoveredData, handleData }: Props) {
               ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
             }
             // entity.value.app === "PopCraft"
-
             if (entity.value.app === "PopCraft" && entity.value.owner !== undefined && tcmTokenAddrDict[entity.value.owner] !== undefined) {
 
               if (Number(entity?.value?.text) > 0) {
@@ -648,8 +652,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       scrollOffset,
     ]
   );
-
-
   let timeout: NodeJS.Timeout;
   const [isDragging, setIsDragging] = useState(false);
   const [timeControl, setTimeControl] = useState(false);
@@ -681,18 +683,12 @@ export default function Header({ hoveredData, handleData }: Props) {
       return;
     }
     if (appName === "BASE/PopCraftSystem") {
-      // setIsDragging(true);
-      // setTranslateX(event.clientX);
-      // setTranslateY(event.clientY);
-
     } else {
+      //禁止上下左右移动
       setIsDragging(true);
       setTranslateX(event.clientX);
       setTranslateY(event.clientY);
     }
-    // setIsDragging(true);
-    // setTranslateX(event.clientX);
-    // setTranslateY(event.clientY);
     get_function_param(action);
     downTimerRef.current = setTimeout(() => {
       setIsLongPress(true);
@@ -702,6 +698,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const handlePageClick = () => {
     setPageClick(true);
   };
+
   const handlePageClickIs = () => {
     setPageClick(false);
   };
@@ -858,7 +855,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       if (increDataVal[1]) {
         increDataVal[1].then((a: any) => {
           if (a.status === "success") {
-
             setLoading(false);
             setLoadingpaly(false)
             setTimeControl(true);
@@ -874,9 +870,53 @@ export default function Header({ hoveredData, handleData }: Props) {
       }
     });
   };
+
+
+
+  //判断时间倒计时
   const handleEoaContractData = (data) => {
     setTCMPopStarData(data);
+    if (isFirst === true) {
+      setIsFirst(false)
+      if (isConnected) {
+        if ((Number(balance) / 1e18) < 3) {
+          setTopUpType(true);
+          localStorage.setItem('money', 'nomoney')
+          localStorage.setItem('playAction', 'noplay')
+          setPopStar(true);
+        } else {
+          setTopUpType(false);
+          setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
+          localStorage.setItem('money', 'toomoney')
+          if (data && data.startTime) {
+            const currentTime = Math.floor(Date.now() / 1000);
+            const elapsedTime = currentTime - Number(data.startTime);
+            const updatedTimeLeft = Math.max(60 - elapsedTime, 0);
+            if (updatedTimeLeft > 0) {
+              //游戏没结束 popstart不显示 
+              // console.log('游戏没结束 popstart不显示');
+              localStorage.setItem('playAction', 'gameContinue');
+              setPopStar(false);
+            } else {
+              // console.log('游戏结束');
+              localStorage.setItem('playAction', 'play')
+              setPopStar(true);
+            }
+          } else {
+            localStorage.setItem('playAction', 'play')
+            setPopStar(true);
+          }
+        }
+      }
+      else {
+        // console.log('888888888888888');
+        localStorage.setItem('money', 'nomoney')
+        localStorage.setItem('playAction', 'noplay')
+        setPopStar(false);
+      }
+    }
   };
+
   //创建游戏实例
   const playFun = () => {
     let deldata = localStorage.getItem('deleGeData')
@@ -886,7 +926,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       if (money == "toomoney") {
         const delegationData = registerDelegation();
         delegationData.then((data) => {
-          if (data != undefined && data.status == "success") {
+          if (data !== undefined && data.status == "success") {
             playData() //渲染游戏画布+图片
           } else {
             setLoadingpaly(false)
@@ -898,8 +938,10 @@ export default function Header({ hoveredData, handleData }: Props) {
     } else {
       playData()
     }
-    localStorage.setItem('playAction', 'play'); // 设置 playAction 为 play
+    // localStorage.setItem('playAction', 'play'); // 设置 playAction 为 play
   };
+
+
   const playData = () => {
     let EmptyRegionNum = 0
     if (TCMPopStarData === undefined) {
@@ -927,7 +969,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         null
       );
     }
-    localStorage.setItem('playAction', 'gameContinue'); // 设置 playAction 为 gameContinue
+    // localStorage.setItem('playAction', 'gameContinue'); // 设置 playAction 为 gameContinue
   };
 
 
@@ -1147,7 +1189,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     toast.error("An error was reported")
   };
 
-
   const onHandleExe = () => {
     setPopExhibit(false);
     setShowOverlay(false);
@@ -1163,8 +1204,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     setLoadingpaly(true)
   };
 
-
-
   const handleUpdateAbiJson = (data: any) => {
     setUpdate_abi_json(data);
   };
@@ -1176,7 +1215,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const handleItemClick = (content) => {
     setMainContent(content);
   };
-  const handleAddClick = (content) => {
+  const handleAddClick = (content: any) => {
     if (content === "topUp") {
       setTopUpType(true);
     } else {
@@ -1227,7 +1266,6 @@ export default function Header({ hoveredData, handleData }: Props) {
   ]);
 
   useEffect(() => {
-
     const canvas = canvasRef.current as any;
     const handleMouseMove = (event: any) => {
       const rect = canvas.getBoundingClientRect();
@@ -1267,7 +1305,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       setPopStar(false);
     }
   }, [appName]);
-
 
 
 
@@ -1524,11 +1561,10 @@ export default function Header({ hoveredData, handleData }: Props) {
             setTopUpTypeto={setTopUpTypeto}
             mainContent={mainContent}
             palyerAddress={palyerAddress}
-            onTopUpSuccess={handleTopUpSuccess}  // 传递回调函数
+            onTopUpSuccess={handleTopupSuccess} 
           />
         </div>
       ) : null}
-
       {popStar === true && (playAction !== 'gameContinue' || !isConnected) ? (
         <div
           className={
@@ -1548,6 +1584,7 @@ export default function Header({ hoveredData, handleData }: Props) {
             loadingplay={loadingplay} />
         </div>
       ) : null}
+
 
       {boxPrompt === true || appName === "BASE/PopCraftSystem" ? (
         <BoxPrompt

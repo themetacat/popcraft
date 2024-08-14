@@ -38,6 +38,7 @@ import {
 } from "@latticexyz/recs";
 import { spanish } from "viem/accounts";
 import { flare } from "viem/chains";
+import { Account } from "../Account";
 
 interface Props {
   coordinates: any;
@@ -45,9 +46,9 @@ interface Props {
   playFun: any;
   handleEoaContractData: any;
   setPopStar: any;
-  loadingplay: any;
+  
 }
-export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, loadingplay }: Props) {
+export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, }: Props) {
   const {
     components: {
       App,
@@ -61,7 +62,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     network: { playerEntity, publicClient, palyerAddress },
     systemCalls: { interact, forMent, payFunction, registerDelegation },
   } = useMUD();
-  const [timeLeft, setTimeLeft] = useState(303);
+  const [timeLeft, setTimeLeft] = useState(60);
   const [warnBox, setWarnBox] = useState(false);
   const [dataq, setdataq] = useState(false);
   const [cresa, setcresa] = useState(false);
@@ -87,10 +88,18 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [selectedOption, setSelectedOption] = useState("option1");
   const { address } = useAccount();
   const [loading, setLoading] = useState(false);
+  const [balance, setBalance] = useState(0);
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
   })
+  
+
+  useEffect(() => {
+    if (resultBugs.data?.value) {
+      setBalance(Math.floor(Number(resultBugs.data?.value) / 1e18));
+    }
+  }, [resultBugs.data]);
 
   const handlePlayAgain = () => {
     setLoading(true);
@@ -101,6 +110,31 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       setPopStar(false);
     }, 2000);
   };
+
+
+  useEffect(() => {
+    let interval:any; // 声明一个定时器变量
+    if (gameSuccess) {
+      // gamesuccess 为 true 时启动定时器
+      interval = setInterval(() => {
+        resultBugs.refetch().then((data) => {
+          console.log(data);
+          
+          if (data.data?.value) {
+            setBalance(Math.floor(Number(data.data?.value) / 1e18));
+          }
+        });
+      }, 3000) // 每 10 秒重新获取一次余额
+    } else {
+      // gamesuccess 为 false 时清除定时器
+      clearInterval(interval)
+    }
+
+    // 清除定时器以防止内存泄漏
+    return () => clearInterval(interval)
+  }, [gameSuccess])
+
+
 
   const handlePayMent = () => {
     if (data1) {
@@ -152,6 +186,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const fetchData = async () => {
     try {
       const account = await getEoaContract();
+      if (account === undefined) {
+        return;
+      }
+      
       const TCMPopStarData = getComponentValue(
         TCMPopStar,
         addressToEntityID(account)
@@ -239,8 +277,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           setStartTime(blockchainStartTime);
           const currentTime = Math.floor(Date.now() / 1000);
           const elapsedTime = currentTime - blockchainStartTime;
-          const updatedTimeLeft = Math.max(303 - elapsedTime, 0);
+          const updatedTimeLeft = Math.max(60 - elapsedTime, 0);
+          // console.log(elapsedTime,'ssssssssssssssssssssss');
+          
           setTimeLeft(updatedTimeLeft);
+          
           const allZeros = TCMPopStarData.matrixArray.every((data) => data === 0n);
           if (allZeros) {
             setGameSuccess(true)
@@ -254,7 +295,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       }
     });
   };
-
+  updateTCMPopStarData();
   useEffect(() => {
     updateTCMPopStarData();
   }, [balanceData, address]);
@@ -264,7 +305,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       if (datan !== null) {
         const currentTime = Math.floor(Date.now() / 1000);
         const timeElapsed = currentTime - datan;
-        const newTimeLeft = 303 - timeElapsed;
+        const newTimeLeft = 60 - timeElapsed;
         setTimeLeft(newTimeLeft > 0 ? newTimeLeft : 0);
         if (localStorage.getItem('showGameOver') === 'false') {
           localStorage.setItem('showGameOver', 'true')
@@ -274,15 +315,17 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   }, [datan, timeControl, a, gameSuccess]);
 
   useEffect(() => {
-    if (timeControl === true && gameSuccess === false) {
+    if (gameSuccess === false) {
       if (timeLeft > 0) {
         const timer = setTimeout(() => {
           setTimeLeft(timeLeft - 1);
-          if (localStorage.getItem('showGameOver') === 'false') {
+          
+          if (localStorage.getItem('showGameOver') === 'false' && timeLeft <= 1) {
+            // console.log(111);
+            
             localStorage.setItem('showGameOver', 'true')
           }
         }, 1000);
-        return () => clearTimeout(timer);
       }
     }
   }, [timeLeft, timeControl, a, gameSuccess]);
@@ -312,6 +355,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }
   }, []);
 
+  // console.log(gameSuccess,'222222222222222222222');
+  // console.log(timeLeft,'3333333333333333');
+  
+  
+
   return (
     <>
       <div className={style.container}>
@@ -326,14 +374,12 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           {timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
         </div>
         <div className={style.twoPart}>
-          <p>350$bugs</p>
+          <p>150$bugs</p>
           <p>REWARDS</p>
         </div>
         <div className={style.threePart}>
           <p>
-            {resultBugs.data?.value
-              ? ` ${Math.floor(Number(resultBugs.data?.value) / 1e18)}`
-              : "0"}$bugs
+               {balance}$bugs
           </p>
           <p>BALANCE</p>
         </div>

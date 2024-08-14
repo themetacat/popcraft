@@ -16,19 +16,19 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
   const playAction = localStorage.getItem("playAction");
   const { isConnected } = useAccount();
   const handleConnectClick = () => {
-
+    
     if (isConnected) {
-      if (playAction == 'play') {
+      if (playAction === 'play' ) {
         setPopStar(true)
         playFun();
+      
       } else {
         setPopStar(false);
       }
-      if (!playFun) {
-        onTopUpClick(); // 调用回调函数
-      }
+
     } else {
       // 呼起钱包进行登录
+      // console.log(11222222);
       openConnectModal();
     }
   };
@@ -120,7 +120,9 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
                           className={`${style.commonCls1} ${style.spinAnimation}`}
                         />
                       ) : (
-                        <> {playAction == 'play' ? "Play" : "Top Up First"}</>
+                        // <> {playAction == 'play' && localStorage.getItem('money') === "toomoney" ? "Play" : "Top Up First"}</>
+                        <> {playAction == 'play'  ? "Play" : "Top Up First"}</>
+
                       )
 
                     }
