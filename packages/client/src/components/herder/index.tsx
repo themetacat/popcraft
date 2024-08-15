@@ -706,7 +706,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const handlePageClickIs = () => {
     setPageClick(false);
   };
-
+  //点击方块触发事件
   const handleMouseUp = async (event: React.MouseEvent<HTMLDivElement>) => {
     if (pageClick === true) {
       return;
@@ -737,7 +737,6 @@ export default function Header({ hoveredData, handleData }: Props) {
         setCoordinatesData({ x: gridX, y: gridY });
         const newHoveredSquare = { x: gridX, y: gridY };
         setHoveredSquare(newHoveredSquare);
-
         if (isEmpty) {
           if (selectedColor && coordinates) {
             hoveredSquareRef.current = coordinates;
@@ -1035,15 +1034,11 @@ export default function Header({ hoveredData, handleData }: Props) {
         const rect = canvas.getBoundingClientRect();
         const mouseX = event.clientX - rect.left;
         const mouseY = event.clientY - rect.top;
-
         setMouseX(mouseX);
         setMouseY(mouseY);
-
         const gridX = Math.floor((mouseX + scrollOffset.x) / GRID_SIZE);
         const gridY = Math.floor((mouseY + scrollOffset.y) / GRID_SIZE);
-
         setHoveredSquare({ x: gridX, y: gridY });
-
         const ctx = canvas.getContext("2d");
         if (ctx) {
           if (appName === "BASE/PopCraftSystem") {
@@ -1232,9 +1227,8 @@ export default function Header({ hoveredData, handleData }: Props) {
       setTopUpType(true);
     } else {
       disconnect();
-    }
+      }
   };
-
   const netContent = [{ name: "TESTNET" }, { name: "MAINNET" }];
   const addressContent = [
     { name: "Top up", value: "topUp" },

@@ -348,6 +348,9 @@ cursor: pointer;
     color: #ffffff;
   }
 }
+.inputEth{
+  margin-top: 8px;
+}
 .svgIcon {
   width: 30.86px;
   height: 30.86px;

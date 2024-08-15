@@ -169,8 +169,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
-  height: 241px;
+  width: 500px;
+  height: 430px;
   padding: 40px;
   background-color: #2d0c3b;
   box-shadow:
@@ -324,6 +324,7 @@
   color: #ffffff;
   letter-spacing: 8px;
   text-align: center;
+  line-height: 2.0;
   line-height: 40px;
 }
 .actical {
@@ -333,6 +334,13 @@
   font-family: Silkscreen;
   line-height: 17.92px;
   letter-spacing: 2px;
+  line-height: 1.5;
+}
+.actical2 {
+  font-weight: bold;
+  color: #ffffff;
+  line-height: 1.5;
+
 }
 p {
   margin: 0px;
@@ -340,7 +348,7 @@ p {
 .btnOk {
   border: 1px solid #0b0113;
   background-color: #200d2f;
-  width: 400px;
+  width: 500px;
   height: 44px;
   padding: 10px 0px 10px 0px;
   gap: 10px;
@@ -408,6 +416,7 @@ p {
   display: flex;
   justify-content: center; /* 水平居中 */
   align-items: center; /* 垂直居中 */
+  
   border: 1px solid rgba(11, 1, 19, 1);
   .pp {
     border: 1px solid #0b0113;

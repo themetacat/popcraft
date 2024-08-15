@@ -37,15 +37,15 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
     <div className={style.content}>
       <p className={style.title}>WELCOME TO POPCRAFT!</p>
       <div className={style.Container}>
-        <p className={style.copywritingFirst}>How to play?</p>
-        <span className={style.copywritingTwo}>This is a compossibility-based elimination game.You have&nbsp;</span>
+        {/* <p className={style.copywritingFirst}>How to play?</p> */}
+        <span className={style.copywritingTwo}>This is a composability-based elimination game.You have&nbsp;</span>
         <span className={style.copywritingThree}>5 minutes</span>&nbsp;
         <span className={style.copywritingTwo}>
           {" "}
           to eliminate all the materials.{" "}
         </span>
         <br />
-        <span className={style.copywritingTwo}>    Get rewarded with </span>
+        <span className={style.copywritingTwo}>   You'll be rewarded with </span>
         <span className={style.copywritingThree}> 150 $bugs</span>
         <span className={style.copywritingTwo}>
           {" "}
