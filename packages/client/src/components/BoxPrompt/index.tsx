@@ -124,7 +124,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             setBalance(Math.floor(Number(data.data?.value) / 1e18));
           }
         });
-      }, 3000) // 每 10 秒重新获取一次余额
+      }, 1000) // 每 10 秒重新获取一次余额
     } else {
       // gamesuccess 为 false 时清除定时器
       clearInterval(interval)
