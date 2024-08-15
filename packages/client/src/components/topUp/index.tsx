@@ -295,8 +295,8 @@ export default function TopUp({
                         />
                         <p>
                           {balanceResultEOA.data?.value
-                            ? ` (${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)})`
-                            : " 0ETH"}
+                            ? ` ${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)}`
+                            : " 0ETH"}&nbsp;ETH
                         </p>
                       </div>
                     </button>
@@ -361,7 +361,7 @@ export default function TopUp({
                       />
                       <span className={style.ConfirmingFont}>
                         {!isConfirmingWith && (
-                          <>{(Number(balance) / 1e18).toFixed(8)}</>
+                          <>{(Number(balance) / 1e18).toFixed(8)}&nbsp;ETH</>
                         )}
                       </span>
                     </div>
@@ -434,13 +434,14 @@ export default function TopUp({
                       onChange={handleChange}
                       required
                     />
+                    <span className={style.inputEth}>ETH</span>
                   </div>
                   <div className={style.partFive}>
                     <span>Available to deposit</span>
 
                     {balanceResultEOA.data?.value
-                      ? ` (${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)})`
-                      : " 0ETH"}
+                      ? ` ${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)}`
+                      : " 0ETH"}&nbsp;ETH
                   </div>
                   <div className={style.partFive}>
                     <span>Time to deposit</span>
