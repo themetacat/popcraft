@@ -312,6 +312,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           localStorage.setItem('showGameOver', 'true')
         }
       }
+    }else{
+      setTimeLeft(0)
     }
   }, [datan, timeControl, a, gameSuccess]);
 
@@ -328,7 +330,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         }, 1000);
       }
     }else{
-      setTimeLeft(0);
+      setTimeLeft(0)
     }
   }, [timeLeft, timeControl, a, gameSuccess]);
 
@@ -367,13 +369,13 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       <div className={style.container}>
         <div className={style.firstPart}>
           <p style={{ cursor: "pointer" }}>
-            {timeLeft !== 0 && gameSuccess === false ? formatTime(timeLeft) :
+            {timeControl && timeLeft !== 0 && gameSuccess === false ? formatTime(timeLeft) :
               <div onClick={() => {
                 playFun()
               }}>New<br />Game</div>
             }
           </p>
-          {timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
+          {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
         </div>
         <div className={style.twoPart}>
           <p>150$bugs</p>

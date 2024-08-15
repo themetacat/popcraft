@@ -190,6 +190,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           const updatedTimeLeft = Math.max(303 - elapsedTime, 0);
           if (updatedTimeLeft > 0) {
             localStorage.setItem('playAction', 'gameContinue');
+            setTimeControl(true);
           } else {
             localStorage.setItem('playAction', 'play')
             setPopStar(true);
@@ -880,9 +881,11 @@ export default function Header({ hoveredData, handleData }: Props) {
   //判断时间倒计时
   const handleEoaContractData = (data) => {
     setTCMPopStarData(data);
+    
     if (isFirst === true) {
       setIsFirst(false)
       if (isConnected) {
+        
         if ((Number(balance) / 1e18) < 3) {
           setTopUpType(true);
           localStorage.setItem('money', 'nomoney')
@@ -892,13 +895,17 @@ export default function Header({ hoveredData, handleData }: Props) {
           setTopUpType(false);
           setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
           localStorage.setItem('money', 'toomoney')
+          
           if (data && data.startTime) {
             const currentTime = Math.floor(Date.now() / 1000);
             const elapsedTime = currentTime - Number(data.startTime);
             const updatedTimeLeft = Math.max(303 - elapsedTime, 0);
+            
             if (updatedTimeLeft > 0) {
               //游戏没结束 popstart不显示 
               // console.log('游戏没结束 popstart不显示');
+              setTimeControl(true);
+              
               localStorage.setItem('playAction', 'gameContinue');
               setPopStar(false);
             } else {
@@ -917,6 +924,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
         setPopStar(false);
+        setTimeControl(false);
       }
     }
   };
