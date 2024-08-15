@@ -498,20 +498,29 @@ export default function Header({ hoveredData, handleData }: Props) {
   );
 
 
+  // useEffect(() => {
+  //   if (appName === "BASE/PopCraftSystem") {
+  //     setNumberData(35);
+  //     setGRID_SIZE(44);
+  //     setScrollOffset({ x: 0, y: 0 });
+  //     setTranslateX(0);
+  //     setTranslateY(0);
+  //   } else {
+  //     setNumberData(25);
+  //     setGRID_SIZE(32);
+  //     setScrollOffset({ x: 0, y: 0 });
+  //     setTranslateX(0);
+  //     setTranslateY(0);
+  //   }
+  // }, [appName]);
+  
   useEffect(() => {
-    if (appName === "BASE/PopCraftSystem") {
-      setNumberData(35);
-      setGRID_SIZE(44);
-      setScrollOffset({ x: 0, y: 0 });
-      setTranslateX(0);
-      setTranslateY(0);
-    } else {
       setNumberData(25);
       setGRID_SIZE(32);
       setScrollOffset({ x: 0, y: 0 });
       setTranslateX(0);
       setTranslateY(0);
-    }
+    
   }, [appName]);
 
 
