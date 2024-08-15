@@ -137,16 +137,18 @@ export default function Header({ hoveredData, handleData }: Props) {
 
 
   // useEffect(() => {
-  //   const playAction = localStorage.getItem('playAction');
-  //   if (playAction === 'gameContinue') {
-  //     setPopStar(true);
-  //     setPlayFun(true)
-  //   } else if (playAction === 'play') {
-  //     setPopStar(true);
-  //     setPlayFun(false);
-  //   } else {
-  //     setPopStar(false);
-  //   }
+  //   // const playAction = localStorage.getItem('playAction');
+  //   // if (playAction === 'gameContinue') {
+  //   //   setPopStar(true);
+  //   //   setPlayFun(true)
+  //   // } else if (playAction === 'play') {
+  //   //   setPopStar(true);
+  //   //   setPlayFun(false);
+  //   // } else {
+  //   //   setPopStar(false);
+  //   // }
+    
+    
   // }, [])
 
   const handleTopUpClick = () => {
@@ -207,7 +209,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       localStorage.setItem('money', 'nomoney')
       localStorage.setItem('playAction', 'noplay')
       setTimeControl(false)
-      setPopStar(false);
+      setPopStar(true);
     }
 
   }, [isConnected, balance,]);
@@ -520,7 +522,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       setScrollOffset({ x: 0, y: 0 });
       setTranslateX(0);
       setTranslateY(0);
-    
   }, [appName]);
 
 
@@ -931,7 +932,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         // console.log('888888888888888');
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
-        setPopStar(false);
+        setPopStar(true)
         setTimeControl(false);
       }
     }
@@ -1320,7 +1321,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       setPopStar(false);
     }
   }, [appName]);
-
 
 
   return (
