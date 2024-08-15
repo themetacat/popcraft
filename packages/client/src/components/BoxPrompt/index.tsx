@@ -127,7 +127,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             setBalance(Math.floor(Number(data.data?.value) / 1e18));
           }
         });
-      }, 3000) // 每 10 秒重新获取一次余额
+      }, 1000) // 每 10 秒重新获取一次余额
     } else {
       // gamesuccess 为 false 时清除定时器
       clearInterval(interval)
@@ -316,18 +316,19 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   }, [datan, timeControl, a, gameSuccess]);
 
   useEffect(() => {
-    if (gameSuccess === false) {
+    if(timeControl && gameSuccess === false){
       if (timeLeft > 0) {
         const timer = setTimeout(() => {
           setTimeLeft(timeLeft - 1);
 
           if (localStorage.getItem('showGameOver') === 'false' && timeLeft <= 1) {
-            // console.log(111);
-
+            
             localStorage.setItem('showGameOver', 'true')
           }
         }, 1000);
       }
+    }else{
+      setTimeLeft(0);
     }
   }, [timeLeft, timeControl, a, gameSuccess]);
 

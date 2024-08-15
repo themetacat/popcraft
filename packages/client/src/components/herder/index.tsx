@@ -195,14 +195,17 @@ export default function Header({ hoveredData, handleData }: Props) {
             setPopStar(true);
           }
         } else {
-          localStorage.setItem('playAction', 'play')
-          setPopStar(true);
+          if(localStorage.getItem("playAction") !== "gameContinue"){
+            localStorage.setItem('playAction', 'play')
+            setPopStar(true);
+          }
         }
       }
     }
     else {
       localStorage.setItem('money', 'nomoney')
       localStorage.setItem('playAction', 'noplay')
+      setTimeControl(false)
       setPopStar(false);
     }
 
