@@ -205,6 +205,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     else {
       localStorage.setItem('money', 'nomoney')
       localStorage.setItem('playAction', 'noplay')
+      setTimeControl(false)
       setPopStar(false);
     }
 

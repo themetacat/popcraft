@@ -316,18 +316,19 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   }, [datan, timeControl, a, gameSuccess]);
 
   useEffect(() => {
-    if (gameSuccess === false) {
+    if(timeControl && gameSuccess === false){
       if (timeLeft > 0) {
         const timer = setTimeout(() => {
           setTimeLeft(timeLeft - 1);
           
           if (localStorage.getItem('showGameOver') === 'false' && timeLeft <= 1) {
-            // console.log(111);
             
             localStorage.setItem('showGameOver', 'true')
           }
         }, 1000);
       }
+    }else{
+      setTimeLeft(0);
     }
   }, [timeLeft, timeControl, a, gameSuccess]);
 
