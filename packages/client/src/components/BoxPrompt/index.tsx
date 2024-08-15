@@ -46,9 +46,10 @@ interface Props {
   playFun: any;
   handleEoaContractData: any;
   setPopStar: any;
-  
+  setIsNewGame: any;
+
 }
-export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, }: Props) {
+export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar,setIsNewGame }: Props) {
   const {
     components: {
       App,
@@ -89,6 +90,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const { address } = useAccount();
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
+  const { disconnect } = useDisconnect();
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
@@ -111,15 +113,16 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }, 2000);
   };
 
+ 
 
   useEffect(() => {
-    let interval:any; // 声明一个定时器变量
+    let interval: any; // 声明一个定时器变量
     if (gameSuccess) {
       // gamesuccess 为 true 时启动定时器
       interval = setInterval(() => {
         resultBugs.refetch().then((data) => {
           console.log(data);
-          
+
           if (data.data?.value) {
             setBalance(Math.floor(Number(data.data?.value) / 1e18));
           }
@@ -189,7 +192,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       if (account === undefined) {
         return;
       }
-      
+
       const TCMPopStarData = getComponentValue(
         TCMPopStar,
         addressToEntityID(account)
@@ -278,10 +281,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           const currentTime = Math.floor(Date.now() / 1000);
           const elapsedTime = currentTime - blockchainStartTime;
           const updatedTimeLeft = Math.max(303 - elapsedTime, 0);
-          // console.log(elapsedTime,'ssssssssssssssssssssss');
-          
           setTimeLeft(updatedTimeLeft);
-          
           const allZeros = TCMPopStarData.matrixArray.every((data) => data === 0n);
           if (allZeros) {
             localStorage.setItem('showGameOver', 'true');
@@ -320,10 +320,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       if (timeLeft > 0) {
         const timer = setTimeout(() => {
           setTimeLeft(timeLeft - 1);
-          
+
           if (localStorage.getItem('showGameOver') === 'false' && timeLeft <= 1) {
             // console.log(111);
-            
+
             localStorage.setItem('showGameOver', 'true')
           }
         }, 1000);
@@ -356,10 +356,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }
   }, []);
 
-  // console.log(gameSuccess,'222222222222222222222');
-  // console.log(timeLeft,'3333333333333333');
-  
-  
+
 
   return (
     <>
@@ -380,7 +377,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         </div>
         <div className={style.threePart}>
           <p>
-               {balance}$bugs
+            {balance}$bugs
           </p>
           <p>BALANCE</p>
         </div>
@@ -528,14 +525,24 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           className={panningType !== "false" ? style.overlayBuy : style.overlay}
         >
           <div className={style.content}>
-            <p className={style.title}>How to play?</p>
+            <p className={style.title}>How to Play</p>
             <p className={style.actical}>
-              5 minutes countdown time to eliminate all the stars.
-              <br /> Get 150 $bug rewarded for completions.
+              This is a composability-based elimination game. You have 5 minutes to eliminate all the materials.
+              <br /> You'll be rewarded with 150 $BUGS for completing the game.
               <br />
-              In order to complete the game, you may need materials from the
-              game This Cursed Machine.
+              On the game board, any two or more adjacent identical materials can be
+              clicked to eliminate them. Isolated materials require a elimination tool
+              to remove. Click the 'BUY' button in the top right corner of the game screen to
+              purchase elimination tools that will help you remove isolated materials.
+              <p className={style.actical2}>Feedback</p>
+              <p >
+                We also need your feedback:
+                <a href="https://forms.gle/LSwhJUL5XZZmhLYJ9" target="_blank" rel="noopener noreferrer">
+                  https://forms.gle/LSwhJUL5XZZmhLYJ9
+                </a>
+              </p>
             </p>
+
             <button
               className={style.btnOk}
               onClick={() => {

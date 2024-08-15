@@ -59,7 +59,7 @@ export default function TopUp({
     });
   }, []);
 
-  const [inputValue, setInputValue] = useState("0.000003");
+  const [inputValue, setInputValue] = useState("10");
   const {
     data: hash,
     error,
