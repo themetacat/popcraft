@@ -126,15 +126,38 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [addressModel, setAddressModel] = useState(false);
   const [enumValue, setEnumValue] = useState({});
   const [ownerData, setOwnerData] = useState(null);
-  const CANVAS_WIDTH = document.documentElement.clientWidth; // 获取整个页面的宽度
-  const CANVAS_HEIGHT = document.documentElement.clientHeight; // 获取整个页面的高度
+  // const CANVAS_WIDTH = document.documentElement.clientWidth; // 获取整个页面的宽度
+  // const CANVAS_HEIGHT = document.documentElement.clientHeight; // 获取整个页面的高度
   const audioRef = useRef<HTMLAudioElement>(null);//控制背景音乐
   const audioCache: { [url: string]: HTMLAudioElement } = {};//控制背景音效
   const [showTopUp, setShowTopUp] = useState(false); //控制弹出层的显示与隐藏
   const [playFuntop, setPlayFun] = useState(false);
   const playAction = localStorage.getItem('playAction');
   const [isFirst, setIsFirst] = useState(true);
+  // 将 CANVAS_WIDTH 和 CANVAS_HEIGHT 保存到 state 中
+  const [canvasSize, setCanvasSize] = useState({
+    width: document.documentElement.clientWidth,
+    height: document.documentElement.clientHeight,
+  });
 
+  // 监听窗口大小变化，并更新 canvas 尺寸
+  useEffect(() => {
+    const handleResize = () => {
+      setCanvasSize({
+        width: document.documentElement.clientWidth,
+        height: document.documentElement.clientHeight,
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // 清除事件监听器
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+  const CANVAS_WIDTH = canvasSize.width;
+  const CANVAS_HEIGHT = canvasSize.height;
 
   // useEffect(() => {
   //   // const playAction = localStorage.getItem('playAction');
@@ -409,76 +432,65 @@ export default function Header({ hoveredData, handleData }: Props) {
       hoveredSquare: { x: number; y: number } | null,
       playType: any
     ) => {
-      let pix_text;
-      // const scrollOffset = { x: 23, y: 10 };
-      ctx.fillRect(0, 0, 10, 10);
-      ctx.lineWidth = 10;
+      
+      const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+      const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+  
+      // 清空画布
+      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  
+      // 设置网格线样式
+      ctx.lineWidth = 4;
       ctx.strokeStyle = "#000000";
-      const checkSize = 10;
-      for (let x = 0; x < 10; x += GRID_SIZE) {
+  
+      // 绘制水平和垂直网格线
+      for (let x = 0; x <= 10 * GRID_SIZE; x += GRID_SIZE) {
         ctx.beginPath();
-        ctx.moveTo(x - scrollOffset.x, 0);
-        ctx.lineTo(x - scrollOffset.x, 10);
+        ctx.moveTo(x + offsetX, offsetY);
+        ctx.lineTo(x + offsetX, 10 * GRID_SIZE + offsetY);
         ctx.stroke();
       }
-      for (let y = 0; y < 10; y += GRID_SIZE) {
+      for (let y = 0; y <= 10 * GRID_SIZE; y += GRID_SIZE) {
         ctx.beginPath();
-        ctx.moveTo(0, y - scrollOffset.y);
-        ctx.lineTo(10, y - scrollOffset.y);
+        ctx.moveTo(offsetX, y + offsetY);
+        ctx.lineTo(10 * GRID_SIZE + offsetX, y + offsetY);
         ctx.stroke();
       }
-
-      const baseFontSize = 15;
-      const fontSizeIncrement = 0.8;
-      const fontWeight = "normal";
-      const fontSize =
-        numberData === 25
-          ? baseFontSize
-          : baseFontSize + (numberData - 25) * fontSizeIncrement;
-      ctx.font = `${fontWeight} ${fontSize}px Arial`;
-
-      const visibleArea = {
-        x: Math.max(0, Math.floor(scrollOffset.x / GRID_SIZE)),
-        y: Math.max(0, Math.floor(scrollOffset.y / GRID_SIZE)),
-        width: CANVAS_WIDTH / GRID_SIZE,
-        height: CANVAS_HEIGHT / GRID_SIZE,
-      };
+  
+      // 绘制网格中的内容
       for (let i = 0; i < 10; i++) {
-        for (
-          let j = 0;
-          j < 10;
-          j++
-        ) {
-          const currentX = (i + 16) * GRID_SIZE - scrollOffset.x;
-          const currentY = (j + 5) * GRID_SIZE - scrollOffset.y;
-          ctx.lineWidth = 3;
+        for (let j = 0; j < 10; j++) {
+          const currentX = i * GRID_SIZE + offsetX;
+          const currentY = j * GRID_SIZE + offsetY;
+  
+          // 绘制每个格子的边框和填充色
+          ctx.lineWidth = 2;
           ctx.strokeStyle = "#2e1043";
           ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
           ctx.fillStyle = "#2f1643";
           ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
+  
+          // 绘制图像
           const img = new Image();
-
           if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
             img.src =
               imageIconData[
                 TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
               ]?.src;
             if (img.src !== undefined) {
-
               ctx.drawImage(img, currentX, currentY, GRID_SIZE, GRID_SIZE);
             }
           }
         }
       }
-
+  
+      // 处理悬停效果
       if (selectedColor && hoveredSquare) {
+        const hoveredX = hoveredSquare.x * GRID_SIZE + offsetX;
+        const hoveredY = hoveredSquare.y * GRID_SIZE + offsetY;
+        
         ctx.fillStyle = selectedColor;
-        ctx.fillRect(
-          coordinates.x * GRID_SIZE - scrollOffset.x,
-          coordinates.y * GRID_SIZE - scrollOffset.y,
-          GRID_SIZE,
-          GRID_SIZE
-        );
+        ctx.fillRect(hoveredX, hoveredY, GRID_SIZE, GRID_SIZE);
       }
 
       if (hoveredSquare) {
@@ -534,6 +546,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       hoveredSquare: { x: number; y: number } | null,
       playType: any
     ) => {
+      
       let pix_text;
 
       ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -703,11 +716,12 @@ export default function Header({ hoveredData, handleData }: Props) {
       setIsDragging(true);
       setTranslateX(event.clientX);
       setTranslateY(event.clientY);
+      downTimerRef.current = setTimeout(() => {
+        setIsLongPress(true);
+      }, ClickThreshold);
     }
     get_function_param(action);
-    downTimerRef.current = setTimeout(() => {
-      setIsLongPress(true);
-    }, ClickThreshold);
+    
   };
 
   const handlePageClick = () => {
@@ -743,11 +757,26 @@ export default function Header({ hoveredData, handleData }: Props) {
         const rect = canvas.getBoundingClientRect();
         const mouseX = event.clientX - rect.left;
         const mouseY = event.clientY - rect.top;
-        const gridX = Math.floor(mouseX / GRID_SIZE);
-        const gridY = Math.floor(mouseY / GRID_SIZE);
-        setCoordinatesData({ x: gridX, y: gridY });
-        const newHoveredSquare = { x: gridX, y: gridY };
-        setHoveredSquare(newHoveredSquare);
+     
+        if (appName === "BASE/PopCraftSystem") {
+          const CANVAS_WIDTH = document.documentElement.clientWidth;
+          const CANVAS_HEIGHT = document.documentElement.clientHeight;
+          const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+          const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+
+          const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
+          const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
+          const newHoveredSquare = { x: gridX, y: gridY };
+          setHoveredSquare(newHoveredSquare);
+        }else{
+          const gridX = Math.floor(mouseX / GRID_SIZE);
+          const gridY = Math.floor(mouseY / GRID_SIZE);
+          setCoordinatesData({ x: gridX, y: gridY });
+          const newHoveredSquare = { x: gridX, y: gridY };
+          setHoveredSquare(newHoveredSquare);
+
+        }
+        
         if (isEmpty) {
           if (selectedColor && coordinates) {
             hoveredSquareRef.current = coordinates;
@@ -756,8 +785,8 @@ export default function Header({ hoveredData, handleData }: Props) {
               // if (action === "pop") {
               if (TCMPopStarData) {
                 const new_coor = {
-                  x: coordinates.x - 16 + TCMPopStarData.x,
-                  y: coordinates.y - 5 + TCMPopStarData.y,
+                  x: coordinates.x + TCMPopStarData.x,
+                  y: coordinates.y + TCMPopStarData.y,
                 }
                 if (new_coor.x >= 0 && new_coor.y >= 0) {
                   interactHandleTCM(
@@ -796,9 +825,11 @@ export default function Header({ hoveredData, handleData }: Props) {
                 // drawGrid2
                 ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
                 drawGrid2(ctx, coordinates, true);
+              }else{
+                ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+                drawGrid(ctx, coordinates, false);
               }
-              ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-              drawGrid(ctx, coordinates, false);
+              
             }
           }
         } else {
@@ -1005,7 +1036,7 @@ export default function Header({ hoveredData, handleData }: Props) {
 
       const gridX = Math.floor(mouseXRef.current / GRID_SIZE);
       const gridY = Math.floor(mouseYRef.current / GRID_SIZE);
-
+      
       setHoveredSquare({ x: gridX, y: gridY });
 
       const ctx = canvasRef.current.getContext("2d");
@@ -1288,11 +1319,37 @@ export default function Header({ hoveredData, handleData }: Props) {
       const rect = canvas.getBoundingClientRect();
       const mouseX = event.clientX - rect.left;
       const mouseY = event.clientY - rect.top;
-      const gridX = Math.floor((mouseX + scrollOffset.x) / GRID_SIZE);
-      const gridY = Math.floor((mouseY + scrollOffset.y) / GRID_SIZE);
-      setCoordinates({ x: gridX, y: gridY });
-      setHoveredSquare({ x: gridX, y: gridY });
-      hoveredSquareRef.current = { x: gridX, y: gridY };
+      
+      if (appName === "BASE/PopCraftSystem") {
+        const CANVAS_WIDTH = document.documentElement.clientWidth;
+        const CANVAS_HEIGHT = document.documentElement.clientHeight;
+        
+        const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+        const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+        
+        // 计算悬停的网格坐标
+        const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
+        const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
+        
+        if (gridX >= 0 && gridX < 10 && gridY >= 0 && gridY < 10) {
+          // 鼠标在网格内，更新状态
+          setCoordinates({ x: gridX, y: gridY });
+          setHoveredSquare({ x: gridX, y: gridY });
+          hoveredSquareRef.current = { x: gridX, y: gridY };
+        } else {
+          // 鼠标不在网格内，清空悬停状态
+          setCoordinates({ x: 0, y: 0 });
+          setHoveredSquare(null);
+          hoveredSquareRef.current = null;
+        }
+      } else {
+        
+        const gridX = Math.floor((mouseX + scrollOffset.x) / GRID_SIZE);
+        const gridY = Math.floor((mouseY + scrollOffset.y) / GRID_SIZE);
+        setCoordinates({ x: gridX, y: gridY });
+        setHoveredSquare({ x: gridX, y: gridY });
+        hoveredSquareRef.current = { x: gridX, y: gridY };
+      }
     };
 
     const handleScroll = () => {
