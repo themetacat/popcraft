@@ -304,7 +304,6 @@ export function createSystemCalls(
           }),
           encodeData,
         ]);
-        // console.log(account);
         
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
       }
