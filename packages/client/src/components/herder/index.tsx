@@ -176,7 +176,8 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   // 判断用户临时钱包有没有钱 
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected && appName === "BASE/PopCraftSystem") {
+      
       if ((Number(balance) / 1e18) < 3) {
         setTopUpType(true);
         localStorage.setItem('money', 'nomoney')
@@ -209,7 +210,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       localStorage.setItem('money', 'nomoney')
       localStorage.setItem('playAction', 'noplay')
       setTimeControl(false)
-      setPopStar(true);
+      // setPopStar(true);
     }
 
   }, [isConnected, balance,]);
@@ -893,6 +894,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     
     if (isFirst === true) {
       setIsFirst(false)
+      
       if (isConnected) {
         
         if ((Number(balance) / 1e18) < 3) {
@@ -929,10 +931,9 @@ export default function Header({ hoveredData, handleData }: Props) {
         }
       }
       else {
-        // console.log('888888888888888');
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
-        setPopStar(true)
+        // setPopStar(true)
         setTimeControl(false);
       }
     }
