@@ -420,7 +420,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     ctx.restore();
   };
 
-  //画布2
   const drawGrid2 = useCallback(
     (
       ctx: CanvasRenderingContext2D,
@@ -431,7 +430,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
       // 清空画布
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
+  
       // 绘制水平和垂直网格线
       for (let x = 0; x <= 10 * GRID_SIZE; x += GRID_SIZE) {
         ctx.beginPath();
@@ -445,52 +444,56 @@ export default function Header({ hoveredData, handleData }: Props) {
         ctx.lineTo(10 * GRID_SIZE + offsetX, y + offsetY);
         ctx.stroke();
       }
+  
       // 绘制网格中的内容
       for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {
           const currentX = i * GRID_SIZE + offsetX;
           const currentY = j * GRID_SIZE + offsetY;
-
+  
           // 绘制每个格子的边框和填充色
           ctx.lineWidth = 1;
           ctx.strokeStyle = "#2e1043";
           ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
           ctx.fillStyle = "#2f1643";
           ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-
+  
           // 绘制图像
-          const img = new Image();
-          if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
-            img.src =
-              imageIconData[
-                TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
-              ]?.src;
-            if (img.src !== undefined) {
-              ctx.drawImage(img, currentX, currentY, GRID_SIZE, GRID_SIZE);
+          if (!loadingSquare || !(loadingSquare.x === i && loadingSquare.y === j)) {
+            const img = new Image();
+            if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
+              img.src =
+                imageIconData[
+                  TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
+                ]?.src;
+              if (img.src !== undefined) {
+                ctx.drawImage(img, currentX, currentY, GRID_SIZE, GRID_SIZE);
+              }
             }
           }
         }
       }
+  
       const scale = 1.2;
-
+  
       if (hoveredSquare && coordinates.x < 10) {
         const i = hoveredSquare.x;
         const j = hoveredSquare.y;
         const currentX = i * GRID_SIZE + offsetX;
         const currentY = j * GRID_SIZE + offsetY;
-
+  
         const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
         const drawY = currentY - (GRID_SIZE * (scale - 1)) / 2;
         const drawSize = GRID_SIZE * scale;
-
+  
         ctx.clearRect(drawX, drawY, drawSize, drawSize);
-
+  
         ctx.lineWidth = 0.5;
         ctx.strokeStyle = "#2e1043";
         ctx.strokeRect(drawX, drawY, drawSize, drawSize);
         ctx.fillStyle = "#2f1643";
         ctx.fillRect(drawX, drawY, drawSize, drawSize);
-
+  
         const img = new Image();
         if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
           img.src =
@@ -505,14 +508,14 @@ export default function Header({ hoveredData, handleData }: Props) {
       } else {
         ctx.canvas.style.cursor = "default";
       }
-
+  
       if (loadingSquare && loadingSquare.x < 10 && loadingSquare.x >= 0 && loadingSquare.y < 10 && loadingSquare.y >= 0) {
         const loadingImgElement = new Image();
         loadingImgElement.src = loadingImg;
         const angle = (performance.now() % 5000) / 5000 * 360; // 旋转角度
         drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX, loadingSquare.y * GRID_SIZE + offsetY, GRID_SIZE, GRID_SIZE, angle);
       }
-
+  
     },
     [
       GRID_SIZE,
@@ -528,7 +531,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       loadingplay
     ]
   );
-
+  
   // useEffect(() => {
   //   if (appName === "BASE/PopCraftSystem") {
   //     setNumberData(35);`1

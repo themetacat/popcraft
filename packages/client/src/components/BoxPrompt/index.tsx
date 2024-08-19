@@ -49,7 +49,7 @@ interface Props {
   setIsNewGame: any;
 
 }
-export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar,setIsNewGame }: Props) {
+export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, setIsNewGame }: Props) {
   const {
     components: {
       App,
@@ -95,7 +95,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
   })
-  
+
 
   useEffect(() => {
     if (resultBugs.data?.value) {
@@ -113,7 +113,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }, 2000);
   };
 
- 
+
 
   useEffect(() => {
     let interval: any; // 声明一个定时器变量
@@ -312,24 +312,24 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           localStorage.setItem('showGameOver', 'true')
         }
       }
-    }else{
+    } else {
       setTimeLeft(0)
     }
   }, [datan, timeControl, a, gameSuccess]);
 
   useEffect(() => {
-    if(timeControl && gameSuccess === false){
+    if (timeControl && gameSuccess === false) {
       if (timeLeft > 0) {
         const timer = setTimeout(() => {
           setTimeLeft(timeLeft - 1);
 
           if (localStorage.getItem('showGameOver') === 'false' && timeLeft <= 1) {
-            
+
             localStorage.setItem('showGameOver', 'true')
           }
         }, 1000);
       }
-    }else{
+    } else {
       setTimeLeft(0)
     }
   }, [timeLeft, timeControl, a, gameSuccess]);
@@ -486,26 +486,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               onClick={() => {
                 handlePayMent();
               }}
-              disabled={data === 0}
-              style={{ cursor: data === 0 ? "not-allowed" : "auto" }}
+              disabled={data === 0 || cresa} // 添加 cresa 状态来禁用按钮
+              style={{ cursor: data === 0 || cresa ? "not-allowed" : "auto" }}
             >
-              {pay1 === true ? (
-                <img
-                  src={rightIcon}
-                  alt=""
-                  style={{
-                    width: "16px",
-                    height: "16px",
-                    marginTop: "5px",
-                    position: "absolute",
-                    left: "50%",
-                    top: "25%",
-                  }}
-                />
-              ) : (
-                <span >PAY</span>
-              )}
-              {cresa === true ? (
+              {cresa ? (
                 <img
                   src={loadingIcon}
                   alt=""
@@ -518,8 +502,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                   }}
                   className={style.commonCls1}
                 />
-              ) : null}
+              ) : (
+                <span>PAY</span>
+              )}
             </button>
+
           </div>
         </div>
       ) : null}
@@ -590,7 +577,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               className={panningType !== "false" ? style.overlayBuy : style.overlay}
             >
               <div className={style.contentCon}>
-                <img
+                {/* <img
                   className={style.turnOff}
                   src={trunOff}
                   alt=""
@@ -598,7 +585,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                     localStorage.setItem('showGameOver', 'false')
                     setCongratsType(false);
                   }}
-                />
+                /> */}
                 <p>Congrats！</p>
                 <p>+150 $bugs！</p>
                 <button
