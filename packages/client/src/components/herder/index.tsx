@@ -506,7 +506,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       ctx.canvas.style.cursor = "default";
     }
 
-    if (loadingSquare) {
+    if (loadingSquare&& loadingSquare.x < 10 && loadingSquare.x >= 0&& loadingSquare.y < 10 && loadingSquare.y >= 0) {
       const loadingImgElement = new Image();
       loadingImgElement.src = loadingImg;
       const angle = (performance.now() % 5000) / 5000 * 360; // 旋转角度
