@@ -23,6 +23,8 @@ import { useDisconnect } from 'wagmi';
 import pixeLawlogo from '../../images/pixeLawlogo.png'
 import backgroundMusic from '../../audio/1.mp3';
 import effectSound from '../../audio/2.mp3';
+import loadingImg from "../../images/loading.png";
+
 import { flare } from "viem/chains";
 import { F } from "@latticexyz/store/dist/store-e0caabe3";
 
@@ -139,6 +141,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     width: document.documentElement.clientWidth,
     height: document.documentElement.clientHeight,
   });
+  const [loadingSquare, setLoadingSquare] = useState<{ x: number; y: number } | null>(null);
 
   // 监听窗口大小变化，并更新 canvas 尺寸
   useEffect(() => {
@@ -148,7 +151,6 @@ export default function Header({ hoveredData, handleData }: Props) {
         height: document.documentElement.clientHeight,
       });
     };
-
     window.addEventListener('resize', handleResize);
 
     // 清除事件监听器
@@ -159,20 +161,6 @@ export default function Header({ hoveredData, handleData }: Props) {
   const CANVAS_WIDTH = canvasSize.width;
   const CANVAS_HEIGHT = canvasSize.height;
 
-  // useEffect(() => {
-  //   // const playAction = localStorage.getItem('playAction');
-  //   // if (playAction === 'gameContinue') {
-  //   //   setPopStar(true);
-  //   //   setPlayFun(true)
-  //   // } else if (playAction === 'play') {
-  //   //   setPopStar(true);
-  //   //   setPlayFun(false);
-  //   // } else {
-  //   //   setPopStar(false);
-  //   // }
-    
-    
-  // }, [])
 
   const handleTopUpClick = () => {
     setShowTopUp(true);
@@ -424,25 +412,28 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
     return px;
   };
+  const drawRotatingImage = (ctx:any, img:any, x:any, y:any, width:any, height:any, angle:any) => {
+    ctx.save();
+    ctx.translate(x + width / 2, y + height / 2);
+    ctx.rotate(angle * Math.PI / 180);
+    ctx.drawImage(img, -width / 2, -height / 2, width, height);
+    ctx.restore();
+  };
 
-  //画布
+  //画布2
   const drawGrid2 = useCallback(
     (
       ctx: CanvasRenderingContext2D,
       hoveredSquare: { x: number; y: number } | null,
       playType: any
     ) => {
-      
       const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
       const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
-  
       // 清空画布
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  
       // 设置网格线样式
       ctx.lineWidth = 4;
       ctx.strokeStyle = "#000000";
-  
       // 绘制水平和垂直网格线
       for (let x = 0; x <= 10 * GRID_SIZE; x += GRID_SIZE) {
         ctx.beginPath();
@@ -456,7 +447,6 @@ export default function Header({ hoveredData, handleData }: Props) {
         ctx.lineTo(10 * GRID_SIZE + offsetX, y + offsetY);
         ctx.stroke();
       }
-  
       // 绘制网格中的内容
       for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {
@@ -488,15 +478,21 @@ export default function Header({ hoveredData, handleData }: Props) {
       if (selectedColor && hoveredSquare) {
         const hoveredX = hoveredSquare.x * GRID_SIZE + offsetX;
         const hoveredY = hoveredSquare.y * GRID_SIZE + offsetY;
-        
+  
         ctx.fillStyle = selectedColor;
         ctx.fillRect(hoveredX, hoveredY, GRID_SIZE, GRID_SIZE);
       }
-
+  
       if (hoveredSquare) {
         ctx.canvas.style.cursor = "pointer";
       } else {
         ctx.canvas.style.cursor = "default";
+      }
+      if (loadingSquare) {
+        const loadingImgElement = new Image();
+        loadingImgElement.src = loadingImg;
+        const angle = (performance.now() % 5000) / 5000 * 360; // 旋转角度
+        drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX, loadingSquare.y * GRID_SIZE + offsetY, GRID_SIZE, GRID_SIZE, angle);
       }
     },
     [
@@ -509,13 +505,14 @@ export default function Header({ hoveredData, handleData }: Props) {
       CANVAS_HEIGHT,
       selectedColor,
       scrollOffset,
+      loading,
+      loadingplay
     ]
   );
-
-
+  
   // useEffect(() => {
   //   if (appName === "BASE/PopCraftSystem") {
-  //     setNumberData(35);
+  //     setNumberData(35);`1
   //     setGRID_SIZE(44);
   //     setScrollOffset({ x: 0, y: 0 });
   //     setTranslateX(0);
@@ -744,11 +741,11 @@ export default function Header({ hoveredData, handleData }: Props) {
       clearTimeout(downTimerRef.current);
       downTimerRef.current = null;
     }
-    
+  
     const a = get_function_param(action);
     a.then((x) => {
       const isEmpty = Object.keys(x).length === 0;
-
+  
       if (isLongPress) {
         setIsLongPress(false);
         setIsDragging(false);
@@ -757,26 +754,27 @@ export default function Header({ hoveredData, handleData }: Props) {
         const rect = canvas.getBoundingClientRect();
         const mouseX = event.clientX - rect.left;
         const mouseY = event.clientY - rect.top;
-     
+  
         if (appName === "BASE/PopCraftSystem") {
           const CANVAS_WIDTH = document.documentElement.clientWidth;
           const CANVAS_HEIGHT = document.documentElement.clientHeight;
           const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
           const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
-
+  
           const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
           const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
           const newHoveredSquare = { x: gridX, y: gridY };
           setHoveredSquare(newHoveredSquare);
-        }else{
+          setLoadingSquare(newHoveredSquare); // 设置 loading 状态
+        } else {
           const gridX = Math.floor(mouseX / GRID_SIZE);
           const gridY = Math.floor(mouseY / GRID_SIZE);
           setCoordinatesData({ x: gridX, y: gridY });
           const newHoveredSquare = { x: gridX, y: gridY };
           setHoveredSquare(newHoveredSquare);
-
+          setLoadingSquare(newHoveredSquare);// 设置 loading 状态
         }
-        
+  
         if (isEmpty) {
           if (selectedColor && coordinates) {
             hoveredSquareRef.current = coordinates;
@@ -807,7 +805,7 @@ export default function Header({ hoveredData, handleData }: Props) {
                 null
               );
             }
-
+  
             mouseXRef.current = mouseX;
             mouseYRef.current = mouseY;
             handleData(hoveredSquare as any);
@@ -825,20 +823,19 @@ export default function Header({ hoveredData, handleData }: Props) {
                 // drawGrid2
                 ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
                 drawGrid2(ctx, coordinates, true);
-              }else{
+              } else {
                 ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
                 drawGrid(ctx, coordinates, false);
               }
-              
             }
           }
         } else {
           setPopExhibit(true);
         }
-
+  
         setIsDragging(false);
         setShowOverlay(true);
-
+  
         setTranslateX(0);
         setTranslateY(0);
       }
@@ -868,14 +865,18 @@ export default function Header({ hoveredData, handleData }: Props) {
           if (a.status === "success") {
             setLoading(false);
             setLoadingpaly(false);
+            setLoadingSquare(null);
             onHandleLoading();
+            
           } else {
             handleError();
+            setLoadingSquare(null);
             onHandleLoading();
           }
         });
       } else {
         handleError();
+        setLoadingSquare(null); 
       }
     });
   };
@@ -904,15 +905,18 @@ export default function Header({ hoveredData, handleData }: Props) {
             setLoading(false);
             setLoadingpaly(false)
             setTimeControl(true);
+            setLoadingSquare(null); // 清除 loading 状态
             onHandleLoading();
             localStorage.setItem('playAction', 'gameContinue');
           } else {
             handleError();
             onHandleLoading();
+            setLoadingSquare(null); // 清除 loading 状态
           }
         });
       } else {
         handleError(); /^[^A-Za-z]*$/
+        setLoadingSquare(null); // 清除 loading 状态
       }
     });
   };

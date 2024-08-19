@@ -28,10 +28,12 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
 
     } else {
       // 呼起钱包进行登录
-      // console.log(11222222);
+
       openConnectModal();
+      
     }
   };
+
 
   return (
     <div className={style.content}>
