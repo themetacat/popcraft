@@ -439,10 +439,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       // 清空画布
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   
-      // 设置网格线样式
-      ctx.lineWidth = 4;
-      ctx.strokeStyle = "#000000";
-  
       // 绘制水平和垂直网格线
       for (let x = 0; x <= 10 * GRID_SIZE; x += GRID_SIZE) {
         ctx.beginPath();
@@ -464,7 +460,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           const currentY = j * GRID_SIZE + offsetY;
   
           // 绘制每个格子的边框和填充色
-          ctx.lineWidth = 2;
+          ctx.lineWidth = 1;
           ctx.strokeStyle = "#2e1043";
           ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
           ctx.fillStyle = "#2f1643";
@@ -472,7 +468,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   
           // 绘制图像
           const img = new Image();
-          if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
+          if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray ) {
             img.src =
               imageIconData[
                 TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
@@ -483,21 +479,41 @@ export default function Header({ hoveredData, handleData }: Props) {
           }
         }
       }
-  
-      // 处理悬停效果
-      if (selectedColor && hoveredSquare) {
-        const hoveredX = hoveredSquare.x * GRID_SIZE + offsetX;
-        const hoveredY = hoveredSquare.y * GRID_SIZE + offsetY;
-        
-        ctx.fillStyle = selectedColor;
-        ctx.fillRect(hoveredX, hoveredY, GRID_SIZE, GRID_SIZE);
-      }
+      const scale = 1.2;
+ 
+    if (hoveredSquare && coordinates.x < 10) {
+      const i = hoveredSquare.x;
+      const j = hoveredSquare.y;
+      const currentX = i * GRID_SIZE + offsetX;
+      const currentY = j * GRID_SIZE + offsetY;
 
-      if (hoveredSquare) {
-        ctx.canvas.style.cursor = "pointer";
-      } else {
-        ctx.canvas.style.cursor = "default";
+      const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
+      const drawY = currentY - (GRID_SIZE * (scale - 1)) / 2;
+      const drawSize = GRID_SIZE * scale;
+
+      ctx.clearRect(drawX, drawY, drawSize, drawSize);
+      
+      ctx.lineWidth = 0.5;
+      ctx.strokeStyle = "#2e1043";
+      ctx.strokeRect(drawX, drawY, drawSize, drawSize);
+      ctx.fillStyle = "#2f1643";
+      ctx.fillRect(drawX, drawY, drawSize, drawSize);
+
+      const img = new Image();
+      if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
+        img.src =
+          imageIconData[
+            TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
+          ]?.src;
+        if (img.src !== undefined) {
+          ctx.drawImage(img, drawX, drawY, drawSize, drawSize);
+        }
       }
+      ctx.canvas.style.cursor = "pointer";
+    }else{
+      ctx.canvas.style.cursor = "default";
+    }
+   
     },
     [
       GRID_SIZE,
@@ -700,8 +716,10 @@ export default function Header({ hoveredData, handleData }: Props) {
     const ctx = canvas.getContext("2d");
     if (appName === "BASE/PopCraftSystem") {
       // drawGrid2 
-      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      drawGrid2(ctx, coordinates, false);
+      if(coordinates.x < 10){
+        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        drawGrid2(ctx, coordinates, false);
+      }
     } else {
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
       drawGrid(ctx, coordinates, false);
@@ -783,7 +801,7 @@ export default function Header({ hoveredData, handleData }: Props) {
             setIsDragging(false);
             if (appName === "BASE/PopCraftSystem") {
               // if (action === "pop") {
-              if (TCMPopStarData) {
+              if (TCMPopStarData && coordinates.x < 10 && coordinates.x >= 0 && coordinates.y < 10 && coordinates.y >= 0) {
                 const new_coor = {
                   x: coordinates.x + TCMPopStarData.x,
                   y: coordinates.y + TCMPopStarData.y,
@@ -823,8 +841,11 @@ export default function Header({ hoveredData, handleData }: Props) {
               );
               if (appName === "BASE/PopCraftSystem") {
                 // drawGrid2
-                ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                drawGrid2(ctx, coordinates, true);
+                if(coordinates.x < 10 && coordinates.x >= 0 && coordinates.y < 10 && coordinates.y >= 0){
+                  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+                  drawGrid2(ctx, coordinates, true);
+                }
+                
               }else{
                 ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
                 drawGrid(ctx, coordinates, false);
@@ -1084,6 +1105,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         const ctx = canvas.getContext("2d");
         if (ctx) {
           if (appName === "BASE/PopCraftSystem") {
+            
             ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             drawGrid2(ctx, coordinates, false);
           } else {
@@ -1297,8 +1319,9 @@ export default function Header({ hoveredData, handleData }: Props) {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         drawGrid(ctx, hoveredSquare, false);
       } else {
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        drawGrid2(ctx, hoveredSquare, true);
+          ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+          drawGrid2(ctx, hoveredSquare, true);
+        
       }
     }
   }, [
@@ -1338,7 +1361,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           hoveredSquareRef.current = { x: gridX, y: gridY };
         } else {
           // 鼠标不在网格内，清空悬停状态
-          setCoordinates({ x: 0, y: 0 });
+          setCoordinates({ x: 100, y: 100 });
           setHoveredSquare(null);
           hoveredSquareRef.current = null;
         }
