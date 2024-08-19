@@ -322,7 +322,7 @@ export function createSystemCalls(
     });
 
     const ethInPrice =await forMent(selectedName, numberData);
-
+    const nonce = await getAccountNonce();
     const encodeData = encodeFunctionData({
       abi: abi_json[app_name],
       functionName: "buyToken",
@@ -338,7 +338,8 @@ export function createSystemCalls(
         abi: worldContract.abi,
         functionName: "call",
         args: [ resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData],
-        value:parseEther(ethInPrice.toString())
+        value:parseEther(ethInPrice.toString()),
+        nonce:nonce
       });
 
       hashValpublic = publicClient.waitForTransactionReceipt({ hash: hash })
