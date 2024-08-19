@@ -337,8 +337,10 @@ export default function RightPart({
               <p>
                 <span className={style.a}>Coordinates: </span>
                 <span className={style.fontCon}>
-                  {coordinates.x},{coordinates.y}
-                </span>
+                {loacl_app_name === "PopCraft" && coordinates.x === 100 && coordinates.y === 100 
+                  ? "0,0" 
+                  : `${coordinates.x},${coordinates.y}`}
+              </span>
               </p>
               <p key={`Type-${coordinates.x}-${coordinates.y}`}>
                 <span className={style.a}>Type: </span>
