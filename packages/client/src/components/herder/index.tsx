@@ -495,7 +495,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX, loadingSquare.y * GRID_SIZE + offsetY, GRID_SIZE, GRID_SIZE, angle);
       }
     },
-    [
+    [ 
       GRID_SIZE,
       coordinates,
       numberData,
