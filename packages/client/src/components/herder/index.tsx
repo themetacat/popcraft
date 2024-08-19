@@ -142,6 +142,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     height: document.documentElement.clientHeight,
   });
   const [loadingSquare, setLoadingSquare] = useState<{ x: number; y: number } | null>(null);
+  const overTime = 303;
 
   // 监听窗口大小变化，并更新 canvas 尺寸
   useEffect(() => {
@@ -201,13 +202,16 @@ export default function Header({ hoveredData, handleData }: Props) {
         if (TCMPopStarData && TCMPopStarData.startTime) {
           const currentTime = Math.floor(Date.now() / 1000);
           const elapsedTime = currentTime - Number(TCMPopStarData.startTime);
-          const updatedTimeLeft = Math.max(303 - elapsedTime, 0);
+          const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
           if (updatedTimeLeft > 0) {
             localStorage.setItem('playAction', 'gameContinue');
             setTimeControl(true);
-          } else {
-            localStorage.setItem('playAction', 'play')
-            setPopStar(true);
+          } 
+          else {
+            if(!loading && localStorage.getItem("showGameOver") !== "true"){
+              localStorage.setItem('playAction', 'play')
+              setPopStar(true);
+            }
           }
         } else {
           if (localStorage.getItem("playAction") !== "gameContinue") {
@@ -220,8 +224,11 @@ export default function Header({ hoveredData, handleData }: Props) {
     else {
       localStorage.setItem('money', 'nomoney')
       localStorage.setItem('playAction', 'noplay')
-      setTimeControl(false)
-      // setPopStar(true);
+      localStorage.setItem('showGameOver', 'false')
+      if(appName === "BASE/PopCraftSystem"){
+        setPopStar(true);
+        setTimeControl(false)
+      }
     }
 
   }, [isConnected, balance,]);
@@ -934,6 +941,9 @@ export default function Header({ hoveredData, handleData }: Props) {
             setLoadingSquare(null); // 清除 loading 状态
             onHandleLoading();
             localStorage.setItem('playAction', 'gameContinue');
+            if(actionData==="interact"){
+            localStorage.setItem("showGameOver", "false");
+            }
           } else {
             handleError();
             onHandleLoading();
@@ -971,8 +981,8 @@ export default function Header({ hoveredData, handleData }: Props) {
           if (data && data.startTime) {
             const currentTime = Math.floor(Date.now() / 1000);
             const elapsedTime = currentTime - Number(data.startTime);
-            const updatedTimeLeft = Math.max(303 - elapsedTime, 0);
-
+            const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
+            
             if (updatedTimeLeft > 0) {
               //游戏没结束 popstart不显示 
               // console.log('游戏没结束 popstart不显示');
@@ -1005,6 +1015,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     let deldata = localStorage.getItem('deleGeData')
     let money = localStorage.getItem('money')
     setLoadingpaly(true)
+    setLoading(true)
     if (deldata == "undefined") {
       if (money == "toomoney") {
         const delegationData = registerDelegation();
@@ -1013,10 +1024,12 @@ export default function Header({ hoveredData, handleData }: Props) {
             playData() //渲染游戏画布+图片
           } else {
             setLoadingpaly(false)
+            setLoading(false)
           }
         });
       } else {
         setLoadingpaly(false)
+        setLoading(false)
       }
     } else {
       playData()
@@ -1034,7 +1047,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     } else {
       setEmptyRegionNum({ x: 0, y: 0 });
     }
-    localStorage.setItem("showGameOver", "false");
     const ctx = canvasRef?.current?.getContext("2d");
     if (ctx && canvasRef) {
       if (appName === "BASE/PopCraftSystem") {
