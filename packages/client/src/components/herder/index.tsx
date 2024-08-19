@@ -188,7 +188,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   // 判断用户临时钱包有没有钱 
   useEffect(() => {
     if (isConnected && appName === "BASE/PopCraftSystem") {
-      
+
       if ((Number(balance) / 1e18) < 3) {
         setTopUpType(true);
         localStorage.setItem('money', 'nomoney')
@@ -210,7 +210,7 @@ export default function Header({ hoveredData, handleData }: Props) {
             setPopStar(true);
           }
         } else {
-          if(localStorage.getItem("playAction") !== "gameContinue"){
+          if (localStorage.getItem("playAction") !== "gameContinue") {
             localStorage.setItem('playAction', 'play')
             setPopStar(true);
           }
@@ -412,7 +412,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
     return px;
   };
-  const drawRotatingImage = (ctx:any, img:any, x:any, y:any, width:any, height:any, angle:any) => {
+  const drawRotatingImage = (ctx: any, img: any, x: any, y: any, width: any, height: any, angle: any) => {
     ctx.save();
     ctx.translate(x + width / 2, y + height / 2);
     ctx.rotate(angle * Math.PI / 180);
@@ -431,7 +431,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
       // 清空画布
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  
+
       // 绘制水平和垂直网格线
       for (let x = 0; x <= 10 * GRID_SIZE; x += GRID_SIZE) {
         ctx.beginPath();
@@ -450,17 +450,17 @@ export default function Header({ hoveredData, handleData }: Props) {
         for (let j = 0; j < 10; j++) {
           const currentX = i * GRID_SIZE + offsetX;
           const currentY = j * GRID_SIZE + offsetY;
-  
+
           // 绘制每个格子的边框和填充色
           ctx.lineWidth = 1;
           ctx.strokeStyle = "#2e1043";
           ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
           ctx.fillStyle = "#2f1643";
           ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-  
+
           // 绘制图像
           const img = new Image();
-          if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray ) {
+          if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
             img.src =
               imageIconData[
                 TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
@@ -472,49 +472,49 @@ export default function Header({ hoveredData, handleData }: Props) {
         }
       }
       const scale = 1.2;
- 
-    if (hoveredSquare && coordinates.x < 10) {
-      const i = hoveredSquare.x;
-      const j = hoveredSquare.y;
-      const currentX = i * GRID_SIZE + offsetX;
-      const currentY = j * GRID_SIZE + offsetY;
 
-      const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
-      const drawY = currentY - (GRID_SIZE * (scale - 1)) / 2;
-      const drawSize = GRID_SIZE * scale;
+      if (hoveredSquare && coordinates.x < 10) {
+        const i = hoveredSquare.x;
+        const j = hoveredSquare.y;
+        const currentX = i * GRID_SIZE + offsetX;
+        const currentY = j * GRID_SIZE + offsetY;
 
-      ctx.clearRect(drawX, drawY, drawSize, drawSize);
-      
-      ctx.lineWidth = 0.5;
-      ctx.strokeStyle = "#2e1043";
-      ctx.strokeRect(drawX, drawY, drawSize, drawSize);
-      ctx.fillStyle = "#2f1643";
-      ctx.fillRect(drawX, drawY, drawSize, drawSize);
+        const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
+        const drawY = currentY - (GRID_SIZE * (scale - 1)) / 2;
+        const drawSize = GRID_SIZE * scale;
 
-      const img = new Image();
-      if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
-        img.src =
-          imageIconData[
-            TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
-          ]?.src;
-        if (img.src !== undefined) {
-          ctx.drawImage(img, drawX, drawY, drawSize, drawSize);
+        ctx.clearRect(drawX, drawY, drawSize, drawSize);
+
+        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = "#2e1043";
+        ctx.strokeRect(drawX, drawY, drawSize, drawSize);
+        ctx.fillStyle = "#2f1643";
+        ctx.fillRect(drawX, drawY, drawSize, drawSize);
+
+        const img = new Image();
+        if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
+          img.src =
+            imageIconData[
+              TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
+            ]?.src;
+          if (img.src !== undefined) {
+            ctx.drawImage(img, drawX, drawY, drawSize, drawSize);
+          }
         }
+        ctx.canvas.style.cursor = "pointer";
+      } else {
+        ctx.canvas.style.cursor = "default";
       }
-      ctx.canvas.style.cursor = "pointer";
-    }else{
-      ctx.canvas.style.cursor = "default";
-    }
 
-    if (loadingSquare&& loadingSquare.x < 10 && loadingSquare.x >= 0&& loadingSquare.y < 10 && loadingSquare.y >= 0) {
-      const loadingImgElement = new Image();
-      loadingImgElement.src = loadingImg;
-      const angle = (performance.now() % 5000) / 5000 * 360; // 旋转角度
-      drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX, loadingSquare.y * GRID_SIZE + offsetY, GRID_SIZE, GRID_SIZE, angle);
-    }
-   
+      if (loadingSquare && loadingSquare.x < 10 && loadingSquare.x >= 0 && loadingSquare.y < 10 && loadingSquare.y >= 0) {
+        const loadingImgElement = new Image();
+        loadingImgElement.src = loadingImg;
+        const angle = (performance.now() % 5000) / 5000 * 360; // 旋转角度
+        drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX, loadingSquare.y * GRID_SIZE + offsetY, GRID_SIZE, GRID_SIZE, angle);
+      }
+
     },
-    [ 
+    [
       GRID_SIZE,
       coordinates,
       numberData,
@@ -528,7 +528,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       loadingplay
     ]
   );
-  
+
   // useEffect(() => {
   //   if (appName === "BASE/PopCraftSystem") {
   //     setNumberData(35);`1
@@ -544,13 +544,13 @@ export default function Header({ hoveredData, handleData }: Props) {
   //     setTranslateY(0);
   //   }
   // }, [appName]);
-  
+
   useEffect(() => {
-      setNumberData(25);
-      setGRID_SIZE(32);
-      setScrollOffset({ x: 0, y: 0 });
-      setTranslateX(0);
-      setTranslateY(0);
+    setNumberData(25);
+    setGRID_SIZE(32);
+    setScrollOffset({ x: 0, y: 0 });
+    setTranslateX(0);
+    setTranslateY(0);
   }, [appName]);
 
 
@@ -562,7 +562,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       hoveredSquare: { x: number; y: number } | null,
       playType: any
     ) => {
-      
+
       let pix_text;
 
       ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -716,7 +716,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     const ctx = canvas.getContext("2d");
     if (appName === "BASE/PopCraftSystem") {
       // drawGrid2 
-      if(coordinates.x < 10){
+      if (coordinates.x < 10) {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         drawGrid2(ctx, coordinates, false);
       }
@@ -739,7 +739,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       }, ClickThreshold);
     }
     get_function_param(action);
-    
+
   };
 
   const handlePageClick = () => {
@@ -762,11 +762,11 @@ export default function Header({ hoveredData, handleData }: Props) {
       clearTimeout(downTimerRef.current);
       downTimerRef.current = null;
     }
-  
+
     const a = get_function_param(action);
     a.then((x) => {
       const isEmpty = Object.keys(x).length === 0;
-  
+
       if (isLongPress) {
         setIsLongPress(false);
         setIsDragging(false);
@@ -775,13 +775,13 @@ export default function Header({ hoveredData, handleData }: Props) {
         const rect = canvas.getBoundingClientRect();
         const mouseX = event.clientX - rect.left;
         const mouseY = event.clientY - rect.top;
-  
+
         if (appName === "BASE/PopCraftSystem") {
           const CANVAS_WIDTH = document.documentElement.clientWidth;
           const CANVAS_HEIGHT = document.documentElement.clientHeight;
           const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
           const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
-  
+
           const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
           const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
           const newHoveredSquare = { x: gridX, y: gridY };
@@ -795,7 +795,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           setHoveredSquare(newHoveredSquare);
           setLoadingSquare(newHoveredSquare);// 设置 loading 状态
         }
-  
+
         if (isEmpty) {
           if (selectedColor && coordinates) {
             hoveredSquareRef.current = coordinates;
@@ -826,7 +826,7 @@ export default function Header({ hoveredData, handleData }: Props) {
                 null
               );
             }
-  
+
             mouseXRef.current = mouseX;
             mouseYRef.current = mouseY;
             handleData(hoveredSquare as any);
@@ -842,11 +842,11 @@ export default function Header({ hoveredData, handleData }: Props) {
               );
               if (appName === "BASE/PopCraftSystem") {
                 // drawGrid2
-                if(coordinates.x < 10 && coordinates.x >= 0 && coordinates.y < 10 && coordinates.y >= 0){
+                if (coordinates.x < 10 && coordinates.x >= 0 && coordinates.y < 10 && coordinates.y >= 0) {
                   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
                   drawGrid2(ctx, coordinates, true);
                 }
-              }else{
+              } else {
                 ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
                 drawGrid(ctx, coordinates, false);
               }
@@ -855,10 +855,10 @@ export default function Header({ hoveredData, handleData }: Props) {
         } else {
           setPopExhibit(true);
         }
-  
+
         setIsDragging(false);
         setShowOverlay(true);
-  
+
         setTranslateX(0);
         setTranslateY(0);
       }
@@ -890,7 +890,7 @@ export default function Header({ hoveredData, handleData }: Props) {
             setLoadingpaly(false);
             setLoadingSquare(null);
             onHandleLoading();
-            
+
           } else {
             handleError();
             setLoadingSquare(null);
@@ -899,7 +899,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         });
       } else {
         handleError();
-        setLoadingSquare(null); 
+        setLoadingSquare(null);
       }
     });
   };
@@ -949,12 +949,12 @@ export default function Header({ hoveredData, handleData }: Props) {
   //判断时间倒计时
   const handleEoaContractData = (data) => {
     setTCMPopStarData(data);
-    
+
     if (isFirst === true) {
       setIsFirst(false)
-      
+
       if (isConnected) {
-        
+
         if ((Number(balance) / 1e18) < 3) {
           setTopUpType(true);
           localStorage.setItem('money', 'nomoney')
@@ -964,17 +964,17 @@ export default function Header({ hoveredData, handleData }: Props) {
           setTopUpType(false);
           setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
           localStorage.setItem('money', 'toomoney')
-          
+
           if (data && data.startTime) {
             const currentTime = Math.floor(Date.now() / 1000);
             const elapsedTime = currentTime - Number(data.startTime);
             const updatedTimeLeft = Math.max(303 - elapsedTime, 0);
-            
+
             if (updatedTimeLeft > 0) {
               //游戏没结束 popstart不显示 
               // console.log('游戏没结束 popstart不显示');
               setTimeControl(true);
-              
+
               localStorage.setItem('playAction', 'gameContinue');
               setPopStar(false);
             } else {
@@ -1063,7 +1063,7 @@ export default function Header({ hoveredData, handleData }: Props) {
 
       const gridX = Math.floor(mouseXRef.current / GRID_SIZE);
       const gridY = Math.floor(mouseYRef.current / GRID_SIZE);
-      
+
       setHoveredSquare({ x: gridX, y: gridY });
 
       const ctx = canvasRef.current.getContext("2d");
@@ -1111,7 +1111,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         const ctx = canvas.getContext("2d");
         if (ctx) {
           if (appName === "BASE/PopCraftSystem") {
-            
+
             ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             drawGrid2(ctx, coordinates, false);
           } else {
@@ -1297,7 +1297,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       setTopUpType(true);
     } else {
       disconnect();
-      }
+    }
   };
   const netContent = [{ name: "TESTNET" }, { name: "MAINNET" }];
   const addressContent = [
@@ -1325,9 +1325,9 @@ export default function Header({ hoveredData, handleData }: Props) {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         drawGrid(ctx, hoveredSquare, false);
       } else {
-          ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-          drawGrid2(ctx, hoveredSquare, true);
-        
+        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        drawGrid2(ctx, hoveredSquare, true);
+
       }
     }
   }, [
@@ -1348,18 +1348,18 @@ export default function Header({ hoveredData, handleData }: Props) {
       const rect = canvas.getBoundingClientRect();
       const mouseX = event.clientX - rect.left;
       const mouseY = event.clientY - rect.top;
-      
+
       if (appName === "BASE/PopCraftSystem") {
         const CANVAS_WIDTH = document.documentElement.clientWidth;
         const CANVAS_HEIGHT = document.documentElement.clientHeight;
-        
+
         const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
         const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
-        
+
         // 计算悬停的网格坐标
         const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
         const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
-        
+
         if (gridX >= 0 && gridX < 10 && gridY >= 0 && gridY < 10) {
           // 鼠标在网格内，更新状态
           setCoordinates({ x: gridX, y: gridY });
@@ -1372,7 +1372,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           hoveredSquareRef.current = null;
         }
       } else {
-        
+
         const gridX = Math.floor((mouseX + scrollOffset.x) / GRID_SIZE);
         const gridY = Math.floor((mouseY + scrollOffset.y) / GRID_SIZE);
         setCoordinates({ x: gridX, y: gridY });
@@ -1566,49 +1566,52 @@ export default function Header({ hoveredData, handleData }: Props) {
           </div>
 
         </div>
-        <div
-          style={{
-            position: "absolute",
-            left: "5%",
-            bottom: "0px",
-            cursor: "pointer",
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-            backgroundColor: "#230732",
-            padding: "6px 6px 6px 6px",
-          }}
-        >
-          {Array.from(colorOptionsData).map((option, index) => (
-            <span
-              key={index}
-              className={`color-option${selectedColor === option.color ? " selected" : ""
-                }`}
-              data-color={option.color}
-              style={{
-                backgroundColor: option.color,
-                width: "48px",
-                height: "48px",
-                display: "inline-block",
-              }}
-              onClick={() => handleColorOptionClick(option.color)}
-            >
-              {selectedColor === option.color && (
-                <div
-                  className="selected-circle"
-                  style={{
-                    backgroundColor: "black",
-                    borderRadius: "50%",
-                    width: "40px",
-                    height: "40px",
-                    margin: "5px auto",
-                  }}
-                ></div>
-              )}
-            </span>
-          ))}
-        </div>
+
+        {appName !== "BASE/PopCraftSystem" && (
+          <div
+            style={{
+              position: "absolute",
+              left: "5%",
+              bottom: "0px",
+              cursor: "pointer",
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+              backgroundColor: "#230732",
+              padding: "6px 6px 6px 6px",
+            }}
+          >
+            {Array.from(colorOptionsData).map((option, index) => (
+              <span
+                key={index}
+                className={`color-option${selectedColor === option.color ? " selected" : ""
+                  }`}
+                data-color={option.color}
+                style={{
+                  backgroundColor: option.color,
+                  width: "48px",
+                  height: "48px",
+                  display: "inline-block",
+                }}
+                onClick={() => handleColorOptionClick(option.color)}
+              >
+                {selectedColor === option.color && (
+                  <div
+                    className="selected-circle"
+                    style={{
+                      backgroundColor: "black",
+                      borderRadius: "50%",
+                      width: "40px",
+                      height: "40px",
+                      margin: "5px auto",
+                    }}
+                  ></div>
+                )}
+              </span>
+            ))}
+          </div>
+        )}
         <RightPart
           coordinates={coordinates}
           entityData={entityData}
@@ -1663,7 +1666,7 @@ export default function Header({ hoveredData, handleData }: Props) {
             setTopUpTypeto={setTopUpTypeto}
             mainContent={mainContent}
             palyerAddress={palyerAddress}
-            onTopUpSuccess={handleTopupSuccess} 
+            onTopUpSuccess={handleTopupSuccess}
           />
         </div>
       ) : null}

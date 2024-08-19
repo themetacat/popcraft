@@ -28,7 +28,6 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
 
     } else {
       // 呼起钱包进行登录
-
       openConnectModal();
       
     }
