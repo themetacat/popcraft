@@ -56,8 +56,8 @@ const core_foundry = defineChain({
       webSocket: ['https://devnet.pixelaw.world/rpc'],
     },
     public: {
-      http: ['https://api.pixelaw.world/rpc'],
-      webSocket: ['wss://api.pixelaw.world/rpc'],
+      http: ['https://devnet.pixelaw.world/rpc'],
+      webSocket: ['wss://devnet.pixelaw.world/rpc'],
     },
   },
 })
