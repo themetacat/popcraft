@@ -320,10 +320,12 @@ export default function Header({ hoveredData, handleData }: Props) {
   const capitalizedString =
     chainName.charAt(0).toUpperCase() + chainName?.slice(1).toLowerCase();
 
-  const balanceFN = publicClient.getBalance({ address: palyerAddress });
-  balanceFN.then((a: any) => {
-    setBalance(a);
-  });
+  // const balanceFN = publicClient.getBalance({ address: palyerAddress });
+  // balanceFN.then((a: any) => {
+  //   setBalance(a);
+  // });
+  
+
   const natIve = publicClient.chain.nativeCurrency.decimals;
   const btnLower = () => {
     setNumberData(numberData - 5);
