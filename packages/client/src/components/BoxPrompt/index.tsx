@@ -46,10 +46,10 @@ interface Props {
   playFun: any;
   handleEoaContractData: any;
   setPopStar: any;
-  setIsNewGame: any;
+  showTopElements:any;
 
 }
-export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, setIsNewGame }: Props) {
+export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, showTopElements }: Props) {
   const {
     components: {
       App,
@@ -91,6 +91,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const { address } = useAccount();
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
+
 
   const resultBugs = useBalance({
     address: address,
@@ -371,6 +372,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
   return (
     <>
+    {showTopElements && (
       <div className={style.container}>
         <div className={style.firstPart}>
           <p style={{ cursor: "pointer" }}>
@@ -393,7 +395,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           <p>BALANCE</p>
         </div>
         <div className={style.imgContent}  >
-
           {Object.entries(matchedData).map(([key, { src, balance, name }]) => (
             <div key={key} className={style.containerItem}  >
               <div className={style.iconFont} >{balance}</div>
@@ -418,6 +419,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           ?
         </button>
       </div>
+    )}
+
       {dataq === true ? (
         <div
           className={panningType !== "false" ? style.overlayBuy : style.overlay}

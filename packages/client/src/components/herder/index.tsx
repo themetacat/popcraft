@@ -133,6 +133,8 @@ export default function Header({ hoveredData, handleData }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null);//控制背景音乐
   const audioCache: { [url: string]: HTMLAudioElement } = {};//控制背景音效
   const [showTopUp, setShowTopUp] = useState(false); //控制弹出层的显示与隐藏
+  const [showTopElements, setShowTopElements] = useState(false);  //控制顶部第一次显示隐藏
+
   const [playFuntop, setPlayFun] = useState(false);
   const playAction = localStorage.getItem('playAction');
   const [isFirst, setIsFirst] = useState(true);
@@ -195,9 +197,11 @@ export default function Header({ hoveredData, handleData }: Props) {
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
         setPopStar(true);
+        // setShowTopElements(false)
       } else {
         setTopUpType(false);
         setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
+        setShowTopElements(true); // 显示顶部元素
         localStorage.setItem('money', 'toomoney')
         if (TCMPopStarData && TCMPopStarData.startTime) {
           const currentTime = Math.floor(Date.now() / 1000);
@@ -206,17 +210,20 @@ export default function Header({ hoveredData, handleData }: Props) {
           if (updatedTimeLeft > 0) {
             localStorage.setItem('playAction', 'gameContinue');
             setTimeControl(true);
+
           } 
           else {
             if(!loading && localStorage.getItem("showGameOver") !== "true"){
               localStorage.setItem('playAction', 'play')
               setPopStar(true);
+
             }
           }
         } else {
           if (localStorage.getItem("playAction") !== "gameContinue") {
             localStorage.setItem('playAction', 'play')
             setPopStar(true);
+
           }
         }
       }
@@ -1710,6 +1717,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         <BoxPrompt
           coordinates={coordinates}
           timeControl={timeControl}
+          showTopElements={showTopElements}
           playFun={playFun}
           handleEoaContractData={handleEoaContractData}
           setPopStar={setPopStar}
