@@ -5,7 +5,7 @@ import upPoint from '../../images/shanglajiantou.png';
 import rightIcon from '../../images/duihao.png';
 
 type Props = {
-  matchedData:any
+  matchedData:any 
   setdata1:any
 };
 
@@ -45,7 +45,10 @@ export default function Select({matchedData,setdata1}:Props) {
   return (
     <div>
       <div className={style.customSelect}>
-        <div className={style.selectTrigger}>
+        <div className={style.selectTrigger} onClick={()=>{
+          setDownPointType(!downPointType)
+        }
+        }>
           <img
             src={Object.values(matchedData).find(item => item.name === selectedOption)?.src}
             style={{

@@ -91,11 +91,12 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const { address } = useAccount();
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
-  const { disconnect } = useDisconnect();
+
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
   })
+
 
 
   useEffect(() => {
@@ -106,15 +107,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
   const handlePlayAgain = () => {
     setLoading(true);
-    // setTimeout(() => {
-      // setLoading(false);
-      // setdataq(false);
-      playFun();
-      setPopStar(false);
-    // }, 2000);
+    playFun();
+    setPopStar(false);
   };
 
- 
+
   useEffect(() => {
     let interval: any; // 声明一个定时器变量
     if (gameSuccess) {
@@ -324,7 +321,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           setTimeLeft(timeLeft - 1);
 
           if (localStorage.getItem('showGameOver') === 'false') {
-            if(timeLeft <= 1){
+            if (timeLeft <= 1) {
               localStorage.setItem('showGameOver', 'true')
             }
             setLoading(false)
@@ -361,6 +358,15 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }
   }, []);
 
+  const formatAmount = (amount: any) => {
+    return parseFloat(amount).toFixed(7);
+  };
+
+  const hederaPreviewnet = async () => {
+    console.log(1111);
+
+  }
+
 
 
   return (
@@ -386,11 +392,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           </p>
           <p>BALANCE</p>
         </div>
-        <div className={style.imgContent}>
+        <div className={style.imgContent}  >
 
           {Object.entries(matchedData).map(([key, { src, balance, name }]) => (
-            <div key={key} className={style.containerItem}>
-              <div className={style.iconFont}>{balance}</div>
+            <div key={key} className={style.containerItem}  >
+              <div className={style.iconFont} >{balance}</div>
               <img className={style.imgconItem} src={src} alt={name} />
             </div>
           ))}
@@ -416,7 +422,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         <div
           className={panningType !== "false" ? style.overlayBuy : style.overlay}
         >
-          <div className={style.buYBox}>
+          <div className={style.buYBox} >
             <img
               className={style.turnOff}
               src={trunOff}
@@ -433,6 +439,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 <button
                   onClick={() => {
                     downHandleNumber(numberData);
+
                   }}
                   disabled={numberData === 1}
                   className={numberData === 1 ? style.disabled : (null as any)}
@@ -452,17 +459,23 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                   +
                 </button>
               </div>
-              <div style={{ zIndex: "999999" }}>
-                {" "}
-                <Select
-                  matchedData={matchedData}
-                  setdata1={setdata1}
-                />
+
+              <div style={{ zIndex: "999999" }} >
+                <div onClick={() => {
+                }} >
+                  {" "}
+                  <Select
+                    matchedData={matchedData}
+                    setdata1={setdata1}
+                  />
+                </div>
               </div>
             </div>
             <div className={style.twoBuy}>
               <span className={style.fontBuy}>FOR</span>
-              <span className={style.fontNum}>{data}ETH</span>
+              <span className={style.fontNum}>
+                {formatAmount(data)} ETH
+              </span>
               {forPayMonType === true ? (
                 <img
                   src={loadingIcon}
