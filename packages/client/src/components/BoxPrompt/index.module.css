@@ -73,11 +73,12 @@
   letter-spacing: 2px;
 }
 .threePart {
-  width: 119px;
+  /* width: 119px; */
   height: 40px;
   border: 1px solid #3f1f5a;
   background-color: #2d0c3b;
   padding: 12px 16px 12px 16px;
+  white-space: nowrap;
   display: grid;
   gap: 4px;
   box-shadow:

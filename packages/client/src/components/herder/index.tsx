@@ -210,20 +210,17 @@ export default function Header({ hoveredData, handleData }: Props) {
           if (updatedTimeLeft > 0) {
             localStorage.setItem('playAction', 'gameContinue');
             setTimeControl(true);
-
           } 
           else {
             if(!loading && localStorage.getItem("showGameOver") !== "true"){
               localStorage.setItem('playAction', 'play')
               setPopStar(true);
-
             }
           }
         } else {
           if (localStorage.getItem("playAction") !== "gameContinue") {
             localStorage.setItem('playAction', 'play')
             setPopStar(true);
-
           }
         }
       }
@@ -237,7 +234,6 @@ export default function Header({ hoveredData, handleData }: Props) {
         setTimeControl(false)
       }
     }
-
   }, [isConnected, balance,]);
 
   //音乐播放

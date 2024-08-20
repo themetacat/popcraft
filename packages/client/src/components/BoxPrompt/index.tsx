@@ -363,11 +363,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     return parseFloat(amount).toFixed(7);
   };
 
-  const hederaPreviewnet = async () => {
-    console.log(1111);
 
-  }
 
+  const formatBalance = (balance) => {
+    return balance.toLocaleString();
+  };
 
 
   return (
@@ -385,12 +385,12 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
         </div>
         <div className={style.twoPart}>
-          <p>150$bugs</p>
+          <p>150&nbsp;$bugs</p>
           <p>REWARDS</p>
         </div>
         <div className={style.threePart}>
           <p>
-            {balance}$bugs
+          {formatBalance(balance)}&nbsp;$bugs
           </p>
           <p>BALANCE</p>
         </div>
