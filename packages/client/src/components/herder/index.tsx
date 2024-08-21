@@ -5,7 +5,7 @@ import { formatUnits } from "viem";
 import { imageIconData } from "../imageIconData";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import toast, { Toaster } from "react-hot-toast";
-import RightPart, { addressToEntityID } from "../rightPart";
+// import RightPart, { addressToEntityID } from "../rightPart";
 import { useMUD } from "../../MUDContext";
 import BoxPrompt from "../BoxPrompt";
 import PopStar from "../popStar";
@@ -92,7 +92,6 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [popExhibit, setPopExhibit] = useState(false);
   const [boxPrompt, setBoxPrompt] = useState(false);
   const [topUpType, setTopUpType] = useState(false);
-  const [topUpTypeto, setTopUpTypeto] = useState(false);
   const [balance, setBalance] = useState<bigint | null>(null);
   const [translateX, setTranslateX] = useState(0);
   const [translateY, setTranslateY] = useState(0);
@@ -108,6 +107,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [updateAbiCommonJson, setUpdate_abi_Common_json] = useState([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const visibleAreaRef = useRef<HTMLDivElement>(null);
+  const [topUpTypeto, setTopUpTypeto] = useState(false);
   const [scrollOffset, setScrollOffset] = useState({ x: 0, y: 0 });
   const [showOverlay, setShowOverlay] = useState(false);
   const [mouseX, setMouseX] = useState(0);
@@ -134,7 +134,6 @@ export default function Header({ hoveredData, handleData }: Props) {
   const audioCache: { [url: string]: HTMLAudioElement } = {};//控制背景音效
   const [showTopUp, setShowTopUp] = useState(false); //控制弹出层的显示与隐藏
   const [showTopElements, setShowTopElements] = useState(false);  //控制顶部第一次显示隐藏
-
   const [playFuntop, setPlayFun] = useState(false);
   const playAction = localStorage.getItem('playAction');
   const [isFirst, setIsFirst] = useState(true);
@@ -145,6 +144,16 @@ export default function Header({ hoveredData, handleData }: Props) {
   });
   const [loadingSquare, setLoadingSquare] = useState<{ x: number; y: number } | null>(null);
   const overTime = 303;
+
+  useEffect(() => {
+    // 默认设置localStorage中的值为popCraft相关的值
+    window.localStorage.setItem("app_name", "popCraft");
+    window.localStorage.setItem("system_name", "PopCraftSystem");
+    window.localStorage.setItem("namespace", "popCraft");
+    window.localStorage.setItem("manifest", "BASE/PopCraftSystem");
+  }, []);
+
+
 
   // 监听窗口大小变化，并更新 canvas 尺寸
   useEffect(() => {
@@ -210,9 +219,9 @@ export default function Header({ hoveredData, handleData }: Props) {
           if (updatedTimeLeft > 0) {
             localStorage.setItem('playAction', 'gameContinue');
             setTimeControl(true);
-          } 
+          }
           else {
-            if(!loading && localStorage.getItem("showGameOver") !== "true"){
+            if (!loading && localStorage.getItem("showGameOver") !== "true") {
               localStorage.setItem('playAction', 'play')
               setPopStar(true);
             }
@@ -229,7 +238,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       localStorage.setItem('money', 'nomoney')
       localStorage.setItem('playAction', 'noplay')
       localStorage.setItem('showGameOver', 'false')
-      if(appName === "BASE/PopCraftSystem"){
+      if (appName === "BASE/PopCraftSystem") {
         setPopStar(true);
         setTimeControl(false)
       }
@@ -304,6 +313,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     colorSession !== null ? colorSession : "#ffffff"
   );
   const onHandleOwner = (data: any) => {
+
     setOwnerData(data)
   }
   const mouseXRef = useRef(0);
@@ -324,7 +334,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   // balanceFN.then((a: any) => {
   //   setBalance(a);
   // });
-  
+
 
   const natIve = publicClient.chain.nativeCurrency.decimals;
   const btnLower = () => {
@@ -379,18 +389,18 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   const appName = localStorage.getItem("manifest") as any;
   const parts = appName?.split("/") as any;
-  let worldAbiUrl: any;
-  if (appName) {
-    if (parts[0] === "BASE") {
-      worldAbiUrl = ("https://pixelaw-game.vercel.app/" +
-        `${parts[1].replace(/\.abi\.json/g, "")}` +
-        ".abi.json") as any;
-    } else {
-      worldAbiUrl = appName;
-    }
-  } else {
-    worldAbiUrl = "https://pixelaw-game.vercel.app/Paint.abi.json";
-  }
+  // let worldAbiUrl: any;
+  // if (appName) {
+  //   if (parts[0] === "BASE") {
+  //     worldAbiUrl = ("https://pixelaw-game.vercel.app/" +
+  //       `${parts[1].replace(/\.abi\.json/g, "")}` +
+  //       ".abi.json") as any;
+  //   } else {
+  //     worldAbiUrl = appName;
+  //   }
+  // } else {
+  //   worldAbiUrl = "https://pixelaw-game.vercel.app/Paint.abi.json";
+  // }
 
   const findEmptyRegion = () => {
     const gridSize = GRID_SIZE;
@@ -442,7 +452,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
       // 清空画布
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  
+
       // 绘制水平和垂直网格线
       for (let x = 0; x <= 10 * GRID_SIZE; x += GRID_SIZE) {
         ctx.beginPath();
@@ -456,20 +466,20 @@ export default function Header({ hoveredData, handleData }: Props) {
         ctx.lineTo(10 * GRID_SIZE + offsetX, y + offsetY);
         ctx.stroke();
       }
-  
+
       // 绘制网格中的内容
       for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {
           const currentX = i * GRID_SIZE + offsetX;
           const currentY = j * GRID_SIZE + offsetY;
-  
+
           // 绘制每个格子的边框和填充色
           ctx.lineWidth = 1;
           ctx.strokeStyle = "#2e1043";
           ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
           ctx.fillStyle = "#2f1643";
           ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-  
+
           // 绘制图像
           if (!loadingSquare || !(loadingSquare.x === i && loadingSquare.y === j)) {
             const img = new Image();
@@ -485,49 +495,57 @@ export default function Header({ hoveredData, handleData }: Props) {
           }
         }
       }
-  
+
       const scale = 1.2;
-  
+
       if (hoveredSquare && coordinates.x < 10) {
         const i = hoveredSquare.x;
         const j = hoveredSquare.y;
         const currentX = i * GRID_SIZE + offsetX;
         const currentY = j * GRID_SIZE + offsetY;
-  
-        const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
-        const drawY = currentY - (GRID_SIZE * (scale - 1)) / 2;
-        const drawSize = GRID_SIZE * scale;
-  
-        ctx.clearRect(drawX, drawY, drawSize, drawSize);
-  
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = "#2e1043";
-        ctx.strokeRect(drawX, drawY, drawSize, drawSize);
-        ctx.fillStyle = "#2f1643";
-        ctx.fillRect(drawX, drawY, drawSize, drawSize);
-  
-        const img = new Image();
-        if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
-          img.src =
-            imageIconData[
-              TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
-            ]?.src;
-          if (img.src !== undefined) {
-            ctx.drawImage(img, drawX, drawY, drawSize, drawSize);
+
+        // 如果正在加载，则不放大并且只展示加载状态
+        if (loadingSquare && loadingSquare.x === i && loadingSquare.y === j) {
+          const loadingImgElement = new Image();
+          loadingImgElement.src = loadingImg;
+          const angle = (performance.now() % 5000) / 5000 * 360; // 旋转角度
+          drawRotatingImage(ctx, loadingImgElement, currentX, currentY, GRID_SIZE, GRID_SIZE, angle);
+          ctx.canvas.style.cursor = "default";
+        } else {
+          const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
+          const drawY = currentY - (GRID_SIZE * (scale - 1)) / 2;
+          const drawSize = GRID_SIZE * scale;
+
+          ctx.clearRect(drawX, drawY, drawSize, drawSize);
+
+          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = "#2e1043";
+          ctx.strokeRect(drawX, drawY, drawSize, drawSize);
+          ctx.fillStyle = "#2f1643";
+          ctx.fillRect(drawX, drawY, drawSize, drawSize);
+
+          const img = new Image();
+          if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
+            img.src =
+              imageIconData[
+                TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
+              ]?.src;
+            if (img.src !== undefined) {
+              ctx.drawImage(img, drawX, drawY, drawSize, drawSize);
+            }
           }
+          ctx.canvas.style.cursor = "pointer";
         }
-        ctx.canvas.style.cursor = "pointer";
       } else {
         ctx.canvas.style.cursor = "default";
       }
-  
+
       if (loadingSquare && loadingSquare.x < 10 && loadingSquare.x >= 0 && loadingSquare.y < 10 && loadingSquare.y >= 0) {
         const loadingImgElement = new Image();
         loadingImgElement.src = loadingImg;
         const angle = (performance.now() % 5000) / 5000 * 360; // 旋转角度
         drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX, loadingSquare.y * GRID_SIZE + offsetY, GRID_SIZE, GRID_SIZE, angle);
       }
-  
     },
     [
       GRID_SIZE,
@@ -540,32 +558,25 @@ export default function Header({ hoveredData, handleData }: Props) {
       selectedColor,
       scrollOffset,
       loading,
-      loadingplay
+      loadingplay,
+      loadingSquare,
     ]
   );
-  
-  // useEffect(() => {
-  //   if (appName === "BASE/PopCraftSystem") {
-  //     setNumberData(35);`1
-  //     setGRID_SIZE(44);
-  //     setScrollOffset({ x: 0, y: 0 });
-  //     setTranslateX(0);
-  //     setTranslateY(0);
-  //   } else {
-  //     setNumberData(25);
-  //     setGRID_SIZE(32);
-  //     setScrollOffset({ x: 0, y: 0 });
-  //     setTranslateX(0);
-  //     setTranslateY(0);
-  //   }
-  // }, [appName]);
 
   useEffect(() => {
-    setNumberData(25);
-    setGRID_SIZE(32);
-    setScrollOffset({ x: 0, y: 0 });
-    setTranslateX(0);
-    setTranslateY(0);
+    if (appName === "BASE/PopCraftSystem") {
+      setNumberData(30);
+      setGRID_SIZE(44);
+      setScrollOffset({ x: 0, y: 0 });
+      setTranslateX(0);
+      setTranslateY(0);
+    } else {
+      setNumberData(25);
+      setGRID_SIZE(32);
+      setScrollOffset({ x: 0, y: 0 });
+      setTranslateX(0);
+      setTranslateY(0);
+    }
   }, [appName]);
 
 
@@ -630,7 +641,7 @@ export default function Header({ hoveredData, handleData }: Props) {
             if (entity.value.owner !== undefined && tcmTokenAddrDict[entity.value.owner] === undefined) {
               const TCMPopStarDataFun = getComponentValue(
                 TCMPopStar,
-                addressToEntityID(entity.value.owner)
+                // addressToEntityID(entity.value.owner)
               );
               if (TCMPopStarDataFun?.tokenAddressArr !== undefined) {
                 tcmTokenAddrDict[entity.value.owner] = TCMPopStarDataFun?.tokenAddressArr
@@ -946,8 +957,8 @@ export default function Header({ hoveredData, handleData }: Props) {
             setLoadingSquare(null); // 清除 loading 状态
             onHandleLoading();
             localStorage.setItem('playAction', 'gameContinue');
-            if(actionData==="interact"){
-            localStorage.setItem("showGameOver", "false");
+            if (actionData === "interact") {
+              localStorage.setItem("showGameOver", "false");
             }
           } else {
             handleError();
@@ -987,7 +998,7 @@ export default function Header({ hoveredData, handleData }: Props) {
             const currentTime = Math.floor(Date.now() / 1000);
             const elapsedTime = currentTime - Number(data.startTime);
             const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
-            
+
             if (updatedTimeLeft > 0) {
               //游戏没结束 popstart不显示 
               // console.log('游戏没结束 popstart不显示');
@@ -1303,10 +1314,12 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   const handleUpdateAbiJson = (data: any) => {
     setUpdate_abi_json(data);
+
   };
 
   const handleUpdateAbiCommonJson = (data: any) => {
     setUpdate_abi_Common_json(data);
+
   };
 
   const handleItemClick = (content) => {
@@ -1632,7 +1645,7 @@ export default function Header({ hoveredData, handleData }: Props) {
             ))}
           </div>
         )}
-        <RightPart
+        {/* <RightPart
           coordinates={coordinates}
           entityData={entityData}
           setPanningState={handlePanningChange}
@@ -1645,7 +1658,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           onHandleLoading={onHandleLoading}
           onHandleLoadingFun={onHandleLoadingFun}
           onHandleOwner={onHandleOwner}
-        />
+        /> */}
         <audio ref={audioRef} src={backgroundMusic} onEnded={handleEnded} loop />
       </div>
 

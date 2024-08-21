@@ -80,7 +80,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [data1, setdata1] = useState(null);
   const [getEoaContractData, setGetEoaContractData] = useState(null);
   const [balanceData, setBalanceData] = useState({});
-  const [numberData, setNumberData] = useState(1);
+  const [numberData, setNumberData] = useState(5);
   const coor_entity = coorToEntityID(coordinates.x, coordinates.y);
   const [startTime, setStartTime] = useState(null);
   const pixel_value = getComponentValue(Pixel, coor_entity) as any;
@@ -99,7 +99,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   })
 
 
-
   useEffect(() => {
     if (resultBugs.data?.value) {
       setBalance(Math.floor(Number(resultBugs.data?.value) / 1e18));
@@ -111,7 +110,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     playFun();
     setPopStar(false);
   };
-
 
   useEffect(() => {
     let interval: any; // 声明一个定时器变量
@@ -372,7 +370,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
   return (
     <>
-    {showTopElements && (
+    {showTopElements &&  (
       <div className={style.container}>
         <div className={style.firstPart}>
           <p style={{ cursor: "pointer" }}>
