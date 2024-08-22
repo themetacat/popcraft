@@ -987,10 +987,8 @@ export default function Header({ hoveredData, handleData }: Props) {
     setTCMPopStarData(data);
     
     if (hasExecutedRef.current && isConnected) {
-      hasExecutedRef.current = false;
+      const balanceFN = publicClient.getBalance({ address: palyerAddress });
       
-       const balanceFN = publicClient.getBalance({ address: palyerAddress });
-  
       balanceFN.then((balance: any) => {
         setBalance(balance);
           
@@ -1026,7 +1024,7 @@ export default function Header({ hoveredData, handleData }: Props) {
               setPopStar(true);
             }
           }
-      
+          hasExecutedRef.current = false;
       });
       
     }  else {
