@@ -450,25 +450,33 @@ export default function TopUp({
                 </div>
               </div>
 
-              <button
-                onClick={transferPay}
-                className={
-                  transferPayType === false
-                    ? style.footerBtn
-                    : style.footerBtnElse
-                }
-                disabled={transferPayType === true || isConfirming || isPending}
-              >
-                {transferPayType === true && "Not enough funds"}
-                {transferPayType === false &&
-                  !isConfirming &&
-                  !isPending &&
-                  "Deposit via transfer"}
+              {!chain.unsupported && (
+                <button
+                  onClick={transferPay}
+                  className={
+                    transferPayType === false
+                      ? style.footerBtn
+                      : style.footerBtnElse
+                  }
+                  disabled={transferPayType === true || isConfirming || isPending}
+                >
+                  {transferPayType === true && "Not enough funds"}
+                  {transferPayType === false &&
+                    !isConfirming &&
+                    !isPending &&
+                    "Deposit via transfer"}
 
-                {transferPayType === false && (isConfirming || isPending) && (
-                  <div>Waiting for confirmation...</div>
+                  {transferPayType === false && (isConfirming || isPending) && (
+                    <div>Waiting for confirmation...</div>
+                  )}
+                </button>
+              )}
+
+                {chain.unsupported && (
+                    <button onClick={openChainModal} type="button">
+                     Wrong network
+                   </button>
                 )}
-              </button>
             </>
           );
         }}
