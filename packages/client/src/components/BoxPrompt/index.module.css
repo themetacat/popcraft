@@ -301,7 +301,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: calc(100% - 78px);
+  width: calc(100%);
   z-index: 10000000;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6); /* 半透明黑色 */
@@ -312,7 +312,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: calc(100% - 253px);
+  width: calc(100% );
   z-index: 10000000;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6); /* 半透明黑色 */

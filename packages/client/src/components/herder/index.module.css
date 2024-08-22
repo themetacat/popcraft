@@ -22,7 +22,7 @@ canvas {
   position: fixed;
   top: 0;
   left: 0;
-  width: calc(100% - 253px);
+  width: calc(100%);
   z-index: 999;
   height: 100%;
   pointer-events: auto !important;
@@ -32,7 +32,7 @@ canvas {
   position: fixed;
   top: 0;
   left: 0;
-  width: calc(100% - 78px);
+  width: calc(100%);
   z-index: 999;
   height: 100%;
   pointer-events: auto !important;
@@ -319,6 +319,3 @@ canvas {
   padding: 5px;
   z-index: 1000;
 }
-
-
-

@@ -50,13 +50,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [data1, setdata1] = useState(null);
   const [getEoaContractData, setGetEoaContractData] = useState(null);
   const [balanceData, setBalanceData] = useState({});
-  const [numberData, setNumberData] = useState(1);
+  const [numberData, setNumberData] = useState(5);
   const { address, isConnected } = useAccount();
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
-  const [updateData, setUpdateData] = useState(false);
-
-
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
@@ -126,14 +123,13 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }
   };
 
-
   const addressToEntityIDTwo = (address: Hex, addressTwo: Hex) =>
     encodeEntity(
       { address: "address", addressTwo: "address" },
       { address, addressTwo }
     );
-  const panningType = window.localStorage.getItem("panning");
 
+  const panningType = window.localStorage.getItem("panning");
   const matchedData = getMatchedData(
     getEoaContractData,
     imageIconData,
@@ -165,6 +161,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const downHandleNumber = (val: any) => {
     setNumberData(numberData - 1);
   };
+
   const upHandleNumber = (val: any) => {
     if (data !== 0) {
       setNumberData(numberData + 1);
@@ -241,7 +238,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     });
   };
 
-
   useEffect(() => {
     if(isConnected){
       const interval = setInterval(() => {
@@ -251,8 +247,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       return () => clearInterval(interval); // 清除定时器以避免内存泄漏
     }
   }, [isConnected]);
-
-
 
   useEffect(() => {
     if (timeControl === true && gameSuccess === false) {
@@ -318,12 +312,9 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     return parseFloat(amount).toFixed(7);
   };
 
-
-
   const formatBalance = (balance) => {
     return balance.toLocaleString();
   };
-
 
   return (
     <>
@@ -483,6 +474,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           </div>
         </div>
       ) : null}
+
       {warnBox === true ? (
         <div
           className={panningType !== "false" ? style.overlayBuy : style.overlay}
@@ -517,6 +509,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           </div>
         </div>
       ) : null}
+
       {
         timeLeft === 0 && localStorage.getItem('showGameOver') === 'true'
           ? (
@@ -542,6 +535,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               </div>
             </div>
           ) : null}
+
       {
         gameSuccess === true
           && localStorage.getItem('showGameOver') === 'true'

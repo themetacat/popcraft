@@ -25,8 +25,6 @@ import backgroundMusic from '../../audio/1.mp3';
 import effectSound from '../../audio/2.mp3';
 import loadingImg from "../../images/loading.png";
 
-import { flare } from "viem/chains";
-
 const colorOptionsData = [
   { color: "#4d4d4d", title: "Option 1" },
   { color: "#999999", title: "Option 1" },
@@ -113,7 +111,6 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [mouseY, setMouseY] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadingplay, setLoadingpaly] = useState(false);
-  const [loadingGameOver, setLoadingGameOver] = useState(false);
   const [panningFromChild, setPanningFromChild] = useState(false);
   const [popStar, setPopStar] = useState(false);
   const [pageClick, setPageClick] = useState(false);
@@ -150,7 +147,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     window.localStorage.setItem("manifest", "BASE/PopCraftSystem");
   }, []);
 
-
   // 监听窗口大小变化，并更新 canvas 尺寸
   useEffect(() => {
     const handleResize = () => {
@@ -160,7 +156,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       });
     };
     window.addEventListener('resize', handleResize);
-
     // 清除事件监听器
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -168,7 +163,6 @@ export default function Header({ hoveredData, handleData }: Props) {
   }, []);
   const CANVAS_WIDTH = canvasSize.width;
   const CANVAS_HEIGHT = canvasSize.height;
-
 
   const handleTopUpClick = () => {
     setShowTopUp(true);
@@ -195,9 +189,7 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   // 判断用户临时钱包有没有钱 
   useEffect(() => {
-    
     if (isConnected && appName === "BASE/PopCraftSystem" && !hasExecutedRef.current) {
-      
       if ((Number(balance) / 1e18) < 3) {
         setTopUpType(true);
         localStorage.setItem('money', 'nomoney')
@@ -209,7 +201,6 @@ export default function Header({ hoveredData, handleData }: Props) {
         setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
         setShowTopElements(true); // 显示顶部元素
         localStorage.setItem('money', 'toomoney')
-        
         if (TCMPopStarData && TCMPopStarData.startTime) {
           const currentTime = Math.floor(Date.now() / 1000);
           const elapsedTime = currentTime - Number(TCMPopStarData.startTime);
@@ -244,7 +235,6 @@ export default function Header({ hoveredData, handleData }: Props) {
         setTimeControl(false)
       }
     }
-
   }, [isConnected, balance, hasExecutedRef.current]);
 
   //音乐播放
