@@ -56,7 +56,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [balance, setBalance] = useState(0);
   const [updateData, setUpdateData] = useState(false);
 
-
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
@@ -229,10 +228,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
           setTimeLeft(updatedTimeLeft);
           const allZeros = TCMPopStarData.matrixArray.every((data) => data === 0n);
-          if (allZeros) {
+          if (allZeros && updatedTimeLeft > 0) {
             localStorage.setItem('showGameOver', 'true');
             setGameSuccess(true)
-          } else {
+          }
+          else {
             setGameSuccess(false)
             if (TCMPopStarData.gameFinished === true) {
               seta(true)
@@ -242,7 +242,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       }
     });
   };
-
 
   useEffect(() => {
     if(isConnected){
