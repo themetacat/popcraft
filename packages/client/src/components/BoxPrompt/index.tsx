@@ -1,44 +1,20 @@
 import React, { useState, useEffect, useCallback } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import style from "./index.module.css";
-import warning from "../../images/warning.png";
-import rightIcon from "../../images/duihao.png";
 import loadingIcon from "../../images/loading (2).png";
 import trunOff from "../../images/turnOffBtn.png";
 import { imageIconData } from "../imageIconData";
-import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { useMUD } from "../../MUDContext";
-import { abi_json } from "../../mud/createSystemCalls";
-import { resourceToHex, ContractWrite, getContract } from "@latticexyz/common";
-import { useAccount, useDisconnect, useEnsAvatar, useEnsName, useBalance } from 'wagmi';
-import RightPart, { addressToEntityID } from "../rightPart";
+import { useAccount, useBalance } from 'wagmi';
+import { addressToEntityID } from "../rightPart";
 import loadingImg from "../../images/loading.png";
-
-
-
-import {
-  Abi,
-  encodeFunctionData,
-  parseEther,
-  decodeErrorResult,
-  toHex,
-} from "viem";
-import { convertToString, coorToEntityID } from "../rightPart/index";
 import Select from "../select";
 import {
   encodeEntity,
-  syncToRecs,
-  decodeEntity,
 } from "@latticexyz/store-sync/recs";
 import {
-  Has,
-  getComponentValueStrict,
   getComponentValue,
-  AnyComponentValue,
 } from "@latticexyz/recs";
-import { spanish } from "viem/accounts";
-import { flare } from "viem/chains";
-import { Account } from "../Account";
 
 interface Props {
   coordinates: any;
@@ -52,15 +28,11 @@ interface Props {
 export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, showTopElements }: Props) {
   const {
     components: {
-      App,
-      Pixel,
-      AppName,
-      Instruction,
       TCMPopStar,
       TokenBalance,
       UserDelegationControl,
     },
-    network: { playerEntity, publicClient, palyerAddress },
+    network: { palyerAddress },
     systemCalls: { interact, forMent, payFunction, registerDelegation },
   } = useMUD();
   const overTime = 303;
@@ -71,33 +43,24 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [forPayMonType, setForPayMonType] = useState(false);
   const [a, seta] = useState(false);
   const [data2, setdata2] = useState(false);
-  const [congratsType, setCongratsType] = useState(false);
   const [pay, setpay] = useState(false);
-  const [pay1, setpay1] = useState(false);
   const [gameSuccess, setGameSuccess] = useState(false);
   const [datan, setdatan] = useState(null);
   const [data, setdata] = useState(null);
   const [data1, setdata1] = useState(null);
   const [getEoaContractData, setGetEoaContractData] = useState(null);
   const [balanceData, setBalanceData] = useState({});
-  const [numberData, setNumberData] = useState(5);
-  const coor_entity = coorToEntityID(coordinates.x, coordinates.y);
-  const [startTime, setStartTime] = useState(null);
-  const pixel_value = getComponentValue(Pixel, coor_entity) as any;
-  const entities_app = useEntityQuery([Has(App)]);
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-  const [selectedOption, setSelectedOption] = useState("option1");
-  const { address } = useAccount();
+  const [numberData, setNumberData] = useState(1);
+  const { address, isConnected } = useAccount();
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
+  const [updateData, setUpdateData] = useState(false);
 
 
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
   })
-
 
   useEffect(() => {
     if (resultBugs.data?.value) {
@@ -117,13 +80,12 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       // gamesuccess 为 true 时启动定时器
       interval = setInterval(() => {
         resultBugs.refetch().then((data) => {
-          console.log(data);
 
           if (data.data?.value) {
             setBalance(Math.floor(Number(data.data?.value) / 1e18));
           }
         });
-      }, 1000) // 每 10 秒重新获取一次余额
+      }, 1000)
     } else {
       // gamesuccess 为 false 时清除定时器
       clearInterval(interval)
@@ -143,9 +105,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         if (result.status === "success") {
           toast.success("Payment successed!");
           setcresa(false);
-          setpay1(true);
           setTimeout(() => {
-            setpay1(false);
             setdataq(false);
           }, 3000);
         } else {
@@ -168,12 +128,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }
   };
 
-  const getEoaContract = async () => {
-    const [account] = await window.ethereum!.request({
-      method: "eth_accounts",
-    });
-    return account;
-  };
 
   const addressToEntityIDTwo = (address: Hex, addressTwo: Hex) =>
     encodeEntity(
@@ -181,49 +135,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       { address, addressTwo }
     );
   const panningType = window.localStorage.getItem("panning");
-
-  const fetchData = async () => {
-    try {
-      const account = await getEoaContract();
-      if (account === undefined) {
-        return;
-      }
-
-      const TCMPopStarData = getComponentValue(
-        TCMPopStar,
-        addressToEntityID(account)
-      );
-      if (TCMPopStarData) {
-        const tokenBalancePromises = TCMPopStarData.tokenAddressArr.map(
-          async (item) => {
-            try {
-              const balance = await getComponentValue(
-                TokenBalance,
-                addressToEntityIDTwo(account, item)
-              );
-              return { [item]: balance };
-            } catch (error) {
-              console.error(`Error fetching balance for ${item}:`, error);
-              return { [item]: undefined };
-            }
-          }
-        );
-        const tokenBalanceResults = await Promise.all(tokenBalancePromises);
-        setBalanceData(tokenBalanceResults);
-      }
-      const deleGeData = getComponentValue(
-        UserDelegationControl,
-        addressToEntityIDTwo(account, palyerAddress)
-      );
-      localStorage.setItem('deleGeData', JSON.stringify(deleGeData))
-      // if (deleGeData === undefined) {
-      //   registerDelegation()
-      // }
-      return TCMPopStarData;
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const matchedData = getMatchedData(
     getEoaContractData,
@@ -253,9 +164,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     return result;
   }
 
-  const handleSelectChange = (event: any) => {
-    setSelectedOption(event.target.value);
-  };
   const downHandleNumber = (val: any) => {
     setNumberData(numberData - 1);
   };
@@ -265,15 +173,57 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }
   };
 
+   const fetchData = async() => {
+    try {
+      if (address === undefined) {
+        return;
+      }
+      const TCMPopStarData = getComponentValue(
+        TCMPopStar,
+        addressToEntityID(address)
+      );
+      
+      if (TCMPopStarData) {
+        const tokenBalanceResults = TCMPopStarData.tokenAddressArr.map(
+           (item) => {
+            try {
+              const balance =  getComponentValue(
+                TokenBalance,
+                addressToEntityIDTwo(address, item)
+              );
+              return { [item]: balance };
+            } catch (error) {
+              console.error(`Error fetching balance for ${item}:`, error);
+              return { [item]: undefined };
+            }
+          }
+        );     
+        setBalanceData(tokenBalanceResults)
+      }
+      const deleGeData = getComponentValue(
+        UserDelegationControl,
+        addressToEntityIDTwo(address, palyerAddress)
+      );
+      if(deleGeData){
+        localStorage.setItem('deleGeData', "true")
+      }else{
+        localStorage.setItem('deleGeData', "undefined")
+      }
+
+      return TCMPopStarData;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   const updateTCMPopStarData = () => {
-    const fetchDataTotal = fetchData();
-    fetchDataTotal.then((TCMPopStarData) => {
-      if (palyerAddress !== undefined) {
+    const allTCMPopStarData = fetchData();
+    allTCMPopStarData.then((TCMPopStarData) => {
+      if (palyerAddress !== undefined) {        
         handleEoaContractData(TCMPopStarData);
         if (TCMPopStarData) {
           setGetEoaContractData(TCMPopStarData?.tokenAddressArr);
           const blockchainStartTime = Number(TCMPopStarData.startTime) as any;
-          setStartTime(blockchainStartTime);
           const currentTime = Math.floor(Date.now() / 1000);
           const elapsedTime = currentTime - blockchainStartTime;
           const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
@@ -292,10 +242,19 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       }
     });
   };
-  updateTCMPopStarData();
+
+
   useEffect(() => {
-    updateTCMPopStarData();
-  }, [balanceData, address]);
+    if(isConnected){
+      const interval = setInterval(() => {
+        updateTCMPopStarData();
+      }, 500); 
+    
+      return () => clearInterval(interval); // 清除定时器以避免内存泄漏
+    }
+  }, [isConnected]);
+
+
 
   useEffect(() => {
     if (timeControl === true && gameSuccess === false) {
@@ -305,6 +264,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         const newTimeLeft = overTime - timeElapsed;
         setTimeLeft(newTimeLeft > 0 ? newTimeLeft : 0);
         if (localStorage.getItem('showGameOver') === 'false') {
+          console.log(2222);
+          
           localStorage.setItem('showGameOver', 'true')
         }
       }
@@ -607,7 +568,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 <button
                   onClick={() => {
                     playFun();
-                    setGameSuccess(false)
+                    // setGameSuccess(false)
                   }}
                 >
                   Play Again

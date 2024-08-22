@@ -84,7 +84,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     network: { playerEntity, publicClient, palyerAddress },
     systemCalls: { interact, interactTCM, registerDelegation },
   } = useMUD();
-
+  
   const { isConnected, address } = useAccount();
   const { disconnect } = useDisconnect();
   const [numberData, setNumberData] = useState(25);
@@ -136,7 +136,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [showTopElements, setShowTopElements] = useState(false);  //控制顶部第一次显示隐藏
   const [playFuntop, setPlayFun] = useState(false);
   const playAction = localStorage.getItem('playAction');
-  const [isFirst, setIsFirst] = useState(true);
+  const hasExecutedRef = useRef(true);
   // 将 CANVAS_WIDTH 和 CANVAS_HEIGHT 保存到 state 中
   const [canvasSize, setCanvasSize] = useState({
     width: document.documentElement.clientWidth,
@@ -199,8 +199,9 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   // 判断用户临时钱包有没有钱 
   useEffect(() => {
-    if (isConnected && appName === "BASE/PopCraftSystem") {
-
+    
+    if (isConnected && appName === "BASE/PopCraftSystem" && !hasExecutedRef.current) {
+      
       if ((Number(balance) / 1e18) < 3) {
         setTopUpType(true);
         localStorage.setItem('money', 'nomoney')
@@ -212,6 +213,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
         setShowTopElements(true); // 显示顶部元素
         localStorage.setItem('money', 'toomoney')
+        
         if (TCMPopStarData && TCMPopStarData.startTime) {
           const currentTime = Math.floor(Date.now() / 1000);
           const elapsedTime = currentTime - Number(TCMPopStarData.startTime);
@@ -219,7 +221,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           if (updatedTimeLeft > 0) {
             localStorage.setItem('playAction', 'gameContinue');
             setTimeControl(true);
-          }
+          } 
           else {
             if (!loading && localStorage.getItem("showGameOver") !== "true") {
               localStorage.setItem('playAction', 'play')
@@ -235,15 +237,19 @@ export default function Header({ hoveredData, handleData }: Props) {
       }
     }
     else {
-      localStorage.setItem('money', 'nomoney')
-      localStorage.setItem('playAction', 'noplay')
-      localStorage.setItem('showGameOver', 'false')
-      if (appName === "BASE/PopCraftSystem") {
+      if(!hasExecutedRef.current){
+        localStorage.setItem('money', 'nomoney')
+        localStorage.setItem('playAction', 'noplay')
+        localStorage.setItem('showGameOver', 'false')
+        hasExecutedRef.current = true
+      }
+      if(appName === "BASE/PopCraftSystem"){
         setPopStar(true);
         setTimeControl(false)
       }
     }
-  }, [isConnected, balance,]);
+
+  }, [isConnected, balance, hasExecutedRef.current]);
 
   //音乐播放
   useEffect(() => {
@@ -331,11 +337,12 @@ export default function Header({ hoveredData, handleData }: Props) {
     chainName.charAt(0).toUpperCase() + chainName?.slice(1).toLowerCase();
 
   // const balanceFN = publicClient.getBalance({ address: palyerAddress });
+  
   // balanceFN.then((a: any) => {
   //   setBalance(a);
+  //   console.log(a);
+    
   // });
-
-
   const natIve = publicClient.chain.nativeCurrency.decimals;
   const btnLower = () => {
     setNumberData(numberData - 5);
@@ -765,7 +772,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       }, ClickThreshold);
     }
     get_function_param(action);
-
   };
 
   const handlePageClick = () => {
@@ -957,8 +963,8 @@ export default function Header({ hoveredData, handleData }: Props) {
             setLoadingSquare(null); // 清除 loading 状态
             onHandleLoading();
             localStorage.setItem('playAction', 'gameContinue');
-            if (actionData === "interact") {
-              localStorage.setItem("showGameOver", "false");
+            if(actionData==="interact"){
+            // localStorage.setItem("showGameOver", "false");
             }
           } else {
             handleError();
@@ -972,59 +978,68 @@ export default function Header({ hoveredData, handleData }: Props) {
       }
     });
   };
-
-
+  
+  
 
   //判断时间倒计时
-  const handleEoaContractData = (data) => {
+  const handleEoaContractData = (data: any) => {
+    
     setTCMPopStarData(data);
-
-    if (isFirst === true) {
-      setIsFirst(false)
-
-      if (isConnected) {
-
-        if ((Number(balance) / 1e18) < 3) {
-          setTopUpType(true);
-          localStorage.setItem('money', 'nomoney')
-          localStorage.setItem('playAction', 'noplay')
-          setPopStar(true);
-        } else {
-          setTopUpType(false);
-          setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
-          localStorage.setItem('money', 'toomoney')
-
-          if (data && data.startTime) {
-            const currentTime = Math.floor(Date.now() / 1000);
-            const elapsedTime = currentTime - Number(data.startTime);
-            const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
-
-            if (updatedTimeLeft > 0) {
-              //游戏没结束 popstart不显示 
-              // console.log('游戏没结束 popstart不显示');
-              setTimeControl(true);
-
-              localStorage.setItem('playAction', 'gameContinue');
-              setPopStar(false);
+    
+    if (hasExecutedRef.current && isConnected) {
+      hasExecutedRef.current = false;
+      
+       const balanceFN = publicClient.getBalance({ address: palyerAddress });
+  
+      balanceFN.then((balance: any) => {
+        setBalance(balance);
+          
+          if ((Number(balance) / 1e18) < 3) {
+            setTopUpType(true);
+            localStorage.setItem('money', 'nomoney')
+            localStorage.setItem('playAction', 'noplay')
+            setPopStar(true);
+          } else {
+            setTopUpType(false);
+            setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
+            localStorage.setItem('money', 'toomoney')
+  
+            if (data && data.startTime) {
+              const currentTime = Math.floor(Date.now() / 1000);
+              const elapsedTime = currentTime - Number(data.startTime);
+              const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
+              
+              if (updatedTimeLeft > 0) {
+                //游戏没结束 popstart不显示 
+                // console.log('游戏没结束 popstart不显示');
+                setTimeControl(true);
+  
+                localStorage.setItem('playAction', 'gameContinue');
+                setPopStar(false);
+              } else {
+                // console.log('游戏结束');
+                localStorage.setItem('playAction', 'play')
+                setPopStar(true);
+              }
             } else {
-              // console.log('游戏结束');
               localStorage.setItem('playAction', 'play')
               setPopStar(true);
             }
-          } else {
-            localStorage.setItem('playAction', 'play')
-            setPopStar(true);
           }
-        }
-      }
-      else {
+      
+      });
+      
+    }  else {
+      if(!isConnected){
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
         // setPopStar(true)
         setTimeControl(false);
       }
+      
     }
   };
+ 
 
   //创建游戏实例
   const playFun = () => {
@@ -1260,7 +1275,7 @@ export default function Header({ hoveredData, handleData }: Props) {
 
     return res;
   };
-
+  
   const get_value_type = (type: string) => {
     if (type === undefined) {
       return type;
@@ -1441,7 +1456,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       setPopStar(false);
     }
   }, [appName]);
-
+  
 
   return (
     <>
