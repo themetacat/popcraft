@@ -133,8 +133,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     return () => clearInterval(interval)
   }, [gameSuccess])
 
-
-
   const handlePayMent = () => {
     if (data1) {
       const payFunctionTwo = payFunction(data1?.key, numberData);

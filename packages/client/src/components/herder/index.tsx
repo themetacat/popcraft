@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useLayoutEffect } from "react";
 import style from "./index.module.css";
 import { Has, getComponentValueStrict, getComponentValue, AnyComponentValue, } from "@latticexyz/recs";
 import { formatUnits } from "viem";
@@ -26,7 +26,6 @@ import effectSound from '../../audio/2.mp3';
 import loadingImg from "../../images/loading.png";
 
 import { flare } from "viem/chains";
-import { F } from "@latticexyz/store/dist/store-e0caabe3";
 
 const colorOptionsData = [
   { color: "#4d4d4d", title: "Option 1" },
@@ -128,8 +127,6 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [addressModel, setAddressModel] = useState(false);
   const [enumValue, setEnumValue] = useState({});
   const [ownerData, setOwnerData] = useState(null);
-  // const CANVAS_WIDTH = document.documentElement.clientWidth; // 获取整个页面的宽度
-  // const CANVAS_HEIGHT = document.documentElement.clientHeight; // 获取整个页面的高度
   const audioRef = useRef<HTMLAudioElement>(null);//控制背景音乐
   const audioCache: { [url: string]: HTMLAudioElement } = {};//控制背景音效
   const [showTopUp, setShowTopUp] = useState(false); //控制弹出层的显示与隐藏
@@ -143,7 +140,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     height: document.documentElement.clientHeight,
   });
   const [loadingSquare, setLoadingSquare] = useState<{ x: number; y: number } | null>(null);
-  const overTime = 303;
+  const overTime = 303; //控制顶部时间
 
   useEffect(() => {
     // 默认设置localStorage中的值为popCraft相关的值
@@ -152,7 +149,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     window.localStorage.setItem("namespace", "popCraft");
     window.localStorage.setItem("manifest", "BASE/PopCraftSystem");
   }, []);
-
 
 
   // 监听窗口大小变化，并更新 canvas 尺寸
@@ -978,12 +974,9 @@ export default function Header({ hoveredData, handleData }: Props) {
   //判断时间倒计时
   const handleEoaContractData = (data) => {
     setTCMPopStarData(data);
-
     if (isFirst === true) {
       setIsFirst(false)
-
       if (isConnected) {
-
         if ((Number(balance) / 1e18) < 3) {
           setTopUpType(true);
           localStorage.setItem('money', 'nomoney')
@@ -1003,7 +996,6 @@ export default function Header({ hoveredData, handleData }: Props) {
               //游戏没结束 popstart不显示 
               // console.log('游戏没结束 popstart不显示');
               setTimeControl(true);
-
               localStorage.setItem('playAction', 'gameContinue');
               setPopStar(false);
             } else {
@@ -1314,7 +1306,6 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   const handleUpdateAbiJson = (data: any) => {
     setUpdate_abi_json(data);
-
   };
 
   const handleUpdateAbiCommonJson = (data: any) => {
@@ -1419,12 +1410,10 @@ export default function Header({ hoveredData, handleData }: Props) {
       const scrollY = window.pageYOffset || document.documentElement.scrollTop;
       setScrollOffset({ x: scrollX, y: scrollY });
     };
-
     if (canvas) {
       canvas.addEventListener("mousemove", handleMouseMove);
     }
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       if (canvas) {
         canvas.removeEventListener("mousemove", handleMouseMove);
@@ -1722,7 +1711,6 @@ export default function Header({ hoveredData, handleData }: Props) {
             loadingplay={loadingplay} />
         </div>
       ) : null}
-
 
       {boxPrompt === true || appName === "BASE/PopCraftSystem" ? (
         <BoxPrompt
