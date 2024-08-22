@@ -224,10 +224,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
           setTimeLeft(updatedTimeLeft);
           const allZeros = TCMPopStarData.matrixArray.every((data) => data === 0n);
-          if (allZeros) {
+          if (allZeros && updatedTimeLeft > 0) {
             localStorage.setItem('showGameOver', 'true');
             setGameSuccess(true)
-          } else {
+          }
+          else {
             setGameSuccess(false)
             if (TCMPopStarData.gameFinished === true) {
               seta(true)
