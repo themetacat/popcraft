@@ -264,8 +264,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         const newTimeLeft = overTime - timeElapsed;
         setTimeLeft(newTimeLeft > 0 ? newTimeLeft : 0);
         if (localStorage.getItem('showGameOver') === 'false') {
-          console.log(2222);
-          
           localStorage.setItem('showGameOver', 'true')
         }
       }
