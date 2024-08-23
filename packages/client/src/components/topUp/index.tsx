@@ -43,6 +43,7 @@ export default function TopUp({
   const [withDrawHashVal, setwithDrawHashVal] = useState(undefined);
   const [balance, setBalance] = useState(0);
   const [isWithdrawing, setIsWithdrawing] = useState(false);
+  const [isDepositing, setIsDepositing] = useState(false);
   const [withdrawButtonText, setWithdrawButtonText] = useState("WITHDRAW ALL");
   const {
     network: { walletClient, publicClient },
@@ -122,7 +123,7 @@ export default function TopUp({
   const handleChange = (event) => {
     const value = event.target.value;
     const balanceEOA = Number(balanceResultEOA.data?.value) / 1e18;
-    
+
     if (parseFloat(value) < 0) {
       setInputValue("0");
     }
@@ -179,7 +180,7 @@ export default function TopUp({
       parseFloat(inputValue) < Number(balanceResultEOA.data?.value) / 1e18
     ) {
       setTransferPayType(false);
-
+      setIsDepositing(true); // 设置按钮状态为正在充值
       submit();
     } else {
       setLoading(false);
@@ -192,8 +193,8 @@ export default function TopUp({
     const value = inputValue;
 
     try {
-      const nonce = await publicClient.getTransactionCount({address:address});
-      const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue), nonce});
+      const nonce = await publicClient.getTransactionCount({ address: address });
+      const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue), nonce });
       const result = await publicClient.waitForTransactionReceipt({ hash: result_hash });
       // console.log(result,'1111111111111111');
       if (result.status === "success") {
@@ -208,6 +209,7 @@ export default function TopUp({
       toast.error("Failed to top up!");
     } finally {
       setTransferPayType(false); // 确保在任何情况下都将按钮文案恢复为“Deposit via transfer”
+      setIsDepositing(false); // 重置按钮状态
     }
   }
 
@@ -449,7 +451,7 @@ export default function TopUp({
                   </div>
                 </div>
               </div>
-
+              {/* 
               {!chain.unsupported && (
                 <button
                   onClick={transferPay}
@@ -470,13 +472,35 @@ export default function TopUp({
                     <div>Waiting for confirmation...</div>
                   )}
                 </button>
+              )} */}
+              {!chain.unsupported && (
+                <button
+                  onClick={transferPay}
+                  className={
+                    transferPayType === false
+                      ? style.footerBtn
+                      : style.footerBtnElse
+                  }
+                  disabled={transferPayType === true || isConfirming || isPending || isDepositing}
+                >
+                  {transferPayType === true && "Not enough funds"}
+                  {transferPayType === false &&
+                    !isConfirming &&
+                    !isPending &&
+                    !isDepositing &&
+                    "Deposit via transfer"}
+                  {transferPayType === false && (isConfirming || isPending || isDepositing) && (
+                    <div>Waiting for confirmation...</div>
+                  )}
+                </button>
               )}
 
-                {chain.unsupported && (
-                    <button onClick={openChainModal} type="button">
-                     Wrong network
-                   </button>
-                )}
+
+              {chain.unsupported && (
+                <button onClick={openChainModal} type="button">
+                  Wrong network
+                </button>
+              )}
             </>
           );
         }}

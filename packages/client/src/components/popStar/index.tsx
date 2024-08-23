@@ -40,7 +40,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
       <div className={style.Container}>
         {/* <p className={style.copywritingFirst}>How to play?</p> */}
         <span className={style.copywritingTwo}>This is a composability-based elimination game.You have&nbsp;</span>
-        <span className={style.copywritingThree}>5 minutes</span>&nbsp;
+        <span className={style.copywritingThree}>4 minutes</span>&nbsp;
         <span className={style.copywritingTwo}>
           {" "}
           to eliminate all the materials.{" "}

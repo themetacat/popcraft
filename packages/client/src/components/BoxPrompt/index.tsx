@@ -35,7 +35,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     network: { palyerAddress },
     systemCalls: { interact, forMent, payFunction, registerDelegation },
   } = useMUD();
-  const overTime = 303;
+  const overTime = 243;
   const [timeLeft, setTimeLeft] = useState(overTime);
   const [warnBox, setWarnBox] = useState(false);
   const [dataq, setdataq] = useState(false);
@@ -483,7 +483,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           <div className={style.content}>
             <p className={style.title}>How to Play</p>
             <p className={style.actical}>
-              This is a composability-based elimination game. You have 5 minutes to eliminate all the materials.
+              This is a composability-based elimination game. You have 4 minutes to eliminate all the materials.
               <br /> You'll be rewarded with 150 $BUGS for completing the game.
               <br />
               On the game board, any two or more adjacent identical materials can be

@@ -242,7 +242,7 @@ export function createSystemCalls(
     action: string,
     other_params: any
   ) => {
-    // console.log(coordinates);
+    // console.log(interactTCM);
     
     const app_name = window.localStorage.getItem("app_name") || "paint";
     const system_name = window.localStorage.getItem("system_name") as string;

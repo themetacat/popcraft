@@ -81,7 +81,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     network: { playerEntity, publicClient, palyerAddress },
     systemCalls: { interact, interactTCM, registerDelegation },
   } = useMUD();
-  
+
   const { isConnected, address } = useAccount();
   const { disconnect } = useDisconnect();
   const [numberData, setNumberData] = useState(25);
@@ -131,13 +131,18 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [playFuntop, setPlayFun] = useState(false);
   const playAction = localStorage.getItem('playAction');
   const hasExecutedRef = useRef(true);
+  const [imageCache, setImageCache] = useState({});
+
+
+
+
   // 将 CANVAS_WIDTH 和 CANVAS_HEIGHT 保存到 state 中
   const [canvasSize, setCanvasSize] = useState({
     width: document.documentElement.clientWidth,
     height: document.documentElement.clientHeight,
   });
   const [loadingSquare, setLoadingSquare] = useState<{ x: number; y: number } | null>(null);
-  const overTime = 303; //控制顶部时间
+  const overTime = 423; //控制顶部时间
 
   useEffect(() => {
     // 默认设置localStorage中的值为popCraft相关的值
@@ -208,7 +213,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           if (updatedTimeLeft > 0) {
             localStorage.setItem('playAction', 'gameContinue');
             setTimeControl(true);
-          } 
+          }
           else {
             if (!loading && localStorage.getItem("showGameOver") !== "true") {
               localStorage.setItem('playAction', 'play')
@@ -224,13 +229,13 @@ export default function Header({ hoveredData, handleData }: Props) {
       }
     }
     else {
-      if(!hasExecutedRef.current){
+      if (!hasExecutedRef.current) {
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
         localStorage.setItem('showGameOver', 'false')
         hasExecutedRef.current = true
       }
-      if(appName === "BASE/PopCraftSystem"){
+      if (appName === "BASE/PopCraftSystem") {
         setPopStar(true);
         setTimeControl(false)
       }
@@ -323,11 +328,11 @@ export default function Header({ hoveredData, handleData }: Props) {
     chainName.charAt(0).toUpperCase() + chainName?.slice(1).toLowerCase();
 
   // const balanceFN = publicClient.getBalance({ address: palyerAddress });
-  
+
   // balanceFN.then((a: any) => {
   //   setBalance(a);
   //   console.log(a);
-    
+
   // });
   const natIve = publicClient.chain.nativeCurrency.decimals;
   const btnLower = () => {
@@ -435,6 +440,139 @@ export default function Header({ hoveredData, handleData }: Props) {
     ctx.restore();
   };
 
+
+  // const drawGrid2 = useCallback(
+  //   (
+  //     ctx: CanvasRenderingContext2D,
+  //     hoveredSquare: { x: number; y: number } | null,
+  //     playType: any
+  //   ) => {
+  //     const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+  //     const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+  //     // 清空画布
+  //     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+  //     // 绘制水平和垂直网格线
+  //     for (let x = 0; x <= 10 * GRID_SIZE; x += GRID_SIZE) {
+  //       ctx.beginPath();
+  //       ctx.moveTo(x + offsetX, offsetY);
+  //       ctx.lineTo(x + offsetX, 10 * GRID_SIZE + offsetY);
+  //       ctx.stroke();
+  //     }
+  //     for (let y = 0; y <= 10 * GRID_SIZE; y += GRID_SIZE) {
+  //       ctx.beginPath();
+  //       ctx.moveTo(offsetX, y + offsetY);
+  //       ctx.lineTo(10 * GRID_SIZE + offsetX, y + offsetY);
+  //       ctx.stroke();
+  //     }
+
+  //     // 绘制网格中的内容
+  //     for (let i = 0; i < 10; i++) {
+  //       for (let j = 0; j < 10; j++) {
+  //         const currentX = i * GRID_SIZE + offsetX;
+  //         const currentY = j * GRID_SIZE + offsetY;
+
+  //         // 绘制每个格子的边框和填充色
+  //         ctx.lineWidth = 1;
+  //         ctx.strokeStyle = "#2e1043";
+  //         ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
+  //         ctx.fillStyle = "#2f1643";
+  //         ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
+
+  //         // 绘制图像
+  //         if (!loadingSquare || !(loadingSquare.x === i && loadingSquare.y === j)) {
+  //           const img = new Image();
+  //           if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
+  //             // img.src =
+  //             //   imageIconData[
+  //             //     TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
+  //             //   ]?.src;
+  //             // if (img.src !== undefined) {
+  //             //   ctx.drawImage(img, currentX, currentY, GRID_SIZE, GRID_SIZE);
+  //             // }
+  //             const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
+  //             const src = imageIconData[tokenAddress]?.src;
+
+  //             img.src = src
+  //             console.log(img.src);
+
+  //             if (tokenAddress !== undefined && src !== undefined) {
+  //               ctx.drawImage(img, currentX, currentY, GRID_SIZE, GRID_SIZE);
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+
+  //     const scale = 1.2;
+
+  //     if (hoveredSquare && coordinates.x < 10) {
+  //       const i = hoveredSquare.x;
+  //       const j = hoveredSquare.y;
+  //       const currentX = i * GRID_SIZE + offsetX;
+  //       const currentY = j * GRID_SIZE + offsetY;
+
+  //       // 如果正在加载，则不放大并且只展示加载状态
+  //       if (loadingSquare && loadingSquare.x === i && loadingSquare.y === j) {
+  //         const loadingImgElement = new Image();
+  //         loadingImgElement.src = loadingImg;
+  //         const angle = (performance.now() % 5000) / 5000 * 360; // 旋转角度
+  //         drawRotatingImage(ctx, loadingImgElement, currentX, currentY, GRID_SIZE, GRID_SIZE, angle);
+  //         ctx.canvas.style.cursor = "default";
+  //       } else {
+  //         const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
+  //         const drawY = currentY - (GRID_SIZE * (scale - 1)) / 2;
+  //         const drawSize = GRID_SIZE * scale;
+
+  //         ctx.clearRect(drawX, drawY, drawSize, drawSize);
+
+  //         ctx.lineWidth = 0.5;
+  //         ctx.strokeStyle = "#2e1043";
+  //         ctx.strokeRect(drawX, drawY, drawSize, drawSize);
+  //         ctx.fillStyle = "#2f1643";
+  //         ctx.fillRect(drawX, drawY, drawSize, drawSize);
+
+  //         const img = new Image();
+  //         if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
+
+  //           const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
+  //           const src = imageIconData[tokenAddress]?.src;
+  //           img.src = src
+
+  //           if (tokenAddress !== undefined && src !== undefined) {
+  //             ctx.drawImage(img, drawX, drawY, drawSize, drawSize);
+  //           }
+  //         }
+  //         ctx.canvas.style.cursor = "pointer";
+  //       }
+  //     } else {
+  //       ctx.canvas.style.cursor = "default";
+  //     }
+
+  //     if (loadingSquare && loadingSquare.x < 10 && loadingSquare.x >= 0 && loadingSquare.y < 10 && loadingSquare.y >= 0) {
+  //       const loadingImgElement = new Image();
+  //       loadingImgElement.src = loadingImg;
+  //       const angle = (performance.now() % 5000) / 5000 * 360; // 旋转角度
+  //       drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX, loadingSquare.y * GRID_SIZE + offsetY, GRID_SIZE, GRID_SIZE, angle);
+  //     }
+  //   },
+  //   [
+  //     GRID_SIZE,
+  //     coordinates,
+  //     numberData,
+  //     TCMPopStarData,
+  //     CANVAS_WIDTH,
+  //     getEntityAtCoordinates,
+  //     CANVAS_HEIGHT,
+  //     selectedColor,
+  //     scrollOffset,
+  //     loading,
+  //     loadingplay,
+  //     loadingSquare,
+  //   ]
+  // );
+
+
   const drawGrid2 = useCallback(
     (
       ctx: CanvasRenderingContext2D,
@@ -475,14 +613,19 @@ export default function Header({ hoveredData, handleData }: Props) {
 
           // 绘制图像
           if (!loadingSquare || !(loadingSquare.x === i && loadingSquare.y === j)) {
-            const img = new Image();
             if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
-              img.src =
-                imageIconData[
-                  TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
-                ]?.src;
-              if (img.src !== undefined) {
-                ctx.drawImage(img, currentX, currentY, GRID_SIZE, GRID_SIZE);
+              const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1];
+              const src = imageIconData[tokenAddress]?.src;
+              if (tokenAddress !== undefined && src !== undefined) {
+                if (!imageCache[src]) {
+                  const img = new Image();
+                  img.src = src;
+                  img.onload = () => {
+                    setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
+                  };
+                } else {
+                  ctx.drawImage(imageCache[src], currentX, currentY, GRID_SIZE, GRID_SIZE);
+                }
               }
             }
           }
@@ -517,14 +660,20 @@ export default function Header({ hoveredData, handleData }: Props) {
           ctx.fillStyle = "#2f1643";
           ctx.fillRect(drawX, drawY, drawSize, drawSize);
 
-          const img = new Image();
           if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
-            img.src =
-              imageIconData[
-                TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
-              ]?.src;
-            if (img.src !== undefined) {
-              ctx.drawImage(img, drawX, drawY, drawSize, drawSize);
+            const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1];
+            const src = imageIconData[tokenAddress]?.src;
+
+            if (tokenAddress !== undefined && src !== undefined) {
+              if (!imageCache[src]) {
+                const img = new Image();
+                img.src = src;
+                img.onload = () => {
+                  setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
+                };
+              } else {
+                ctx.drawImage(imageCache[src], drawX, drawY, drawSize, drawSize);
+              }
             }
           }
           ctx.canvas.style.cursor = "pointer";
@@ -553,9 +702,9 @@ export default function Header({ hoveredData, handleData }: Props) {
       loading,
       loadingplay,
       loadingSquare,
+      imageCache,
     ]
   );
-
   useEffect(() => {
     if (appName === "BASE/PopCraftSystem") {
       setNumberData(30);
@@ -938,7 +1087,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       actionData,
       other_params
     );
-
+      
     interact_data.then((increDataVal: any) => {
       if (increDataVal[1]) {
         increDataVal[1].then((a: any) => {
@@ -949,8 +1098,8 @@ export default function Header({ hoveredData, handleData }: Props) {
             setLoadingSquare(null); // 清除 loading 状态
             onHandleLoading();
             localStorage.setItem('playAction', 'gameContinue');
-            if(actionData==="interact"){
-            // localStorage.setItem("showGameOver", "false");
+            if (actionData === "interact") {
+              // localStorage.setItem("showGameOver", "false");
             }
           } else {
             handleError();
@@ -964,66 +1113,67 @@ export default function Header({ hoveredData, handleData }: Props) {
       }
     });
   };
-  
-  
+
+
 
   //判断时间倒计时
   const handleEoaContractData = (data: any) => {
-    
+
     setTCMPopStarData(data);
-    
+
     if (hasExecutedRef.current && isConnected) {
       const balanceFN = publicClient.getBalance({ address: palyerAddress });
-      
+
       balanceFN.then((balance: any) => {
         setBalance(balance);
-          
-          if ((Number(balance) / 1e18) < 3) {
-            setTopUpType(true);
-            localStorage.setItem('money', 'nomoney')
-            localStorage.setItem('playAction', 'noplay')
-            setPopStar(true);
-          } else {
-            setTopUpType(false);
-            setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
-            localStorage.setItem('money', 'toomoney')
-  
-            if (data && data.startTime) {
-              const currentTime = Math.floor(Date.now() / 1000);
-              const elapsedTime = currentTime - Number(data.startTime);
-              const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
-              
-              if (updatedTimeLeft > 0) {
-                //游戏没结束 popstart不显示 
-                // console.log('游戏没结束 popstart不显示');
-                setTimeControl(true);
-  
-                localStorage.setItem('playAction', 'gameContinue');
-                setPopStar(false);
-              } else {
-                // console.log('游戏结束');
-                localStorage.setItem('playAction', 'play')
-                setPopStar(true);
-              }
+
+        if ((Number(balance) / 1e18) < 3) {
+          setTopUpType(true);
+          localStorage.setItem('money', 'nomoney')
+          localStorage.setItem('playAction', 'noplay')
+          setPopStar(true);
+        } else {
+          setTopUpType(false);
+          setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
+          localStorage.setItem('money', 'toomoney')
+
+          if (data && data.startTime) {
+            const currentTime = Math.floor(Date.now() / 1000);
+            const elapsedTime = currentTime - Number(data.startTime);
+            const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
+
+            if (updatedTimeLeft > 0) {
+              //游戏没结束 popstart不显示 
+              // console.log('游戏没结束 popstart不显示');
+              setTimeControl(true);
+
+              localStorage.setItem('playAction', 'gameContinue');
+              setPopStar(false);
             } else {
+              // console.log('游戏结束');
               localStorage.setItem('playAction', 'play')
               setPopStar(true);
             }
+          } else {
+            localStorage.setItem('playAction', 'play')
+            setPopStar(true);
           }
-          hasExecutedRef.current = false;
+        }
+        hasExecutedRef.current = false;
       });
-      
-    }  else {
-      if(!isConnected){
+
+    } else {
+      if (!isConnected) {
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
         // setPopStar(true)
         setTimeControl(false);
       }
-      
+
     }
   };
- 
+
+
 
   //创建游戏实例
   const playFun = () => {
@@ -1035,7 +1185,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       if (money == "toomoney") {
         const delegationData = registerDelegation();
         delegationData.then((data) => {
-          if (data !== undefined && data.status == "success") {
+          if (data !== undefined && data.status == "success") {            
             playData() //渲染游戏画布+图片
           } else {
             setLoadingpaly(false)
@@ -1063,10 +1213,12 @@ export default function Header({ hoveredData, handleData }: Props) {
       setEmptyRegionNum({ x: 0, y: 0 });
     }
     const ctx = canvasRef?.current?.getContext("2d");
+    
     if (ctx && canvasRef) {
       if (appName === "BASE/PopCraftSystem") {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         drawGrid2(ctx, coordinates, true);
+        
       } else {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         drawGrid(ctx, coordinates, true);
@@ -1150,6 +1302,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           }
         }
       }
+
     },
     [
       translateX,
@@ -1259,7 +1412,7 @@ export default function Header({ hoveredData, handleData }: Props) {
 
     return res;
   };
-  
+
   const get_value_type = (type: string) => {
     if (type === undefined) {
       return type;
@@ -1437,7 +1590,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       setPopStar(false);
     }
   }, [appName]);
-  
+
 
   return (
     <>
