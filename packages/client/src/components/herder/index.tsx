@@ -132,6 +132,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const playAction = localStorage.getItem('playAction');
   const hasExecutedRef = useRef(true);
   const [imageCache, setImageCache] = useState({});
+
   
 
   // 将 CANVAS_WIDTH 和 CANVAS_HEIGHT 保存到 state 中
@@ -140,7 +141,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     height: document.documentElement.clientHeight,
   });
   const [loadingSquare, setLoadingSquare] = useState<{ x: number; y: number } | null>(null);
-  const overTime = 423; //控制顶部时间
+  const overTime = 243; //控制顶部时间
 
   useEffect(() => {
     // 默认设置localStorage中的值为popCraft相关的值
@@ -325,7 +326,13 @@ export default function Header({ hoveredData, handleData }: Props) {
   const capitalizedString =
     chainName.charAt(0).toUpperCase() + chainName?.slice(1).toLowerCase();
 
-  
+  // const balanceFN = publicClient.getBalance({ address: palyerAddress });
+
+  // balanceFN.then((a: any) => {
+  //   setBalance(a);
+  //   console.log(a);
+
+  // });
   const natIve = publicClient.chain.nativeCurrency.decimals;
   const btnLower = () => {
     setNumberData(numberData - 5);
