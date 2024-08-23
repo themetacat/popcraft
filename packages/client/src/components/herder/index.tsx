@@ -132,9 +132,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const playAction = localStorage.getItem('playAction');
   const hasExecutedRef = useRef(true);
   const [imageCache, setImageCache] = useState({});
-
-
-
+  
 
   // 将 CANVAS_WIDTH 和 CANVAS_HEIGHT 保存到 state 中
   const [canvasSize, setCanvasSize] = useState({
