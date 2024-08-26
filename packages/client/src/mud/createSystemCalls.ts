@@ -358,7 +358,6 @@ export function createSystemCalls(
   //     console.error("Failed to setup network:", error.message);
   //   }
   
-    return
      const args = {
         for_player: addressData,
         for_app: app_name,
