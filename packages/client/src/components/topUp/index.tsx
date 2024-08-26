@@ -11,6 +11,9 @@ import turnOffEye from "../../images/turnOffEye.png";
 import { useMUD } from "../../MUDContext";
 import { getNetworkConfig } from "../../mud/getNetworkConfig";
 import { type Hex, parseEther } from "viem";
+import loadingImg from "../../images/loading.png";
+
+
 import {
   type BaseError,
   useSendTransaction,
@@ -451,28 +454,6 @@ export default function TopUp({
                   </div>
                 </div>
               </div>
-              {/* 
-              {!chain.unsupported && (
-                <button
-                  onClick={transferPay}
-                  className={
-                    transferPayType === false
-                      ? style.footerBtn
-                      : style.footerBtnElse
-                  }
-                  disabled={transferPayType === true || isConfirming || isPending}
-                >
-                  {transferPayType === true && "Not enough funds"}
-                  {transferPayType === false &&
-                    !isConfirming &&
-                    !isPending &&
-                    "Deposit via transfer"}
-
-                  {transferPayType === false && (isConfirming || isPending) && (
-                    <div>Waiting for confirmation...</div>
-                  )}
-                </button>
-              )} */}
               {!chain.unsupported && (
                 <button
                   onClick={transferPay}
@@ -494,6 +475,7 @@ export default function TopUp({
                   )}
                 </button>
               )}
+
 
 
               {chain.unsupported && (
