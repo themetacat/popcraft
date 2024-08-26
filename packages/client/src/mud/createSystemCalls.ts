@@ -72,7 +72,9 @@ export function createSystemCalls(
   {}: ClientComponents
 ) {
   const app_name: string = window.localStorage.getItem("app_name") || "paint";
-
+  // https://pixelaw-game.vercel.app/TCMPopStarSystem.abi.json
+  // const response = await fetch(worldAbiUrl); 
+  // systemData = await response.json();
   abi_json[app_name] = abi;
   const update_abi = (value: any, common = false) => {
     const app_name: string = window.localStorage.getItem("app_name") || "paint";
@@ -235,6 +237,104 @@ export function createSystemCalls(
     }
     return [tx, hashValpublic];
   };
+
+
+  const popCraftAbi = [
+    {
+      "inputs": [
+          {
+              "components": [
+                  {
+                      "internalType": "address",
+                      "name": "for_player",
+                      "type": "address"
+                  },
+                  {
+                      "internalType": "string",
+                      "name": "for_app",
+                      "type": "string"
+                  },
+                  {
+                      "components": [
+                          {
+                              "internalType": "uint32",
+                              "name": "x",
+                              "type": "uint32"
+                          },
+                          {
+                              "internalType": "uint32",
+                              "name": "y",
+                              "type": "uint32"
+                          }
+                      ],
+                      "internalType": "struct Position",
+                      "name": "position",
+                      "type": "tuple"
+                  },
+                  {
+                      "internalType": "string",
+                      "name": "color",
+                      "type": "string"
+                  }
+              ],
+              "internalType": "struct DefaultParameters",
+              "name": "default_parameters",
+              "type": "tuple"
+          }
+      ],
+      "name": "interact",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+  }, 
+  {
+    "inputs": [
+        {
+            "components": [
+                {
+                    "internalType": "address",
+                    "name": "for_player",
+                    "type": "address"
+                },
+                {
+                    "internalType": "string",
+                    "name": "for_app",
+                    "type": "string"
+                },
+                {
+                    "components": [
+                        {
+                            "internalType": "uint32",
+                            "name": "x",
+                            "type": "uint32"
+                        },
+                        {
+                            "internalType": "uint32",
+                            "name": "y",
+                            "type": "uint32"
+                        }
+                    ],
+                    "internalType": "struct Position",
+                    "name": "position",
+                    "type": "tuple"
+                },
+                {
+                    "internalType": "string",
+                    "name": "color",
+                    "type": "string"
+                }
+            ],
+            "internalType": "struct DefaultParameters",
+            "name": "default_parameters",
+            "type": "tuple"
+        }
+    ],
+    "name": "pop",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}
+  ]
   const interactTCM = async (
     coordinates: any,
     addressData: any,
@@ -282,10 +382,12 @@ export function createSystemCalls(
       });
 
       const encodeData = encodeFunctionData({
-        abi: abi_json[app_name],
+        abi: popCraftAbi,
         functionName: action,
         args: allArgs,
       });
+      // console.log(encodeData);
+      
       if(action === 'interact'){
         const txData = await worldContract.write.callFrom([
           account,
@@ -296,6 +398,7 @@ export function createSystemCalls(
           }),
           encodeData,
         ], {gas: 30000000n});
+        console.log(txData);
         
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
         
