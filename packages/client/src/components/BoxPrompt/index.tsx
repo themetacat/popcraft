@@ -22,7 +22,7 @@ interface Props {
   playFun: any;
   handleEoaContractData: any;
   setPopStar: any;
-  showTopElements:any;
+  showTopElements: any;
 
 }
 export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, showTopElements }: Props) {
@@ -54,6 +54,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const { address, isConnected } = useAccount();
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
+  const [loadingPlayAgain, setLoadingPlayAgain] = useState(false);
+
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
@@ -71,6 +73,13 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     setPopStar(false);
   };
 
+  const handlePlayAgaintow = () => {
+    setLoadingPlayAgain(true);
+    playFun();
+    setPopStar(false);
+    // setLoadingPlayAgain(false);
+ };
+  
   useEffect(() => {
     let interval: any; // 声明一个定时器变量
     if (gameSuccess) {
@@ -168,7 +177,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }
   };
 
-   const fetchData = async() => {
+  const fetchData = async () => {
     try {
       if (address === undefined) {
         return;
@@ -177,12 +186,12 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         TCMPopStar,
         addressToEntityID(address)
       );
-      
+
       if (TCMPopStarData) {
         const tokenBalanceResults = TCMPopStarData.tokenAddressArr.map(
-           (item) => {
+          (item) => {
             try {
-              const balance =  getComponentValue(
+              const balance = getComponentValue(
                 TokenBalance,
                 addressToEntityIDTwo(address, item)
               );
@@ -192,16 +201,16 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               return { [item]: undefined };
             }
           }
-        );     
+        );
         setBalanceData(tokenBalanceResults)
       }
       const deleGeData = getComponentValue(
         UserDelegationControl,
         addressToEntityIDTwo(address, palyerAddress)
       );
-      if(deleGeData){
+      if (deleGeData) {
         localStorage.setItem('deleGeData', "true")
-      }else{
+      } else {
         localStorage.setItem('deleGeData', "undefined")
       }
 
@@ -214,7 +223,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const updateTCMPopStarData = () => {
     const allTCMPopStarData = fetchData();
     allTCMPopStarData.then((TCMPopStarData) => {
-      if (palyerAddress !== undefined) {        
+      if (palyerAddress !== undefined) {
         handleEoaContractData(TCMPopStarData);
         if (TCMPopStarData) {
           setGetEoaContractData(TCMPopStarData?.tokenAddressArr);
@@ -240,11 +249,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   };
 
   useEffect(() => {
-    if(isConnected){
+    if (isConnected) {
       const interval = setInterval(() => {
         updateTCMPopStarData();
-      }, 500); 
-    
+      }, 500);
+
       return () => clearInterval(interval); // 清除定时器以避免内存泄漏
     }
   }, [isConnected]);
@@ -316,57 +325,59 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const formatBalance = (balance) => {
     return balance.toLocaleString();
   };
+  
+  
 
   return (
     <>
-    {showTopElements &&  (
-      <div className={style.container}>
-        <div className={style.firstPart}>
-          <p style={{ cursor: "pointer" }}>
-            {timeControl && timeLeft !== 0 && gameSuccess === false ? formatTime(timeLeft) :
-              <div onClick={() => {
-                playFun()
-              }}>New<br />Game</div>
-            }
-          </p>
-          {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
+      {showTopElements && (
+        <div className={style.container}>
+          <div className={style.firstPart}>
+            <p style={{ cursor: "pointer" }}>
+              {timeControl && timeLeft !== 0 && gameSuccess === false ? formatTime(timeLeft) :
+                <div onClick={() => {
+                  playFun()
+                }}>New<br />Game</div>
+              }
+            </p>
+            {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
+          </div>
+          <div className={style.twoPart}>
+            <p>150&nbsp;$bugs</p>
+            <p>REWARDS</p>
+          </div>
+          <div className={style.threePart}>
+            <p>
+              {formatBalance(balance)}&nbsp;$bugs
+            </p>
+            <p>BALANCE</p>
+          </div>
+          <div className={style.imgContent}  >
+            {Object.entries(matchedData).map(([key, { src, balance, name }]) => (
+              <div key={key} className={style.containerItem}  >
+                <div className={style.iconFont} >{balance}</div>
+                <img className={style.imgconItem} src={src} alt={name} />
+              </div>
+            ))}
+          </div>
+          <button
+            className={style.buyBtn}
+            onClick={() => {
+              setdataq(!warnBox);
+            }}
+          >
+            BUY
+          </button>
+          <button
+            className={style.warningIcon}
+            onClick={() => {
+              setWarnBox(!warnBox);
+            }}
+          >
+            ?
+          </button>
         </div>
-        <div className={style.twoPart}>
-          <p>150&nbsp;$bugs</p>
-          <p>REWARDS</p>
-        </div>
-        <div className={style.threePart}>
-          <p>
-          {formatBalance(balance)}&nbsp;$bugs
-          </p>
-          <p>BALANCE</p>
-        </div>
-        <div className={style.imgContent}  >
-          {Object.entries(matchedData).map(([key, { src, balance, name }]) => (
-            <div key={key} className={style.containerItem}  >
-              <div className={style.iconFont} >{balance}</div>
-              <img className={style.imgconItem} src={src} alt={name} />
-            </div>
-          ))}
-        </div>
-        <button
-          className={style.buyBtn}
-          onClick={() => {
-            setdataq(!warnBox);
-          }}
-        >
-          BUY
-        </button>
-        <button
-          className={style.warningIcon}
-          onClick={() => {
-            setWarnBox(!warnBox);
-          }}
-        >
-          ?
-        </button>
-      </div>
-    )}
+      )}
 
       {dataq === true ? (
         <div
@@ -536,24 +547,14 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               </div>
             </div>
           ) : null}
-
-      {
-        gameSuccess === true
+      {/* 
+      { gameSuccess === true
           && localStorage.getItem('showGameOver') === 'true'
           ? (
             <div
               className={panningType !== "false" ? style.overlayBuy : style.overlay}
             >
               <div className={style.contentCon}>
-                {/* <img
-                  className={style.turnOff}
-                  src={trunOff}
-                  alt=""
-                  onClick={() => {
-                    localStorage.setItem('showGameOver', 'false')
-                    setCongratsType(false);
-                  }}
-                /> */}
                 <p>Congrats！</p>
                 <p>+150 $bugs！</p>
                 <button
@@ -566,7 +567,39 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 </button>
               </div>
             </div>
-          ) : null}
+          ) : null} */}
+
+      {
+        gameSuccess === true
+          && localStorage.getItem('showGameOver') === 'true'
+          ? (
+            <div
+              className={panningType !== "false" ? style.overlayBuy : style.overlay}
+            >
+              <div className={style.contentCon}>
+                <p>Congrats！</p>
+                <p>+150 $bugs！</p>
+                <button
+                  onClick={handlePlayAgaintow}
+                  disabled={loadingPlayAgain}
+                  style={{ cursor: loadingPlayAgain ? "not-allowed" : "auto" }}
+                >
+                  {loadingPlayAgain ? (
+                    <img
+                      src={loadingImg}
+                      className={`${style.commonCls2} ${style.spinAnimation}`}
+                    />
+                  ) : (
+                    "Play Again"
+                  )}
+                </button>
+              </div>
+            </div>
+          ) : null
+      }
+
+
+
       {data2 === true ? (
         <div
           className={panningType !== "false" ? style.overlayBuy : style.overlay}
