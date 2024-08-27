@@ -78,7 +78,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     setLoadingPlayAgain(true);
     playFun();
     setPopStar(false);
-    // setLoadingPlayAgain(false);
  };
   
   useEffect(() => {
