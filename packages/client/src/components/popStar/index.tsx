@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./index.module.css";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -14,14 +14,14 @@ interface Props {
 
 export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop, loadingplay }: Props) {
   const playAction = localStorage.getItem("playAction");
+  const [playButtonClicked, setPlayButtonClicked] = useState(false);
   const { isConnected } = useAccount();
   const handleConnectClick = () => {
-    
     if (isConnected) {
-      if (playAction === 'play' ) {
+      if (playAction === 'play') {
         setPopStar(true)
         playFun();
-      
+        setPlayButtonClicked(true); 
       } else {
         setPopStar(false);
       }
@@ -29,7 +29,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
     } else {
       // 呼起钱包进行登录
       openConnectModal();
-      
+
     }
   };
 
@@ -111,7 +111,8 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
                   <button
                     onClick={handleConnectClick}
                     type="button"
-                    className={style.btnPlay}
+                    disabled={playButtonClicked} // 禁用按钮
+                    className={`${style.btnPlay} ${playButtonClicked ? style.btnPlayClicked : ''}`}
                   >
                     {
                       loadingplay === true ? (
@@ -121,11 +122,8 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
                           className={`${style.commonCls1} ${style.spinAnimation}`}
                         />
                       ) : (
-                        // <> {playAction == 'play' && localStorage.getItem('money') === "toomoney" ? "Play" : "Top Up First"}</>
-                        <> {playAction == 'play'  ? "Play" : "Top Up First"}</>
-
+                        <> {playAction == 'play' ? "Play" : "Top Up First"}</>
                       )
-
                     }
                   </button>
                 );
