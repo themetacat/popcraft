@@ -36,7 +36,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     network: { palyerAddress },
     systemCalls: { interact, forMent, payFunction, registerDelegation },
   } = useMUD();
-  const overTime = 243;
+  const overTime = 15;
   const [timeLeft, setTimeLeft] = useState(overTime);
   const [warnBox, setWarnBox] = useState(false);
   const [dataq, setdataq] = useState(false);
@@ -56,6 +56,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
   const [loadingPlayAgain, setLoadingPlayAgain] = useState(false);
+  const [isPriceLoaded, setIsPriceLoaded] = useState(false); // 添加一个状态来跟踪价格是否已加载
+
 
   const resultBugs = useBalance({
     address: address,
@@ -303,6 +305,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     payFor.then((item) => {
       setdata(item)
       setForPayMonType(false)
+      setIsPriceLoaded(true); // 设置询价金额已加载
     })
   }, [data1, numberData])
 
@@ -466,8 +469,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               onClick={() => {
                 handlePayMent();
               }}
-              disabled={data === 0 || cresa} // 添加 cresa 状态来禁用按钮
-              style={{ cursor: data === 0 || cresa ? "not-allowed" : "auto" }}
+              disabled={data === 0 || cresa || !isPriceLoaded} // 添加 isPriceLoaded 状态来禁用按钮
+              style={{ cursor: data === 0 || cresa || !isPriceLoaded ? "not-allowed" : "auto" }}
             >
               {cresa ? (
                 <img
