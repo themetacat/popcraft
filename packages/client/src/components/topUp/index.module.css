@@ -467,3 +467,11 @@ cursor: pointer;
     transform: rotate(360deg);
   }
 }
+
+.footerBtn:disabled {
+  cursor: not-allowed;
+}
+
+.footerBtnElse:disabled {
+  cursor: not-allowed;
+}
