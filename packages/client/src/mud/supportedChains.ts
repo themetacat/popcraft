@@ -60,6 +60,12 @@ const core_foundry = defineChain({
       webSocket: ['wss://devnet.pixelaw.world/rpc'],
     },
   },
+  blockExplorers: {
+    default: {
+      name: "Blockscout",
+      url: "https://explorer.garnetchain.com",
+    },
+  },
 })
 
 const garnet = defineChain({
