@@ -15,6 +15,7 @@ import {
 import {
   getComponentValue,
 } from "@latticexyz/recs";
+import { flare } from "viem/chains";
 
 interface Props {
   coordinates: any;
@@ -238,6 +239,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             setGameSuccess(true)
           }
           else {
+            setLoadingPlayAgain(false)
             setGameSuccess(false)
             if (TCMPopStarData.gameFinished === true) {
               seta(true)
@@ -287,7 +289,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             setLoading(false)
           }
         }, 1000);
+      }else{
+        setLoading(false)
       }
+
     } else {
       setTimeLeft(0)
     }
