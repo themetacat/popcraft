@@ -51,7 +51,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [data1, setdata1] = useState(null);
   const [getEoaContractData, setGetEoaContractData] = useState(null);
   const [balanceData, setBalanceData] = useState({});
-  const [numberData, setNumberData] = useState(5);
+  const [numberData, setNumberData] = useState(5); //设置购买为5
   const { address, isConnected } = useAccount();
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
@@ -396,7 +396,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               src={trunOff}
               alt=""
               onClick={() => {
-                setNumberData(1)
+                setNumberData(5)
                 setpay(false)
                 setdataq(false);
               }}
@@ -554,27 +554,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               </div>
             </div>
           ) : null}
-      {/* 
-      { gameSuccess === true
-          && localStorage.getItem('showGameOver') === 'true'
-          ? (
-            <div
-              className={panningType !== "false" ? style.overlayBuy : style.overlay}
-            >
-              <div className={style.contentCon}>
-                <p>Congrats！</p>
-                <p>+150 $bugs！</p>
-                <button
-                  onClick={() => {
-                    playFun();
-                    // setGameSuccess(false)
-                  }}
-                >
-                  Play Again
-                </button>
-              </div>
-            </div>
-          ) : null} */}
+     
 
       {
         gameSuccess === true

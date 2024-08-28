@@ -7,6 +7,8 @@ import { getComponentValue } from "@latticexyz/recs";
 import { ClientComponents } from "./createClientComponents";
 import { resourceToHex, ContractWrite, getContract } from "@latticexyz/common";
 import { SetupNetworkResult } from "./setupNetwork";
+import toast, { Toaster } from "react-hot-toast";
+
 import {
   encodeSystemCall,
   SystemCall,
@@ -398,10 +400,10 @@ export function createSystemCalls(
           encodeData,
         ], {gas: 30000000n});
         console.log(txData);
-        
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
         
-      }else{
+      }
+      else{
         const txData = await worldContract.write.callFrom([
           account,
           resourceToHex({
@@ -414,13 +416,18 @@ export function createSystemCalls(
         
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
       }
+      
     } catch (error) {
+      if (error.message.includes("0x897f6c58")) {
+        toast.error("Out of stock, please buy!");
+      }
       console.error("Failed to setup network:", error.message);
       return [null, null];
     }
     return [tx, hashValpublic];
   };
 
+ 
   const payFunction = async (selectedName: any, numberData: any) => {
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
@@ -452,7 +459,7 @@ export function createSystemCalls(
       hashValpublic = publicClient.waitForTransactionReceipt({ hash: hash })
 
     } catch (error) {
-      console.error("Failed to setup network:", error.message);
+      console.error("Failed to setup network:", error.message);      
     }
 
     return hashValpublic;
