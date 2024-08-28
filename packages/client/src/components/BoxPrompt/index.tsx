@@ -15,6 +15,7 @@ import {
 import {
   getComponentValue,
 } from "@latticexyz/recs";
+import { flare } from "viem/chains";
 
 interface Props {
   coordinates: any;
@@ -55,6 +56,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
   const [loadingPlayAgain, setLoadingPlayAgain] = useState(false);
+  const [isPriceLoaded, setIsPriceLoaded] = useState(false); // 添加一个状态来跟踪价格是否已加载
+
 
   const resultBugs = useBalance({
     address: address,
@@ -77,7 +80,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     setLoadingPlayAgain(true);
     playFun();
     setPopStar(false);
-    // setLoadingPlayAgain(false);
  };
   
   useEffect(() => {
@@ -238,6 +240,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             setGameSuccess(true)
           }
           else {
+            setLoadingPlayAgain(false)
             setGameSuccess(false)
             if (TCMPopStarData.gameFinished === true) {
               seta(true)
@@ -287,7 +290,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             setLoading(false)
           }
         }, 1000);
+      }else{
+        setLoading(false)
       }
+
     } else {
       setTimeLeft(0)
     }
@@ -299,6 +305,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     payFor.then((item) => {
       setdata(item)
       setForPayMonType(false)
+      setIsPriceLoaded(true); // 设置询价金额已加载
     })
   }, [data1, numberData])
 
@@ -462,8 +469,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               onClick={() => {
                 handlePayMent();
               }}
-              disabled={data === 0 || cresa} // 添加 cresa 状态来禁用按钮
-              style={{ cursor: data === 0 || cresa ? "not-allowed" : "auto" }}
+              disabled={data === 0 || cresa || !isPriceLoaded} // 添加 isPriceLoaded 状态来禁用按钮
+              style={{ cursor: data === 0 || cresa || !isPriceLoaded ? "not-allowed" : "auto" }}
             >
               {cresa ? (
                 <img
