@@ -1302,7 +1302,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     setLoading(false);
     setLoadingpaly(false)
     onHandleLoading();
-    toast.error("An error was reported")
+    // toast.error("An error was reported")
   };
 
   const onHandleExe = () => {
