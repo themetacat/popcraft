@@ -36,7 +36,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     network: { palyerAddress },
     systemCalls: { interact, forMent, payFunction, registerDelegation },
   } = useMUD();
-  const overTime = 15;
+  const overTime = 243;
   const [timeLeft, setTimeLeft] = useState(overTime);
   const [warnBox, setWarnBox] = useState(false);
   const [dataq, setdataq] = useState(false);

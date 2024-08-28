@@ -141,7 +141,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     height: document.documentElement.clientHeight,
   });
   const [loadingSquare, setLoadingSquare] = useState<{ x: number; y: number } | null>(null);
-  const overTime = 15; //控制顶部时间
+  const overTime = 243; //控制顶部时间
 
   useEffect(() => {
     // 默认设置localStorage中的值为popCraft相关的值
@@ -386,18 +386,6 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   const appName = localStorage.getItem("manifest") as any;
   const parts = appName?.split("/") as any;
-  // let worldAbiUrl: any;
-  // if (appName) {
-  //   if (parts[0] === "BASE") {
-  //     worldAbiUrl = ("https://pixelaw-game.vercel.app/" +
-  //       `${parts[1].replace(/\.abi\.json/g, "")}` +
-  //       ".abi.json") as any;
-  //   } else {
-  //     worldAbiUrl = appName;
-  //   }
-  // } else {
-  //   worldAbiUrl = "https://pixelaw-game.vercel.app/Paint.abi.json";
-  // }
 
   const findEmptyRegion = () => {
     const gridSize = GRID_SIZE;
@@ -438,138 +426,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     ctx.drawImage(img, -width / 2, -height / 2, width, height);
     ctx.restore();
   };
-
-
-  // const drawGrid2 = useCallback(
-  //   (
-  //     ctx: CanvasRenderingContext2D,
-  //     hoveredSquare: { x: number; y: number } | null,
-  //     playType: any
-  //   ) => {
-  //     const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
-  //     const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
-  //     // 清空画布
-  //     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-  //     // 绘制水平和垂直网格线
-  //     for (let x = 0; x <= 10 * GRID_SIZE; x += GRID_SIZE) {
-  //       ctx.beginPath();
-  //       ctx.moveTo(x + offsetX, offsetY);
-  //       ctx.lineTo(x + offsetX, 10 * GRID_SIZE + offsetY);
-  //       ctx.stroke();
-  //     }
-  //     for (let y = 0; y <= 10 * GRID_SIZE; y += GRID_SIZE) {
-  //       ctx.beginPath();
-  //       ctx.moveTo(offsetX, y + offsetY);
-  //       ctx.lineTo(10 * GRID_SIZE + offsetX, y + offsetY);
-  //       ctx.stroke();
-  //     }
-
-  //     // 绘制网格中的内容
-  //     for (let i = 0; i < 10; i++) {
-  //       for (let j = 0; j < 10; j++) {
-  //         const currentX = i * GRID_SIZE + offsetX;
-  //         const currentY = j * GRID_SIZE + offsetY;
-
-  //         // 绘制每个格子的边框和填充色
-  //         ctx.lineWidth = 1;
-  //         ctx.strokeStyle = "#2e1043";
-  //         ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-  //         ctx.fillStyle = "#2f1643";
-  //         ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-
-  //         // 绘制图像
-  //         if (!loadingSquare || !(loadingSquare.x === i && loadingSquare.y === j)) {
-  //           const img = new Image();
-  //           if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
-  //             // img.src =
-  //             //   imageIconData[
-  //             //     TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
-  //             //   ]?.src;
-  //             // if (img.src !== undefined) {
-  //             //   ctx.drawImage(img, currentX, currentY, GRID_SIZE, GRID_SIZE);
-  //             // }
-  //             const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
-  //             const src = imageIconData[tokenAddress]?.src;
-
-  //             img.src = src
-  //             console.log(img.src);
-
-  //             if (tokenAddress !== undefined && src !== undefined) {
-  //               ctx.drawImage(img, currentX, currentY, GRID_SIZE, GRID_SIZE);
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-
-  //     const scale = 1.2;
-
-  //     if (hoveredSquare && coordinates.x < 10) {
-  //       const i = hoveredSquare.x;
-  //       const j = hoveredSquare.y;
-  //       const currentX = i * GRID_SIZE + offsetX;
-  //       const currentY = j * GRID_SIZE + offsetY;
-
-  //       // 如果正在加载，则不放大并且只展示加载状态
-  //       if (loadingSquare && loadingSquare.x === i && loadingSquare.y === j) {
-  //         const loadingImgElement = new Image();
-  //         loadingImgElement.src = loadingImg;
-  //         const angle = (performance.now() % 5000) / 5000 * 360; // 旋转角度
-  //         drawRotatingImage(ctx, loadingImgElement, currentX, currentY, GRID_SIZE, GRID_SIZE, angle);
-  //         ctx.canvas.style.cursor = "default";
-  //       } else {
-  //         const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
-  //         const drawY = currentY - (GRID_SIZE * (scale - 1)) / 2;
-  //         const drawSize = GRID_SIZE * scale;
-
-  //         ctx.clearRect(drawX, drawY, drawSize, drawSize);
-
-  //         ctx.lineWidth = 0.5;
-  //         ctx.strokeStyle = "#2e1043";
-  //         ctx.strokeRect(drawX, drawY, drawSize, drawSize);
-  //         ctx.fillStyle = "#2f1643";
-  //         ctx.fillRect(drawX, drawY, drawSize, drawSize);
-
-  //         const img = new Image();
-  //         if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
-
-  //           const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1]
-  //           const src = imageIconData[tokenAddress]?.src;
-  //           img.src = src
-
-  //           if (tokenAddress !== undefined && src !== undefined) {
-  //             ctx.drawImage(img, drawX, drawY, drawSize, drawSize);
-  //           }
-  //         }
-  //         ctx.canvas.style.cursor = "pointer";
-  //       }
-  //     } else {
-  //       ctx.canvas.style.cursor = "default";
-  //     }
-
-  //     if (loadingSquare && loadingSquare.x < 10 && loadingSquare.x >= 0 && loadingSquare.y < 10 && loadingSquare.y >= 0) {
-  //       const loadingImgElement = new Image();
-  //       loadingImgElement.src = loadingImg;
-  //       const angle = (performance.now() % 5000) / 5000 * 360; // 旋转角度
-  //       drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX, loadingSquare.y * GRID_SIZE + offsetY, GRID_SIZE, GRID_SIZE, angle);
-  //     }
-  //   },
-  //   [
-  //     GRID_SIZE,
-  //     coordinates,
-  //     numberData,
-  //     TCMPopStarData,
-  //     CANVAS_WIDTH,
-  //     getEntityAtCoordinates,
-  //     CANVAS_HEIGHT,
-  //     selectedColor,
-  //     scrollOffset,
-  //     loading,
-  //     loadingplay,
-  //     loadingSquare,
-  //   ]
-  // );
 
 
   const drawGrid2 = useCallback(
