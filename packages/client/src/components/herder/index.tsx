@@ -209,12 +209,13 @@ export default function Header({ hoveredData, handleData }: Props) {
           const currentTime = Math.floor(Date.now() / 1000);
           const elapsedTime = currentTime - Number(TCMPopStarData.startTime);
           const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
-          if (updatedTimeLeft > 0) {
+          const allZeros = TCMPopStarData.matrixArray.every((data) => data === 0n);
+          if (updatedTimeLeft > 0 && !allZeros) {
             localStorage.setItem('playAction', 'gameContinue');
             setTimeControl(true);
           }
           else {
-            if (!loading && localStorage.getItem("showGameOver") !== "true") {
+            if ((!loading && localStorage.getItem("showGameOver") !== "true") || allZeros) {
               localStorage.setItem('playAction', 'play')
               setPopStar(true);
             }

@@ -42,7 +42,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [dataq, setdataq] = useState(false);
   const [cresa, setcresa] = useState(false);
   const [forPayMonType, setForPayMonType] = useState(false);
-  const [a, seta] = useState(false);
+  const [first, setFirst] = useState(false);
   const [data2, setdata2] = useState(false);
   const [pay, setpay] = useState(false);
   const [gameSuccess, setGameSuccess] = useState(false);
@@ -235,16 +235,18 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
           setTimeLeft(updatedTimeLeft);
           const allZeros = TCMPopStarData.matrixArray.every((data) => data === 0n);
-          if (allZeros && updatedTimeLeft > 0) {
+          if (allZeros) {
             localStorage.setItem('showGameOver', 'true');
             setGameSuccess(true)
           }
           else {
             setLoadingPlayAgain(false)
             setGameSuccess(false)
-            if (TCMPopStarData.gameFinished === true) {
-              seta(true)
+            // if (TCMPopStarData.gameFinished === true) {
+            if(!first){
+              setFirst(true)
             }
+            // }
           }
         }
       }
@@ -259,7 +261,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
       return () => clearInterval(interval); // 清除定时器以避免内存泄漏
     }
-  }, [isConnected]);
+  }, [isConnected, first]);
 
   useEffect(() => {
     if (timeControl === true && gameSuccess === false) {
@@ -275,7 +277,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     } else {
       setTimeLeft(0)
     }
-  }, [datan, timeControl, a, gameSuccess]);
+  }, [datan, timeControl, first, gameSuccess]);
 
   useEffect(() => {
     if (timeControl && gameSuccess === false) {
@@ -297,7 +299,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     } else {
       setTimeLeft(0)
     }
-  }, [timeLeft, timeControl, a, gameSuccess]);
+  }, [timeLeft, timeControl, first, gameSuccess]);
 
   useEffect(() => {
     const payFor = forMent(data1?.key, numberData)
@@ -530,7 +532,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       ) : null}
 
       {
-        timeLeft === 0 && localStorage.getItem('showGameOver') === 'true'
+        timeLeft === 0 && localStorage.getItem('showGameOver') === 'true' && !gameSuccess
           ? (
             <div
               className={panningType !== "false" ? style.overlayBuy : style.overlay}
@@ -578,7 +580,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
       {
         gameSuccess === true
-          && localStorage.getItem('showGameOver') === 'true'
+          && localStorage.getItem('showGameOver') === 'true' && first
           ? (
             <div
               className={panningType !== "false" ? style.overlayBuy : style.overlay}
