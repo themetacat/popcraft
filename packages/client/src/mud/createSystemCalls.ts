@@ -71,7 +71,7 @@ export function createSystemCalls(
     abi,
     clientOptions,
   }: SetupNetworkResult,
-  {}: ClientComponents
+  { }: ClientComponents
 ) {
   const app_name: string = window.localStorage.getItem("app_name") || "paint";
   // https://pixelaw-game.vercel.app/TCMPopStarSystem.abi.json
@@ -144,14 +144,14 @@ export function createSystemCalls(
     const eoaWalletClient = await getEoaContractFun();
     try {
       const nonce = await getAccountNonce();
-      
+
       const hash = await eoaWalletClient.writeContract({
         address: worldContract.address,
         // address: "0x4AB7E8B94347cb0236e3De126Db9c50599F7DB2d",
         abi: worldContract.abi,
         functionName: "registerDelegation",
         args: [palyerAddress, SYSTEMBOUND_DELEGATION, callData],
-        nonce:nonce
+        nonce: nonce
       });
       hashValpublic = publicClient.waitForTransactionReceipt({ hash: hash });
 
@@ -180,7 +180,7 @@ export function createSystemCalls(
       method: "eth_requestAccounts",
     });
 
-    const nonce = await publicClient.getTransactionCount({address:account});
+    const nonce = await publicClient.getTransactionCount({ address: account });
     return nonce;
   };
 
@@ -232,7 +232,7 @@ export function createSystemCalls(
       const txData = await worldContract.write.call([resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData])
 
       hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
-      
+
     } catch (error) {
       console.error("Failed to setup network:", error.message);
       return [null, null];
@@ -244,98 +244,98 @@ export function createSystemCalls(
   const popCraftAbi = [
     {
       "inputs": [
-          {
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "for_player",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "for_app",
+              "type": "string"
+            },
+            {
               "components": [
-                  {
-                      "internalType": "address",
-                      "name": "for_player",
-                      "type": "address"
-                  },
-                  {
-                      "internalType": "string",
-                      "name": "for_app",
-                      "type": "string"
-                  },
-                  {
-                      "components": [
-                          {
-                              "internalType": "uint32",
-                              "name": "x",
-                              "type": "uint32"
-                          },
-                          {
-                              "internalType": "uint32",
-                              "name": "y",
-                              "type": "uint32"
-                          }
-                      ],
-                      "internalType": "struct Position",
-                      "name": "position",
-                      "type": "tuple"
-                  },
-                  {
-                      "internalType": "string",
-                      "name": "color",
-                      "type": "string"
-                  }
+                {
+                  "internalType": "uint32",
+                  "name": "x",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "y",
+                  "type": "uint32"
+                }
               ],
-              "internalType": "struct DefaultParameters",
-              "name": "default_parameters",
+              "internalType": "struct Position",
+              "name": "position",
               "type": "tuple"
-          }
+            },
+            {
+              "internalType": "string",
+              "name": "color",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct DefaultParameters",
+          "name": "default_parameters",
+          "type": "tuple"
+        }
       ],
       "name": "interact",
       "outputs": [],
       "stateMutability": "payable",
       "type": "function"
-  }, 
-  {
-    "inputs": [
+    },
+    {
+      "inputs": [
         {
-            "components": [
+          "components": [
+            {
+              "internalType": "address",
+              "name": "for_player",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "for_app",
+              "type": "string"
+            },
+            {
+              "components": [
                 {
-                    "internalType": "address",
-                    "name": "for_player",
-                    "type": "address"
+                  "internalType": "uint32",
+                  "name": "x",
+                  "type": "uint32"
                 },
                 {
-                    "internalType": "string",
-                    "name": "for_app",
-                    "type": "string"
-                },
-                {
-                    "components": [
-                        {
-                            "internalType": "uint32",
-                            "name": "x",
-                            "type": "uint32"
-                        },
-                        {
-                            "internalType": "uint32",
-                            "name": "y",
-                            "type": "uint32"
-                        }
-                    ],
-                    "internalType": "struct Position",
-                    "name": "position",
-                    "type": "tuple"
-                },
-                {
-                    "internalType": "string",
-                    "name": "color",
-                    "type": "string"
+                  "internalType": "uint32",
+                  "name": "y",
+                  "type": "uint32"
                 }
-            ],
-            "internalType": "struct DefaultParameters",
-            "name": "default_parameters",
-            "type": "tuple"
+              ],
+              "internalType": "struct Position",
+              "name": "position",
+              "type": "tuple"
+            },
+            {
+              "internalType": "string",
+              "name": "color",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct DefaultParameters",
+          "name": "default_parameters",
+          "type": "tuple"
         }
-    ],
-    "name": "pop",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-}
+      ],
+      "name": "pop",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
   ]
   const interactTCM = async (
     coordinates: any,
@@ -345,34 +345,34 @@ export function createSystemCalls(
     other_params: any
   ) => {
     // console.log(interactTCM);
-    
+
     const app_name = window.localStorage.getItem("app_name") || "paint";
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
 
     let allArgs = [];
-  //   try{
-  // const txData1 = await worldContract.write.setTokenBalanceForNamespace([['0x9c0153C56b460656DF4533246302d42Bd2b49947', '0xC750a84ECE60aFE3CBf4154958d18036D3f15786', '0x65638Aa354d2dEC431aa851F52eC0528cc6D84f3', '0x1ca53886132119F99eE4994cA9D0a9BcCD2bB96f', '0x7Ea470137215BDD77370fC3b049bd1d009e409f9', '0xca7f09561D1d80C5b31b390c8182A0554CF09F21', '0xdCc7Bd0964B467554C9b64d3eD610Dff12AF794e', '0x54b31D72a658A5145704E8fC2cAf5f87855cc1Cd', '0xF66D7aB71764feae0e15E75BAB89Bd0081a7180d'], [20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000], "0x6e73706f70437261667400000000000000000000000000000000000000000000"])
-  // const txData1 = await worldContract.write.setTokenBalanceForNamespace([['0x9c0153C56b460656DF4533246302d42Bd2b49947'], [51789000000000000005700], "0x6e73706f70437261667400000000000000000000000000000000000000000000"])
-    
-  // console.log( await publicClient.waitForTransactionReceipt({ hash: txData1 }));
-  //   } catch (error) {
-  //     console.error("Failed to setup network:", error.message);
-  //   }
-  
-     const args = {
-        for_player: addressData,
-        for_app: app_name,
-        position: {
-          x: coordinates.x,
-          y: coordinates.y,
-        },
-        color: selectedColor,
-      };
-      allArgs = [args];
-   
+    //   try{
+    // const txData1 = await worldContract.write.setTokenBalanceForNamespace([['0x9c0153C56b460656DF4533246302d42Bd2b49947', '0xC750a84ECE60aFE3CBf4154958d18036D3f15786', '0x65638Aa354d2dEC431aa851F52eC0528cc6D84f3', '0x1ca53886132119F99eE4994cA9D0a9BcCD2bB96f', '0x7Ea470137215BDD77370fC3b049bd1d009e409f9', '0xca7f09561D1d80C5b31b390c8182A0554CF09F21', '0xdCc7Bd0964B467554C9b64d3eD610Dff12AF794e', '0x54b31D72a658A5145704E8fC2cAf5f87855cc1Cd', '0xF66D7aB71764feae0e15E75BAB89Bd0081a7180d'], [20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000], "0x6e73706f70437261667400000000000000000000000000000000000000000000"])
+    // const txData1 = await worldContract.write.setTokenBalanceForNamespace([['0x9c0153C56b460656DF4533246302d42Bd2b49947'], [51789000000000000005700], "0x6e73706f70437261667400000000000000000000000000000000000000000000"])
+
+    // console.log( await publicClient.waitForTransactionReceipt({ hash: txData1 }));
+    //   } catch (error) {
+    //     console.error("Failed to setup network:", error.message);
+    //   }
+
+    const args = {
+      for_player: addressData,
+      for_app: app_name,
+      position: {
+        x: coordinates.x,
+        y: coordinates.y,
+      },
+      color: selectedColor,
+    };
+    allArgs = [args];
+
     if (other_params !== null) {
-        other_params.splice(args_index, 0, args);
+      other_params.splice(args_index, 0, args);
       allArgs = other_params;
     }
 
@@ -388,8 +388,9 @@ export function createSystemCalls(
         args: allArgs,
       });
       // console.log(encodeData);
-      
-      if(action === 'interact'){
+
+
+      if (action === 'interact') {
         const txData = await worldContract.write.callFrom([
           account,
           resourceToHex({
@@ -398,12 +399,12 @@ export function createSystemCalls(
             name: system_name,
           }),
           encodeData,
-        ], {gas: 30000000n});
+        ], { gas: 30000000n });
         console.log(txData);
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
-        
+
       }
-      else{
+      else {
         const txData = await worldContract.write.callFrom([
           account,
           resourceToHex({
@@ -413,92 +414,103 @@ export function createSystemCalls(
           }),
           encodeData,
         ]);
-        
+
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
       }
-      
+
     } catch (error) {
+      //   if (error.message.includes("0x897f6c58")) {
+      //       toast.error("Out of stock, please buy!");
+      //   }
+      //   console.error("Failed to setup network:", error.message);
+      //   return [null, null];
+      // }
       if (error.message.includes("0x897f6c58")) {
         toast.error("Out of stock, please buy!");
+      } else if (error.message.includes("RPC Request failed")) {
+        toast.error("AN ERROR WAS REPORTED");
+      } else if (error.message.includes("The contract function \"callFrom\" reverted with the following reason:")) {
+        // 不弹框
+      } else {
+        console.error("Failed to setup network:", error.message);
       }
-      console.error("Failed to setup network:", error.message);
-      return [null, null];
     }
-    return [tx, hashValpublic];
-  };
+      return [tx, hashValpublic];
+    };
 
- 
-  const payFunction = async (selectedName: any, numberData: any) => {
-    const system_name = window.localStorage.getItem("system_name") as string;
-    const namespace = window.localStorage.getItem("namespace") as string;
-    const [account] = await window.ethereum!.request({
-      method: "eth_requestAccounts",
-    });
 
-    const ethInPrice =await forMent(selectedName, numberData);
-    const nonce = await getAccountNonce();
-    const encodeData = encodeFunctionData({
-      abi: abi_json[app_name],
-      functionName: "buyToken",
-      args: [[selectedName], [numberData * 10 ** 18]],
-    });
-
-    let hashValpublic = null;
-
-    const eoaWalletClient = await getEoaContractFun();
-    try {
-      const hash = await eoaWalletClient.writeContract({
-        address: worldContract.address,
-        abi: worldContract.abi,
-        functionName: "call",
-        args: [ resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData],
-        value:parseEther(ethInPrice.toString()),
-        nonce:nonce
+    const payFunction = async (selectedName: any, numberData: any) => {
+      const system_name = window.localStorage.getItem("system_name") as string;
+      const namespace = window.localStorage.getItem("namespace") as string;
+      const [account] = await window.ethereum!.request({
+        method: "eth_requestAccounts",
       });
 
-      hashValpublic = publicClient.waitForTransactionReceipt({ hash: hash })
+      const ethInPrice = await forMent(selectedName, numberData);
+      const nonce = await getAccountNonce();
+      const encodeData = encodeFunctionData({
+        abi: abi_json[app_name],
+        functionName: "buyToken",
+        args: [[selectedName], [numberData * 10 ** 18]],
+      });
 
-    } catch (error) {
-      console.error("Failed to setup network:", error.message);      
-    }
+      let hashValpublic = null;
 
-    return hashValpublic;
-  };
+      const eoaWalletClient = await getEoaContractFun();
+      try {
+        const hash = await eoaWalletClient.writeContract({
+          address: worldContract.address,
+          abi: worldContract.abi,
+          functionName: "call",
+          args: [resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData],
+          value: parseEther(ethInPrice.toString()),
+          nonce: nonce
+        });
 
-  const forMent = async (selectedName: any, numberData: any) => {
-    const app_name = window.localStorage.getItem("app_name") || "PopCraft";
-    const system_name = window.localStorage.getItem("system_name") as string;
-    const namespace = window.localStorage.getItem("namespace") as string;
-    
-    const encodequoteOutputData = encodeFunctionData({
-      abi: abi_json[app_name],
-      functionName: "quoteOutput",
-      args: [[selectedName], [numberData * 10 ** 18]],
-    });
+        hashValpublic = publicClient.waitForTransactionReceipt({ hash: hash })
 
-    try {
-      const quoteOutput = await worldContract.read.call([
-        resourceToHex({
-          type: "system",
-          namespace: namespace,
-          name: system_name,
-        }),
-        encodequoteOutputData,
-      ]);
-      const ethInPrice = Number(quoteOutput) / 10 ** 18;
-      return ethInPrice;
-    } catch (error) {
-      console.log(error.message);
-      return 0;
-    }
-  };
+      } catch (error) {
 
-  return {
-    forMent,
-    update_abi,
-    interact,
-    interactTCM,
-    payFunction,
-    registerDelegation,
-  };
-}
+        console.error("Failed to setup network:", error.message);
+      }
+
+      return hashValpublic;
+    };
+
+    const forMent = async (selectedName: any, numberData: any) => {
+      const app_name = window.localStorage.getItem("app_name") || "PopCraft";
+      const system_name = window.localStorage.getItem("system_name") as string;
+      const namespace = window.localStorage.getItem("namespace") as string;
+
+      const encodequoteOutputData = encodeFunctionData({
+        abi: abi_json[app_name],
+        functionName: "quoteOutput",
+        args: [[selectedName], [numberData * 10 ** 18]],
+      });
+
+      try {
+        const quoteOutput = await worldContract.read.call([
+          resourceToHex({
+            type: "system",
+            namespace: namespace,
+            name: system_name,
+          }),
+          encodequoteOutputData,
+        ]);
+        const ethInPrice = Number(quoteOutput) / 10 ** 18;
+        return ethInPrice;
+      } catch (error) {
+        console.log(error.message);
+        return 0;
+      }
+    };
+
+    return {
+      forMent,
+      update_abi,
+      interact,
+      interactTCM,
+      payFunction,
+      registerDelegation,
+    };
+  }
