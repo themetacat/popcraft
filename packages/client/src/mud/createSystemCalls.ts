@@ -435,82 +435,152 @@ export function createSystemCalls(
         console.error("Failed to setup network:", error.message);
       }
     }
-      return [tx, hashValpublic];
-    };
+    return [tx, hashValpublic];
+  };
 
 
-    const payFunction = async (selectedName: any, numberData: any) => {
-      const system_name = window.localStorage.getItem("system_name") as string;
-      const namespace = window.localStorage.getItem("namespace") as string;
-      const [account] = await window.ethereum!.request({
-        method: "eth_requestAccounts",
+  // const payFunction = async (selectedName: any, numberData: any) => {
+  //   const system_name = window.localStorage.getItem("system_name") as string;
+  //   const namespace = window.localStorage.getItem("namespace") as string;
+  //   const [account] = await window.ethereum!.request({
+  //     method: "eth_requestAccounts",
+  //   });
+
+  //   const ethInPrice = await forMent(selectedName, numberData);
+  //   const nonce = await getAccountNonce();
+  //   const encodeData = encodeFunctionData({
+  //     abi: abi_json[app_name],
+  //     functionName: "buyToken",
+  //     args: [[selectedName], [numberData * 10 ** 18]],
+  //   });
+  //   console.log("functionName:", "buyToken");
+  //   console.log("args:", [[selectedName], [numberData * 10 ** 18]]);
+
+  //   let hashValpublic = null;
+
+  //   const eoaWalletClient = await getEoaContractFun();
+  //   try {
+  //     const hash = await eoaWalletClient.writeContract({
+  //       address: worldContract.address,
+  //       abi: worldContract.abi,
+  //       functionName: "call",
+  //       args: [resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData],
+  //       value: parseEther(ethInPrice.toString()),
+  //       nonce: nonce
+  //     });
+
+  //     hashValpublic = publicClient.waitForTransactionReceipt({ hash: hash })
+
+  //   } catch (error) {
+
+  //     console.error("Failed to setup network:", error.message);
+  //   }
+
+  //   return hashValpublic;
+  // };
+
+  const payFunction = async (selectedNames, selectedQuantities) => {
+    const system_name = window.localStorage.getItem("system_name") as string;
+    const namespace = window.localStorage.getItem("namespace") as string;
+    const [account] = await window.ethereum!.request({
+      method: "eth_requestAccounts",
+    });
+    const ethInPrice = await forMent2(selectedNames, selectedQuantities);
+    const nonce = await getAccountNonce();
+    const encodeData = encodeFunctionData({
+      abi: abi_json[app_name],
+      functionName: "buyToken",
+      args: [selectedNames, selectedQuantities],
+    });
+    // console.log("functionName:", "buyToken");
+    // console.log("args:", [selectedNames, selectedQuantities]);
+    
+    
+    let hashValpublic = null;
+    const eoaWalletClient = await getEoaContractFun();
+    try {
+      const hash = await eoaWalletClient.writeContract({
+        address: worldContract.address,
+        abi: worldContract.abi,
+        functionName: "call",
+        args: [resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData],
+        value: parseEther(ethInPrice.toString()),
+        nonce: nonce
       });
 
-      const ethInPrice = await forMent(selectedName, numberData);
-      const nonce = await getAccountNonce();
-      const encodeData = encodeFunctionData({
-        abi: abi_json[app_name],
-        functionName: "buyToken",
-        args: [[selectedName], [numberData * 10 ** 18]],
-      });
+      hashValpublic = publicClient.waitForTransactionReceipt({ hash: hash })
 
-      let hashValpublic = null;
+    } catch (error) {
+      console.error("Failed to setup network:", error.message);
+    }
 
-      const eoaWalletClient = await getEoaContractFun();
-      try {
-        const hash = await eoaWalletClient.writeContract({
-          address: worldContract.address,
-          abi: worldContract.abi,
-          functionName: "call",
-          args: [resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData],
-          value: parseEther(ethInPrice.toString()),
-          nonce: nonce
-        });
+    return hashValpublic;
+  };
 
-        hashValpublic = publicClient.waitForTransactionReceipt({ hash: hash })
 
-      } catch (error) {
 
-        console.error("Failed to setup network:", error.message);
-      }
+  const forMent = async (selectedName: any, numberData: any) => {
+    const app_name = window.localStorage.getItem("app_name") || "PopCraft";
+    const system_name = window.localStorage.getItem("system_name") as string;
+    const namespace = window.localStorage.getItem("namespace") as string;
 
-      return hashValpublic;
-    };
+    const encodequoteOutputData = encodeFunctionData({
+      abi: abi_json[app_name],
+      functionName: "quoteOutput",
+      args: [[selectedName], [numberData * 10 ** 18]],
+    });
 
-    const forMent = async (selectedName: any, numberData: any) => {
-      const app_name = window.localStorage.getItem("app_name") || "PopCraft";
-      const system_name = window.localStorage.getItem("system_name") as string;
-      const namespace = window.localStorage.getItem("namespace") as string;
+    try {
+      const quoteOutput = await worldContract.read.call([
+        resourceToHex({
+          type: "system",
+          namespace: namespace,
+          name: system_name,
+        }),
+        encodequoteOutputData,
+      ]);
+      const ethInPrice = Number(quoteOutput) / 10 ** 18;
+      return ethInPrice;
+    } catch (error) {
+      console.log(error.message);
+      return 0;
+    }
+  };
 
-      const encodequoteOutputData = encodeFunctionData({
-        abi: abi_json[app_name],
-        functionName: "quoteOutput",
-        args: [[selectedName], [numberData * 10 ** 18]],
-      });
-
-      try {
-        const quoteOutput = await worldContract.read.call([
-          resourceToHex({
-            type: "system",
-            namespace: namespace,
-            name: system_name,
-          }),
-          encodequoteOutputData,
-        ]);
-        const ethInPrice = Number(quoteOutput) / 10 ** 18;
-        return ethInPrice;
-      } catch (error) {
-        console.log(error.message);
-        return 0;
-      }
-    };
-
-    return {
-      forMent,
-      update_abi,
-      interact,
-      interactTCM,
-      payFunction,
-      registerDelegation,
-    };
-  }
+  const forMent2 = async (selectedNames, selectedQuantities) => {
+    const app_name = window.localStorage.getItem("app_name") || "PopCraft";
+    const system_name = window.localStorage.getItem("system_name") as string;
+    const namespace = window.localStorage.getItem("namespace") as string;
+  
+    const encodequoteOutputData = encodeFunctionData({
+      abi: abi_json[app_name],
+      functionName: "quoteOutput",
+      args: [selectedNames, selectedQuantities],
+    });
+  
+    try {
+      const quoteOutput = await worldContract.read.call([
+        resourceToHex({
+          type: "system",
+          namespace: namespace,
+          name: system_name,
+        }),
+        encodequoteOutputData,
+      ]);
+      const ethInPrice = Number(quoteOutput) / 10 ** 18;
+      return ethInPrice;
+    } catch (error) {
+      console.log(error.message);
+      return 0;
+    }
+  };
+  
+  return {
+    forMent,
+    update_abi,
+    interact,
+    interactTCM,
+    payFunction,
+    registerDelegation,
+  };
+}
