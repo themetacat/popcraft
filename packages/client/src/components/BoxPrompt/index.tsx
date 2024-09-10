@@ -321,7 +321,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         imageIconData,
         balanceData
       );
-   
+
       const prices = await fetchPrices(matchedData); // 获取价格
       setForPayMonType(true);
       setPrices(prices);
@@ -439,51 +439,58 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     <>
       {showTopElements && (
         <div className={style.container}>
-          <div className={style.firstPart}>
-            <p style={{ cursor: "pointer" }}>
-              {timeControl && timeLeft !== 0 && gameSuccess === false ? formatTime(timeLeft) :
-                <div onClick={() => {
-                  playFun()
-                }}>New<br />Game</div>
-              }
-            </p>
-            {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
+          <div className={style.container2}>
+            <div className={style.firstPart}>
+              <p style={{ cursor: "pointer" }}>
+                {timeControl && timeLeft !== 0 && gameSuccess === false ? formatTime(timeLeft) :
+                  <div onClick={() => {
+                    playFun()
+                  }}>New<br />Game</div>
+                }
+              </p>
+              {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
+            </div>
+            <div className={style.twoPart}>
+              <p>150&nbsp;$BUGS</p>
+              <p>REWARDS</p>
+            </div>
+            <div className={style.threePart}>
+              <p>
+                {formatBalance(balance)}&nbsp;$BUGS
+              </p>
+              <p>BALANCE</p>
+            </div>
           </div>
-          <div className={style.twoPart}>
-            <p>150&nbsp;$bugs</p>
-            <p>REWARDS</p>
-          </div>
-          <div className={style.threePart}>
-            <p>
-              {formatBalance(balance)}&nbsp;$bugs
-            </p>
-            <p>BALANCE</p>
-          </div>
-          <div className={style.imgContent}  >
-            {Object.entries(matchedData).map(([key, { src, balance, name }]) => (
-              <div key={key} className={style.containerItem}  >
-                <div className={style.iconFont} > {balance}</div>
-                <img className={style.imgconItem} src={src} alt={name} />
+
+
+          <div className={style.container3}>
+            <div className={style.imgContent}  >
+              {Object.entries(matchedData).map(([key, { src, balance, name }]) => (
+                <div key={key} className={style.containerItem}  >
+                  <div className={style.iconFont} > {balance}</div>
+                  <img className={style.imgconItem} src={src} alt={name} />
+                </div>
+              ))}
               </div>
-            ))}
+              <button
+                className={style.buyBtn}
+                onClick={() => {
+                  setdataq(!warnBox);
+                }}
+              >
+                BUY
+              </button>
+              <button
+                className={style.warningIcon}
+                onClick={() => {
+                  setWarnBox(!warnBox);
+                }}
+              >
+                ?
+              </button>
+              </div>
           </div>
-          <button
-            className={style.buyBtn}
-            onClick={() => {
-              setdataq(!warnBox);
-            }}
-          >
-            BUY
-          </button>
-          <button
-            className={style.warningIcon}
-            onClick={() => {
-              setWarnBox(!warnBox);
-            }}
-          >
-            ?
-          </button>
-        </div>
+
       )}
 
       {dataq === true ? (
