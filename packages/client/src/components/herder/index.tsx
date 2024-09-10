@@ -428,6 +428,22 @@ export default function Header({ hoveredData, handleData }: Props) {
     ctx.restore();
   };
 
+  function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+    ctx.stroke();
+  }
+  
+
 
   const drawGrid2 = useCallback(
     (
@@ -439,9 +455,13 @@ export default function Header({ hoveredData, handleData }: Props) {
       const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
       // 清空画布
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      ctx.lineWidth = 10; // 设置边框的粗细
+      ctx.strokeStyle = "#ffc974";
 
       // 绘制水平和垂直网格线
       for (let x = 0; x <= 10 * GRID_SIZE; x += GRID_SIZE) {
+        ctx.beginPath();
+
         ctx.beginPath();
         ctx.moveTo(x + offsetX, offsetY);
         ctx.lineTo(x + offsetX, 10 * GRID_SIZE + offsetY);
@@ -1029,8 +1049,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
   };
 
-
-
   //创建游戏实例
   const playFun = () => {
     let deldata = localStorage.getItem('deleGeData')
@@ -1550,6 +1568,8 @@ export default function Header({ hoveredData, handleData }: Props) {
                             height: "55px",
                           }}
                           type="button"
+                          className={style.boldAddress} // 添加这个类名
+
                         >
                           {account.displayName}
                           {account.displayBalance

@@ -43,7 +43,9 @@ canvas {
   background-color: rgba(0, 0, 0, 0.5);
 }
 .container {
-  background-color: #171717;
+
+  background: radial-gradient(circle, #236975,#26727f);
+
   height: 60px;
   width: 100%;
   /* padding: 5px 30px 5px 30px; */
@@ -53,6 +55,8 @@ canvas {
   top: 0px;
   z-index: 9999999;
 }
+
+
 .containerImg {
   width: 139px;
   height: 46px;
@@ -73,6 +77,8 @@ canvas {
   height: auto;
   line-height: 50px;
   display: flex;
+  font-weight: bold; /* 使文字加粗 */
+
 }
 
 canvas {
@@ -86,29 +92,32 @@ canvas {
 .content {
   align-items: center;
   justify-content: center;
-  /* height: 100%; */
-  width: 238px;
-  height: 51px;
+  width: 240px;
+  height: 45px;
   position: absolute;
-  /* top:50%; */
   top: 4px;
   right: 0;
   bottom: 0;
   left: 0;
   margin: auto;
-  background-color: #000000;
+  background: linear-gradient(to right, #208d9f, #156b7f); /* 从左到右的线性渐变 */
   font-size: 20px;
   border-radius: 50px;
   display: flex;
+  border: 1px solid #176572; /* 设置边框颜色 */
+  box-shadow: inset 0 0 10px 0.5px #302f2f; 
+
 }
+
+
 .spanData {
   display: inline-block;
   width: 78px;
   line-height: 36px;
-  color: #19c0db;
-  padding-top: 8px;
+  color: #ffffff;
+  padding-top: 7px;
   text-align: center;
-  font-family: Silkscreen, cursive;
+  font-weight: bold; /* 使文字加粗 */
 }
 :root {
   --offset: 70px;
@@ -123,10 +132,10 @@ canvas {
 .btnBox {
   border-radius: 50px;
   width: 80px;
-  color: #a073e2;
+  color: #fefefe;
   border: none;
   outline: none;
-  background-color: #000;
+  background-color: transparent; /* 将背景颜色设置为透明 */
   border-radius: 50px;
   display: flex;
   align-items: center;
@@ -136,7 +145,7 @@ canvas {
   outline-offset: 2px;
   font-family: "your-emoji-font", sans-serif;
   font-weight: bold;
-  color: #a073e2;
+  color: #f8f8f8;
   font-size: 34px;
   gap: 8px;
   padding: 0;
@@ -144,7 +153,6 @@ canvas {
   opacity: 1;
   font-family: "your-emoji-font", sans-serif !important; 
 }
-/* 使用 !important 来强制应用 Play 按钮的字体样式 */
 .btnBoxY {
   border-radius: 50px;
   width: 80px;
@@ -280,6 +288,11 @@ canvas {
   color: #fff;
   font-size: 15px;
   font-weight: 700;
+  
+}
+.boldAddress{
+  font-size: 16px;
+  font-weight: bold;
 }
 .downBox {
   border: 1px solid #0b0113;
