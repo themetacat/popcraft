@@ -15,24 +15,27 @@
   background-color: rgba(0, 0, 0, 0.8);
   /* background-image: linear-gradient(45deg, #fffce3 0%, #bdf1b6 100%); */
   background-image: url('images/background.png'); 
+  background-size: 100% 100%;
   /* font-family: 'Silkscreen'; */
-  /* font-family: '青鸟华光简胖头鱼'; */
-}
+  /* font-family: "SansationLight"; */
+  }
 
 /* 根据您的字体文件类型调整格式 */
 
-
 @font-face {
-  font-family: '青鸟华光简胖头鱼';
-  src: url('path/to/NotoEmoji-SemiBold.TTF') format('truetype'),
+  font-family: "SansationLight";
+  src: url('./path/to/SansationLight.ttf') format('truetype');
 }
 
-/* @font-face {
+
+/* 
+@font-face {
    font-family: 'Silkscreen';
    src: url('./path/to/slkscr.ttf') format('truetype'); 
- }  */
-  /* @font-face {
+ }  
+
+   @font-face {
    font-family: 'NotoEmoji';
  src: url('./path/to/Noto_Emoji/NotoEmoji-VariableFont_wght.ttf') format('truetype');
-} */
-
+} 
+ */

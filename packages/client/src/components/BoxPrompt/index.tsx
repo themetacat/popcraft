@@ -450,7 +450,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               </p>
               {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
             </div>
-            <div className={style.twoPart}>
+            <div className={style.twoPart} >
               <p>150&nbsp;$BUGS</p>
               <p>REWARDS</p>
             </div>

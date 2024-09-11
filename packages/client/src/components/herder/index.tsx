@@ -133,7 +133,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const hasExecutedRef = useRef(true);
   const [imageCache, setImageCache] = useState({});
 
-  
+
 
   // 将 CANVAS_WIDTH 和 CANVAS_HEIGHT 保存到 state 中
   const [canvasSize, setCanvasSize] = useState({
@@ -443,8 +443,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     ctx.stroke();
   }
   
-
-
   const drawGrid2 = useCallback(
     (
       ctx: CanvasRenderingContext2D,
@@ -455,13 +453,92 @@ export default function Header({ hoveredData, handleData }: Props) {
       const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
       // 清空画布
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      ctx.lineWidth = 10; // 设置边框的粗细
+
+      // 绘制最外层的立体圆角边框
+      const outerBorderRadius = 20; // 外部圆角半径
+      const outerBorderX = offsetX - outerBorderRadius;
+      const outerBorderY = offsetY - outerBorderRadius;
+      const outerBorderWidth = 10 * GRID_SIZE + 2 * outerBorderRadius;
+      const outerBorderHeight = 10 * GRID_SIZE + 2 * outerBorderRadius;
+      // 绘制阴影
+      ctx.beginPath();
+      ctx.moveTo(outerBorderX + outerBorderRadius, outerBorderY);
+      ctx.lineTo(outerBorderX + outerBorderWidth - outerBorderRadius, outerBorderY);
+      ctx.quadraticCurveTo(outerBorderX + outerBorderWidth, outerBorderY, outerBorderX + outerBorderWidth, outerBorderY + outerBorderRadius);
+      ctx.lineTo(outerBorderX + outerBorderWidth, outerBorderY + outerBorderHeight - outerBorderRadius);
+      ctx.quadraticCurveTo(outerBorderX + outerBorderWidth, outerBorderY + outerBorderHeight, outerBorderX + outerBorderWidth - outerBorderRadius, outerBorderY + outerBorderHeight);
+      ctx.lineTo(outerBorderX + outerBorderRadius, outerBorderY + outerBorderHeight);
+      ctx.quadraticCurveTo(outerBorderX, outerBorderY + outerBorderHeight, outerBorderX, outerBorderY + outerBorderHeight - outerBorderRadius);
+      ctx.lineTo(outerBorderX, outerBorderY + outerBorderRadius);
+      ctx.quadraticCurveTo(outerBorderX, outerBorderY, outerBorderX + outerBorderRadius, outerBorderY);
+      ctx.closePath();
+      ctx.fillStyle = "#fff9c9"; // 阴影颜色
+      ctx.fill();
+
+      // 绘制高光
+      ctx.beginPath();
+      ctx.moveTo(outerBorderX + outerBorderRadius, outerBorderY);
+      ctx.lineTo(outerBorderX + outerBorderWidth - outerBorderRadius, outerBorderY);
+      ctx.quadraticCurveTo(outerBorderX + outerBorderWidth, outerBorderY, outerBorderX + outerBorderWidth, outerBorderY + outerBorderRadius);
+      ctx.lineTo(outerBorderX + outerBorderWidth, outerBorderY + outerBorderHeight - outerBorderRadius);
+      ctx.quadraticCurveTo(outerBorderX + outerBorderWidth, outerBorderY + outerBorderHeight, outerBorderX + outerBorderWidth - outerBorderRadius, outerBorderY + outerBorderHeight);
+      ctx.lineTo(outerBorderX + outerBorderRadius, outerBorderY + outerBorderHeight);
+      ctx.quadraticCurveTo(outerBorderX, outerBorderY + outerBorderHeight, outerBorderX, outerBorderY + outerBorderHeight - outerBorderRadius);
+      ctx.lineTo(outerBorderX, outerBorderY + outerBorderRadius);
+      ctx.quadraticCurveTo(outerBorderX, outerBorderY, outerBorderX + outerBorderRadius, outerBorderY);
+      ctx.closePath();
+      ctx.fillStyle = "#fff9c9"; // 高光颜色
+      ctx.fill();
+
+
+      ctx.beginPath();
+      ctx.moveTo(outerBorderX + outerBorderRadius, outerBorderY);
+      ctx.lineTo(outerBorderX + outerBorderWidth - outerBorderRadius, outerBorderY);
+      ctx.quadraticCurveTo(outerBorderX + outerBorderWidth, outerBorderY, outerBorderX + outerBorderWidth, outerBorderY + outerBorderRadius);
+      ctx.lineTo(outerBorderX + outerBorderWidth, outerBorderY + outerBorderHeight - outerBorderRadius);
+      ctx.quadraticCurveTo(outerBorderX + outerBorderWidth, outerBorderY + outerBorderHeight, outerBorderX + outerBorderWidth - outerBorderRadius, outerBorderY + outerBorderHeight);
+      ctx.lineTo(outerBorderX + outerBorderRadius, outerBorderY + outerBorderHeight);
+      ctx.quadraticCurveTo(outerBorderX, outerBorderY + outerBorderHeight, outerBorderX, outerBorderY + outerBorderHeight - outerBorderRadius);
+      ctx.lineTo(outerBorderX, outerBorderY + outerBorderRadius);
+      ctx.quadraticCurveTo(outerBorderX, outerBorderY, outerBorderX + outerBorderRadius, outerBorderY);
+      ctx.closePath();
+      ctx.lineWidth = 2; // 设置边框的粗细
       ctx.strokeStyle = "#ffc974";
+      ctx.stroke();
+      //绘制立体
+      // ctx.beginPath();
+      // ctx.moveTo(outerBorderX + outerBorderRadius, outerBorderY + outerBorderHeight);
+      // ctx.lineTo(outerBorderX + outerBorderWidth - outerBorderRadius, outerBorderY + outerBorderHeight);
+      // ctx.lineWidth = 5; // 设置线条的粗细
+      // ctx.strokeStyle = "#ffc974";
+      // ctx.stroke();
+      
+
+      // 绘制紧挨着棋盘的圆角边框
+      const innerBorderRadius = 6; // 内部圆角半径
+      const innerBorderX = offsetX - innerBorderRadius + 3; // 调整位置以确保边框紧挨着棋盘
+      const innerBorderY = offsetY - innerBorderRadius + 3; // 调整位置以确保边框紧挨着棋盘
+      const innerBorderWidth = 10 * GRID_SIZE + 2 * innerBorderRadius - 6; // 调整大小以确保边框紧挨着棋盘
+      const innerBorderHeight = 10 * GRID_SIZE + 2 * innerBorderRadius - 6; // 调整大小以确保边框紧挨着棋盘
+
+      ctx.beginPath();
+      ctx.moveTo(innerBorderX + innerBorderRadius, innerBorderY);
+      ctx.lineTo(innerBorderX + innerBorderWidth - innerBorderRadius, innerBorderY);
+      ctx.quadraticCurveTo(innerBorderX + innerBorderWidth, innerBorderY, innerBorderX + innerBorderWidth, innerBorderY + innerBorderRadius);
+      ctx.lineTo(innerBorderX + innerBorderWidth, innerBorderY + innerBorderHeight - innerBorderRadius);
+      ctx.quadraticCurveTo(innerBorderX + innerBorderWidth, innerBorderY + innerBorderHeight, innerBorderX + innerBorderWidth - innerBorderRadius, innerBorderY + innerBorderHeight);
+      ctx.lineTo(innerBorderX + innerBorderRadius, innerBorderY + innerBorderHeight);
+      ctx.quadraticCurveTo(innerBorderX, innerBorderY + innerBorderHeight, innerBorderX, innerBorderY + innerBorderHeight - innerBorderRadius);
+      ctx.lineTo(innerBorderX, innerBorderY + innerBorderRadius);
+      ctx.quadraticCurveTo(innerBorderX, innerBorderY, innerBorderX + innerBorderRadius, innerBorderY);
+      ctx.closePath();
+      ctx.lineWidth = 3; // 设置边框的粗细
+      ctx.strokeStyle = "#ffc974";
+      ctx.stroke();
+
 
       // 绘制水平和垂直网格线
       for (let x = 0; x <= 10 * GRID_SIZE; x += GRID_SIZE) {
-        ctx.beginPath();
-
         ctx.beginPath();
         ctx.moveTo(x + offsetX, offsetY);
         ctx.lineTo(x + offsetX, 10 * GRID_SIZE + offsetY);
@@ -481,10 +558,13 @@ export default function Header({ hoveredData, handleData }: Props) {
           const currentY = j * GRID_SIZE + offsetY;
 
           // 绘制每个格子的边框和填充色
+          const color = (i + j) % 2 === 0 ? "#fddca1" : "#fdf2d1";
+          ctx.fillStyle = color;
+          ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
           ctx.lineWidth = 1;
-          ctx.strokeStyle = "#2e1043";
+          // ctx.strokeStyle = "#2e1043";
           ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-          ctx.fillStyle = "#2f1643";
+          // ctx.fillStyle = "#2f1643";
           ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
 
           // 绘制图像
@@ -498,9 +578,16 @@ export default function Header({ hoveredData, handleData }: Props) {
                   img.src = src;
                   img.onload = () => {
                     setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
+                    // 重新绘制图像
+                    ctx.drawImage(img, currentX, currentY, GRID_SIZE * 0.8, GRID_SIZE * 0.8);
                   };
                 } else {
-                  ctx.drawImage(imageCache[src], currentX, currentY, GRID_SIZE, GRID_SIZE);
+                  // 调整图片大小
+                  const imageWidth = GRID_SIZE * 0.8; // 调整图片宽度
+                  const imageHeight = GRID_SIZE * 0.8; // 调整图片高度
+                  const imageX = currentX + (GRID_SIZE - imageWidth) / 2;
+                  const imageY = currentY + (GRID_SIZE - imageHeight) / 2;
+                  ctx.drawImage(imageCache[src], imageX, imageY, imageWidth, imageHeight);
                 }
               }
             }
@@ -529,11 +616,8 @@ export default function Header({ hoveredData, handleData }: Props) {
           const drawSize = GRID_SIZE * scale;
 
           ctx.clearRect(drawX, drawY, drawSize, drawSize);
-
           ctx.lineWidth = 0.5;
-          ctx.strokeStyle = "#2e1043";
           ctx.strokeRect(drawX, drawY, drawSize, drawSize);
-          ctx.fillStyle = "#2f1643";
           ctx.fillRect(drawX, drawY, drawSize, drawSize);
 
           if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
@@ -546,9 +630,20 @@ export default function Header({ hoveredData, handleData }: Props) {
                 img.src = src;
                 img.onload = () => {
                   setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
+                  // 重新绘制图像
+                  const imageWidth = drawSize * 0.8 
+                  const imageHeight = drawSize * 0.8; 
+                  const imageX = drawX + (drawSize - imageWidth) / 2;
+                  const imageY = drawY + (drawSize - imageHeight) / 2;
+                  ctx.drawImage(img, imageX, imageY, imageWidth, imageHeight);
                 };
               } else {
-                ctx.drawImage(imageCache[src], drawX, drawY, drawSize, drawSize);
+                // 调整图片大小
+                const imageWidth = drawSize * 0.8; // 调整图片宽度
+                const imageHeight = drawSize * 0.8; // 调整图片高度
+                const imageX = drawX + (drawSize - imageWidth) / 2;
+                const imageY = drawY + (drawSize - imageHeight) / 2;
+                ctx.drawImage(imageCache[src], imageX, imageY, imageWidth, imageHeight);
               }
             }
           }
@@ -581,6 +676,8 @@ export default function Header({ hoveredData, handleData }: Props) {
       imageCache,
     ]
   );
+
+
   useEffect(() => {
     if (appName === "BASE/PopCraftSystem") {
       setNumberData(30);
@@ -963,7 +1060,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       actionData,
       other_params
     );
-      
+
     interact_data.then((increDataVal: any) => {
       if (increDataVal[1]) {
         increDataVal[1].then((a: any) => {
@@ -1059,7 +1156,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       if (money == "toomoney") {
         const delegationData = registerDelegation();
         delegationData.then((data) => {
-          if (data !== undefined && data.status == "success") {            
+          if (data !== undefined && data.status == "success") {
             playData() //渲染游戏画布+图片
           } else {
             setLoadingpaly(false)
@@ -1087,12 +1184,12 @@ export default function Header({ hoveredData, handleData }: Props) {
       setEmptyRegionNum({ x: 0, y: 0 });
     }
     const ctx = canvasRef?.current?.getContext("2d");
-    
+
     if (ctx && canvasRef) {
       if (appName === "BASE/PopCraftSystem") {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         drawGrid2(ctx, coordinates, true);
-        
+
       } else {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         drawGrid(ctx, coordinates, true);
@@ -1565,7 +1662,7 @@ export default function Header({ hoveredData, handleData }: Props) {
                             background: "none",
                             color: "#fff",
                             fontFamily: "Silkscreen,cursive",
-                            height: "55px",
+                            height: "68px",
                           }}
                           type="button"
                           className={style.boldAddress} // 添加这个类名

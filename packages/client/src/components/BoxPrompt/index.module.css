@@ -1,75 +1,75 @@
 .container {
   position: fixed;
-  top: 135px;
+  justify-content: center;
+  align-items: center;
+  top: 160px;
   left: 50%;
   transform: translate(-50%, -50%);
   height: 64px;
-  width: 1300.86px;
-  /*新加样式*/
-  /* border: 1px solid #201f1f; */
   padding: 24px;
   display: flex;
-  gap: 42px;
+  gap: 45px;
 }
 
 .container2 {
-  height: 64px;
+  height: 100px;
   display: flex;
-  gap: 40px;
-
+  align-items: center;
+  justify-content: center;
+  gap: 45px;
 }
 
-.container3 {
-  background-color: #48c29b;
-  height: 64px;
+.container3{
+  height: 92px;
   display: flex;
+  justify-content: center;
+  align-items: center;
   width: 600px;
-  gap: 24px;
+  gap: 27px;
   border-radius: 50px;
-  /* border: 1px solid #f60606; */
-  box-shadow: inset 0 0 10px 6px #348b61; 
+  background-image: url("../../images/PinkButton.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* margin-top: 5px; */
 }
-.firstPart{
-  width: 177px;
-  height: 40px;
+
+.firstPart {
+  width: 220px;
+  height: 83px;
+  background-image: url("../../images/PinkButton1.png");
+  /* margin-top: 7px; */
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: 50px;
-  background: radial-gradient(circle at center, #52c9e3, #6eb7e8);
   padding: 12px 16px 12px 16px;
   display: grid;
   gap: 4px;
-  box-shadow: inset 0 0 13px 6px #1a4051; 
-  position: relative; 
-  overflow: hidden; 
-}
-
-.firstPart::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to right, rgba(89, 223, 253, 0.5), rgba(89, 223, 253, 0));
-  opacity: 15; 
-  pointer-events: none; 
 }
 
 .firstPart p:nth-child(1) {
-  font-size: 27px;
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  font-size: 30px;
   font-weight: 400;
   line-height: 23.04px;
   text-align: center;
   letter-spacing: 2px;
   color: rgba(255, 255, 255, 1);
+  margin-top: 10px;
+
 }
 
 .firstPart p:nth-child(2) {
   text-align: center;
   color: #ffffff;
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 400;
   line-height: 19.36px;
   letter-spacing: 2px;
+  margin-top: 7px;
+
 }
 
 .itemName {
@@ -93,87 +93,94 @@
 }
 
 .twoPart {
-  width: 177px;
-  height: 40px;
+  width: 220px;
+  height: 83px;
+  background-image: url("../../images/PinkButton2.png");
+  /* margin-top: 7px; */
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: 50px;
-  /* background: radial-gradient(circle at center, #ffd162, #eba21c); */
-  background-color: #efb943;
-  /*  径向渐变背景 */
   padding: 12px 16px 12px 16px;
   display: grid;
   gap: 4px;
-  box-shadow: inset 0 0 10px 6px #936231; 
-  position: relative; 
-  overflow: hidden; 
-
+  font-family: "SansationLight";
+  /* font-family: Silkscreen; */
 }
 
-
 .twoPart p:nth-child(1) {
-  font-size: 18px;
+  /* background-color: red; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 400;
   line-height: 23.04px;
   text-align: center;
   letter-spacing: 2px;
   /* color: rgba(255, 255, 255, 1); */
   color: floralwhite;
-  font-size: 27px;
-
+  font-size: 30px;
+  margin-top: 10px;
 }
 
 .twoPart p:nth-child(2) {
   text-align: center;
   color: #ffffff;
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 400;
   line-height: 18.36px;
   letter-spacing: 2px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 7px;
 }
 
+
 .threePart {
-  /* width: 119px; */
+  width: 220px;
+  height: 83px;
+  background-image: url("../../images/PinkButton3.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: 50px;
-  width: 177px;
-  height: 40px;
-  /* border: 1px solid #3f1f5a; */
-  /* background: radial-gradient(circle at center, #ff80aa, #eb6d93); */
-  background-color: #ff80aa;
-  /* 径向渐变背景 */
   padding: 12px 16px 12px 16px;
-  white-space: nowrap;
   display: grid;
   gap: 4px;
-  box-shadow: inset 0 0 10px 6px #b3526f; /* 内阴影，颜色为 #3da1cf */
-  
 }
 
 .threePart p:nth-child(1) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 400;
   line-height: 23.04px;
   text-align: center;
+  align-items: center;
+  justify-content: center;
   letter-spacing: 2px;
   color: floralwhite;
-  font-size: 27px;
+  font-size: 30px;
+  margin-top: 10px;
 }
 
 .threePart p:nth-child(2) {
- 
   text-align: center;
   color: #ffffff;
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 400;
   line-height: 18.36px;
   letter-spacing: 2px;
+  margin-top: 7px;
 }
 
 .imgContent {
-  gap: 27px;
-  top: 10px;
-  left: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 35px;
   width: 378px;
   height: 66px;
-  display: flex;
-  position: relative;
 }
 
 .containerItem {
@@ -183,25 +190,25 @@
 }
 
 .imgconItem {
-  width: 47px !important;
-  height: 47px !important;
+  width: 50px !important;
+  height: 50px !important;
   border-radius: 50px;
-  border: 1px solid #2f0c42;
+  border: 1px solid #ffffff;
   box-sizing: border-box;
 }
 
 .iconFont {
   display: flex;
-  justify-content: center; /* 水平居中 */
-  align-items: center; /* 垂直居中 */
+  justify-content: center;
+  align-items: center;
   border-radius: 50px;
   position: absolute;
-  right: -15px;
-  top: 30px;
+  right: -7px;
+  top: 37px;
   color: #ffffff;
   background-color: #ffb739;
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   padding: 3px;
   gap: 10px;
 }
@@ -225,38 +232,33 @@
   border: 1px solid #ffb739;
   padding: 9px;
   display: flex;
-  justify-content: center; /* 水平居中 */
-  align-items: center; /* 垂直居中 */
-  gap: 12px;
-  background: linear-gradient(to right, #ffb739, #e29a1d);
-  /* 从左到右的线性渐变 */
+  justify-content: center;
+  align-items: center;
+  gap: 13px;
+  background-image: url("../../images/Buttonto.png");
+  background-size: 100% 100%; /* 使背景图片占满宽度和高度 */
   color: #ffffff;
   font-weight: 700;
   font-size: 18px;
   line-height: 24px;
   text-align: center;
   letter-spacing: 2px;
-  /* font-family: Silkscreen; */
-  margin-top: 5px;
-  border-radius: 50px;
-
+  border-radius: 50%; /* 使元素呈现为椭圆形状 */
 }
 
 .warningIcon {
-  /* border: 1px solid #000000;
-  background-color: #200d2f; */
   background-color: transparent;
-  /* 设置背景色为透明 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 24px;
   height: 24px;
   font-size: 30px;
   border: none;
+  gap: 34px;
   /* border-radius: 50%; */
   color: #ffffff;
-  /* font-family: Silkscreen; */
-  margin-top: 13px;
-  margin-left: -8px;
-
+  margin-top: 5px;
 }
 
 .content {
