@@ -44,7 +44,7 @@
 
 export const imageIconData = {
     '0xC750a84ECE60aFE3CBf4154958d18036D3f15786': {
-        src: '/src/images/UREA.png',
+        src: '../images/UREA.png',
         name: "UREA",
     },
     '0x65638Aa354d2dEC431aa851F52eC0528cc6D84f3': {
