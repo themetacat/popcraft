@@ -25,45 +25,6 @@ import backgroundMusic from '../../audio/1.mp3';
 import effectSound from '../../audio/2.mp3';
 import loadingImg from "../../images/loading.png";
 
-const colorOptionsData = [
-  { color: "#4d4d4d", title: "Option 1" },
-  { color: "#999999", title: "Option 1" },
-  { color: "#ffffff", title: "Option 2" },
-  { color: "#f44e3b", title: "Option 3" },
-  { color: "#fe9200", title: "Option 3" },
-  { color: "#fcdc00", title: "Option 3" },
-  { color: "#dbdf00", title: "Option 3" },
-  { color: "#a4dd00", title: "Option 3" },
-  { color: "#68ccca", title: "Option 3" },
-  { color: "#73d8ff", title: "Option 3" },
-  { color: "#aea1ff", title: "Option 3" },
-  { color: "#fda1ff", title: "Option 3" },
-  { color: "#333333", title: "Option 3" },
-  { color: "#808080", title: "Option 3" },
-  { color: "#cccccc", title: "Option 3" },
-  { color: "#d33115", title: "Option 3" },
-  { color: "#e27300", title: "Option 3" },
-  { color: "#fcc400", title: "Option 3" },
-  { color: "#b0bc00", title: "Option 3" },
-  { color: "#68bc00", title: "Option 3" },
-  { color: "#16a5a5", title: "Option 3" },
-  { color: "#009ce0", title: "Option 3" },
-  { color: "#7b64ff", title: "Option 3" },
-  { color: "#fa28ff", title: "Option 3" },
-  { color: "#000000", title: "Option 3" },
-  { color: "#666666", title: "Option 3" },
-  { color: "#b3b3b3", title: "Option 3" },
-  { color: "#9f0500", title: "Option 3" },
-  { color: "#c45100", title: "Option 3" },
-  { color: "#fb9e00", title: "Option 3" },
-  { color: "#808900", title: "Option 3" },
-  { color: "#194d33", title: "Option 3" },
-  { color: "#0c797d", title: "Option 3" },
-  { color: "#0062b1", title: "Option 3" },
-  { color: "#653294", title: "Option 3" },
-  { color: "#ab149e", title: "Option 3" },
-  // 其他颜色选项...
-];
 interface Props {
   hoveredData: { x: number; y: number } | null;
   handleData: (data: { x: number; y: number }) => void;
@@ -326,14 +287,6 @@ export default function Header({ hoveredData, handleData }: Props) {
   const chainName = publicClient.chain.name;
   const capitalizedString =
     chainName.charAt(0).toUpperCase() + chainName?.slice(1).toLowerCase();
-
-  // const balanceFN = publicClient.getBalance({ address: palyerAddress });
-
-  // balanceFN.then((a: any) => {
-  //   setBalance(a);
-  //   console.log(a);
-
-  // });
   const natIve = publicClient.chain.nativeCurrency.decimals;
   const btnLower = () => {
     setNumberData(numberData - 5);
@@ -1767,20 +1720,6 @@ export default function Header({ hoveredData, handleData }: Props) {
             ))}
           </div>
         )}
-        {/* <RightPart
-          coordinates={coordinates}
-          entityData={entityData}
-          setPanningState={handlePanningChange}
-          loading={loading}
-          onHandleExe={onHandleExe}
-          setPageClick={handlePageClick}
-          handlePageClickIs={handlePageClickIs}
-          onUpdateAbiJson={handleUpdateAbiJson}
-          onUpdateAbiCommonJson={handleUpdateAbiCommonJson}
-          onHandleLoading={onHandleLoading}
-          onHandleLoadingFun={onHandleLoadingFun}
-          onHandleOwner={onHandleOwner}
-        /> */}
         <audio ref={audioRef} src={backgroundMusic} onEnded={handleEnded} loop />
       </div>
 

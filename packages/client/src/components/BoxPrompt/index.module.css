@@ -11,6 +11,26 @@
   gap: 45px;
 }
 
+.buttonBox{
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  bottom: 0; 
+  right: 50px; 
+  margin: auto;
+  transform: translate(0, 0); 
+  height: 64px;
+  padding: 24px;
+  display: flex;
+  gap: 15px;
+}
+
+.buttonBox img {
+  max-width: 50px; 
+  max-height: 50px; 
+  cursor: pointer; 
+}
+
 .container2 {
   height: 100px;
   display: flex;
@@ -30,14 +50,12 @@
   background-image: url("../../images/PinkButton.png");
   background-size: cover;
   background-repeat: no-repeat;
-  /* margin-top: 5px; */
 }
 
 .firstPart {
   width: 220px;
   height: 83px;
   background-image: url("../../images/PinkButton1.png");
-  /* margin-top: 7px; */
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -134,6 +152,12 @@
   justify-content: center;
   margin-top: 7px;
 }
+@font-face {
+  font-family: 'SansationLight'; /* 重命名字体名 */
+  src: url('/fonts/SansationLight.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 
 .threePart {
@@ -147,6 +171,8 @@
   padding: 12px 16px 12px 16px;
   display: grid;
   gap: 4px;
+  /* font-family: 'Silkscreen'; */
+  
 }
 
 .threePart p:nth-child(1) {
@@ -193,7 +219,7 @@
   width: 50px !important;
   height: 50px !important;
   border-radius: 50px;
-  border: 1px solid #ffffff;
+  /* border: 1px solid #ffffff; */
   box-sizing: border-box;
 }
 
@@ -217,33 +243,30 @@
   width: 66px;
   height: 66px;
   border: 1px solid #2f0c42;
-  /* 边框颜色为 #2F0C42 */
   background-color: rgba(0, 0, 0, 0.35);
-  /* 背景色为黑色，透明度为 35% */
   text-align: center;
-  /* 内容居中对齐 */
   box-sizing: border-box;
-  /* 边框计入盒模型尺寸 */
 }
 
 .buyBtn {
   width: 55px;
   height: 55px;
-  border: 1px solid #ffb739;
+  /* border: 1px solid #ffb739; */
+  border: none;
   padding: 9px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 13px;
   background-image: url("../../images/Buttonto.png");
-  background-size: 100% 100%; /* 使背景图片占满宽度和高度 */
+  background-size: 100% 100%; 
   color: #ffffff;
   font-weight: 700;
   font-size: 18px;
   line-height: 24px;
   text-align: center;
   letter-spacing: 2px;
-  border-radius: 50%; /* 使元素呈现为椭圆形状 */
+  border-radius: 50%; 
 }
 
 .warningIcon {
@@ -256,7 +279,6 @@
   font-size: 30px;
   border: none;
   gap: 34px;
-  /* border-radius: 50%; */
   color: #ffffff;
   margin-top: 5px;
 }

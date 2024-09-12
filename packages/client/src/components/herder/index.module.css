@@ -46,16 +46,11 @@ canvas {
   background: radial-gradient(circle, #236975,#26727f);
   height: 70px;
   width: 100%;
-  /* padding: 5px 30px 5px 30px; */
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
   position: relative;
   position: fixed;
-  /* top: 0px; */
   z-index: 9999999;
 }
 

@@ -25,7 +25,6 @@ export const App = () => {
   };
 
   return (
-
       <div className={style.page}>
       {syncProgress ? (
         syncProgress.step !== SyncStep.LIVE ? (

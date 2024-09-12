@@ -8,6 +8,8 @@ import { useMUD } from "../../MUDContext";
 import { useAccount, useBalance } from 'wagmi';
 import { addressToEntityID } from "../rightPart";
 import loadingImg from "../../images/loading.png";
+import xLogo from '../../images/xLogo.png';
+import TelegramLogo from '../../images/TelegramLogo.png'
 import Select from "../select";
 import {
   encodeEntity,
@@ -206,7 +208,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             setLoadingPlayAgain(false)
             setGameSuccess(false)
             // if (TCMPopStarData.gameFinished === true) {
-            if(!first){
+            if (!first) {
               setFirst(true)
             }
             // }
@@ -471,25 +473,25 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                   <img className={style.imgconItem} src={src} alt={name} />
                 </div>
               ))}
-              </div>
-              <button
-                className={style.buyBtn}
-                onClick={() => {
-                  setdataq(!warnBox);
-                }}
-              >
-                BUY
-              </button>
-              <button
-                className={style.warningIcon}
-                onClick={() => {
-                  setWarnBox(!warnBox);
-                }}
-              >
-                ?
-              </button>
-              </div>
+            </div>
+            <button
+              className={style.buyBtn}
+              onClick={() => {
+                setdataq(!warnBox);
+              }}
+            >
+              BUY
+            </button>
+            <button
+              className={style.warningIcon}
+              onClick={() => {
+                setWarnBox(!warnBox);
+              }}
+            >
+              ?
+            </button>
           </div>
+        </div>
 
       )}
 
@@ -705,6 +707,16 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           </div>
         </div>
       ) : null}
+
+
+      <div className={style.buttonBox}>
+        <a href="https://x.com/metacat007" target="_blank" rel="noopener noreferrer">
+          <img src={xLogo} className={xLogo} />
+        </a>
+        <a href="https://t.me/+R8NfZkneQYZkYWE1" target="_blank" rel="noopener noreferrer">
+          <img src={TelegramLogo} className={TelegramLogo} />
+        </a>
+      </div>
     </>
   );
 }
