@@ -10,7 +10,7 @@ import {
   rainbowWallet,
   metaMaskWallet,
 } from '@rainbow-me/rainbowkit/wallets';
-import { getDefaultConfig, RainbowKitProvider, darkTheme, Theme } from '@rainbow-me/rainbowkit';
+import { getDefaultConfig, RainbowKitProvider, lightTheme } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 
 import merge from 'lodash.merge';
@@ -41,12 +41,6 @@ const rootElement = document.getElementById("react-root");
 if (!rootElement) throw new Error("React root not found");
 const root = ReactDOM.createRoot(rootElement);
 
-
-const myTheme = merge(darkTheme(), {
-  colors: {
-    accentColor: '#07296d',
-  },
-} as Theme);
 const queryClient = new QueryClient();
 
 // TODO: figure out if we actually want this to be async or if we should render something else in the meantime
@@ -60,7 +54,7 @@ setup().then(async (result) => {
       <React.StrictMode>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider theme={myTheme}>
+        <RainbowKitProvider theme={lightTheme()}>
           <MUDProvider value={result}>
           <App />
         </MUDProvider>
