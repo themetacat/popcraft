@@ -1589,7 +1589,11 @@ export default function Header({ hoveredData, handleData }: Props) {
 
                     if (chain.unsupported) {
                       return (
-                        <button onClick={openChainModal} type="button">
+                        <button
+                          onClick={openChainModal}
+                          type="button"
+                          className={style.btnConnect}
+                        >
                           Wrong network
                         </button>
                       );
