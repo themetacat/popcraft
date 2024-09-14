@@ -435,8 +435,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     updateTotalPrice();
   }, [numberData, prices]);
 
-
-
   return (
     <>
       {showTopElements && (
@@ -569,8 +567,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               <span className={style.fontNum}>
                 Total: {formatAmount(totalPrice)} ETH
               </span>
-
-
             </div>
 
             <button
@@ -707,7 +703,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           </div>
         </div>
       ) : null}
-
 
       <div className={style.buttonBox}>
         <a href="https://x.com/metacat007" target="_blank" rel="noopener noreferrer">

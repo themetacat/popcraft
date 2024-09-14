@@ -267,6 +267,7 @@
   text-align: center;
   letter-spacing: 2px;
   border-radius: 50%; 
+  cursor: pointer; /* 鼠标悬停时显示小手 */
 }
 
 .warningIcon {
@@ -281,6 +282,7 @@
   gap: 34px;
   color: #ffffff;
   margin-top: 5px;
+  cursor: pointer; /* 鼠标悬停时显示小手 */
 }
 
 .content {
