@@ -643,7 +643,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 <button
                   onClick={handlePlayAgain}
                   disabled={loading}
-                  style={{ cursor: loading ? "not-allowed" : "auto" }}
+                  style={{
+                    cursor: loading ? "not-allowed" : "pointer", // 鼠标悬停时显示小手，禁用状态时显示不可点击光标
+                    pointerEvents: loading ? "none" : "auto" // 禁用按钮时防止点击事件
+                  }}
                 >
                   {loading ? (
                     <img
@@ -665,12 +668,15 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             className={panningType !== "false" ? style.overlayBuy : style.overlay}
           >
             <div className={style.contentCon}>
-              <p>Congrats！</p>
-              <p>+150 $bugs！</p>
+              <p>Congrats!</p>
+              <p>+150 $bugs!</p>
               <button
                 onClick={handlePlayAgaintow}
                 disabled={loadingPlayAgain}
-                style={{ cursor: loadingPlayAgain ? "not-allowed" : "auto" }}
+                style={{
+                  cursor: loadingPlayAgain ? "not-allowed" : "pointer", // 鼠标悬停时显示小手，禁用状态时显示不可点击光标
+                  pointerEvents: loadingPlayAgain ? "none" : "auto" // 禁用按钮时防止点击事件
+                }}
               >
                 {loadingPlayAgain ? (
                   <img
