@@ -645,7 +645,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           </div>
         </div>
       ) : null}
-
       {
         timeLeft === 0 && localStorage.getItem('showGameOver') === 'true' && !gameSuccess
           ? (
