@@ -21,6 +21,7 @@
     "@typescript-eslint/parser": "5.46.1",
     "eslint": "8.29.0",
     "mprocs": "^0.6.4",
+    "postcss-pxtorem": "^6.1.0",
     "rimraf": "^3.0.2",
     "typescript": "5.1.6"
   },

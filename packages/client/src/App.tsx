@@ -28,14 +28,14 @@ export const App = () => {
       <div className={style.page}>
       {syncProgress ? (
         syncProgress.step !== SyncStep.LIVE ? (
-          <div style={{ color: "#fff" }} className={style.GameBoard}>
+          <div className={style.GameBoard}>
             {syncProgress.message} ({Math.floor(syncProgress.percentage)}%)
           </div>
         ) : (
           <Header hoveredData={hoveredData} handleData={handleMouseDown} />
         )
       ) : (
-        <div style={{ color: "#000" }}>Hydrating from RPC(0)</div>
+        <div style={{ color: "#000" }}>HYDRATING FROM RPC(0)</div>
       )}
       <Toaster
         toastOptions={{
