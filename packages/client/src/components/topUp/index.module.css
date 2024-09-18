@@ -1,53 +1,62 @@
 .topBox {
-  width: 398px;
-  /* height: 519px; */
+  width: 450px;
+  height: 550px;
   position: absolute;
   padding: 40px;
   left: 50%;
   top: 50%;
   gap: 16px;
   transform: translate(-50%, -50%);
-  border: 1px solid #0b0113;
+  /* background-color: red; */
   color: #fff;
-  background-color: #2d0c3b;
+  background-image: url("../../images/topup/topupback.png");
+  background-size: 100% 100%;
+  background-position: center;
   display: grid;
-  box-shadow: inset 0 0 12px 0 rgba(231, 189, 255, 0.2),
-    0 0 12px 0 rgba(231, 189, 255, 0.05);
+  justify-content: center;
+  align-items: center;
+  font-family: "AdobeHeitiStd-Regular";
+
 }
+
 .cant {
   height: 24px;
   line-height: 24px;
-  /* border: 1px solid ; */
   gap: 24px;
+
   span {
     display: inline-block;
     width: 352px;
     height: 23px;
     font-family: Silkscreen;
-    font-size: 18px;
+    font-size: 23px;
     font-weight: 700;
     line-height: 23.04px;
     letter-spacing: 0.1em;
-    text-align: left;
+    text-align: center;
     color: #ffffff;
+    margin-top: 10px;
   }
 }
+
 .imgOff {
-  width: 20px;
-  height: 20px;
+  width: 35px;
+  height: 35px;
   position: absolute;
-  right: 44px;
-  top: 44px;
+  left: 475px;
+  top: 15px;
 }
+
 .bridgeBTN {
-  width: 52px;
-  height: 6px;
+  width: 90px;
+  height: 10px;
   padding: 8px;
   gap: 10px;
   border: 1px 0px 0px 0px;
   opacity: 0px;
-  background-color: #200d2f;
-  border: 1px solid #0b0113;
+  background-image: url("../../images/topup/Bridgeback.png");
+  background-size: 100% 100%;
+  background-position: center;
   font-family: Silkscreen;
   font-size: 12px;
   font-weight: 400;
@@ -57,30 +66,47 @@
   color: #ffffff;
   cursor: pointer;
 }
+
 .warningCon {
-    background-color: #D59E111A;
-position: relative;
-    color: #D59E11;
-    border: 0.5px solid #D59E11;
-    width: 352px;
-    /* height: 112px; */
-    padding: 8px 12px 8px 12px;
-    gap: 10px;
-    margin-top: 8px;
-    opacity: 0px;
-    
+  background-color: #ffffff;
+  position: relative;
+  color: #D59E11;
+  border: 5px solid #fabe26;
+  width: 270px;
+  height: 140px;
+  left: 50%;
+  top: 50%;
+  gap: 16px;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  gap: 10px;
+  margin-top: 8px;
+  opacity: 0px;
+  font-size: 13px;
+  
 }
+.warningOverlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 .triangle {
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid rgba(213, 158, 17, 0.1); /* 可根据需要调整颜色 */
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  /* 可根据需要调整颜色 */
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.btnPartto{
+  /* margin-top: 10px; */
+}
 .titleOne {
   display: inline-block;
   width: 173px;
@@ -91,31 +117,44 @@ position: relative;
   line-height: 20.48px;
   letter-spacing: 0.1em;
   text-align: left;
-  color: #ffffff;
+  color: #080808;
 }
+
+
+@font-face {
+  font-family: "AdobeHeitiStd-Regular";
+  src: url("/fonts/BRLNSR.TTF");
+}
+
+
 .titleOne1 {
-  font-family: Silkscreen;
   font-size: 16px;
   font-weight: 400;
   line-height: 20.48px;
   letter-spacing: 0.1em;
   text-align: left;
-  color: #ffffff;
+  color: #000000;
   width: 136px;
   height: 20px;
   gap: 0px;
   opacity: 0px;
+  font-family: "AdobeHeitiStd-Regular";
+
 }
+
 .prilf {
   font-family: Silkscreen;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 14.08px;
   letter-spacing: 0.1em;
   text-align: left;
-  color: #d59e11;
+  color: #e38666;
   height: 14px;
+  text-transform: uppercase;
+    font-family: "AdobeHeitiStd-Regular"
 }
+
 .onePart {
   display: grid;
   width: 376px;
@@ -123,45 +162,56 @@ position: relative;
   padding: 12px;
   gap: 16px;
   opacity: 0px;
-  background-color: #3f1551;
+  background-color: #fff2c8;
+  border-radius: 10px;
 }
+
 .imgICon {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
+  width: 15px;
+  height: 15px;
 }
+
 .btnPart {
-  /* width:376px; */
-  height: 34px;
-  gap: 0px;
+  height: 35px;
   justify-content: space-between;
   opacity: 0px;
   display: grid;
-  gap: 4px;
+  gap: 5px;
+  color: #000000;
+  margin-top: -5px;
 }
+
+
+
 .partImo {
-  height: 80px;
+  height: 70px;
   display: grid;
   gap: 8px;
 }
+
 .partTwo {
   display: flex;
   cursor: pointer;
   justify-content: space-between;
   vertical-align: middle;
-  border-bottom: 0.5px solid #0b0113;
+  border-bottom: 3px solid #c4572e;
   height: 41px;
   width: 376px;
   margin-top: 8px;
 }
+
 .btnMe {
   width: 111px;
-  height: 6px;
+  height: 10px;
   padding: 8px;
   gap: 10px;
   border: 1px 0px 0px 0px;
   opacity: 0px;
-  background-color: #200d2f;
+  border: none;
+  /* background-color: #200d2f; */
+  background-image: url("../../images/topup/btnMe.png");
+  background-size: 100% 100%;
+  background-position: center;
   font-family: Silkscreen;
   font-size: 12px;
   font-weight: 400;
@@ -169,15 +219,16 @@ position: relative;
   letter-spacing: 0.1em;
   text-align: center;
   color: #ffffff;
-  border: 1px solid #0b0113;
+  /* border: 1px solid #0b0113; */
 }
-.btnMeB{
+
+.btnMeB {
   width: 111px;
   height: 22px;
   gap: 10px;
   border: 1px 0px 0px 0px;
   opacity: 0px;
-  background-color:  #4d3d59;
+  background-color: #4d3d59;
   font-family: Silkscreen;
   font-size: 9px;
   font-weight: 400;
@@ -188,6 +239,17 @@ position: relative;
   border: 1px solid #0b0113;
 }
 
+.inputConto {
+  width: 93px;
+  /* background-color: red; */
+  height: 34px;
+  display: grid;
+  gap: 5px;
+  position: relative;
+  margin-top: -5px;
+  font-size: 15px;
+}
+
 .ConfirmingFont {
   display: inline-block;
   font-family: Silkscreen;
@@ -196,34 +258,45 @@ position: relative;
   line-height: 15.36px;
   letter-spacing: 0.1em;
   text-align: left;
-  color: #b34fdd;
+  color: #dc5468;
   width: 75px;
   height: 15px;
   gap: 0px;
   opacity: 0px;
+  margin-left: 12px;
 }
 
 .partContent {
   width: 376px;
-  /* height: 142px; */
   padding: 12px;
-  gap: 16px;
   opacity: 0px;
-  background: #3f1551;
+  background-color: #fff2c8;
+  border-radius: 10px;
+  margin-top: -18px;
 }
+
 .inputCon {
   width: 100px !important;
   background: none;
+  /* background-color: red; */
   border: none;
-  color: #ffffff;
+  color: #050404;
   font-family: Silkscreen;
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 15px;
+  font-weight: 500;
   line-height: 15.36px;
   letter-spacing: 0.1em;
-  text-align: left;
-  height: 15px;
+  margin-left: 10px;  
+  font-family: "AdobeHeitiStd-Regular";
+
 }
+
+.warningImg {
+  width: 14px;
+  height: 14px;
+  margin-left: -15px;
+}
+
 .copyBtn {
   position: absolute;
   right: 0px;
@@ -234,25 +307,30 @@ position: relative;
   font-size: 15px;
   color: #ad9134;
 }
+
 .addcon {
   width: 110px;
   position: relative;
   vertical-align: middle;
+  
 }
+
 .imgUnioncopyBtn {
   position: absolute;
-  right: 0px;
-  top: 3px;
+  right: -5px;
+  top: 4px;
   width: 14px;
   height: 14px;
+  
 }
+
 .imgUnionCopyBtn {
   position: absolute;
-  right: -10px;
-  top: 3px;
+  right: -5px;
   width: 14px;
   height: 14px;
 }
+
 .prvkey {
   position: relative;
   gap: 8px;
@@ -261,24 +339,33 @@ position: relative;
   display: grid;
   height: 56px;
 }
+
+@font-face {
+  font-family: "AdobeHeitiStd-Regular";
+  src: url("../../../public/fonts/BRLNSR.TTF");
+}
 .pqad {
   width: 106px;
   height: 15px;
   gap: 0px;
   opacity: 0px;
   font-family: Silkscreen;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 15.36px;
   letter-spacing: 0.1em;
   text-align: left;
   color: #999999;
+  font-family: "AdobeHeitiStd-Regular";
+
 }
+
 .imginputConPassWord {
   width: 14px;
   height: 14px;
   margin-left: 4px;
 }
+
 .inputConPassWord {
   gap: 4px;
   opacity: 0px;
@@ -288,12 +375,13 @@ position: relative;
   line-height: 15.36px;
   letter-spacing: 0.1em;
   text-align: left;
-  color: #ffffff;
+  color: #e38666;
   background: none;
   border: none;
-cursor: pointer;
+  cursor: pointer;
   height: 15px;
 }
+
 .partThree {
   height: 40px;
   background-color: rgba(229, 229, 229, 0.5);
@@ -301,6 +389,7 @@ cursor: pointer;
   line-height: 40px;
   margin-top: 10px;
   font-size: 20px;
+
   button {
     background-color: rgba(229, 229, 229, 0.5);
     border: 1px solid #d7d7d7;
@@ -309,18 +398,21 @@ cursor: pointer;
     margin-left: 12px;
   }
 }
+
 .partFour {
   width: 400px;
   height: 137px;
   gap: 0px;
   opacity: 0px;
+  margin-top: -15px;
+
   p {
     margin: 0px;
     font-family: Silkscreen;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
-    line-height: 15.36px;
-    letter-spacing: 0.1em;
+    line-height: 19px;
+    /* letter-spacing: 0.1em; */
     text-align: left;
     width: 400px;
     height: 45px;
@@ -328,8 +420,13 @@ cursor: pointer;
     gap: 0px;
     opacity: 0px;
     display: grid;
-    color: #ffffff;
+    color: #000000;
+    text-transform: uppercase;
+    font-family: "AdobeHeitiStd-Regular";
+
+
   }
+
   input {
     width: 342px !important;
     height: 16px !important;
@@ -338,49 +435,64 @@ cursor: pointer;
     border: 1px 0px 0px 0px;
     justify-content: space-between;
     opacity: 0px;
-    border: 1px solid #0b0113;
-    background-color: #5b2671;
+    border: none;
+    /* border: 1px solid #0b0113; */
+    border-radius: 10px;
+    background-color: #fff2c8;
     font-family: Silkscreen;
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 800;
     line-height: 17.92px;
     letter-spacing: 0.1em;
-    color: #ffffff;
+    color: #000000;
   }
 }
-.inputEth{
+
+
+.inputEth {
   margin-top: 8px;
+  color: #000000;
 }
+
 .svgIcon {
   width: 30.86px;
   height: 30.86px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
 }
+
 .partFive {
   display: flex;
-  justify-content: space-between; 
-  align-items: center; 
+  justify-content: space-between;
+  align-items: center;
+  text-transform: uppercase;
+  /* 将文本转换为大写 */
+  color: #9a3916;
+
   input {
     width: 80px;
   }
 }
+
 .mainFont {
   width: 95px;
   height: 34px;
   display: grid;
-  gap: 4px;
+  gap: 5px;
   position: relative;
+  margin-left: 10px;
+
   span {
-    font-family: Silkscreen;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 400;
     line-height: 15.36px;
     letter-spacing: 0.1em;
     text-align: left;
-    color: #ffffff;
+    color: #000000;
     display: inline-block;
     height: 15px;
+    font-family: "AdobeHeitiStd-Regular";
   }
+
   p {
     font-family: Silkscreen;
     font-size: 12px;
@@ -388,28 +500,58 @@ cursor: pointer;
     line-height: 15.36px;
     letter-spacing: 0.1em;
     text-align: left;
-    color: #b34fdd;
+    color: #dc5468;
     height: 15px;
   }
 }
+
 .footerBtn {
   text-transform: uppercase;
   width: 400px;
   height: 44px;
-  padding: 10px 0px 10px 0px;
   gap: 10px;
   opacity: 0px;
-  background-color: #200d2f;
+  background-color: #fbae6a;
+  background-image: url("../../images/topup/footerBtn.png");
+  background-size: 100% 100%;
+  background-position: center;
   color: #200d2f;
-  border: 1px solid #0b0113;
-  font-family: Silkscreen;
+  border: none;
   font-size: 18px;
   font-weight: 700;
   line-height: 24px;
   letter-spacing: 0.1em;
   text-align: center;
   color: #ffffff;
+  margin-top: -25px;
+  text-shadow: 2px 2px 4px #515151; /* 添加黑色阴影 */
+
 }
+
+
+.wrongNetworkBtn{
+  text-transform: uppercase;
+  width: 400px;
+  height: 44px;
+  gap: 10px;
+  opacity: 0px;
+  background-color: #fbae6a;
+  background-image: url("../../images/topup/wrongnetwork.png");
+  background-size: 100% 100%;
+  background-position: center;
+  color: #200d2f;
+  border: none;
+  font-family: Silkscreen;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.1em;
+  text-align: center;
+  color: #fb5a5a;
+  margin-top: -25px;  
+}
+
+
 .footerBtnElse {
   text-transform: uppercase;
   width: 400px;
@@ -417,9 +559,11 @@ cursor: pointer;
   padding: 10px 0px 10px 0px;
   gap: 10px;
   opacity: 0px;
-  background-color: #200d2f;
+  background-color: #fbae6a;
+  background-image: url("../../images/topup/footerBtn.png");
+  background-size: 100% 100%;
+  background-position: center;
   color: #200d2f;
-  border: 1px solid #0b0113;
   font-family: Silkscreen;
   font-size: 18px;
   font-weight: 700;
@@ -428,24 +572,31 @@ cursor: pointer;
   text-align: center;
   color: #ffffff;
 }
+
 .canvasWrapper {
   /* width: 100%;
     height: 100%; */
-  overflow-x: hidden; /* 允许水平滚动 */
-  overflow-y: hidden; /* 禁止垂直滚动 */
+  overflow-x: hidden;
+  /* 允许水平滚动 */
+  overflow-y: hidden;
+  /* 禁止垂直滚动 */
 
   /* white-space: nowrap; 保证内容横向排列 */
 }
+
 .canvasWrapper::-webkit-scrollbar {
   width: 8px;
 }
+
 .canvasWrapper::-webkit-scrollbar-track {
   background-color: rgba(244, 243, 241, 0.5);
 }
+
 .canvasWrapper::-webkit-scrollbar-thumb {
   background-color: rgba(244, 243, 241, 0.5);
   border-radius: 4px;
 }
+
 .canvasWrapper::-webkit-scrollbar-thumb:hover {
   background-color: rgba(244, 243, 241, 0.5);
 }
@@ -459,10 +610,12 @@ cursor: pointer;
   width: 30px;
   height: 30px;
 }
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

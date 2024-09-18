@@ -14,7 +14,9 @@
   background-repeat: no-repeat;
   display: grid;
   gap: 24px;
-  text-transform: uppercase;
+  
+  
+  /* text-transform: uppercase; */
 }
 
 p {
@@ -23,14 +25,28 @@ p {
 
 .title {
   font-weight: 700;
-  font-size: 18px;
+  font-size: 20px;
   line-height: 23.04px;
   color: #ffffff;
-  letter-spacing: 8px;
+  letter-spacing: 5px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* 添加黑色阴影 */
+  text-align: center; /* 居中文本 */
+}
+
+
+@font-face {
+  font-family: "AdobeHeitiStd-Regular";
+  src: url("../../../public/fonts/BRLNSR.TTF");
 }
 
 .Container {
+  width: 400px;
+  height: 200px;
   display: block;
+  justify-content: center;
+  align-items: center;
+  line-height: 2.5em; /* 行高为 1.5 倍字体大小 */
+
 }
 
 .copywritingFirst {
@@ -42,19 +58,23 @@ p {
 }
 
 .copywritingThree {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20.48px;
-  letter-spacing: 8px;
-  color: #ffffff;
+  font-weight: 600;
+  font-size: 22px;
+  /* line-height: 20.48px; */
+  letter-spacing: 4px;
+  color: #000000;
+  
 }
 
 .copywritingTwo {
   font-weight: 400;
-  font-size: 14px;
-  line-height: 17.92px;
-  letter-spacing: 8px;
-  color: #999999;
+  font-size: 20px;
+  line-height: 5px;
+  letter-spacing: 3px;
+  color: #020202;
+  /* font-size: 15px; */
+  font-family: "AdobeHeitiStd-Regular";
+  
 }
 
 .copywritingFour {
@@ -80,18 +100,20 @@ p {
   top: 88%; 
   left: 50%; 
   transform: translate(-50%, -50%);
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 24px;
   letter-spacing: 0.1em;
   text-align: center;
   color: #ffffff;
   transition: font-size 0.3s ease; 
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+
 }
 
 .btnPlay:hover {
   color: #ffffff;
-  font-size: 22px; 
+  font-size: 23px; 
 }
 
 .btnPlay:active {
@@ -105,7 +127,6 @@ p {
   transform: rotate(3600deg);
   -webkit-transition: -webkit-transform 5s linear;
   transition: transform 5s linear;
-  /* width: 100%; */
   height: 100%;
 }
 

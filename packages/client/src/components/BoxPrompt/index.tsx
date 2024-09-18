@@ -575,11 +575,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
 
             <div className={style.totalAmount}>
-              <span className={style.fontNum}>
-                Total: {formatAmount(totalPrice)} ETH
+              <span className={style.fontNumyo}>
+                TOTAL: {formatAmount(totalPrice)} ETH
               </span>
             </div>
-            
+
             <div className={style.payBtnBox}>
               <button
                 className={style.payBtn}
