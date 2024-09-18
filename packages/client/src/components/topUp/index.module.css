@@ -342,7 +342,7 @@
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
-  src: url("../../../public/fonts/BRLNSR.TTF");
+  src: url("/fonts/BRLNSR.TTF");
 }
 .pqad {
   width: 106px;
