@@ -15,6 +15,8 @@ interface Props {
 export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop, loadingplay }: Props) {
   const playAction = localStorage.getItem("playAction");
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false); // 添加状态来跟踪按钮的点击状态
+
   const { isConnected } = useAccount();
   const handleConnectClick = () => {
     if (isConnected) {
@@ -22,6 +24,8 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
         setPopStar(true)
         playFun();
         setPlayButtonClicked(true); 
+        setIsPlaying(true); // 更新状态
+
       } else {
         setPopStar(false);
       }
@@ -115,8 +119,8 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
                     onClick={handleConnectClick}
                     type="button"
                     disabled={playButtonClicked} // 禁用按钮
-                    className={`${style.btnPlay} ${playButtonClicked ? style.btnPlayClicked : ''}`}
-                  >
+                    className={`${style.btnPlay} ${playButtonClicked ? style.btnPlayClicked : ''} ${isPlaying ? style.btnPlayPlaying : ''}`}
+                    >
                     {
                       loadingplay === true ? (
                         <img

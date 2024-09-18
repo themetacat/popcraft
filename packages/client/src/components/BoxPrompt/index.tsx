@@ -462,7 +462,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             </div>
           </div>
 
-
           <div className={style.container3}>
             <div className={style.imgContent}  >
               {Object.entries(matchedData).map(([key, { src, balance, name }]) => (
@@ -506,94 +505,107 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 setdataq(false);
               }}
             />
-            {Object.entries(matchedData).slice(0, 5).map(([key, { src, name }]) => (
-              <div key={key} className={style.firstBuy}>
-                <img src={src} alt={name} className={style.itemImage} />
-                <span className={style.itemName}>{name}</span>
-                <div className={style.dataIcon}>
-                  <button
-                    onClick={() => {
-                      downHandleNumber(key);
-                    }}
-                    // disabled={numberData[key] === 0}
-                    // className={numberData[key] === 0 ? style.disabled : (null as any)}
-                    disabled={numberData === 1}
-                    className={numberData === 1 ? style.disabled : (null as any)}
-                  >
-                    -
-                  </button>
-                  <p className={style.pp}></p>
-                  <input
-                    value={numberData[key] || 0}
-                    onChange={(e) => handleNumberChange(key, e.target.value)}
-                    className={style.numData}
-                    min="0"
-                  />
-                  <p className={style.pp}></p>
-                  <button
-                    onClick={() => {
-                      upHandleNumber(key);
-                    }}
-                    disabled={data === 0}
-                    className={data === 0 ? style.disabled : (null as any)}
-                  >
-                    +
-                  </button>
-                </div>
-                <div className={style.twoBuy}>
-                  <span className={style.fontNum}>
-                    {formatAmount(prices[key] * (numberData[key] || 0))} ETH
-                  </span>
+            <div className={style.buyBoxContent}>
+              {Object.entries(matchedData).slice(0, 5).map(([key, { src, name }]) => (
+                <div key={key} className={style.firstBuy}>
 
-                  {forPayMonType === true ? (
-                    <img
-                      src={loadingIcon}
-                      alt=""
-                      style={{
-                        width: "16px",
-                        height: "16px",
-                        marginTop: "5px",
-                        color: "#ffffff",
-                        filter: "grayscale(100%)",
-                      }}
-                      className={style.commonCls1}
-                    />
-                  ) : null}
+                  <img src={src} alt={name} className={style.itemImage} />
+
+                  <div className={style.itemNameto}>
+                    <span className={style.itemName}>{name}</span>
+                    <div className={style.dataIcon}>
+                      <button
+                        onClick={() => {
+                          downHandleNumber(key);
+                        }}
+                        disabled={numberData === 1}
+                        className={numberData === 1 ? style.disabled : (null as any)}
+                      >
+                        -
+                      </button>
+                      {/* <p className={style.pp}></p> */}
+                      <input
+                        value={numberData[key] || 0}
+                        onChange={(e) => handleNumberChange(key, e.target.value)}
+                        className={style.numData}
+                        min="0"
+                      />
+                      {/* <p className={style.pp}></p> */}
+                      <button
+                        onClick={() => {
+                          upHandleNumber(key);
+                        }}
+                        disabled={data === 0}
+                        className={data === 0 ? style.disabled : (null as any)}
+
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+
+                  <div className={style.twoBuy}>
+                    <span className={style.fontNum}>
+                      {formatAmount(prices[key] * (numberData[key] || 0))}
+                      <p className={style.fontNum1}>ETH</p>
+                    </span>
+
+                    {forPayMonType === true ? (
+                      <img
+                        src={loadingIcon}
+                        alt=""
+                        style={{
+                          width: "16px",
+                          height: "16px",
+                          marginTop: "5px",
+                          color: "#ffffff",
+                          filter: "grayscale(100%)",
+                        }}
+                        className={style.commonCls1}
+                      />
+                    ) : null}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+
 
             <div className={style.totalAmount}>
               <span className={style.fontNum}>
                 Total: {formatAmount(totalPrice)} ETH
               </span>
             </div>
+            
+            <div className={style.payBtnBox}>
+              <button
+                className={style.payBtn}
+                onClick={() => {
+                  handlePayMent()
+                }}
+                disabled={Object.values(numberData).every(num => num === 0) || cresa || !isPriceLoaded} // 添加 isPriceLoaded 状态来禁用按钮
+                style={{ cursor: Object.values(numberData).every(num => num === 0) || cresa || !isPriceLoaded ? "not-allowed" : "auto" }}
+              >
+                {cresa ? (
+                  <img
+                    src={loadingIcon}
+                    alt=""
+                    style={{
+                      width: "16px",
+                      height: "16px",
+                      marginTop: "5px",
+                      color: "#ffffff",
+                      filter: "grayscale(100%)",
+                    }}
+                    className={style.commonCls1}
+                  />
+                ) : (
+                  <span>PAY</span>
+                )}
+              </button>
+            </div>
 
-            <button
-              className={style.payBtn}
-              onClick={() => {
-                handlePayMent()
-              }}
-              disabled={Object.values(numberData).every(num => num === 0) || cresa || !isPriceLoaded} // 添加 isPriceLoaded 状态来禁用按钮
-              style={{ cursor: Object.values(numberData).every(num => num === 0) || cresa || !isPriceLoaded ? "not-allowed" : "auto" }}
-            >
-              {cresa ? (
-                <img
-                  src={loadingIcon}
-                  alt=""
-                  style={{
-                    width: "16px",
-                    height: "16px",
-                    marginTop: "5px",
-                    color: "#ffffff",
-                    filter: "grayscale(100%)",
-                  }}
-                  className={style.commonCls1}
-                />
-              ) : (
-                <span>PAY</span>
-              )}
-            </button>
           </div>
         </div>
       ) : null}
@@ -631,7 +643,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           </div>
         </div>
       ) : null}
-
       {
         timeLeft === 0 && localStorage.getItem('showGameOver') === 'true' && !gameSuccess
           ? (

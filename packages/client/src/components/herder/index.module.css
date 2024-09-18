@@ -18,7 +18,8 @@ canvas {
   pointer-events: auto !important;
 }
 .overlayPopStar {
-  background-color: #200d2f;
+  background-image: url('../../images/background.png'); 
+  background-size: 100% 100%;
   position: fixed;
   top: 0;
   left: 0;

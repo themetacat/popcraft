@@ -11,14 +11,14 @@
   gap: 45px;
 }
 
-.buttonBox{
+.buttonBox {
   position: fixed;
   justify-content: center;
   align-items: center;
-  bottom: 0; 
-  right: 50px; 
+  bottom: 0;
+  right: 50px;
   margin: auto;
-  transform: translate(0, 0); 
+  transform: translate(0, 0);
   height: 64px;
   padding: 24px;
   display: flex;
@@ -26,9 +26,9 @@
 }
 
 .buttonBox img {
-  max-width: 50px; 
-  max-height: 50px; 
-  cursor: pointer; 
+  max-width: 50px;
+  max-height: 50px;
+  cursor: pointer;
 }
 
 .container2 {
@@ -39,7 +39,7 @@
   gap: 45px;
 }
 
-.container3{
+.container3 {
   height: 92px;
   display: flex;
   justify-content: center;
@@ -91,23 +91,30 @@
 }
 
 .itemName {
-  font-size: 16px;
-  font-weight: 500;
-  color: rgba(153, 153, 153, 1);
-  ;
-  width: 100px;
-  height: 20px;
-  /* overflow: hidden;  */
-  /* text-overflow: ellipsis;  */
-  white-space: nowrap;
-  text-align: left;
-  /* 文本左对齐 */
+  font-weight: 600;
+  color: #feed95;
+  font-size: 18px;
+  /* background-color: red; */
+  margin-top: 5px;
+  /* margin: 0 auto; */
 }
 
 .itemImage {
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
+  width: 70px;
+  height: 70px;
+  margin-right: 0px;
+  flex-shrink: 0;
+  margin-left: 20px;
+}
+
+.itemNameto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-left: 8px;
+  /* margin-top: 10px; */
 }
 
 .twoPart {
@@ -135,7 +142,6 @@
   line-height: 23.04px;
   text-align: center;
   letter-spacing: 2px;
-  /* color: rgba(255, 255, 255, 1); */
   color: floralwhite;
   font-size: 30px;
   margin-top: 10px;
@@ -152,8 +158,10 @@
   justify-content: center;
   margin-top: 7px;
 }
+
 @font-face {
-  font-family: 'SansationLight'; /* 重命名字体名 */
+  font-family: 'SansationLight';
+  /* 重命名字体名 */
   src: url('/fonts/SansationLight.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
@@ -172,7 +180,7 @@
   display: grid;
   gap: 4px;
   /* font-family: 'Silkscreen'; */
-  
+
 }
 
 .threePart p:nth-child(1) {
@@ -259,7 +267,7 @@
   align-items: center;
   gap: 13px;
   background-image: url("../../images/Buttonto.png");
-  background-size: 100% 100%; 
+  background-size: 100% 100%;
   color: #ffffff;
   font-weight: 700;
   font-size: 18px;
@@ -286,40 +294,40 @@
 }
 
 .content {
+  /* width: 400px; */
+  /* height: 100px; */
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 500px;
-  height: 430px;
-  padding: 40px;
-  background-color: #2d0c3b;
-  box-shadow:
-    inset 0 0 12px 0 rgba(231, 189, 255, 0.2),
-    0 0 12px 0 rgba(231, 189, 255, 0.05);
+  width: 700px;
+  height: 500px;
+  background-image: url("../../images/questionback/questionback.png");
+  background-size: 100% 100%;
+  background-position: center;
   display: grid;
   gap: 24px;
-  border: 1px solid #0b0113;
-  /* 添加正确的边框属性 */
+  border: none;
   text-transform: uppercase;
 }
+
 
 .contentSuccess {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 392px;
-  height: 97px;
-  padding: 40px;
-  background-color: #2d0c3b;
-  box-shadow:
-    inset 0 0 12px 0 rgba(231, 189, 255, 0.2),
-    0 0 12px 0 rgba(231, 189, 255, 0.05);
-  display: grid;
-  gap: 24px;
-  border: 1px solid #0b0113;
-  /* 添加正确的边框属性 */
+  width: 27vw;
+  height: 43vh;
+  border: none;
+  background-image: url("../../images/gameover/fail.png");
+  background-size: 100% 100%;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
   text-transform: uppercase;
 
   .turnOff {
@@ -333,29 +341,28 @@
   p {
     text-transform: uppercase;
     /* font-family: Silkscreen; */
-    font-size: 24px;
+    font-size: 30px;
     font-weight: 700;
     line-height: 30.72px;
     letter-spacing: 5px;
     color: #ffffff;
     text-align: center;
-    /* width: 228px;
-        height: 31px; */
-    margin: 0px;
+    margin-top: 120px;
   }
 
   button {
     text-transform: uppercase;
-    border: 1px solid #0b0113;
-    background-color: #200d2f;
-    width: 400px;
-    height: 44px;
-    padding: 10px 0px 10px 0px;
+    background-image: url("../../images/gameover/paybutton.png");
+    background-size: 100% 100%;
+    background-position: center;
+    border: none;
+    background-color: #9bfffc;
+    width: 19vw;
+    height: 5vh;
     gap: 10px;
     color: #ffffff;
-    /* font-family: Silkscreen; */
     font-weight: 700;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 24px;
     letter-spacing: 8px;
     text-align: center;
@@ -367,30 +374,32 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 398px;
-  height: 147px;
-  padding: 40px;
-  background-color: #2d0c3b;
-  box-shadow:
-    inset 0 0 12px 0 rgba(231, 189, 255, 0.2),
-    0 0 12px 0 rgba(231, 189, 255, 0.05);
-  display: grid;
-  gap: 24px;
-  border: 1px solid #0b0113;
-  /* 添加正确的边框属性 */
+  width: 27vw;
+  height: 43vh;
+  border: none;
+  background-image: url("../../images/gameover/succeed.png");
+  background-size: 100% 100%;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 35px;
   text-transform: uppercase;
 
   p:nth-child(1) {
     text-transform: uppercase;
     /* font-family: Silkscreen; */
-    font-size: 24px;
+    font-size: 30px;
     font-weight: 700;
     line-height: 30.72px;
     letter-spacing: 5px;
     color: #ffffff;
     text-align: center;
-    margin: 0px;
+    margin-top: 100px;
   }
+
+
 
   .turnOff {
     width: 16px;
@@ -403,27 +412,31 @@
   &:nth-last-child(1) {
     text-transform: uppercase;
     /* font-family: Silkscreen; */
-    font-size: 24px;
+    font-size: 30px;
     font-weight: 700;
     line-height: 30.72px;
     letter-spacing: 5px;
-    color: #b34fdd;
+    color: #d55884;
     text-align: center;
     margin: 0px;
   }
 
   button {
     text-transform: uppercase;
-    border: 1px solid #0b0113;
-    background-color: #200d2f;
-    width: 400px;
-    height: 44px;
-    padding: 10px 0px 10px 0px;
+    background-image: url("../../images/gameover/succeedpay.png");
+    background-size: 100% 100%;
+    background-position: center;
+    border: none;
+    /* background-color: #ff80ab; */
+    background-color: #ffc5d3;
+    width: 19vw;
+    height: 5vh;
     gap: 10px;
     color: #ffffff;
-    /* font-family: Silkscreen; */
+    gap: 10px;
+    color: #ffffff;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 24px;
     letter-spacing: 8px;
     text-align: center;
@@ -517,33 +530,42 @@ p {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 500px;
-  height: 390px;
-  border: 1px solid #0b0113;
+  width: 23%;
+  height: 60%;
+  /* border: 1px solid #0b0113; */
   gap: 24px;
   padding: 40px;
-  background-color: #2d0c3b;
+  background-image: url("../../images/substance/substance.png");
+  background-size: 100% 100%;
   position: relative;
-  box-shadow:
-    inset 0 0 12px 0 rgba(231, 189, 255, 0.2),
-    0 0 12px 0 rgba(231, 189, 255, 0.05);
+}
 
-  .turnOff {
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    left: 440px;
-    top: 40px;
-  }
+.turnOff {
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  left: 400px;
+  top: 10px;
+}
+
+.buyBoxContent {
+  margin-top: 30px;
 }
 
 .firstBuy {
-  width: 400px;
-  height: 44px;
-  gap: 24px;
+  width: 370px;
+  height: 75px;
+  gap: 10px;
   display: flex;
-  margin-top: 24px;
+  justify-content: center;
+  align-items: center;
+  background-image: url("../../images/substance/substancebar.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 6px auto;
 }
+
 
 .fontBuy {
   font-size: 22px;
@@ -556,118 +578,121 @@ p {
 }
 
 .dataIcon {
-  width: 124px;
-  height: 18px;
-  background-color: #200d2f;
-  gap: 16px;
-  padding: 12px;
+  /* background-image: url("../../images/substance/substancebar.png"); */
+  gap: 19px;
+  padding: 11px;
   display: flex;
   justify-content: center;
-  /* 水平居中 */
   align-items: center;
-  /* 垂直居中 */
+  /* background-color: red; */
+  margin-top: -2px;
 
-  border: 1px solid rgba(11, 1, 19, 1);
 
   .pp {
-    border: 1px solid #0b0113;
+    /* border: 1px solid #0b0113; */
     height: auto;
   }
 
   button {
     color: #ffffff;
-    /* width: 16px;
-        height: 16px; */
+    width: 23px;
+    height: 23px;
     border: none;
-    background-color: transparent;
-    font-size: 25px;
+    background-image: url("../../images/welcome/addbackground.png");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 50px;
+    font-size: 15px;
+    justify-content: center;
     text-align: center;
     line-height: 16px;
+    justify-content: center;
 
-    /* justify-content: center; */
     &:active {
-      background-color: rgba(255, 255, 255, 0.05);
+      /* background-color: rgba(255, 255, 255, 0.05); */
     }
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.03);
+      /* background-color: rgba(255, 255, 255, 0.03); */
     }
   }
 
   .disabled {
-    opacity: 0.5;
+    /* opacity: 0.5; */
     /* 设置按钮透明度为50% */
   }
 
-  /* .numData {
-    display: inline-block;
-    width: 26px;
-    height: 20px;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 20.48px;
-    letter-spacing: 5px;
-    /* color: #ffffff; */
-  /* border: 1px solid rgba(11, 1, 19, 1); }*/
 
 
   .numData {
-    display: inline-block;
     width: 26px;
     height: 20px;
-    font-weight: 400;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 26px;
     line-height: 20.48px;
+    background-color: #2c8dba;
     letter-spacing: 5px;
     color: #ffffff;
-    background-color: #2d0c3b;
-    /* 与背景色一致 */
     border: none;
-    /* 移除边框 */
     text-align: center;
-    /* 文本居中 */
     outline: none;
-    /* 移除点击时的白色边框 */
   }
-
 
 }
 
 .twoBuy {
+  width: 100px;
+  height: 60px;
+  /* background-color: aqua; */
   display: flex;
+  align-items: center;
+  /* 垂直居中对齐子元素 */
+  flex-direction: column;
+  /* 垂直排列子元素 */
+  text-align: center;
+  /* 文本居中对齐 */
+  /* margin-left: -15px; */
   gap: 24px;
-  margin-top: 24px;
 }
 
 .fontNum {
-  font-size: 22px;
+  /* font-size: 22px; */
   line-height: 28.16px;
   /* width: 68px; */
   height: 28px;
   font-weight: 700;
   color: #ffffff;
   display: inline-block;
+  margin-top: 7px;
+}
+
+.fontNum1 {
+  margin-top: -8px;
 }
 
 .payBtn {
-  width: 400px;
-  height: 44px;
-  padding: 10px 0px 10px 0px;
-  border: 1px solid rgba(11, 1, 19, 1);
-  background-color: rgba(32, 13, 47, 1);
-  font-size: 18px;
+  width: 370px;
+  height: 50px;
+  border: none;
+  opacity: 0px;
+  background-image: url("../../images/welcome/playnormal.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  text-align: center;
+  font-size: 22px;
   font-weight: 700;
   line-height: 24px;
-  letter-spacing: 8px;
+  letter-spacing: 0.1em;
   text-align: center;
   color: #ffffff;
-  margin-top: 24px;
-  font-family: Silkscreen;
-  position: relative;
+  transition: font-size 0.3s ease;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.03);
     color: #ffffff;
+    font-size: 22px;
+    /* 悬停时字体变大 */
   }
 
   &:active {
@@ -789,4 +814,18 @@ p {
   transition: transform 5s linear;
   /* width: 100%; */
   height: 100%;
+}
+
+.totalAmount {
+  /* background-color: red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.payBtnBox {
+  /* background-color: red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
