@@ -23,7 +23,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
       if (playAction === 'play') {
         setPopStar(true)
         playFun();
-        setPlayButtonClicked(true); 
+        setPlayButtonClicked(true);
         setIsPlaying(true); // 更新状态
 
       } else {
@@ -42,24 +42,25 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
     <div className={style.content}>
       <p className={style.title}>WELCOME TO POPCRAFT!</p>
       <div className={style.Container}>
-        {/* <p className={style.copywritingFirst}>How to play?</p> */}
-        <span className={style.copywritingTwo}>This is a composability-based elimination game.You have&nbsp;</span>
-        <span className={style.copywritingThree}>4 minutes</span>&nbsp;
+        <span className={style.copywritingTwo}>This is a composability-based elimi-nation game. You have
+          <span className={style.copywritingThree}> 4 minutes</span>&nbsp;<br />
+        </span>
         <span className={style.copywritingTwo}>
           {" "}
           to eliminate all the materials.{" "}
         </span>
         <br />
-        <span className={style.copywritingTwo}>   You'll be rewarded with </span>
-        <span className={style.copywritingThree}> 150 $bugs</span>
+        <span className={style.copywritingTwo}>You'll be rewarded with
+          <span className={style.copywritingThree}> 150 $bugs</span>
+        </span>
         <span className={style.copywritingTwo}>
           {" "}
           for completing the game.
           <br />
-          To complete the game, you may need materials from the game
+          {/* To complete the game, you may need materials from the game */}
         </span>
-        <a href="https://thiscursedmachine.fun/" target="_blank" rel="noopener noreferrer" className={style.copywritingFour}> This Cursed Machine</a>
-        <span className={style.copywritingTwo}>.</span>
+        {/* <a href="https://thiscursedmachine.fun/" target="_blank" rel="noopener noreferrer" className={style.copywritingFour}> This Cursed Machine</a> */}
+        {/* <span className={style.copywritingTwo}>.</span> */}
       </div>
       <ConnectButton.Custom>
         {({
@@ -117,7 +118,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
                     type="button"
                     disabled={playButtonClicked} // 禁用按钮
                     className={`${style.btnPlay} ${playButtonClicked ? style.btnPlayClicked : ''} ${isPlaying ? style.btnPlayPlaying : ''}`}
-                    >
+                  >
                     {
                       loadingplay === true ? (
                         <img

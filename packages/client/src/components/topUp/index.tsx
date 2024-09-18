@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import style from "./index.module.css";
-import trunOff from "../../images/turnOffBtn.png";
+import trunOff from "../../images/turnOffBtntopup.png"
 import toast, { Toaster } from "react-hot-toast";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import warningImg from "../../images/warning.png";
@@ -301,7 +301,7 @@ export default function TopUp({
                         <p>
                           {balanceResultEOA.data?.value
                             ? ` ${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)}`
-                            : " 0ETH"}&nbsp;ETH
+                            : " 0ETH"}&nbsp;&nbsp;&nbsp;&nbsp;ETH
                         </p>
                       </div>
                     </button>
@@ -312,64 +312,52 @@ export default function TopUp({
                   </span>
                 </div>
               </div>
+
               <div className={style.partContent}>
                 <p>
                   <span className={style.titleOne}> SESSION WALLET </span>
                   <img
                     src={warningImg}
                     alt=""
-                    style={{
-                      width: "16px",
-                      height: "16px",
-                      verticalAlign: "middle",
-                      marginLeft: "8px",
-                    }}
+                    className={style.warningImg}
+
                     onClick={() => {
                       setWarningModel(!warningModel);
                     }}
                   />
-                  {warningModel === true ? (
-                    <div className={style.warningCon}>
-                      <div className={style.triangle}></div>
-                      The session wallet is a private key stored in your
-                      browser's local storage. It allows you to play games
-                      without having to confirm transactions, but is less
-                      secure.
-                      <br />
-                      Only deposit very small amounts of ETH in this wallet. We
-                      recommend no more than 0.0003 ETH at a time, this amount
-                      lets you complete 1000 transactions in PixeLAW.
-                    </div>
-                  ) : null}
+
                 </p>
 
                 <div className={style.partTwo}>
                   <div style={{ display: "flex", gap: "4px" }}>
                     <img src={FrameIcon} alt="" className={style.imgICon} />
-                    <div className={style.addcon}>
-                      <input
-                        type="text"
-                        value={
-                          palyerAddress.substring(0, 4) +
-                          "..." +
-                          palyerAddress.substring(palyerAddress.length - 4)
-                        }
-                        className={style.inputCon}
-                      />
-                      <img
-                        src={UnioncopyBtn}
-                        onClick={() => {
-                          handleCopy(palyerAddress);
-                        }}
-                        alt=""
-                        className={style.imgUnioncopyBtn}
-                      />
-                      <span className={style.ConfirmingFont}>
-                        {!isConfirmingWith && (
-                          <>{(Number(balance) / 1e18).toFixed(8)}&nbsp;ETH</>
-                        )}
-                      </span>
+                    <div className={style.inputConto}>
+                      <div className={style.addcon}>
+                        <input
+                          type="text"
+                          value={
+                            palyerAddress.substring(0, 4) +
+                            "..." +
+                            palyerAddress.substring(palyerAddress.length - 4)
+                          }
+                          className={style.inputCon}
+                        />
+                        <img
+                          src={UnioncopyBtn}
+                          onClick={() => {
+                            handleCopy(palyerAddress);
+                          }}
+                          alt=""
+                          className={style.imgUnioncopyBtn}
+                        />
+                        <span className={style.ConfirmingFont}>
+                          {!isConfirmingWith && (
+                            <>{(Number(balance) / 1e18).toFixed(8)}&nbsp;&nbsp;&nbsp;ETH</>
+                          )}
+                        </span>
+                      </div>
                     </div>
+
                   </div>
                   <div
                     className={style.btnMe}
@@ -379,7 +367,6 @@ export default function TopUp({
                     {withdrawButtonText}
                   </div>
                 </div>
-
                 <div className={style.prvkey}>
                   <p className={style.pqad}>PRIVATE KEY</p>
                   <div style={{ display: "flex", gap: "4px" }}>
@@ -394,6 +381,7 @@ export default function TopUp({
                     <img
                       src={showPassword === true ? openEye : turnOffEye}
                       alt=""
+                      className={style.imginputConPassWord}
                       onClick={() => {
                         setShowPassword(!showPassword);
                       }}
@@ -412,6 +400,7 @@ export default function TopUp({
                   </p>
                 </div>
               </div>
+
 
               <div className={style.partFour}>
                 <p>
@@ -479,7 +468,7 @@ export default function TopUp({
 
 
               {chain.unsupported && (
-                <button onClick={openChainModal} type="button">
+                <button onClick={openChainModal} type="button" className={style.wrongNetworkBtn}>
                   Wrong network
                 </button>
               )}
@@ -487,6 +476,22 @@ export default function TopUp({
           );
         }}
       </ConnectButton.Custom>
+
+      {warningModel === true ? (
+        <div className={style.warningOverlay} onClick={() => setWarningModel(false)}>
+          <div className={style.warningCon}>
+            <div className={style.triangle}></div>
+            The session wallet is a private key stored in your
+            browser's local storage. It allows you to play games
+            without having to confirm transactions, but is less
+            secure.
+            <br />
+            Only deposit very small amounts of ETH in this wallet. We
+            recommend no more than 0.0003 ETH at a time, this amount
+            lets you complete 1000 transactions in PixeLAW.
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
