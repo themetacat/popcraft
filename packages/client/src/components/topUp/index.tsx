@@ -199,7 +199,6 @@ export default function TopUp({
       const nonce = await publicClient.getTransactionCount({ address: address });
       const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue), nonce });
       const result = await publicClient.waitForTransactionReceipt({ hash: result_hash });
-      // console.log(result,'1111111111111111');
       if (result.status === "success") {
         onTopUpSuccess(); // 调用回调函数
         toast.success("Top up successful!"); // 显示成功消息
@@ -465,10 +464,12 @@ export default function TopUp({
                 </button>
               )}
 
-
-
               {chain.unsupported && (
-                <button onClick={openChainModal} type="button" className={style.wrongNetworkBtn}>
+                <button
+                  onClick={openChainModal}
+                  type="button"
+                  className={style.footerBtn}
+                >
                   Wrong network
                 </button>
               )}

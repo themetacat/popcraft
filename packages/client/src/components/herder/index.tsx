@@ -560,7 +560,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         if (loadingSquare && loadingSquare.x === i && loadingSquare.y === j) {
           const loadingImgElement = new Image();
           loadingImgElement.src = loadingImg;
-          const angle = (performance.now() % 5000) / 5000 * 360; // 旋转角度
+          const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
           drawRotatingImage(ctx, loadingImgElement, currentX, currentY, GRID_SIZE, GRID_SIZE, angle);
           ctx.canvas.style.cursor = "default";
         } else {
@@ -609,7 +609,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       if (loadingSquare && loadingSquare.x < 10 && loadingSquare.x >= 0 && loadingSquare.y < 10 && loadingSquare.y >= 0) {
         const loadingImgElement = new Image();
         loadingImgElement.src = loadingImg;
-        const angle = (performance.now() % 5000) / 5000 * 360; // 旋转角度
+        const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
         drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX, loadingSquare.y * GRID_SIZE + offsetY, GRID_SIZE, GRID_SIZE, angle);
       }
     },
@@ -1589,7 +1589,11 @@ export default function Header({ hoveredData, handleData }: Props) {
 
                     if (chain.unsupported) {
                       return (
-                        <button onClick={openChainModal} type="button">
+                        <button
+                          onClick={openChainModal}
+                          type="button"
+                          className={style.btnConnect}
+                        >
                           Wrong network
                         </button>
                       );

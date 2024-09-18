@@ -149,7 +149,8 @@ canvas {
   padding: 0;
   flex-direction: column;
   opacity: 1;
-  font-family: "your-emoji-font", sans-serif !important; 
+  font-family: "your-emoji-font", sans-serif !important;
+  cursor: pointer; /* 鼠标悬停时显示小手 */
 }
 .btnBoxY {
   border-radius: 50px;

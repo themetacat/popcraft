@@ -37,7 +37,6 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
     }
   };
 
-
   return (
     <div className={style.content}>
       <p className={style.title}>WELCOME TO POPCRAFT!</p>
@@ -106,7 +105,11 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
 
                 if (chain.unsupported) {
                   return (
-                    <button onClick={openChainModal} type="button">
+                    <button
+                      onClick={openChainModal}
+                      type="button"
+                      className={style.btnPlay}
+                    >
                       Wrong network
                     </button>
                   );
