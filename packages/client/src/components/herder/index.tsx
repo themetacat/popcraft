@@ -562,7 +562,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           loadingImgElement.src = loadingImg;
           const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
           drawRotatingImage(ctx, loadingImgElement, currentX, currentY, GRID_SIZE, GRID_SIZE, angle);
-          ctx.canvas.style.cursor = "not-allowed";
+          ctx.canvas.style.cursor = "default";
         } else {
           const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
           const drawY = currentY - (GRID_SIZE * (scale - 1)) / 2;
