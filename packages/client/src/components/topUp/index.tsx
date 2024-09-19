@@ -468,7 +468,7 @@ export default function TopUp({
                 <button
                   onClick={openChainModal}
                   type="button"
-                  className={style.footerBtn}
+                  className={style.wrongNetworkBtn}
                 >
                   Wrong network
                 </button>
