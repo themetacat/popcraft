@@ -8,7 +8,7 @@ import { ClientComponents } from "./createClientComponents";
 import { resourceToHex, ContractWrite, getContract } from "@latticexyz/common";
 import { SetupNetworkResult } from "./setupNetwork";
 import toast, { Toaster } from "react-hot-toast";
-
+import { generateRoute } from "../uniswap_routing/routing"
 import {
   encodeSystemCall,
   SystemCall,
@@ -345,7 +345,8 @@ export function createSystemCalls(
     other_params: any
   ) => {
     // console.log(interactTCM);
-
+    // await generateRoute();
+    // return;
     const app_name = window.localStorage.getItem("app_name") || "paint";
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
@@ -400,7 +401,7 @@ export function createSystemCalls(
           }),
           encodeData,
         ], { gas: 30000000n });
-        console.log(txData);
+        // console.log(txData);
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
 
       }
@@ -438,80 +439,48 @@ export function createSystemCalls(
     return [tx, hashValpublic];
   };
 
-
-  // const payFunction = async (selectedName: any, numberData: any) => {
-  //   const system_name = window.localStorage.getItem("system_name") as string;
-  //   const namespace = window.localStorage.getItem("namespace") as string;
-  //   const [account] = await window.ethereum!.request({
-  //     method: "eth_requestAccounts",
-  //   });
-
-  //   const ethInPrice = await forMent(selectedName, numberData);
-  //   const nonce = await getAccountNonce();
-  //   const encodeData = encodeFunctionData({
-  //     abi: abi_json[app_name],
-  //     functionName: "buyToken",
-  //     args: [[selectedName], [numberData * 10 ** 18]],
-  //   });
-  //   console.log("functionName:", "buyToken");
-  //   console.log("args:", [[selectedName], [numberData * 10 ** 18]]);
-
-  //   let hashValpublic = null;
-
-  //   const eoaWalletClient = await getEoaContractFun();
-  //   try {
-  //     const hash = await eoaWalletClient.writeContract({
-  //       address: worldContract.address,
-  //       abi: worldContract.abi,
-  //       functionName: "call",
-  //       args: [resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData],
-  //       value: parseEther(ethInPrice.toString()),
-  //       nonce: nonce
-  //     });
-
-  //     hashValpublic = publicClient.waitForTransactionReceipt({ hash: hash })
-
-  //   } catch (error) {
-
-  //     console.error("Failed to setup network:", error.message);
-  //   }
-
-  //   return hashValpublic;
-  // };
-
-  const payFunction = async (selectedNames, selectedQuantities) => {
+  const payFunction = async (methodParametersArray: any[]) => {
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
     const [account] = await window.ethereum!.request({
       method: "eth_requestAccounts",
     });
-    const ethInPrice = await forMent2(selectedNames, selectedQuantities);
+    let totalValue = BigInt(0); // 初始化总和为 0
+
+    const args = [];
+      for (let i = 0; i < methodParametersArray.length; i++) {
+        const params = methodParametersArray[i];
+        const value = BigInt(params.value);
+        totalValue += value; // 累加每个 value
+        const arg_single = {
+          call_data: params.calldata, // 设置 call_data 为索引 + 1
+          value: value,
+          token_info: {
+            token_addr: params.tokenAddress, // 从 params 获取 token_addr
+            amount: params.amount // 从 params 获取 amount
+          }
+        }
+        args.push(arg_single);
+    }
+
+    const value = BigInt("0x0c4d34e53df5")
     const nonce = await getAccountNonce();
+    // console.log(args);
+    return
     const encodeData = encodeFunctionData({
       abi: abi_json[app_name],
+
       functionName: "buyToken",
-      args: [selectedNames, selectedQuantities],
+      args: [args],
     });
-    // console.log("functionName:", "buyToken");
-    // console.log("args:", [selectedNames, selectedQuantities]);
-    
-    
-    let hashValpublic = null;
-    const eoaWalletClient = await getEoaContractFun();
     try {
-      const hash = await eoaWalletClient.writeContract({
-        address: worldContract.address,
-        abi: worldContract.abi,
-        functionName: "call",
-        args: [resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData],
-        value: parseEther(ethInPrice.toString()),
-        nonce: nonce
-      });
 
-      hashValpublic = publicClient.waitForTransactionReceipt({ hash: hash })
-
+      const txData = await worldContract.write.call([resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData], { value: totalValue, nonce: nonce });
+      const hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData })
+      console.log(hashValpublic);
     } catch (error) {
       console.error("Failed to setup network:", error.message);
+
     }
 
     return hashValpublic;
@@ -519,7 +488,10 @@ export function createSystemCalls(
 
 
 
+
+
   const forMent = async (selectedName: any, numberData: any) => {
+    return 0;
     const app_name = window.localStorage.getItem("app_name") || "PopCraft";
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
@@ -551,13 +523,13 @@ export function createSystemCalls(
     const app_name = window.localStorage.getItem("app_name") || "PopCraft";
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
-  
+
     const encodequoteOutputData = encodeFunctionData({
       abi: abi_json[app_name],
       functionName: "quoteOutput",
       args: [selectedNames, selectedQuantities],
     });
-  
+
     try {
       const quoteOutput = await worldContract.read.call([
         resourceToHex({
@@ -574,7 +546,7 @@ export function createSystemCalls(
       return 0;
     }
   };
-  
+
   return {
     forMent,
     update_abi,

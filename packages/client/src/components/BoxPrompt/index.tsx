@@ -11,6 +11,7 @@ import loadingImg from "../../images/loading.png";
 import xLogo from '../../images/xLogo.png';
 import TelegramLogo from '../../images/TelegramLogo.png'
 import Select from "../select";
+import { generateRoute } from '../../uniswap_routing/routing'
 import {
   encodeEntity,
 } from "@latticexyz/store-sync/recs";
@@ -18,6 +19,7 @@ import {
   getComponentValue,
 } from "@latticexyz/recs";
 import { flare } from "viem/chains";
+import { log } from "@uniswap/smart-order-router";
 
 interface Props {
   coordinates: any;
@@ -66,7 +68,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
   })
-
   useEffect(() => {
     if (resultBugs.data?.value) {
       setBalance(Math.floor(Number(resultBugs.data?.value) / 1e18));
@@ -118,9 +119,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     imageIconData,
     balanceData
   );
-  // console.log(matchedData);
-
-
   function getMatchedData(tokenAddresses, imageData, balanceData) {
     const result = {};
     tokenAddresses?.forEach((address) => {
@@ -134,6 +132,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         } else {
           balance = balance.balance || "0";
         }
+
         result[address] = {
           ...imageData[address],
           balance: balance,
@@ -283,9 +282,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       toast.error("Payment failed! Try again!");
       return;
     }
+    const methodParametersArray = itemsToPay.map(item => prices[item.key]?.methodParameters);
     const payFunctionTwo = payFunction(
-      itemsToPay.map(item => item.key),
-      itemsToPay.map(item => item.quantity)
+      methodParametersArray
+
     );
 
     setcresa(true);
@@ -315,7 +315,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       });
   };
 
-
   useEffect(() => {
     const fetchData = async () => {
       const matchedData = getMatchedData(
@@ -323,31 +322,37 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         imageIconData,
         balanceData
       );
-
       const prices = await fetchPrices(matchedData); // 获取价格
       setForPayMonType(true);
       setPrices(prices);
       setIsPriceLoaded(true); // 设置询价金额已加载
-
       setForPayMonType(false);
-
     };
-
     if (isConnected) {
       fetchData();
     }
-
   }, [isConnected, getEoaContractData, balanceData]);
 
-  //渲染10种物质
+  //获取的5种物质信息以及价格
   const fetchPrices = async (matchedData: any) => {
     const pricePromises = Object.keys(matchedData).map(async (key) => {
-      const price = await forMent(key, 1); //  forMent 函数接受物质的 key 和数量
-      return { [key]: price };
+      const quantity = numberData[key] || 0;
+      if (quantity > 0) {
+        const route = await generateRoute(key, quantity); // 使用 generateRoute 方法获取报价信息
+        const price = route.quote.toExact(); // 获取报价
+        const methodParameters = route.methodParameters; // 获取 methodParameters
+        methodParameters['tokenAddress'] = key;
+        methodParameters['amount'] = quantity;
+        return { [key]: { price, methodParameters } };
+      } else {
+        return { [key]: { price: 0, methodParameters: {} } };
+      }
     });
+
     const prices = await Promise.all(pricePromises);
     const priceObject = prices.reduce((acc, curr) => ({ ...acc, ...curr }), {});
-    const total = Object.values(priceObject).reduce((sum, price) => sum + price, 0);
+    const total = Object.values(priceObject).reduce((sum, { price }) => sum + Number(price), 0);
+    setPrices(priceObject); // 设置价格状态
     setTotalPrice(total); // 设置总价格状态
     return priceObject;
   };
@@ -361,7 +366,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     setNumberData(initialData);
   }, []);
 
-  //减
   const downHandleNumber = (key) => {
     setNumberData(prev => ({
       ...prev,
@@ -369,17 +373,15 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }));
     updateTotalPrice();
   };
-  //加
   const upHandleNumber = (key) => {
     setLoadingUpHandle(true);
     setNumberData(prev => ({
       ...prev,
       [key]: prev[key] + 1
     }));
-    updateTotalPrice();
+    fetchPrices(matchedData); // 重新获取价格并更新总价格
     setLoadingUpHandle(false);
   };
-
   // 在关闭购买对话框时重置每个物质的数量为5
   const resetNumberData = () => {
     const initialData = {};
@@ -400,11 +402,13 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   //计算总价格
   const updateTotalPrice = () => {
     const total = Object.entries(numberData).reduce((sum, [key, num]) => {
-      const price = prices[key] || 0;
-      return sum + (price * num);
+      const price = prices[key] ? prices[key].price : 0;
+      return sum + Number(price);
     }, 0);
+
     setTotalPrice(total);
   };
+  
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60).toString().padStart(2, '0');
@@ -434,6 +438,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   useEffect(() => {
     updateTotalPrice();
   }, [numberData, prices]);
+  
 
   return (
     <>
@@ -489,7 +494,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             </button>
           </div>
         </div>
-
       )}
 
       {dataq === true ? (
@@ -544,10 +548,9 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                     </div>
                   </div>
 
-
                   <div className={style.twoBuy}>
                     <span className={style.fontNum}>
-                      {formatAmount(prices[key] * (numberData[key] || 0))}
+                      {formatAmount(prices[key] ? prices[key].price : 0)}
                       <p className={style.fontNum1}>ETH</p>
                     </span>
 
@@ -569,8 +572,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 </div>
               ))}
             </div>
-
-
 
             <div className={style.totalAmount}>
               <span className={style.fontNumyo}>
