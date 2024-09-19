@@ -15,15 +15,16 @@ import { RESOURCE_SYSTEM } from "@latticexyz/world/src/worldResourceTypes.sol";
 import { AccessControl } from "@latticexyz/world/src/AccessControl.sol";
 import { IWorldErrors } from "@latticexyz/world/src/IWorldErrors.sol";
 import { revertWithBytes } from "@latticexyz/world/src/revertWithBytes.sol";
-import {Position} from "../index.sol";
+import { Position } from "../index.sol";
 import { SystemSwitch } from "@latticexyz/world-modules/src/utils/SystemSwitch.sol";
+import { RouterExecute } from "./UniversalRouterExecute.sol";
 
 interface IERC20 {
     function balanceOf(address account) external view returns (uint256);
     function transfer(address to, uint256 value) external returns (bool);
 }
 
-contract CoreSystem is System, IWorldErrors {
+contract CoreSystem is System, IWorldErrors, RouterExecute {
   error TransferError();
   bytes32 constant string_null = keccak256(abi.encodePacked("_Null"));
 
