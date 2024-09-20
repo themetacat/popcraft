@@ -422,7 +422,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   }, []);
 
   const formatAmount = (amount: any) => {
-    return parseFloat(amount).toFixed(7);
+    return parseFloat(amount).toFixed(8);
   };
 
   const formatBalance = (balance) => {
