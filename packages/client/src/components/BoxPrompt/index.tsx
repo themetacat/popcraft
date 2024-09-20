@@ -353,7 +353,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   useEffect(() => {
     const initialData = {};
     Object.keys(imageIconData).forEach(key => {
-      initialData[key] = 1;
+      initialData[key] = 5;
     });
     setNumberData(initialData);
   }, []);
