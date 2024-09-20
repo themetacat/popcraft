@@ -144,7 +144,7 @@ export function createSystemCalls(
     const eoaWalletClient = await getEoaContractFun();
     try {
       const nonce = await getAccountNonce();
-
+      
       const hash = await eoaWalletClient.writeContract({
         address: worldContract.address,
         // address: "0x4AB7E8B94347cb0236e3De126Db9c50599F7DB2d",
@@ -335,6 +335,48 @@ export function createSystemCalls(
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "call_data",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "token_addr",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct TokenInfo",
+              "name": "token_info",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct UniversalRouterParams[]",
+          "name": "universalRouterParams",
+          "type": "tuple[]"
+        }
+      ],
+      "name": "buyToken",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
     }
   ]
   const interactTCM = async (
@@ -344,22 +386,12 @@ export function createSystemCalls(
     action: string,
     other_params: any
   ) => {
-    // console.log(interactTCM);
-    // await generateRoute();
-    // return;
+
     const app_name = window.localStorage.getItem("app_name") || "paint";
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
 
     let allArgs = [];
-    //   try{
-    // const txData1 = await worldContract.write.setTokenBalanceForNamespace([['0x9c0153C56b460656DF4533246302d42Bd2b49947', '0xC750a84ECE60aFE3CBf4154958d18036D3f15786', '0x65638Aa354d2dEC431aa851F52eC0528cc6D84f3', '0x1ca53886132119F99eE4994cA9D0a9BcCD2bB96f', '0x7Ea470137215BDD77370fC3b049bd1d009e409f9', '0xca7f09561D1d80C5b31b390c8182A0554CF09F21', '0xdCc7Bd0964B467554C9b64d3eD610Dff12AF794e', '0x54b31D72a658A5145704E8fC2cAf5f87855cc1Cd', '0xF66D7aB71764feae0e15E75BAB89Bd0081a7180d'], [20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000, 20000000000000000000], "0x6e73706f70437261667400000000000000000000000000000000000000000000"])
-    // const txData1 = await worldContract.write.setTokenBalanceForNamespace([['0x9c0153C56b460656DF4533246302d42Bd2b49947'], [51789000000000000005700], "0x6e73706f70437261667400000000000000000000000000000000000000000000"])
-
-    // console.log( await publicClient.waitForTransactionReceipt({ hash: txData1 }));
-    //   } catch (error) {
-    //     console.error("Failed to setup network:", error.message);
-    //   }
 
     const args = {
       for_player: addressData,
@@ -388,8 +420,6 @@ export function createSystemCalls(
         functionName: action,
         args: allArgs,
       });
-      // console.log(encodeData);
-
 
       if (action === 'interact') {
         const txData = await worldContract.write.callFrom([
@@ -446,109 +476,52 @@ export function createSystemCalls(
       method: "eth_requestAccounts",
     });
     let totalValue = BigInt(0); // 初始化总和为 0
-
+    let hashValpublic;
     const args = [];
-      for (let i = 0; i < methodParametersArray.length; i++) {
-        const params = methodParametersArray[i];
-        const value = BigInt(params.value);
-        totalValue += value; // 累加每个 value
-        const arg_single = {
-          call_data: params.calldata, // 设置 call_data 为索引 + 1
-          value: value,
-          token_info: {
-            token_addr: params.tokenAddress, // 从 params 获取 token_addr
-            amount: params.amount // 从 params 获取 amount
-          }
+    for (let i = 0; i < methodParametersArray.length; i++) {
+      const params = methodParametersArray[i];
+      const value = BigInt(params.value);
+      totalValue += value; // 累加每个 value
+      const arg_single = {
+        call_data: params.calldata, // 设置 call_data 为索引 + 1
+        value: value,
+        token_info: {
+          token_addr: params.tokenAddress, // 从 params 获取 token_addr
+          amount: params.amount * 10 ** 18 // 从 params 获取 amount
         }
-        args.push(arg_single);
+      }
+      args.push(arg_single);
     }
-
-    const value = BigInt("0x0c4d34e53df5")
     const nonce = await getAccountNonce();
-    // console.log(args);
-    return
+    
     const encodeData = encodeFunctionData({
-      abi: abi_json[app_name],
+      abi: popCraftAbi,
 
       functionName: "buyToken",
       args: [args],
     });
+    
     try {
-
-      const txData = await worldContract.write.call([resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData], { value: totalValue, nonce: nonce });
-      const hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData })
-      console.log(hashValpublic);
+      const eoaWalletClient = await getEoaContractFun();
+      const hash = await eoaWalletClient.writeContract({
+        address: worldContract.address,
+        abi: worldContract.abi,
+        functionName: "call",
+        args: [resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData],
+        value: totalValue,
+        nonce: nonce
+      });
+      // const txData = await worldContract.write.call([resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData], { value: totalValue });
+      
+      hashValpublic = await publicClient.waitForTransactionReceipt({ hash: hash })
     } catch (error) {
       console.error("Failed to setup network:", error.message);
-
     }
 
     return hashValpublic;
   };
 
-
-
-
-
-  const forMent = async (selectedName: any, numberData: any) => {
-    return 0;
-    const app_name = window.localStorage.getItem("app_name") || "PopCraft";
-    const system_name = window.localStorage.getItem("system_name") as string;
-    const namespace = window.localStorage.getItem("namespace") as string;
-
-    const encodequoteOutputData = encodeFunctionData({
-      abi: abi_json[app_name],
-      functionName: "quoteOutput",
-      args: [[selectedName], [numberData * 10 ** 18]],
-    });
-
-    try {
-      const quoteOutput = await worldContract.read.call([
-        resourceToHex({
-          type: "system",
-          namespace: namespace,
-          name: system_name,
-        }),
-        encodequoteOutputData,
-      ]);
-      const ethInPrice = Number(quoteOutput) / 10 ** 18;
-      return ethInPrice;
-    } catch (error) {
-      console.log(error.message);
-      return 0;
-    }
-  };
-
-  const forMent2 = async (selectedNames, selectedQuantities) => {
-    const app_name = window.localStorage.getItem("app_name") || "PopCraft";
-    const system_name = window.localStorage.getItem("system_name") as string;
-    const namespace = window.localStorage.getItem("namespace") as string;
-
-    const encodequoteOutputData = encodeFunctionData({
-      abi: abi_json[app_name],
-      functionName: "quoteOutput",
-      args: [selectedNames, selectedQuantities],
-    });
-
-    try {
-      const quoteOutput = await worldContract.read.call([
-        resourceToHex({
-          type: "system",
-          namespace: namespace,
-          name: system_name,
-        }),
-        encodequoteOutputData,
-      ]);
-      const ethInPrice = Number(quoteOutput) / 10 ** 18;
-      return ethInPrice;
-    } catch (error) {
-      console.log(error.message);
-      return 0;
-    }
-  };
-
   return {
-    forMent,
     update_abi,
     interact,
     interactTCM,

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { App } from "./App";
 import { setup } from "./mud/setup";
 import { MUDProvider } from "./MUDContext";
-
+import mudConfig from "../../contracts/mud.config";
 import '@rainbow-me/rainbowkit/styles.css';
 import './polyfills';
 import {
@@ -21,7 +21,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 let chainIndex = supportedChains.findIndex((c) => c.id === 690);
 const redstone = supportedChains[chainIndex];
-chainIndex = supportedChains.findIndex((c) => c.id ===31337);
+chainIndex = supportedChains.findIndex((c) => c.id ===31338);
 const local = supportedChains[chainIndex];
 
 const config = getDefaultConfig({
@@ -65,19 +65,18 @@ setup().then(async (result) => {
   );
 
   // https://vitejs.dev/guide/env-and-mode.html
-  
-  if (import.meta.env.DEV) {
-    const { mount: mountDevTools } = await import("@latticexyz/dev-tools");
-    mountDevTools({
-      config: mudConfig,
-      publicClient: result.network.publicClient,
-      walletClient: result.network.walletClient,
-      latestBlock$: result.network.latestBlock$,
-      storedBlockLogs$: result.network.storedBlockLogs$,
-      worldAddress: result.network.systemContract.address,
-      worldAbi: result.network.systemContract.abi,
-      write$: result.network.write$,
-      recsWorld: result.network.world,
-    });
-  }
+  // if (import.meta.env.DEV) {
+  //   const { mount: mountDevTools } = await import("@latticexyz/dev-tools");
+  //   mountDevTools({
+  //     config: mudConfig,
+  //     publicClient: result.network.publicClient,
+  //     walletClient: result.network.walletClient,
+  //     latestBlock$: result.network.latestBlock$,
+  //     storedBlockLogs$: result.network.storedBlockLogs$,
+  //     worldAddress: result.network.systemContract.address,
+  //     worldAbi: result.network.systemContract.abi,
+  //     write$: result.network.write$,
+  //     recsWorld: result.network.world,
+  //   });
+  // }
 });

@@ -6,18 +6,20 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(207, 241, 214, 0.5); 
+  background-color: rgba(207, 241, 214, 0.5);
   text-align: center;
-  text-transform: uppercase; /* 将所有文本内容转换为大写 */
+  text-transform: uppercase;
   border: none;
-  color: #26737d; /* 设置字体颜色为 #26737d */
-  border-radius: 10px; /* 添加圆角效果 */
+  color: #26737d;
+  border-radius: 10px;
+  font-weight: 500;
   text-shadow:
-  2px 2px 0 #ffffff,
-    -2px -2px 0 #ffffff,
-    -2px 2px 0 #ffffff,
-    2px -2px 0 #ffffff; /* 添加更粗的白色字体边框 */
-  box-shadow: 0 0 20px 10px rgba(207, 241, 214, 0.5); /* 添加向外扩散的渐变阴影效果 */
+    1px 1px 0 #ffffff,
+    -2px -1px 0 #ffffff,
+    0 0 5px rgba(207, 241, 214, 0.8),
+    0 0 10px rgba(207, 241, 214, 0.6),
+    0 0 15px rgba(207, 241, 214, 0.4);
+  box-shadow: 0 0 20px 10px rgba(197, 253, 207, 0.5);
 }
 
 
@@ -26,15 +28,16 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.8);
   /* background-image: linear-gradient(45deg, #fffce3 0%, #bdf1b6 100%); */
-  background-image: url('images/background.png'); 
+  background-image: url('images/background.png');
   background-size: 100% 100%;
   /* font-family: 'Silkscreen'; */
- 
+
 }
 
 /* 根据您的字体文件类型调整格式 */
 @font-face {
-  font-family: 'SansationLight'; /* 重命名字体名 */
+  font-family: 'SansationLight';
+  /* 重命名字体名 */
   src: url('/fonts/SansationLight.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
@@ -47,8 +50,7 @@
    src: url('./path/to/slkscr (2).ttf') format('truetype'); 
  }   */
 
-   @font-face {
-   font-family: 'NotoEmoji';
- src: url('./path/to/Noto_Emoji/NotoEmoji-VariableFont_wght.ttf') format('truetype');
-} 
-
+@font-face {
+  font-family: 'NotoEmoji';
+  src: url('./path/to/Noto_Emoji/NotoEmoji-VariableFont_wght.ttf') format('truetype');
+}

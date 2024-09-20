@@ -35,7 +35,7 @@ export const App = () => {
           <Header hoveredData={hoveredData} handleData={handleMouseDown} />
         )
       ) : (
-        <div style={{ color: "#000" }}>HYDRATING FROM RPC(0)</div>
+        <div style={{ color: "#000" }}>HYDRATING FROM RPC &nbsp;&nbsp;(0)</div>
       )}
       <Toaster
         toastOptions={{

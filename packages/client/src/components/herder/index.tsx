@@ -1107,6 +1107,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     setLoading(true)
     if (deldata == "undefined") {
       if (money == "toomoney") {
+
         const delegationData = registerDelegation();
         delegationData.then((data) => {
           if (data !== undefined && data.status == "success") {

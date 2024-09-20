@@ -37,7 +37,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       UserDelegationControl,
     },
     network: { palyerAddress },
-    systemCalls: { interact, forMent, payFunction, registerDelegation },
+    systemCalls: { interact, payFunction, registerDelegation },
   } = useMUD();
   const overTime = 243;
   const [timeLeft, setTimeLeft] = useState(overTime);
@@ -54,16 +54,16 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [data1, setdata1] = useState(null);
   const [getEoaContractData, setGetEoaContractData] = useState(null);
   const [balanceData, setBalanceData] = useState({});
-  const [numberData, setNumberData] = useState({}); //设置购买为5
+  const [numberData, setNumberData] = useState({});
   const { address, isConnected } = useAccount();
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
   const [loadingPlayAgain, setLoadingPlayAgain] = useState(false);
   const [loadingUpHandle, setLoadingUpHandle] = useState(false);
-  const [isPriceLoaded, setIsPriceLoaded] = useState(false); // 添加一个状态来跟踪价格是否已加载
-  const [prices, setPrices] = useState({}); // 添加一个状态来存储每个物质的价格
-  const [totalPrice, setTotalPrice] = useState(0);  // 添加一个状态变量来存储总价格
-  const [allZero, setAllZero] = useState(false); //检查输入框是否为0
+  const [isPriceLoaded, setIsPriceLoaded] = useState(false); // 价格是否已加载
+  const [prices, setPrices] = useState({}); 
+  const [totalPrice, setTotalPrice] = useState(0);  
+  const [allZero, setAllZero] = useState(false);
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
@@ -88,9 +88,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
   //控制奖励bugs
   useEffect(() => {
-    let interval: any; // 声明一个定时器变量
+    let interval: any; 
     if (gameSuccess) {
-      // gamesuccess 为 true 时启动定时器
       interval = setInterval(() => {
         resultBugs.refetch().then((data) => {
 
@@ -100,10 +99,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         });
       }, 1000)
     } else {
-      // gamesuccess 为 false 时清除定时器
       clearInterval(interval)
     }
-    // 清除定时器
     return () => clearInterval(interval)
   }, [gameSuccess])
 
@@ -132,11 +129,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         } else {
           balance = balance.balance || "0";
         }
-
         result[address] = {
           ...imageData[address],
           balance: balance,
-          purchased: numberData[address] || 0, // 添加购买的物质数量
+          purchased: numberData[address] || 0, 
         };
       }
     });
@@ -179,7 +175,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       } else {
         localStorage.setItem('deleGeData', "undefined")
       }
-
       return TCMPopStarData;
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -206,11 +201,9 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           else {
             setLoadingPlayAgain(false)
             setGameSuccess(false)
-            // if (TCMPopStarData.gameFinished === true) {
             if (!first) {
               setFirst(true)
             }
-            // }
           }
         }
       }
@@ -222,7 +215,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       const interval = setInterval(() => {
         updateTCMPopStarData();
       }, 500);
-      return () => clearInterval(interval); // 清除定时器
+      return () => clearInterval(interval);
     }
   }, [isConnected]);
 
@@ -261,7 +254,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       setTimeLeft(0)
     }
   }, [timeLeft, timeControl, gameSuccess]);
-  //检查输入框是否为0
+
   useEffect(() => {
     const allZero = Object.values(numberData).every(num => num === 0);
     setAllZero(allZero);
@@ -287,7 +280,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       methodParametersArray
 
     );
-
     setcresa(true);
     payFunctionTwo.then((result) => {
       if (result.status === "success") {
@@ -322,10 +314,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         imageIconData,
         balanceData
       );
-      const prices = await fetchPrices(matchedData); // 获取价格
+      const prices = await fetchPrices(matchedData);
       setForPayMonType(true);
       setPrices(prices);
-      setIsPriceLoaded(true); // 设置询价金额已加载
+      setIsPriceLoaded(true);
       setForPayMonType(false);
     };
     if (isConnected) {
@@ -333,14 +325,15 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }
   }, [isConnected, getEoaContractData, balanceData]);
 
+
   //获取的5种物质信息以及价格
   const fetchPrices = async (matchedData: any) => {
     const pricePromises = Object.keys(matchedData).map(async (key) => {
       const quantity = numberData[key] || 0;
       if (quantity > 0) {
-        const route = await generateRoute(key, quantity); // 使用 generateRoute 方法获取报价信息
+        const route = await generateRoute(key, quantity);
         const price = route.quote.toExact(); // 获取报价
-        const methodParameters = route.methodParameters; // 获取 methodParameters
+        const methodParameters = route.methodParameters;
         methodParameters['tokenAddress'] = key;
         methodParameters['amount'] = quantity;
         return { [key]: { price, methodParameters } };
@@ -348,20 +341,19 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         return { [key]: { price: 0, methodParameters: {} } };
       }
     });
-
     const prices = await Promise.all(pricePromises);
     const priceObject = prices.reduce((acc, curr) => ({ ...acc, ...curr }), {});
     const total = Object.values(priceObject).reduce((sum, { price }) => sum + Number(price), 0);
-    setPrices(priceObject); // 设置价格状态
-    setTotalPrice(total); // 设置总价格状态
+    setPrices(priceObject);
+    setTotalPrice(total);
     return priceObject;
   };
 
-  //默认为5
+  //默认购买数量为5
   useEffect(() => {
     const initialData = {};
     Object.keys(imageIconData).forEach(key => {
-      initialData[key] = 5;
+      initialData[key] = 1;
     });
     setNumberData(initialData);
   }, []);
@@ -373,16 +365,18 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }));
     updateTotalPrice();
   };
+
   const upHandleNumber = (key) => {
     setLoadingUpHandle(true);
     setNumberData(prev => ({
       ...prev,
       [key]: prev[key] + 1
     }));
-    fetchPrices(matchedData); // 重新获取价格并更新总价格
+    fetchPrices(matchedData);
     setLoadingUpHandle(false);
   };
-  // 在关闭购买对话框时重置每个物质的数量为5
+
+  // 关闭在打开默认为5
   const resetNumberData = () => {
     const initialData = {};
     Object.keys(imageIconData).forEach(key => {
@@ -390,16 +384,16 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     });
     setNumberData(initialData);
   };
-  //输入框正则表达式
   const handleNumberChange = (key: any, value: any) => {
     const numericValue = value.replace(/[^0-9]/g, '');
     setNumberData(prev => ({
       ...prev,
-      [key]: Number(numericValue) // 允许输入数量为0
+      [key]: Number(numericValue)
     }));
     updateTotalPrice();
   };
-  //计算总价格
+
+  //计算总价
   const updateTotalPrice = () => {
     const total = Object.entries(numberData).reduce((sum, [key, num]) => {
       const price = prices[key] ? prices[key].price : 0;
@@ -408,7 +402,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
     setTotalPrice(total);
   };
-  
+
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60).toString().padStart(2, '0');
@@ -438,7 +432,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   useEffect(() => {
     updateTotalPrice();
   }, [numberData, prices]);
-  
+
 
   return (
     <>
