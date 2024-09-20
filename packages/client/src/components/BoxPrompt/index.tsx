@@ -20,6 +20,7 @@ import {
 } from "@latticexyz/recs";
 import { flare } from "viem/chains";
 import { log } from "@uniswap/smart-order-router";
+import { q } from "@latticexyz/store/dist/store-e0caabe3";
 
 interface Props {
   coordinates: any;
@@ -314,9 +315,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         imageIconData,
         balanceData
       );
-      const prices = await fetchPrices(matchedData);
+      // const prices = await fetchPrices(matchedData);
       setForPayMonType(true);
-      setPrices(prices);
       setIsPriceLoaded(true);
       setForPayMonType(false);
     };
@@ -330,6 +330,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const fetchPrices = async (matchedData: any) => {
     const pricePromises = Object.keys(matchedData).map(async (key) => {
       const quantity = numberData[key] || 0;
+      
       if (quantity > 0) {
         const route = await generateRoute(key, quantity);
         const price = route.quote.toExact(); // 获取报价
@@ -353,9 +354,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   useEffect(() => {
     const initialData = {};
     Object.keys(imageIconData).forEach(key => {
-      initialData[key] = 1;
+      initialData[key] = 5;
     });
     setNumberData(initialData);
+    // fetchPrices(matchedData); // 初始化时也调用 fetchPrices
   }, []);
 
   const downHandleNumber = (key) => {
@@ -363,18 +365,18 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       ...prev,
       [key]: Math.max(prev[key] - 1, 0)
     }));
-    updateTotalPrice();
+    // fetchPrices(matchedData);
   };
 
   const upHandleNumber = (key) => {
-    setLoadingUpHandle(true);
-    setNumberData(prev => ({
-      ...prev,
-      [key]: prev[key] + 1
-    }));
-    fetchPrices(matchedData);
-    setLoadingUpHandle(false);
-  };
+  setLoadingUpHandle(true);
+  setNumberData(prev => ({
+    ...prev,
+    [key]: prev[key] + 1
+  }));
+  // fetchPrices(matchedData);
+  setLoadingUpHandle(false);
+};
 
   // 关闭在打开默认为5
   const resetNumberData = () => {
@@ -384,13 +386,14 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     });
     setNumberData(initialData);
   };
+  
   const handleNumberChange = (key: any, value: any) => {
     const numericValue = value.replace(/[^0-9]/g, '');
     setNumberData(prev => ({
       ...prev,
       [key]: Number(numericValue)
     }));
-    updateTotalPrice();
+    fetchPrices(matchedData);
   };
 
   //计算总价
@@ -402,8 +405,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
     setTotalPrice(total);
   };
-
-
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60).toString().padStart(2, '0');
     const seconds = (time % 60).toString().padStart(2, '0');
@@ -427,12 +428,51 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const formatBalance = (balance) => {
     return balance.toLocaleString();
   };
+  const [priceTimer, setPriceTimer] = useState(null);
 
+  const getRoute = async () => {
+    const matchedData = getMatchedData(
+      getEoaContractData,
+      imageIconData,
+      balanceData
+    );
+    const prices = await fetchPrices(matchedData);
+    // console.log("111");
+  };
+  
+  useEffect(() => {
+    if (dataq) {
+      const timer = setInterval(getRoute, 500000);
+      setPriceTimer(timer);
+    } else {
+      if (priceTimer) {
+        clearInterval(priceTimer);
+        setPriceTimer(null);
+      }
+    }
+    return () => {
+      if (priceTimer) {
+        clearInterval(priceTimer);
+      }
+    };
+  }, [dataq]);
+  
+  useEffect(() => {
+    return () => {
+      if (priceTimer) {
+        clearInterval(priceTimer);
+      }
+    };
+  }, []);
+  
   //监听价格的变化
   useEffect(() => {
     updateTotalPrice();
   }, [numberData, prices]);
-
+  
+  useEffect(() => {
+    fetchPrices(matchedData);
+  }, [numberData]);
 
   return (
     <>
@@ -472,8 +512,9 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             </div>
             <button
               className={style.buyBtn}
-              onClick={() => {
+              onClick={async() => {
                 setdataq(!warnBox);
+                getRoute()
               }}
             >
               BUY
@@ -578,6 +619,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 className={style.payBtn}
                 onClick={() => {
                   handlePayMent()
+                  
                 }}
                 disabled={Object.values(numberData).every(num => num === 0) || cresa || !isPriceLoaded} // 添加 isPriceLoaded 状态来禁用按钮
                 style={{ cursor: Object.values(numberData).every(num => num === 0) || cresa || !isPriceLoaded ? "not-allowed" : "auto" }}
