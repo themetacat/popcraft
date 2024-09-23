@@ -89,14 +89,20 @@
   margin-top: 7px;
 
 }
+@font-face {
+  font-family: "AdobeHeitiStd-Regular";
+  src: url("/fonts/BRLNSR.TTF");
+}
+
 
 .itemName {
   font-weight: 600;
   color: #feed95;
   font-size: 18px;
-  /* background-color: red; */
+  letter-spacing: 2px;
   margin-top: 5px;
-  /* margin: 0 auto; */
+  font-family: "AdobeHeitiStd-Regular";
+
 }
 
 .itemImage {
@@ -114,7 +120,7 @@
   justify-content: center;
   text-align: center;
   margin-left: 8px;
-  /* margin-top: 10px; */
+  margin-top: 5px;
 }
 
 .twoPart {
@@ -130,11 +136,9 @@
   display: grid;
   gap: 4px;
   font-family: "SansationLight";
-  /* font-family: Silkscreen; */
 }
 
 .twoPart p:nth-child(1) {
-  /* background-color: red; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -317,8 +321,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 27vw;
-  height: 43vh;
+  width: 450px;
+  height: 350px;
   border: none;
   background-image: url("../../images/gameover/fail.png");
   background-size: 100% 100%;
@@ -357,8 +361,8 @@
     background-position: center;
     border: none;
     background-color: #9bfffc;
-    width: 19vw;
-    height: 5vh;
+    width: 300px;
+    height: 50px;
     gap: 10px;
     color: #ffffff;
     font-weight: 700;
@@ -374,8 +378,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 27vw;
-  height: 43vh;
+  width: 450px;
+  height: 350px;
   border: none;
   background-image: url("../../images/gameover/succeed.png");
   background-size: 100% 100%;
@@ -384,7 +388,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 35px;
+  gap: 25px;
   text-transform: uppercase;
 
   p:nth-child(1) {
@@ -429,8 +433,8 @@
     border: none;
     /* background-color: #ff80ab; */
     background-color: #ffc5d3;
-    width: 19vw;
-    height: 5vh;
+    width: 300px;
+    height: 50px;
     gap: 10px;
     color: #ffffff;
     gap: 10px;
@@ -526,13 +530,12 @@ p {
 }
 
 .buYBox {
+  width: 400px;
+  height: 550px;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 23%;
-  height: 60%;
-  /* border: 1px solid #0b0113; */
   gap: 24px;
   padding: 40px;
   background-image: url("../../images/substance/substance.png");
@@ -584,10 +587,7 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: red; */
-  margin-top: -2px;
-
-
+  margin-top: -3px;
   .pp {
     /* border: 1px solid #0b0113; */
     height: auto;
@@ -603,12 +603,13 @@ p {
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 50px;
-    font-size: 15px;
+    font-size: 20px;
     justify-content: center;
     text-align: center;
     line-height: 16px;
     justify-content: center;
-
+    
+    
     &:active {
       /* background-color: rgba(255, 255, 255, 0.05); */
     }
@@ -644,16 +645,15 @@ p {
 .twoBuy {
   width: 100px;
   height: 60px;
-  /* background-color: aqua; */
   display: flex;
   align-items: center;
-  /* 垂直居中对齐子元素 */
   flex-direction: column;
-  /* 垂直排列子元素 */
   text-align: center;
-  /* 文本居中对齐 */
-  /* margin-left: -15px; */
   gap: 24px;
+}
+@font-face {
+  font-family: "AdobeHeitiStd-Regular2";
+  src: url("/fonts/字魂144号-朗圆体.ttf");
 }
 
 .fontNum {
@@ -663,8 +663,13 @@ p {
   height: 28px;
   font-weight: 700;
   color: #ffffff;
+  font-size: 20px;
   display: inline-block;
   margin-top: 7px;
+  letter-spacing: 0.5px;
+  font-family: "AdobeHeitiStd-Regular2";
+  text-shadow: 2px 2px 4px #605f5f; 
+  
 }
 
 .fontNum1 {
@@ -688,6 +693,7 @@ p {
   text-align: center;
   color: #ffffff;
   transition: font-size 0.3s ease;
+  margin-top: 10px;
 
   &:hover {
     color: #ffffff;
@@ -821,6 +827,21 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: "AdobeHeitiStd-Regular2";
+  font-size: 20px;
+  /* margin-top: ; */
+}
+
+.fontNumyo{
+  font-size: 20px;
+  color: #47799a;
+  letter-spacing: 1px;
+  text-shadow:
+    0 0 5px rgba(147, 211, 246, 0.8), /* 深色阴影 */
+    0 0 10px rgba(147, 211, 246, 0.6), /* 中等色阴影 */
+    0 0 15px rgba(147, 211, 246, 0.4); /* 浅色阴影 */
+  border-radius: 10px;
+  border: none;
 }
 
 .payBtnBox {
