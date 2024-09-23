@@ -20,7 +20,7 @@ import { CANVAS_HEIGHT } from "../../global/constants";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useDisconnect } from 'wagmi';
-import pixeLawlogo from '../../images/pixeLawlogo.png'
+import popcraftLogo from '../../images/popcraft_logo.png';
 import backgroundMusic from '../../audio/1.mp3';
 import effectSound from '../../audio/2.mp3';
 import loadingImg from "../../images/loading.png";
@@ -1520,7 +1520,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   return (
     <>
       <div className={style.container}>
-        <img className={style.containerImg} src={pixeLawlogo} alt="" />
+        <img className={style.containerImg} src={popcraftLogo} alt="PopCraft Logo" />
         <div className={style.content}>
           <button
             className={numberData === 25 ? style.btnBoxY : style.btnBox}
