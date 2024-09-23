@@ -45,12 +45,8 @@ const queryClient = new QueryClient();
 
 // TODO: figure out if we actually want this to be async or if we should render something else in the meantime
 // 初始化 manifest
-
 setup().then(async (result) => {
   root.render(
-    // <MUDProvider value={result}>
-    //   <App />
-    // </MUDProvider>
       <React.StrictMode>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
@@ -79,4 +75,23 @@ setup().then(async (result) => {
   //     recsWorld: result.network.world,
   //   });
   // }
+  
+  // 如果是生产环境，动态加载 Google Analytics
+  if (import.meta.env.PROD) {
+    // 动态加载 Google Analytics 脚本
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-WLG8G8V3JB';
+    document.head.appendChild(script);
+
+    // 初始化 Google Analytics
+    script.onload = () => {
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-WLG8G8V3JB');
+    };
+  }
 });
