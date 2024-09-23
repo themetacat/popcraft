@@ -39,18 +39,6 @@
   gap: 45px;
 }
 
-.container3 {
-  height: 92px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 600px;
-  gap: 27px;
-  border-radius: 50px;
-  background-image: url("../../images/PinkButton.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
 
 .firstPart {
   width: 220px;
@@ -87,23 +75,29 @@
   line-height: 19.36px;
   letter-spacing: 2px;
   margin-top: 7px;
-
 }
 
 .itemName {
   font-weight: 600;
   color: #feed95;
   font-size: 18px;
+  letter-spacing: 2px;
   margin-top: 5px;
+  font-family: "AdobeHeitiStd-Regular";
+  margin-bottom: 10px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .itemImage {
-  width: 70px;
-  height: 70px;
+  width: 69px;
+  height: 65px;
   margin-right: 0px;
   flex-shrink: 0;
-  margin-left: 20px;
+  margin-left: 10px;
 }
+
 
 .itemNameto {
   display: flex;
@@ -111,7 +105,8 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-left: 8px;
+  margin-left: 18px;
+  margin-top: 5px;
 }
 
 .twoPart {
@@ -127,7 +122,6 @@
   display: grid;
   gap: 4px;
   font-family: "SansationLight";
-  /* font-family: Silkscreen; */
 }
 
 .twoPart p:nth-child(1) {
@@ -154,6 +148,7 @@
   justify-content: center;
   margin-top: 7px;
 }
+
 
 @font-face {
   font-family: 'SansationLight';
@@ -305,13 +300,14 @@
   text-transform: uppercase;
 }
 
+
 .contentSuccess {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 27vw;
-  height: 43vh;
+  width: 450px;
+  height: 350px;
   border: none;
   background-image: url("../../images/gameover/fail.png");
   background-size: 100% 100%;
@@ -333,7 +329,6 @@
 
   p {
     text-transform: uppercase;
-    /* font-family: Silkscreen; */
     font-size: 30px;
     font-weight: 700;
     line-height: 30.72px;
@@ -350,8 +345,8 @@
     background-position: center;
     border: none;
     background-color: #9bfffc;
-    width: 19vw;
-    height: 5vh;
+    width: 300px;
+    height: 50px;
     gap: 10px;
     color: #ffffff;
     font-weight: 700;
@@ -362,13 +357,14 @@
   }
 }
 
+
 .contentCon {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 27vw;
-  height: 43vh;
+  width: 450px;
+  height: 350px;
   border: none;
   background-image: url("../../images/gameover/succeed.png");
   background-size: 100% 100%;
@@ -377,7 +373,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 35px;
+  gap: 25px;
   text-transform: uppercase;
 
   p:nth-child(1) {
@@ -391,15 +387,7 @@
     margin-top: 100px;
   }
 
-
-
-  .turnOff {
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    left: 440px;
-    top: 40px;
-  }
+ 
 
   &:nth-last-child(1) {
     text-transform: uppercase;
@@ -420,8 +408,8 @@
     background-position: center;
     border: none;
     background-color: #ffc5d3;
-    width: 19vw;
-    height: 5vh;
+    width: 300px;
+    height: 50px;
     gap: 10px;
     color: #ffffff;
     gap: 10px;
@@ -434,6 +422,7 @@
   }
 }
 
+
 .overlay {
   position: fixed;
   top: 0;
@@ -441,7 +430,7 @@
   width: calc(100%);
   z-index: 10000000;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  /* background-color: rgba(0, 0, 0, 0.6); */
   pointer-events: auto !important;
 }
 
@@ -514,12 +503,12 @@ p {
 }
 
 .buYBox {
+  width: 410px;
+  height: 550px;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 23%;
-  height: 60%;
   gap: 24px;
   padding: 40px;
   background-image: url("../../images/substance/substance.png");
@@ -531,8 +520,8 @@ p {
   width: 35px;
   height: 35px;
   position: absolute;
-  left: 400px;
-  top: 10px;
+  left: 425px;
+  top: 12px;
 }
 
 .buyBoxContent {
@@ -551,6 +540,13 @@ p {
   background-position: center;
   background-repeat: no-repeat;
   margin: 6px auto;
+  cursor: pointer;
+
+}
+
+.selectedRow {
+  background-image: url("../../images/substance/111.png");
+
 }
 
 .fontBuy {
@@ -563,119 +559,7 @@ p {
   display: inline-block;
 }
 
-.dataIcon {
-  /* background-image: url("../../images/substance/substancebar.png"); */
-  gap: 19px;
-  padding: 11px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* background-color: red; */
-  margin-top: -2px;
 
-  .pp {
-    height: auto;
-  }
-
-  button {
-    color: #ffffff;
-    width: 23px;
-    height: 23px;
-    border: none;
-    background-image: url("../../images/welcome/addbackground.png");
-    background-size: 100% 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 50px;
-    font-size: 15px;
-    justify-content: center;
-    text-align: center;
-    line-height: 16px;
-    justify-content: center;
-
-    &:active {
-      /* background-color: rgba(255, 255, 255, 0.05); */
-    }
-
-    &:hover {
-      /* background-color: rgba(255, 255, 255, 0.03); */
-    }
-  }
-
-  .disabled {
-    /* opacity: 0.5; */
-    /* 设置按钮透明度为50% */
-  }
-
-  .numData {
-    width: 26px;
-    height: 20px;
-    font-weight: 600;
-    font-size: 26px;
-    line-height: 20.48px;
-    background-color: #2c8dba;
-    letter-spacing: 5px;
-    color: #ffffff;
-    border: none;
-    text-align: center;
-    outline: none;
-  }
-}
-
-.twoBuy {
-  width: 100px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-  gap: 24px;
-}
-
-.fontNum {
-  /* font-size: 22px; */
-  line-height: 28.16px;
-  /* width: 68px; */
-  height: 28px;
-  font-weight: 700;
-  color: #ffffff;
-  display: inline-block;
-  margin-top: 7px;
-}
-
-.fontNum1 {
-  margin-top: -8px;
-}
-
-.payBtn {
-  width: 370px;
-  height: 50px;
-  border: none;
-  opacity: 0px;
-  background-image: url("../../images/welcome/playnormal.png");
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  text-align: center;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 24px;
-  letter-spacing: 0.1em;
-  text-align: center;
-  color: #ffffff;
-  transition: font-size 0.3s ease;
-
-  &:hover {
-    color: #ffffff;
-    font-size: 22px;
-    /* 悬停时字体变大 */
-  }
-
-  &:active {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
-  }
-}
 
 .patment {
   text-transform: uppercase;
@@ -803,46 +687,6 @@ p {
   align-items: center;
 }
 
-.container {
-  position: fixed;
-  justify-content: center;
-  align-items: center;
-  top: 160px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height: 64px;
-  padding: 24px;
-  display: flex;
-  gap: 45px;
-}
-
-.buttonBox {
-  position: fixed;
-  justify-content: center;
-  align-items: center;
-  bottom: 0;
-  right: 50px;
-  margin: auto;
-  transform: translate(0, 0);
-  height: 64px;
-  padding: 24px;
-  display: flex;
-  gap: 15px;
-}
-
-.buttonBox img {
-  max-width: 50px;
-  max-height: 50px;
-  cursor: pointer;
-}
-
-.container2 {
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 45px;
-}
 
 .container3 {
   height: 92px;
@@ -857,117 +701,17 @@ p {
   background-repeat: no-repeat;
 }
 
-.firstPart {
-  width: 220px;
-  height: 83px;
-  background-image: url("../../images/PinkButton1.png");
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 50px;
-  padding: 12px 16px 12px 16px;
-  display: grid;
-  gap: 4px;
-}
-
-.firstPart p:nth-child(1) {
-  display: flex;
-  align-items: center;
-  justify-self: center;
-  font-size: 30px;
-  font-weight: 400;
-  line-height: 23.04px;
-  text-align: center;
-  letter-spacing: 2px;
-  color: rgba(255, 255, 255, 1);
-  margin-top: 10px;
-
-}
-
-.firstPart p:nth-child(2) {
-  text-align: center;
-  color: #ffffff;
-  font-size: 26px;
-  font-weight: 400;
-  line-height: 19.36px;
-  letter-spacing: 2px;
-  margin-top: 7px;
-
-}
-
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
   src: url("/fonts/BRLNSR.TTF");
 }
 
 
-.itemName {
-  font-weight: 600;
-  color: #feed95;
-  font-size: 18px;
-  letter-spacing: 2px;
-  margin-top: 5px;
-  font-family: "AdobeHeitiStd-Regular";
 
-}
 
-.itemImage {
-  width: 70px;
-  height: 70px;
-  margin-right: 0px;
-  flex-shrink: 0;
-  margin-left: 20px;
-}
 
-.itemNameto {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin-left: 8px;
-  margin-top: 5px;
-}
 
-.twoPart {
-  width: 220px;
-  height: 83px;
-  background-image: url("../../images/PinkButton2.png");
-  /* margin-top: 7px; */
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 50px;
-  padding: 12px 16px 12px 16px;
-  display: grid;
-  gap: 4px;
-  font-family: "SansationLight";
-}
 
-.twoPart p:nth-child(1) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 400;
-  line-height: 23.04px;
-  text-align: center;
-  letter-spacing: 2px;
-  color: floralwhite;
-  font-size: 30px;
-  margin-top: 10px;
-}
-
-.twoPart p:nth-child(2) {
-  text-align: center;
-  color: #ffffff;
-  font-size: 26px;
-  font-weight: 400;
-  line-height: 18.36px;
-  letter-spacing: 2px;
-  align-items: center;
-  justify-content: center;
-  margin-top: 7px;
-}
 
 @font-face {
   font-family: 'SansationLight';
@@ -978,420 +722,25 @@ p {
 }
 
 
-.threePart {
-  width: 220px;
-  height: 83px;
-  background-image: url("../../images/PinkButton3.png");
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 50px;
-  padding: 12px 16px 12px 16px;
-  display: grid;
-  gap: 4px;
-  /* font-family: 'Silkscreen'; */
-
-}
-
-.threePart p:nth-child(1) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 400;
-  line-height: 23.04px;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: 2px;
-  color: floralwhite;
-  font-size: 30px;
-  margin-top: 10px;
-}
-
-.threePart p:nth-child(2) {
-  text-align: center;
-  color: #ffffff;
-  font-size: 26px;
-  font-weight: 400;
-  line-height: 18.36px;
-  letter-spacing: 2px;
-  margin-top: 7px;
-}
-
-.imgContent {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 35px;
-  width: 378px;
-  height: 66px;
-}
-
-.containerItem {
-  position: relative;
-  display: inline-block;
-  /* 让每个图像和其角标在同一行 */
-}
-
-.imgconItem {
-  width: 50px !important;
-  height: 50px !important;
-  border-radius: 50px;
-  /* border: 1px solid #ffffff; */
-  box-sizing: border-box;
-}
-
-.iconFont {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50px;
-  position: absolute;
-  right: -7px;
-  top: 37px;
-  color: #ffffff;
-  background-color: #ffb739;
-  width: 15px;
-  height: 15px;
-  padding: 3px;
-  gap: 10px;
-}
-
-.imgconItemFill {
-  width: 66px;
-  height: 66px;
-  border: 1px solid #2f0c42;
-  background-color: rgba(0, 0, 0, 0.35);
-  text-align: center;
-  box-sizing: border-box;
-}
-
-.buyBtn {
-  width: 55px;
-  height: 55px;
-  border: none;
-  padding: 9px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 13px;
-  background-image: url("../../images/Buttonto.png");
-  background-size: 100% 100%;
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 24px;
-  text-align: center;
-  letter-spacing: 2px;
-  border-radius: 50%;
-}
-
-.warningIcon {
-  background-color: transparent;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 24px;
-  height: 24px;
-  font-size: 30px;
-  border: none;
-  gap: 34px;
-  color: #ffffff;
-  margin-top: 5px;
-}
-
-.content {
-  /* width: 400px; */
-  /* height: 100px; */
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 700px;
-  height: 500px;
-  background-image: url("../../images/questionback/questionback.png");
-  background-size: 100% 100%;
-  background-position: center;
-  display: grid;
-  gap: 24px;
-  border: none;
-  text-transform: uppercase;
-}
-
-.contentSuccess {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 450px;
-  height: 350px;
-  border: none;
-  background-image: url("../../images/gameover/fail.png");
-  background-size: 100% 100%;
-  background-position: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 50px;
-  text-transform: uppercase;
-
-  .turnOff {
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    left: 430px;
-    top: 20px;
-  }
-
-  p {
-    text-transform: uppercase;
-    font-size: 30px;
-    font-weight: 700;
-    line-height: 30.72px;
-    letter-spacing: 5px;
-    color: #ffffff;
-    text-align: center;
-    margin-top: 120px;
-  }
-
-  button {
-    text-transform: uppercase;
-    background-image: url("../../images/gameover/paybutton.png");
-    background-size: 100% 100%;
-    background-position: center;
-    border: none;
-    background-color: #9bfffc;
-    width: 300px;
-    height: 50px;
-    gap: 10px;
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 24px;
-    letter-spacing: 8px;
-    text-align: center;
-  }
-}
-
-.contentCon {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 450px;
-  height: 350px;
-  border: none;
-  background-image: url("../../images/gameover/succeed.png");
-  background-size: 100% 100%;
-  background-position: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 25px;
-  text-transform: uppercase;
-
-  p:nth-child(1) {
-    text-transform: uppercase;
-    font-size: 30px;
-    font-weight: 700;
-    line-height: 30.72px;
-    letter-spacing: 5px;
-    color: #ffffff;
-    text-align: center;
-    margin-top: 100px;
-  }
-
-  .turnOff {
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    left: 440px;
-    top: 40px;
-  }
-
-  &:nth-last-child(1) {
-    text-transform: uppercase;
-    /* font-family: Silkscreen; */
-    font-size: 30px;
-    font-weight: 700;
-    line-height: 30.72px;
-    letter-spacing: 5px;
-    color: #d55884;
-    text-align: center;
-    margin: 0px;
-  }
-
-  button {
-    text-transform: uppercase;
-    background-image: url("../../images/gameover/succeedpay.png");
-    background-size: 100% 100%;
-    background-position: center;
-    border: none;
-    background-color: #ffc5d3;
-    width: 300px;
-    height: 50px;
-    gap: 10px;
-    color: #ffffff;
-    gap: 10px;
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 24px;
-    letter-spacing: 8px;
-    text-align: center;
-  }
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: calc(100%);
-  z-index: 10000000;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  /* 半透明黑色 */
-  pointer-events: auto !important;
-}
-
-.overlayBuy {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: calc(100%);
-  z-index: 10000000;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  /* 半透明黑色 */
-  pointer-events: auto !important;
-}
-
-.title {
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 23.04px;
-  color: #ffffff;
-  letter-spacing: 8px;
-  text-align: center;
-  line-height: 2.0;
-  line-height: 40px;
-}
-
-.actical {
-  color: #cccccc;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 17.92px;
-  letter-spacing: 2px;
-  line-height: 1.5;
-}
-
-.actical2 {
-  font-weight: bold;
-  color: #ffffff;
-  line-height: 1.5;
-
-}
-
-p {
-  margin: 0px;
-}
-
-.btnOk {
-  border: 1px solid #0b0113;
-  background-color: #200d2f;
-  width: 500px;
-  height: 44px;
-  padding: 10px 0px 10px 0px;
-  gap: 10px;
-  color: #ffffff;
-  font-family: Silkscreen;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 24px;
-  letter-spacing: 8px;
-  text-align: center;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.03);
-    color: #ffffff;
-  }
-
-  &:active {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
-  }
-}
-
-.buYBox {
-  width: 400px;
-  height: 550px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  gap: 24px;
-  padding: 40px;
-  background-image: url("../../images/substance/substance.png");
-  background-size: 100% 100%;
-  position: relative;
-}
-
-.turnOff {
-  width: 35px;
-  height: 35px;
-  position: absolute;
-  left: 400px;
-  top: 10px;
-}
-
-.buyBoxContent {
-  margin-top: 30px;
-}
-
-.firstBuy {
-  width: 370px;
-  height: 75px;
-  gap: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: url("../../images/substance/substancebar.png");
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  margin: 6px auto;
-}
-
-.fontBuy {
-  font-size: 22px;
-  line-height: 28.16px;
-  width: 68px;
-  height: 28px;
-  font-weight: 700;
-  color: #cccccc;
-  display: inline-block;
-}
-
 .dataIcon {
-  gap: 19px;
+  gap: 14px;
   padding: 11px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: -3px;
+  margin-top: px;
 
   .pp {
     height: auto;
   }
+
 
   button {
     color: #ffffff;
     width: 23px;
     height: 23px;
     border: none;
+    /* gap: 30; */
     background-image: url("../../images/welcome/addbackground.png");
     background-size: 100% 100%;
     background-position: center;
@@ -1400,8 +749,8 @@ p {
     font-size: 20px;
     justify-content: center;
     text-align: center;
-    line-height: 16px;
     justify-content: center;
+    margin-top: -13px;
 
     &:active {
       /* background-color: rgba(255, 255, 255, 0.05); */
@@ -1417,18 +766,48 @@ p {
     /* 设置按钮透明度为50% */
   }
 
+  .reduce {
+    width: 13px;
+    height: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: -1px;
+
+  }
+
+  .addbox {
+    height: 12px;
+    width: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: -2px;
+  }
+
+
   .numData {
-    width: 26px;
+    width: 35px;
     height: 20px;
-    font-weight: 600;
-    font-size: 26px;
-    line-height: 20.48px;
-    background-color: #2c8dba;
+    font-weight: 300;
+    font-size: 20px;
+    background-color: transparent;
+
+    border: none;
     letter-spacing: 5px;
     color: #ffffff;
     border: none;
     text-align: center;
+    margin-top: -16px;
+    font-family: "AdobeHeitiStd-Regular2";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .numData:focus {
     outline: none;
+    /* 移除默认的焦点边框 */
   }
 
 }
@@ -1445,15 +824,14 @@ p {
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular2";
-  src: url("/fonts/字魂144号-朗圆体.ttf");
+  src: url("/fonts/Langyuanti.ttf");
 }
 
 .fontNum {
   line-height: 28.16px;
   height: 28px;
-  font-weight: 700;
   color: #ffffff;
-  font-size: 20px;
+  font-size: 18px;
   display: inline-block;
   margin-top: 7px;
   letter-spacing: 0.5px;
@@ -1463,7 +841,7 @@ p {
 }
 
 .fontNum1 {
-  margin-top: -8px;
+  margin-top: -5px;
 }
 
 .payBtn {
@@ -1476,25 +854,31 @@ p {
   background-position: center;
   background-repeat: no-repeat;
   text-align: center;
-  font-size: 22px;
+  font-size: 25px;
   font-weight: 700;
   line-height: 24px;
   letter-spacing: 0.1em;
   text-align: center;
   color: #ffffff;
   transition: font-size 0.3s ease;
-  margin-top: 10px;
-
-  &:hover {
-    color: #ffffff;
-    font-size: 22px;
-  }
-
-  &:active {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
-  }
+  margin-top: 12px;
+  text-shadow:
+    -2px -2px 0 rgba(149, 148, 148, 0.7),
+    2px -2px 0 rgba(177, 175, 175, 0.7),
+    -2px 2px 0 rgba(165, 164, 164, 0.7),
+    2px 2px 0 rgba(206, 206, 206, 0.7);
 }
+
+/* &:hover {
+  color: #ffffff;
+  font-size: 22px;
+} */
+
+&:active {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
 
 .patment {
   text-transform: uppercase;
@@ -1515,100 +899,6 @@ p {
   left: 55px;
 }
 
-.fontbugs {
-  font-size: 14px;
-  line-height: 28px;
-  width: 118px;
-  height: 18px;
-  font-weight: 400;
-  color: rgba(153, 153, 153, 1);
-  display: inline-block;
-}
-
-.commonCls1 {
-  animation: spin 5s linear infinite;
-  -webkit-transform: rotate(3600deg);
-  transform: rotate(3600deg);
-  -webkit-transition: -webkit-transform 5s linear;
-  transition: transform 5s linear;
-  width: 100%;
-  height: 100%;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.topUp {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 398px;
-  height: 137px;
-  padding: 40px;
-  background-color: #2d0c3b;
-  gap: 24px;
-  border: 1px solid #0b0113;
-  box-shadow:
-    inset 0 0 12px 0 rgba(231, 189, 255, 0.2),
-    0 0 12px 0 rgba(231, 189, 255, 0.05);
-  position: relative;
-
-  img {
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    left: 440px;
-    top: 40px;
-  }
-
-  p {
-    margin-top: 24px !important;
-    text-transform: uppercase;
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 23.04px;
-    text-align: center;
-    letter-spacing: 2px;
-    color: rgba(255, 255, 255, 1);
-    margin: 0px;
-  }
-
-  button {
-    width: 400px;
-    height: 44px;
-    padding: 10px 0px 10px 0px;
-    gap: 10px;
-    margin-top: 24px;
-    font-family: Silkscreen;
-    background-color: #200d2f;
-    border: 1px solid #0b0113;
-    text-transform: uppercase;
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 24px;
-    text-align: center;
-    letter-spacing: 2px;
-    color: rgba(255, 255, 255, 1);
-  }
-}
-
-.commonCls2 {
-  animation: spin 5s linear infinite;
-  -webkit-transform: rotate(3600deg);
-  transform: rotate(3600deg);
-  -webkit-transition: -webkit-transform 5s linear;
-  transition: transform 5s linear;
-  height: 100%;
-}
-
 .totalAmount {
   display: flex;
   justify-content: center;
@@ -1620,7 +910,7 @@ p {
 .fontNumyo {
   font-size: 20px;
   color: #47799a;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-shadow:
     0 0 5px rgba(147, 211, 246, 0.8),
     0 0 10px rgba(147, 211, 246, 0.6),
@@ -1629,8 +919,87 @@ p {
   border: none;
 }
 
-.payBtnBox {
+.overlay {
+  position: fixed;
+  top: 126px;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.modal {
+  width: 250px;
+  height: 10px;
+  background-image: url("../../images/substance/fail.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  border-radius: 8px;
+
+}
+
+.modalto {
+  width: 180px;
+  height: 10px;
+  background-image: url("../../images/substance/success.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+@font-face {
+  font-family: "AdobeHeitiStd-Regular4";
+  src: url("/fonts/Langyuanti.ttf");
+}
+
+.failto {
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin-top: -10px;
+}
+
+.color {
+  color: #03b243;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20.48px;
+  font-family: "AdobeHeitiStd-Regular4";
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin-top: -4px;
+}
+
+.colorto {
+  color: red;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "AdobeHeitiStd-Regular4";
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin-top: -4px;
+}
+
+.modal button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  background-color: #0056b3;
 }
