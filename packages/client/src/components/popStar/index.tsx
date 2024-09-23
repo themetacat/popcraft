@@ -49,10 +49,11 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
           to eliminate all the materials.{" "}
         </span>
         <br />
-        <span className={style.copywritingTwo}>You'll be rewarded with
-          <span className={style.copywritingThree}> 150 $bugs</span>
+        <div className={style.copywritingTwobox}>
+        <span className={style.copywritingTwoyo}>You'll be rewarded with
+          <span className={style.copywritingThree}> 150 $BUGS</span>
         </span>
-        <span className={style.copywritingTwo}>
+        <span className={style.copywritingTwoyo}>
           {" "}
           for completing the game.
           <br />
@@ -60,6 +61,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
         </span>
         {/* <a href="https://thiscursedmachine.fun/" target="_blank" rel="noopener noreferrer" className={style.copywritingFour}> This Cursed Machine</a> */}
         {/* <span className={style.copywritingTwo}>.</span> */}
+        </div>
       </div>
       <ConnectButton.Custom>
         {({

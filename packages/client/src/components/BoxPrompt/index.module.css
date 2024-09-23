@@ -1449,9 +1449,7 @@ p {
 }
 
 .fontNum {
-  /* font-size: 22px; */
   line-height: 28.16px;
-  /* width: 68px; */
   height: 28px;
   font-weight: 700;
   color: #ffffff;
@@ -1490,7 +1488,6 @@ p {
   &:hover {
     color: #ffffff;
     font-size: 22px;
-    /* 悬停时字体变大 */
   }
 
   &:active {
@@ -1519,7 +1516,6 @@ p {
 }
 
 .fontbugs {
-  /* margin-left: 5px; */
   font-size: 14px;
   line-height: 28px;
   width: 118px;
@@ -1610,7 +1606,6 @@ p {
   transform: rotate(3600deg);
   -webkit-transition: -webkit-transform 5s linear;
   transition: transform 5s linear;
-  /* width: 100%; */
   height: 100%;
 }
 
@@ -1620,7 +1615,6 @@ p {
   align-items: center;
   font-family: "AdobeHeitiStd-Regular2";
   font-size: 20px;
-  /* margin-top: ; */
 }
 
 .fontNumyo {

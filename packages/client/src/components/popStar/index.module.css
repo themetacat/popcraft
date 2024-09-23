@@ -3,8 +3,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 440px;
-  height: 320px;
+  width: 500px;
+  height: 350px;
   padding: 40px;
   border: none;
   background-image: url("../../images/welcome/welcome.png");
@@ -25,12 +25,15 @@ p {
 
 .title {
   font-weight: 700;
-  font-size: 20px;
+  font-size: 22px;
   line-height: 23.04px;
   color: #ffffff;
-  letter-spacing: 5px;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* 添加黑色阴影 */
-  text-align: center; /* 居中文本 */
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 5px rgba(49, 49, 49, 0.5); /* 添加黑色阴影 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px;
 }
 
 
@@ -44,9 +47,9 @@ p {
   height: 200px;
   display: block;
   justify-content: center;
-  align-items: center;
-  line-height: 2.5em; /* 行高为 1.5 倍字体大小 */
-
+  line-height: 2em; 
+  margin-left: 50px;
+  margin-top: -15px;
 }
 
 .copywritingFirst {
@@ -60,21 +63,30 @@ p {
 .copywritingThree {
   font-weight: 600;
   font-size: 22px;
-  /* line-height: 20.48px; */
   letter-spacing: 4px;
   color: #000000;
   
 }
 
 .copywritingTwo {
-  font-weight: 400;
-  font-size: 20px;
+  font-weight: 700;
+  font-size: 18px;
   line-height: 5px;
   letter-spacing: 3px;
   color: #020202;
-  /* font-size: 15px; */
   font-family: "AdobeHeitiStd-Regular";
-  
+}
+
+.copywritingTwobox{
+  margin-top: 10px;
+}
+
+.copywritingTwoyo{
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 5px;
+  letter-spacing: 3px;
+  font-family: "AdobeHeitiStd-Regular";
 }
 
 .copywritingFour {
@@ -87,20 +99,20 @@ p {
 }
 
 .btnPlay {
-  width: 400px;
+  width: 380px;
   height: 50px;
   background-color: #fff1c8;
-  /* gap: 10px; */
   opacity: 0px;
   border: none;
   background-image: url("../../images/welcome/playnormal.png");
   background-size: 100% 100%;
   background-position: center;
+  align-items: center;
   position: absolute; 
-  top: 88%; 
+  top: 80%; 
   left: 50%; 
   transform: translate(-50%, -50%);
-  font-size: 20px;
+  font-size: 23px;
   font-weight: 700;
   line-height: 24px;
   letter-spacing: 0.1em;
@@ -108,12 +120,12 @@ p {
   color: #ffffff;
   transition: font-size 0.3s ease; 
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-
+  text-transform: uppercase;
 }
 
 .btnPlay:hover {
   color: #ffffff;
-  font-size: 23px; 
+  font-size: 26px; 
 }
 
 .btnPlay:active {
