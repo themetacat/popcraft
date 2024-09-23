@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import style from "./index.module.css";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import loadingImg from "../../images/loading.png";
+import loadingImg from "../../images/loadingto.png";
 
 interface Props {
   setPopStar: any;
@@ -98,8 +98,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
                     <button
                       onClick={openConnectModal}
                       type="button"
-                      className={style.btnPlay}
-                    >
+                      className={isConnected ? style.btnPlayConnected : style.btnPlay}>
                       CONNECT
                     </button>
                   );

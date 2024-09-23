@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import style from "./index.module.css";
-import loadingIcon from "../../images/loading (2).png";
+import loadingIcon from "../../images/loadingto.png";
 import trunOff from "../../images/turnOffBtn.png";
 import { imageIconData } from "../imageIconData";
 import { useMUD } from "../../MUDContext";
@@ -10,8 +10,13 @@ import { addressToEntityID } from "../rightPart";
 import loadingImg from "../../images/loading.png";
 import xLogo from '../../images/xLogo.png';
 import TelegramLogo from '../../images/TelegramLogo.png'
-import Select from "../select";
+// import Select from "../select";
+import reduce from '../../images/substance/reduce.png'
+import add from '../../images/substance/add.png'
+import failto from '../../images/substance/failto.png'
+import success from '../../images/substance/successto.png'
 import { generateRoute } from '../../uniswap_routing/routing'
+
 import {
   encodeEntity,
 } from "@latticexyz/store-sync/recs";
@@ -62,9 +67,14 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [loadingPlayAgain, setLoadingPlayAgain] = useState(false);
   const [loadingUpHandle, setLoadingUpHandle] = useState(false);
   const [isPriceLoaded, setIsPriceLoaded] = useState(false); // 价格是否已加载
-  const [prices, setPrices] = useState({}); 
-  const [totalPrice, setTotalPrice] = useState(0);  
+  const [prices, setPrices] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0);
   const [allZero, setAllZero] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
@@ -89,7 +99,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
   //控制奖励bugs
   useEffect(() => {
-    let interval: any; 
+    let interval: any;
     if (gameSuccess) {
       interval = setInterval(() => {
         resultBugs.refetch().then((data) => {
@@ -133,7 +143,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         result[address] = {
           ...imageData[address],
           balance: balance,
-          purchased: numberData[address] || 0, 
+          purchased: numberData[address] || 0,
         };
       }
     });
@@ -262,6 +272,52 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   }, [numberData]);
 
 
+  // const handlePayMent = () => {
+  //   // 过滤 numberData 和 prices 以仅包含页面上渲染的物质
+  //   const renderedMaterials = Object.keys(matchedData);
+  //   const filteredNumberData = renderedMaterials.map(key => ({
+  //     key,
+  //     quantity: numberData[key] * 10 ** 18
+  //   }));
+
+  //   // 过滤掉数量为 0 的物质
+  //   const itemsToPay = filteredNumberData.filter(item => item.quantity > 0);
+  //   if (itemsToPay.length === 0) {
+  //     toast.error("Payment failed! Try again!");
+  //     return;
+  //   }
+  //   const methodParametersArray = itemsToPay.map(item => prices[item.key]?.methodParameters);
+  //   const payFunctionTwo = payFunction(
+  //     methodParametersArray
+
+  //   );
+  //   setcresa(true);
+  //   payFunctionTwo.then((result) => {
+  //     if (result.status === "success") {
+  //       toast.success("Payment successed!");
+  //       setcresa(false);
+  //       setTimeout(() => {
+  //         setdataq(false);
+  //       }, 3000);
+  //     } else {
+  //       toast.error("Payment failed! Try again!");
+  //       setcresa(false);
+  //       setpay(true);
+  //       setTimeout(() => {
+  //         setpay(false);
+  //       }, 3000);
+  //     }
+  //   })
+  //     .catch((error) => {
+  //       toast.error("Payment failed! Try again！");
+  //       setcresa(false);
+  //       setpay(true);
+  //       setTimeout(() => {
+  //         setpay(false);
+  //       }, 3000);
+  //     });
+  // };
+
   const handlePayMent = () => {
     // 过滤 numberData 和 prices 以仅包含页面上渲染的物质
     const renderedMaterials = Object.keys(matchedData);
@@ -279,31 +335,34 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     const methodParametersArray = itemsToPay.map(item => prices[item.key]?.methodParameters);
     const payFunctionTwo = payFunction(
       methodParametersArray
-
     );
     setcresa(true);
     payFunctionTwo.then((result) => {
       if (result.status === "success") {
-        toast.success("Payment successed!");
         setcresa(false);
+        setShowSuccessModal(true);
+        setModalMessage("SUCCEED!");
         setTimeout(() => {
-          setdataq(false);
+          setShowSuccessModal(false);
         }, 3000);
       } else {
         toast.error("Payment failed! Try again!");
         setcresa(false);
         setpay(true);
+        setModalMessage("SUCCEED!");
+        setShowModal(true);
         setTimeout(() => {
-          setpay(false);
+          setShowModal(false);
         }, 3000);
       }
     })
       .catch((error) => {
-        toast.error("Payment failed! Try again！");
         setcresa(false);
         setpay(true);
+        setModalMessage("PAYMENT FALILED! TRY AGAIN!");
+        setShowModal(true);
         setTimeout(() => {
-          setpay(false);
+          setShowModal(false);
         }, 3000);
       });
   };
@@ -330,7 +389,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const fetchPrices = async (matchedData: any) => {
     const pricePromises = Object.keys(matchedData).map(async (key) => {
       const quantity = numberData[key] || 0;
-      
+
       if (quantity > 0) {
         const route = await generateRoute(key, quantity);
         const price = route.quote.toExact(); // 获取报价
@@ -369,14 +428,14 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   };
 
   const upHandleNumber = (key) => {
-  setLoadingUpHandle(true);
-  setNumberData(prev => ({
-    ...prev,
-    [key]: prev[key] + 1
-  }));
-  // fetchPrices(matchedData);
-  setLoadingUpHandle(false);
-};
+    setLoadingUpHandle(true);
+    setNumberData(prev => ({
+      ...prev,
+      [key]: prev[key] + 1
+    }));
+    // fetchPrices(matchedData);
+    setLoadingUpHandle(false);
+  };
 
   // 关闭在打开默认为5
   const resetNumberData = () => {
@@ -386,7 +445,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     });
     setNumberData(initialData);
   };
-  
+
   const handleNumberChange = (key: any, value: any) => {
     const numericValue = value.replace(/[^0-9]/g, '');
     setNumberData(prev => ({
@@ -439,7 +498,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     const prices = await fetchPrices(matchedData);
     // console.log("111");
   };
-  
+
   useEffect(() => {
     if (dataq) {
       const timer = setInterval(getRoute, 500000);
@@ -456,7 +515,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       }
     };
   }, [dataq]);
-  
+
   useEffect(() => {
     return () => {
       if (priceTimer) {
@@ -464,15 +523,24 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       }
     };
   }, []);
-  
+
   //监听价格的变化
   useEffect(() => {
     updateTotalPrice();
   }, [numberData, prices]);
-  
+
   useEffect(() => {
     fetchPrices(matchedData);
   }, [numberData]);
+
+  const [selectedKey, setSelectedKey] = useState(null);
+
+  const handleRowClick = (key: any) => {
+    console.log('Clicked key:', key);
+
+    setSelectedKey(key);
+
+  };
 
   return (
     <>
@@ -512,7 +580,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             </div>
             <button
               className={style.buyBtn}
-              onClick={async() => {
+              onClick={async () => {
                 setdataq(!warnBox);
                 getRoute()
               }}
@@ -546,12 +614,18 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             />
             <div className={style.buyBoxContent}>
               {Object.entries(matchedData).slice(0, 5).map(([key, { src, name }]) => (
-                <div key={key} className={style.firstBuy}>
-
+                // <div key={key} className={style.firstBuy}>
+                <div
+                  key={key}
+                  className={`${style.firstBuy} ${selectedKey === key ? style.selectedRow : ''}`}
+                  onClick={() => handleRowClick(key)}
+                >
                   <img src={src} alt={name} className={style.itemImage} />
-
                   <div className={style.itemNameto}>
-                    <span className={style.itemName}>{name}</span>
+                    <div className={style.itemName}>
+                      <span className={style.itemNameText}>{name}</span>
+                    </div>
+
                     <div className={style.dataIcon}>
                       <button
                         onClick={() => {
@@ -560,16 +634,14 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                         disabled={numberData === 1}
                         className={numberData === 1 ? style.disabled : (null as any)}
                       >
-                        -
+                        <img src={reduce} className={style.reduce} alt="" />
                       </button>
-                      {/* <p className={style.pp}></p> */}
                       <input
                         value={numberData[key] || 0}
                         onChange={(e) => handleNumberChange(key, e.target.value)}
                         className={style.numData}
                         min="0"
                       />
-                      {/* <p className={style.pp}></p> */}
                       <button
                         onClick={() => {
                           upHandleNumber(key);
@@ -578,7 +650,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                         className={data === 0 ? style.disabled : (null as any)}
 
                       >
-                        +
+                        <img src={add} className={style.addbox} alt="" />
                       </button>
                     </div>
                   </div>
@@ -619,7 +691,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 className={style.payBtn}
                 onClick={() => {
                   handlePayMent()
-                  
+
                 }}
                 disabled={Object.values(numberData).every(num => num === 0) || cresa || !isPriceLoaded} // 添加 isPriceLoaded 状态来禁用按钮
                 style={{ cursor: Object.values(numberData).every(num => num === 0) || cresa || !isPriceLoaded ? "not-allowed" : "auto" }}
@@ -629,8 +701,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                     src={loadingIcon}
                     alt=""
                     style={{
-                      width: "16px",
-                      height: "16px",
+                      width: "40px",
+                      height: "40px",
                       marginTop: "5px",
                       color: "#ffffff",
                       filter: "grayscale(100%)",
@@ -646,6 +718,25 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           </div>
         </div>
       ) : null}
+
+      {showSuccessModal && (
+        <div className={style.overlay}>
+          <div className={style.modalto} >
+            <img src={success} alt="" className={style.failto} />
+            <p className={style.color}>{modalMessage}</p>
+
+          </div>
+        </div>
+      )}
+
+      {showModal && !showSuccessModal && (
+        <div className={style.overlay}>
+          <div className={style.modal}>
+            <img src={failto} alt="" className={style.failto} />
+            <p className={style.colorto}>{modalMessage}</p>
+          </div>
+        </div>
+      )}
 
       {warnBox === true ? (
         <div
