@@ -154,7 +154,11 @@ p {
   background-size: 100% 100%;
   background-position: center;
 }
-
+/* .btnPlayConnectClicked {
+  background-image: url("../../images/welcome/playhove.png");
+  background-size: 100% 100%;
+  background-position: center;
+} */
 
 .btnPlayClicked:hover {
   cursor: not-allowed;

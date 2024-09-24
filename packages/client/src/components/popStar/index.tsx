@@ -99,6 +99,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
                     }}
                       type="button"
                       className={isConnected ? style.btnPlayConnected : style.btnPlay}>
+                     
                       CONNECT
                     </button>
                   );

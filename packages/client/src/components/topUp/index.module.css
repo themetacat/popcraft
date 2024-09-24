@@ -16,7 +16,6 @@
   justify-content: center;
   align-items: center;
   font-family: "AdobeHeitiStd-Regular";
-
 }
 
 .cant {
@@ -25,17 +24,17 @@
   gap: 24px;
 
   span {
-    display: inline-block;
-    width: 352px;
-    height: 23px;
-    font-family: Silkscreen;
-    font-size: 23px;
     font-weight: 700;
+    font-size: 22px;
     line-height: 23.04px;
-    letter-spacing: 0.1em;
-    text-align: center;
     color: #ffffff;
-    margin-top: 10px;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 5px rgba(49, 49, 49, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -10px;
+    text-transform: uppercase;
   }
 }
 
@@ -61,12 +60,32 @@
   font-size: 12px;
   font-weight: 400;
   line-height: 8.36px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.3em;
   text-align: center;
   color: #ffffff;
   cursor: pointer;
+  text-shadow:
+  -1px -1px 0 rgba(192, 192, 192, 0.7),
+  1px -1px 0 rgba(192, 192, 192, 0.7),
+  -1px 1px 0 rgba(192, 192, 192, 0.7),
+  1px 1px 0 rgba(192, 192, 192, 0.7);
+}
+.bridgeBTN:hover {
+  color: #ffffff;
+  font-size: 13px;
+  text-shadow:
+    -1px -1px 0 rgba(101, 100, 100, 0.7),
+    1px -1px 0 rgba(105, 104, 104, 0.7),
+    -1px 1px 0 rgba(120, 119, 119, 0.7),
+    1px 1px 0 rgba(101, 101, 101, 0.7)
 }
 
+.bridgeBTNClicked {
+  /* 点击后的按钮样式 */
+  background-image: url("../../images/topup/btnMeback.png");
+  background-size: cover; 
+  background-position: center; 
+}
 .warningCon {
   background-color: #ffffff;
   position: relative;
@@ -83,9 +102,10 @@
   margin-top: 8px;
   opacity: 0px;
   font-size: 13px;
-  
+
 }
-.warningOverlay{
+
+.warningOverlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -104,9 +124,11 @@
   left: 50%;
   transform: translateX(-50%);
 }
-.btnPartto{
+
+.btnPartto {
   /* margin-top: 10px; */
 }
+
 .titleOne {
   display: inline-block;
   width: 173px;
@@ -118,6 +140,7 @@
   letter-spacing: 0.1em;
   text-align: left;
   color: #080808;
+  font-family: "AdobeHeitiStd-Regular";
 }
 
 
@@ -139,7 +162,6 @@
   gap: 0px;
   opacity: 0px;
   font-family: "AdobeHeitiStd-Regular";
-
 }
 
 .prilf {
@@ -152,7 +174,7 @@
   color: #e38666;
   height: 14px;
   text-transform: uppercase;
-    font-family: "AdobeHeitiStd-Regular"
+  font-family: "AdobeHeitiStd-Regular"
 }
 
 .onePart {
@@ -162,13 +184,14 @@
   padding: 12px;
   gap: 16px;
   opacity: 0px;
+  margin-top: -50px;
   background-color: #fff2c8;
   border-radius: 10px;
 }
 
 .imgICon {
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
 }
 
 .btnPart {
@@ -187,6 +210,7 @@
   height: 70px;
   display: grid;
   gap: 8px;
+  margin-top: 10px;
 }
 
 .partTwo {
@@ -201,7 +225,7 @@
 }
 
 .btnMe {
-  width: 111px;
+  width: 135px;
   height: 10px;
   padding: 8px;
   gap: 10px;
@@ -215,11 +239,34 @@
   font-family: Silkscreen;
   font-size: 12px;
   font-weight: 400;
-  line-height: 8px;
-  letter-spacing: 0.1em;
+  line-height: 8.36px;
+  letter-spacing: 0.2em;
   text-align: center;
   color: #ffffff;
-  /* border: 1px solid #0b0113; */
+  cursor: pointer;
+  text-shadow:
+  -1px -1px 0 rgba(192, 192, 192, 0.7),
+  1px -1px 0 rgba(192, 192, 192, 0.7),
+  -1px 1px 0 rgba(192, 192, 192, 0.7),
+  1px 1px 0 rgba(192, 192, 192, 0.7);
+}
+.btnMe:hover {
+  color: #ffffff;
+  font-size: 13px;
+  text-shadow:
+    -1px -1px 0 rgba(101, 100, 100, 0.7),
+    1px -1px 0 rgba(105, 104, 104, 0.7),
+    -1px 1px 0 rgba(120, 119, 119, 0.7),
+    1px 1px 0 rgba(101, 101, 101, 0.7)
+}
+.btnMeClicked {
+  /* 点击后的按钮样式 */
+  background-image: url("../../images/topup/btnMebj.png");
+  background-size: 100% 100%;
+}
+
+.btnMeWaiting {
+  font-size: 5px;
 }
 
 .btnMeB {
@@ -246,14 +293,14 @@
   display: grid;
   gap: 5px;
   position: relative;
-  margin-top: -5px;
+  margin-top: -4px;
   font-size: 15px;
 }
 
 .ConfirmingFont {
   display: inline-block;
   font-family: Silkscreen;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 15.36px;
   letter-spacing: 0.1em;
@@ -263,7 +310,9 @@
   height: 15px;
   gap: 0px;
   opacity: 0px;
-  margin-left: 12px;
+  margin-left: 13px;
+  margin-top: 5px;
+  font-family: "AdobeHeitiStd-Regular";
 }
 
 .partContent {
@@ -272,7 +321,7 @@
   opacity: 0px;
   background-color: #fff2c8;
   border-radius: 10px;
-  margin-top: -18px;
+  margin-top: -45px;
 }
 
 .inputCon {
@@ -286,15 +335,16 @@
   font-weight: 500;
   line-height: 15.36px;
   letter-spacing: 0.1em;
-  margin-left: 10px;  
+  margin-left: 10px;
   font-family: "AdobeHeitiStd-Regular";
 
 }
 
 .warningImg {
-  width: 14px;
-  height: 14px;
-  margin-left: -15px;
+  width: 13px;
+  height: 13px;
+  margin-left: -25px;
+  margin-top: 1px;
 }
 
 .copyBtn {
@@ -312,23 +362,23 @@
   width: 110px;
   position: relative;
   vertical-align: middle;
-  
+
 }
 
 .imgUnioncopyBtn {
   position: absolute;
   right: -5px;
   top: 4px;
-  width: 14px;
-  height: 14px;
-  
+  width: 12px;
+  height: 12px;
+
 }
 
 .imgUnionCopyBtn {
   position: absolute;
   right: -5px;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
 }
 
 .prvkey {
@@ -344,6 +394,7 @@
   font-family: "AdobeHeitiStd-Regular";
   src: url("/fonts/BRLNSR.TTF");
 }
+
 .pqad {
   width: 106px;
   height: 15px;
@@ -361,8 +412,8 @@
 }
 
 .imginputConPassWord {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   margin-left: 4px;
 }
 
@@ -402,18 +453,16 @@
 .partFour {
   width: 400px;
   height: 137px;
-  gap: 0px;
   opacity: 0px;
-  margin-top: -15px;
+  margin-top: -40px;
+  line-height: 25px;
 
   p {
-    margin: 0px;
-    font-family: Silkscreen;
     font-size: 14px;
     font-weight: 400;
-    line-height: 19px;
-    /* letter-spacing: 0.1em; */
-    text-align: left;
+    line-height: 25px;
+    letter-spacing: 1px;
+    /* text-align: left; */
     width: 400px;
     height: 45px;
     top: 284px;
@@ -423,8 +472,6 @@
     color: #000000;
     text-transform: uppercase;
     font-family: "AdobeHeitiStd-Regular";
-
-
   }
 
   input {
@@ -436,8 +483,10 @@
     justify-content: space-between;
     opacity: 0px;
     border: none;
-    /* border: 1px solid #0b0113; */
-    border-radius: 10px;
+    outline: none;
+    /* 取消焦点轮廓 */
+
+    border-radius: 5px;
     background-color: #fff2c8;
     font-family: Silkscreen;
     font-size: 14px;
@@ -452,6 +501,7 @@
 .inputEth {
   margin-top: 8px;
   color: #000000;
+  margin-top: 3px;
 }
 
 .svgIcon {
@@ -468,6 +518,7 @@
   /* 将文本转换为大写 */
   color: #9a3916;
 
+
   input {
     width: 80px;
   }
@@ -480,10 +531,11 @@
   gap: 5px;
   position: relative;
   margin-left: 10px;
+  margin-top: -3px;
 
   span {
     font-size: 15px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 15.36px;
     letter-spacing: 0.1em;
     text-align: left;
@@ -494,19 +546,19 @@
   }
 
   p {
-    font-family: Silkscreen;
-    font-size: 12px;
+    font-family: "AdobeHeitiStd-Regular";
+    font-size: 13px;
     font-weight: 400;
     line-height: 15.36px;
     letter-spacing: 0.1em;
     text-align: left;
     color: #dc5468;
     height: 15px;
+    margin-top: 5px;
   }
 }
 
 .footerBtn {
-  text-transform: uppercase;
   width: 400px;
   height: 44px;
   gap: 10px;
@@ -515,21 +567,33 @@
   background-image: url("../../images/topup/footerBtn.png");
   background-size: 100% 100%;
   background-position: center;
-  color: #200d2f;
   border: none;
-  font-size: 18px;
+  font-size: 19px;
+  margin-top: -25px;
   font-weight: 700;
   line-height: 24px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.2em;
   text-align: center;
   color: #ffffff;
-  margin-top: -25px;
-  text-shadow: 2px 2px 4px #515151; /* 添加黑色阴影 */
-
+  transition: font-size 0.3s ease;
+  text-shadow:
+  -1px -1px 0 rgba(192, 192, 192, 0.7),
+  1px -1px 0 rgba(192, 192, 192, 0.7),
+  -1px 1px 0 rgba(192, 192, 192, 0.7),
+  1px 1px 0 rgba(192, 192, 192, 0.7);
 }
 
+.footerBtn:hover {
+  color: #ffffff;
+  font-size: 20px;
+  text-shadow:
+    -1px -1px 0 rgba(101, 100, 100, 0.7),
+    1px -1px 0 rgba(105, 104, 104, 0.7),
+    -1px 1px 0 rgba(120, 119, 119, 0.7),
+    1px 1px 0 rgba(101, 101, 101, 0.7)
+}
 
-.wrongNetworkBtn{
+.wrongNetworkBtn {
   text-transform: uppercase;
   width: 400px;
   height: 44px;
@@ -548,9 +612,8 @@
   letter-spacing: 0.1em;
   text-align: center;
   color: #fb5a5a;
-  margin-top: -25px;  
+  margin-top: -25px;
 }
-
 
 .footerBtnElse {
   text-transform: uppercase;
@@ -564,7 +627,6 @@
   background-size: 100% 100%;
   background-position: center;
   color: #200d2f;
-  font-family: Silkscreen;
   font-size: 18px;
   font-weight: 700;
   line-height: 24px;
@@ -573,15 +635,15 @@
   color: #ffffff;
 }
 
-.canvasWrapper {
-  /* width: 100%;
-    height: 100%; */
-  overflow-x: hidden;
-  /* 允许水平滚动 */
-  overflow-y: hidden;
-  /* 禁止垂直滚动 */
+.footerBtnClicked  {
+  background-image: url("../../images/topup/footerBtnto.png");
+  background-size: 100% 100%;
+  background-position: center;
+}
 
-  /* white-space: nowrap; 保证内容横向排列 */
+.canvasWrapper {
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .canvasWrapper::-webkit-scrollbar {

@@ -48,6 +48,43 @@ export default function TopUp({
   const [isWithdrawing, setIsWithdrawing] = useState(false);
   const [isDepositing, setIsDepositing] = useState(false);
   const [withdrawButtonText, setWithdrawButtonText] = useState("WITHDRAW ALL");
+  const [isDepositButtonClicked, setIsDepositButtonClicked] = useState(false);
+  const [isPlayButtonClicked, setIsPlayButtonClicked] = useState(false);
+  const [isWithdrawButtonClicked, setIsWithdrawButtonClicked] = useState(false);
+  const [isWithdrawButtonWaiting, setIsWithdrawButtonWaiting] = useState(false);
+
+  // 修改 withDraw 函数
+  async function withDraw() {
+    const balance_eth = balance / 1e18;
+    if (parseEther(balance_eth.toString()) > Number(MIN_SESSION_WALLET_BALANCE)) {
+      const value = parseEther(balance_eth.toString()) - MIN_SESSION_WALLET_BALANCE;
+      setIsWithdrawing(true);
+      setWithdrawButtonText("Waiting for confirmation...");
+      setIsWithdrawButtonClicked(true);
+      setIsWithdrawButtonWaiting(true); 
+      const hash = await walletClient.sendTransaction({
+        to: address,
+        value: value,
+      });
+      setwithDrawHashVal(hash);
+    } else {
+      toast.error("BALANCE not enough");
+    }
+  }
+
+  // 修改按钮的样式
+  <div
+    className={`
+    ${style.btnMe}
+    ${isWithdrawButtonClicked ? style.btnMeClicked : ''}
+    ${isWithdrawButtonWaiting ? style.btnMeWaiting : ''}
+  `}
+    onClick={withDraw}
+    disabled={isWithdrawing || balance === 0}
+  >
+    {withdrawButtonText}
+  </div>
+
   const {
     network: { walletClient, publicClient },
   } = useMUD();
@@ -93,6 +130,7 @@ export default function TopUp({
       const value = parseEther(balance_eth.toString()) - MIN_SESSION_WALLET_BALANCE;
       setIsWithdrawing(true);
       setWithdrawButtonText("Waiting for confirmation...");
+      setIsWithdrawButtonClicked(true);
       const hash = await walletClient.sendTransaction({
         to: address,
         value: value,
@@ -119,10 +157,6 @@ export default function TopUp({
   }, []);
   const [balanceSWNum, setBalanceSWNum] = useState(Number(balanceSW) / 1e18);
 
-  // const handleChange = (event) => {
-  //   setInputValue(event.target.value);
-  //   setTransferPayType(false);
-  // };
   const handleChange = (event) => {
     const value = event.target.value;
     const balanceEOA = Number(balanceResultEOA.data?.value) / 1e18;
@@ -169,6 +203,7 @@ export default function TopUp({
   };
 
   const bridgeHandle = () => {
+    setIsPlayButtonClicked(true); // 设置按钮点击状态
     if (mainContent === "MAINNET") {
       window.open("https://redstone.xyz/deposit");
     } else {
@@ -184,6 +219,7 @@ export default function TopUp({
     ) {
       setTransferPayType(false);
       setIsDepositing(true); // 设置按钮状态为正在充值
+      setIsDepositButtonClicked(true); // 设置按钮点击状态
       submit();
     } else {
       setLoading(false);
@@ -306,8 +342,10 @@ export default function TopUp({
                     </button>
                   </div>
 
-                  <span className={style.bridgeBTN} onClick={bridgeHandle}>
-                    Bridge
+                  <span
+                    className={`${style.bridgeBTN} ${isPlayButtonClicked ? style.bridgeBTNClicked : ''}`}
+                    onClick={bridgeHandle}>
+                    PLAY
                   </span>
                 </div>
               </div>
@@ -359,7 +397,11 @@ export default function TopUp({
 
                   </div>
                   <div
-                    className={style.btnMe}
+                    className={`
+                      ${style.btnMe}
+                      ${isWithdrawButtonClicked ? style.btnMeClicked : ''}
+                      ${isWithdrawButtonWaiting ? style.btnMeWaiting : ''}
+                    `}
                     onClick={withDraw}
                     disabled={isWithdrawing || balance === 0}
                   >
@@ -395,7 +437,7 @@ export default function TopUp({
                     />
                   </div>
                   <p className={style.prilf}>
-                    Save the private key as soon as possible
+                    Save the private key as soon as Fossible
                   </p>
                 </div>
               </div>
@@ -445,11 +487,10 @@ export default function TopUp({
               {!chain.unsupported && (
                 <button
                   onClick={transferPay}
-                  className={
-                    transferPayType === false
-                      ? style.footerBtn
-                      : style.footerBtnElse
-                  }
+                  className={`
+                  ${transferPayType === false ? style.footerBtn : style.footerBtnElse}
+                  ${isDepositButtonClicked ? style.footerBtnClicked : ''}
+                `}
                   disabled={transferPayType === true || isConfirming || isPending || isDepositing}
                 >
                   {transferPayType === true && "Not enough funds"}
@@ -459,7 +500,7 @@ export default function TopUp({
                     !isDepositing &&
                     "Deposit via transfer"}
                   {transferPayType === false && (isConfirming || isPending || isDepositing) && (
-                    <div>Waiting for confirmation...</div>
+                    <div className={style.footerBtnbox}>Waiting for confirmation...</div>
                   )}
                 </button>
               )}
