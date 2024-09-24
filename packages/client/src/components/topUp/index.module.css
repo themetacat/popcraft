@@ -18,24 +18,28 @@
   font-family: "AdobeHeitiStd-Regular";
 }
 
+
 .cant {
   height: 24px;
   line-height: 24px;
   gap: 24px;
 
-  span {
-    font-weight: 700;
-    font-size: 22px;
-    line-height: 23.04px;
-    color: #ffffff;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 5px rgba(49, 49, 49, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: -10px;
-    text-transform: uppercase;
-  }
+
+
+}
+
+.title {
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 23.04px;
+  color: #ffffff;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 5px rgba(49, 49, 49, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -10px;
+  text-transform: uppercase
 }
 
 .imgOff {
@@ -65,11 +69,12 @@
   color: #ffffff;
   cursor: pointer;
   text-shadow:
-  -1px -1px 0 rgba(192, 192, 192, 0.7),
-  1px -1px 0 rgba(192, 192, 192, 0.7),
-  -1px 1px 0 rgba(192, 192, 192, 0.7),
-  1px 1px 0 rgba(192, 192, 192, 0.7);
+    -1px -1px 0 rgba(192, 192, 192, 0.7),
+    1px -1px 0 rgba(192, 192, 192, 0.7),
+    -1px 1px 0 rgba(192, 192, 192, 0.7),
+    1px 1px 0 rgba(192, 192, 192, 0.7);
 }
+
 .bridgeBTN:hover {
   color: #ffffff;
   font-size: 13px;
@@ -83,18 +88,19 @@
 .bridgeBTNClicked {
   /* 点击后的按钮样式 */
   background-image: url("../../images/topup/btnMeback.png");
-  background-size: cover; 
-  background-position: center; 
+  background-size: cover;
+  background-position: center;
 }
+
 .warningCon {
   background-color: #ffffff;
   position: relative;
   color: #D59E11;
   border: 5px solid #fabe26;
-  width: 270px;
-  height: 140px;
+  width: 310px;
+  height: 160px;
   left: 50%;
-  top: 50%;
+  top: 48%;
   gap: 16px;
   transform: translate(-50%, -50%);
   border-radius: 10px;
@@ -102,6 +108,9 @@
   margin-top: 8px;
   opacity: 0px;
   font-size: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
 }
 
@@ -114,16 +123,16 @@
 }
 
 .triangle {
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  /* 可根据需要调整颜色 */
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 290px;
+  height: 140px;
+  font-family: "AdobeHeitiStd-Regular";
+  color: #000000;
+  letter-spacing: 0.5px;
+  line-height: 20px; /* 调整行高以确保文字铺满7行 */
+  text-align: justify; /* 使文字两端对齐 */
+  font-size: 13px;
 }
+
 
 .btnPartto {
   /* margin-top: 10px; */
@@ -245,11 +254,12 @@
   color: #ffffff;
   cursor: pointer;
   text-shadow:
-  -1px -1px 0 rgba(192, 192, 192, 0.7),
-  1px -1px 0 rgba(192, 192, 192, 0.7),
-  -1px 1px 0 rgba(192, 192, 192, 0.7),
-  1px 1px 0 rgba(192, 192, 192, 0.7);
+    -1px -1px 0 rgba(192, 192, 192, 0.7),
+    1px -1px 0 rgba(192, 192, 192, 0.7),
+    -1px 1px 0 rgba(192, 192, 192, 0.7),
+    1px 1px 0 rgba(192, 192, 192, 0.7);
 }
+
 .btnMe:hover {
   color: #ffffff;
   font-size: 13px;
@@ -259,6 +269,7 @@
     -1px 1px 0 rgba(120, 119, 119, 0.7),
     1px 1px 0 rgba(101, 101, 101, 0.7)
 }
+
 .btnMeClicked {
   /* 点击后的按钮样式 */
   background-image: url("../../images/topup/btnMebj.png");
@@ -300,7 +311,7 @@
 .ConfirmingFont {
   display: inline-block;
   font-family: Silkscreen;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 15.36px;
   letter-spacing: 0.1em;
@@ -337,15 +348,19 @@
   letter-spacing: 0.1em;
   margin-left: 10px;
   font-family: "AdobeHeitiStd-Regular";
-
+}
+.container{
+  display: flex;
+  align-items: center;
 }
 
 .warningImg {
-  width: 13px;
-  height: 13px;
+  width: 18px;
+  height: 16px;
   margin-left: -25px;
-  margin-top: 1px;
+  cursor: pointer; 
 }
+
 
 .copyBtn {
   position: absolute;
@@ -367,16 +382,16 @@
 
 .imgUnioncopyBtn {
   position: absolute;
-  right: -5px;
-  top: 4px;
+  right: -1px;
+  top: 3px;
   width: 12px;
   height: 12px;
-
 }
 
 .imgUnionCopyBtn {
   position: absolute;
-  right: -5px;
+  right: -4px;
+  top: 1px;
   width: 12px;
   height: 12px;
 }
@@ -412,9 +427,17 @@
 }
 
 .imginputConPassWord {
+  width: 17px;
+  height: 14px;
+  margin-left: 4px;
+  margin-top: 2px;
+}
+
+.imginputConPassWordto {
   width: 12px;
   height: 12px;
   margin-left: 4px;
+  margin-top: 3px;
 }
 
 .inputConPassWord {
@@ -485,23 +508,36 @@
     border: none;
     outline: none;
     /* 取消焦点轮廓 */
-
     border-radius: 5px;
     background-color: #fff2c8;
     font-family: Silkscreen;
-    font-size: 14px;
-    font-weight: 800;
+    font-size: 20px;
+    font-weight: 500;
     line-height: 17.92px;
     letter-spacing: 0.1em;
     color: #000000;
+    font-family: "AdobeHeitiStd-Regular";
   }
 }
 
 
 .inputEth {
-  margin-top: 8px;
+  margin-top: 6px;
   color: #000000;
-  margin-top: 3px;
+  margin-left: 3px;
+}
+
+.mainFontbox {
+  font-family: "AdobeHeitiStd-Regular";
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 15.36px;
+  letter-spacing: 1px;
+  text-align: left;
+  color: #9a3916;
+  height: 15px;
+  /* margin-top: 5px; */
+
 }
 
 .svgIcon {
@@ -547,7 +583,7 @@
 
   p {
     font-family: "AdobeHeitiStd-Regular";
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 400;
     line-height: 15.36px;
     letter-spacing: 0.1em;
@@ -577,10 +613,10 @@
   color: #ffffff;
   transition: font-size 0.3s ease;
   text-shadow:
-  -1px -1px 0 rgba(192, 192, 192, 0.7),
-  1px -1px 0 rgba(192, 192, 192, 0.7),
-  -1px 1px 0 rgba(192, 192, 192, 0.7),
-  1px 1px 0 rgba(192, 192, 192, 0.7);
+    -1px -1px 0 rgba(192, 192, 192, 0.7),
+    1px -1px 0 rgba(192, 192, 192, 0.7),
+    -1px 1px 0 rgba(192, 192, 192, 0.7),
+    1px 1px 0 rgba(192, 192, 192, 0.7);
 }
 
 .footerBtn:hover {
@@ -635,7 +671,7 @@
   color: #ffffff;
 }
 
-.footerBtnClicked  {
+.footerBtnClicked {
   background-image: url("../../images/topup/footerBtnto.png");
   background-size: 100% 100%;
   background-position: center;
@@ -689,4 +725,70 @@
 
 .footerBtnElse:disabled {
   cursor: not-allowed;
+}
+
+.overlay {
+  position: fixed;
+  top: 126px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+  
+.modal {
+  width: 250px;
+  height: 10px;
+  background-image: url("../../images/substance/fail.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  border-radius: 8px;
+}
+.failto {
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin-top: -10px;
+}
+
+.modalto {
+  width: 180px;
+  height: 10px;
+  background-image: url("../../images/substance/success.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  /* margin-top: -50px; */
+}
+
+.colorto {
+  color: red;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "AdobeHeitiStd-Regular4";
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin-top: -4px;
+}
+
+.color {
+  color: #03b243;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20.48px;
+  font-family: "AdobeHeitiStd-Regular4";
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin-top: -4px;
 }

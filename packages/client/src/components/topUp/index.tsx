@@ -12,7 +12,8 @@ import { useMUD } from "../../MUDContext";
 import { getNetworkConfig } from "../../mud/getNetworkConfig";
 import { type Hex, parseEther } from "viem";
 import loadingImg from "../../images/loading.png";
-
+import failto from '../../images/substance/failto.png'
+import success from '../../images/substance/successto.png'
 
 import {
   type BaseError,
@@ -52,6 +53,9 @@ export default function TopUp({
   const [isPlayButtonClicked, setIsPlayButtonClicked] = useState(false);
   const [isWithdrawButtonClicked, setIsWithdrawButtonClicked] = useState(false);
   const [isWithdrawButtonWaiting, setIsWithdrawButtonWaiting] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // 修改 withDraw 函数
   async function withDraw() {
@@ -61,7 +65,7 @@ export default function TopUp({
       setIsWithdrawing(true);
       setWithdrawButtonText("Waiting for confirmation...");
       setIsWithdrawButtonClicked(true);
-      setIsWithdrawButtonWaiting(true); 
+      setIsWithdrawButtonWaiting(true);
       const hash = await walletClient.sendTransaction({
         to: address,
         value: value,
@@ -227,6 +231,33 @@ export default function TopUp({
     }
   };
 
+  // async function submit() {
+  //   const to = palyerAddress;
+  //   const value = inputValue;
+
+  //   try {
+  //     const nonce = await publicClient.getTransactionCount({ address: address });
+  //     const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue), nonce });
+  //     const result = await publicClient.waitForTransactionReceipt({ hash: result_hash });
+  //     if (result.status === "success") {
+  //       onTopUpSuccess(); // 调用回调函数
+  //       toast.success("Top up successful!"); // 显示成功消息
+  //       setModalMessage("COPIED!"); // 设置成功模态的消息
+  //       setShowSuccessModal(true); // 显示成功模态
+
+  //     } else {
+  //       setTransferPayType(true);
+  //       toast.error("Failed to top up!");
+  //     }
+  //   } catch (error) {
+  //     setTransferPayType(true);
+  //     toast.error("Failed to top up!");
+  //   } finally {
+  //     setTransferPayType(false); // 确保在任何情况下都将按钮文案恢复为“Deposit via transfer”
+  //     setIsDepositing(false); // 重置按钮状态
+  //   }
+  // }
+  // 更新 submit 函数
   async function submit() {
     const to = palyerAddress;
     const value = inputValue;
@@ -237,14 +268,26 @@ export default function TopUp({
       const result = await publicClient.waitForTransactionReceipt({ hash: result_hash });
       if (result.status === "success") {
         onTopUpSuccess(); // 调用回调函数
-        toast.success("Top up successful!"); // 显示成功消息
+        setModalMessage("COPIED!"); // 设置成功模态的消息
+        setShowSuccessModal(true); // 显示成功模态
+        setTimeout(() => {
+          setShowSuccessModal(false);
+        }, 3000);
       } else {
         setTransferPayType(true);
-        toast.error("Failed to top up!");
+        setModalMessage("Failed to top up!"); // 设置失败模态的消息
+        setShowModal(true); // 显示失败模态
+        setTimeout(() => {
+          setShowModal(false); // 自动关闭失败模态
+        }, 3000);
       }
     } catch (error) {
       setTransferPayType(true);
-      toast.error("Failed to top up!");
+      setModalMessage("Failed to top up!"); // 设置失败模态的消息
+      setShowModal(true); // 显示失败模态
+      setTimeout(() => {
+        setShowModal(false); // 自动关闭失败模态
+      }, 3000);
     } finally {
       setTransferPayType(false); // 确保在任何情况下都将按钮文案恢复为“Deposit via transfer”
       setIsDepositing(false); // 重置按钮状态
@@ -254,7 +297,9 @@ export default function TopUp({
   return (
     <div className={style.topBox}>
       <div className={style.cant}>
-        <span>TOP UP</span>
+        <div className={style.title}>
+          TOP UP
+        </div>
         <img
           className={style.imgOff}
           src={trunOff}
@@ -351,19 +396,19 @@ export default function TopUp({
               </div>
 
               <div className={style.partContent}>
-                <p>
-                  <span className={style.titleOne}> SESSION WALLET </span>
+                <div className={style.container}>
+                  <p>
+                    <span className={style.titleOne}>SESSION WALLET</span>
+                  </p>
                   <img
                     src={warningImg}
-                    alt=""
+                    alt="Warning"
                     className={style.warningImg}
-
                     onClick={() => {
                       setWarningModel(!warningModel);
                     }}
                   />
-
-                </p>
+                </div>
 
                 <div className={style.partTwo}>
                   <div style={{ display: "flex", gap: "4px" }}>
@@ -430,7 +475,7 @@ export default function TopUp({
                     <img
                       src={UnioncopyBtn}
                       alt=""
-                      className={style.imginputConPassWord}
+                      className={style.imginputConPassWordto}
                       onClick={() => {
                         handleTogglePassword(privateKey);
                       }}
@@ -473,10 +518,11 @@ export default function TopUp({
                   </div>
                   <div className={style.partFive}>
                     <span>Available to deposit</span>
-
-                    {balanceResultEOA.data?.value
-                      ? ` ${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)}`
-                      : " 0ETH"}&nbsp;ETH
+                    <div className={style.mainFontbox}>
+                      {balanceResultEOA.data?.value
+                        ? ` ${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)}`
+                        : " 0ETH"}&nbsp;&nbsp;ETH
+                    </div>
                   </div>
                   <div className={style.partFive}>
                     <span>Time to deposit</span>
@@ -522,18 +568,35 @@ export default function TopUp({
       {warningModel === true ? (
         <div className={style.warningOverlay} onClick={() => setWarningModel(false)}>
           <div className={style.warningCon}>
-            <div className={style.triangle}></div>
-            The session wallet is a private key stored in your
-            browser's local storage. It allows you to play games
-            without having to confirm transactions, but is less
-            secure.
-            <br />
-            Only deposit very small amounts of ETH in this wallet. We
-            recommend no more than 0.0003 ETH at a time, this amount
-            lets you complete 1000 transactions in PixeLAW.
+            <div className={style.triangle}>
+              The session wallet is a private key stored in your
+              browser's local storage. It allows you to play games
+              without having to confirm transactions, but is less secure.
+              Only deposit very small amounts of ETH in this wallet. We
+              recommend no more than 0.0003 ETH at a time, this amount
+              lets you complete 1000 transactions in PixeLAW.
+            </div>
           </div>
         </div>
       ) : null}
+      {showSuccessModal && (
+        <div className={style.overlay}>
+          <div className={style.modalto} >
+            <img src={success} alt="" className={style.failto} />
+            <p className={style.color}>{modalMessage}</p>
+
+          </div>
+        </div>
+      )}
+
+      {showModal && !showSuccessModal && (
+        <div className={style.overlay}>
+          <div className={style.modal}>
+            <img src={failto} alt="" className={style.failto} />
+            <p className={style.colorto}>{modalMessage}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -73,7 +73,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [connectButtonClicked, setConnectButtonClicked] = useState(false);
 
 
   const resultBugs = useBalance({
@@ -758,7 +757,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             <button
               className={style.btnOk}
               onClick={() => {
-                setConnectButtonClicked(true); // 更新CONNECT按钮的点击状态
                 setWarnBox(false);
               }}
             >
