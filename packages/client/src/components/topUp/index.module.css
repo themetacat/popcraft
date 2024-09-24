@@ -359,8 +359,13 @@
   height: 16px;
   margin-left: -25px;
   cursor: pointer; 
+  transition: transform 0.3s ease; /* 添加过渡效果 */
+
 }
 
+.warningImg:hover {
+  transform: scale(1.2); /* 放大到原来的1.2倍 */
+}
 
 .copyBtn {
   position: absolute;
@@ -386,7 +391,12 @@
   top: 3px;
   width: 12px;
   height: 12px;
+  transition: transform 0.3s ease; 
 }
+.imgUnioncopyBtn:hover {
+  transform: scale(1.2); /* 放大到原来的1.2倍 */
+}
+
 
 .imgUnionCopyBtn {
   position: absolute;
@@ -394,7 +404,12 @@
   top: 1px;
   width: 12px;
   height: 12px;
+  transition: transform 0.3s ease; 
 }
+.imgUnionCopyBtn:hover {
+  transform: scale(1.2); /* 放大到原来的1.2倍 */
+}
+
 
 .prvkey {
   position: relative;
@@ -438,6 +453,12 @@
   height: 12px;
   margin-left: 4px;
   margin-top: 3px;
+  transition: transform 0.3s ease; 
+
+}
+
+.imginputConPassWordto:hover {
+  transform: scale(1.2); /* 放大到原来的1.2倍 */
 }
 
 .inputConPassWord {

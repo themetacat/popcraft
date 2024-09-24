@@ -544,7 +544,7 @@ export default function TopUp({
                     !isConfirming &&
                     !isPending &&
                     !isDepositing &&
-                    "Deposit via transfer"}
+                    "Deposit Via Transfer"}
                   {transferPayType === false && (isConfirming || isPending || isDepositing) && (
                     <div className={style.footerBtnbox}>Waiting for confirmation...</div>
                   )}

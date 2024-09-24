@@ -777,8 +777,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                   onClick={handlePlayAgain}
                   disabled={loading}
                   style={{
-                    cursor: loading ? "not-allowed" : "pointer", // 鼠标悬停时显示小手，禁用状态时显示不可点击光标
-                    pointerEvents: loading ? "none" : "auto" // 禁用按钮时防止点击事件
+                    cursor: loading ? "not-allowed" : "pointer", 
+                    pointerEvents: loading ? "none" : "auto" 
                   }}
                 >
                   {loading ? (
