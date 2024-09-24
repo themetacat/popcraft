@@ -27,11 +27,10 @@ p {
   color: #ffffff;
   letter-spacing: 2px;
   text-shadow: 2px 2px 5px rgba(49, 49, 49, 0.5);
-  /* 添加黑色阴影 */
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 15px;
+  margin-top: 6px;
 }
 
 
@@ -48,7 +47,7 @@ p {
   align-items: center;
   line-height: 2em;
   margin-left: 63px;
-  margin-top: -15px;
+  /* margin-top: -px; */
 }
 
 
@@ -155,14 +154,10 @@ p {
   background-size: 100% 100%;
   background-position: center;
 }
-
-.btnPlayConnected {
-
+.btnPlayConnectClicked {
   background-image: url("../../images/welcome/playhove.png");
   background-size: 100% 100%;
   background-position: center;
-  align-items: center;
-
 }
 
 .btnPlayClicked:hover {

@@ -98,7 +98,6 @@
   margin-left: 10px;
 }
 
-
 .itemNameto {
   display: flex;
   flex-direction: column;
@@ -148,7 +147,6 @@
   justify-content: center;
   margin-top: 7px;
 }
-
 
 @font-face {
   font-family: 'SansationLight';
@@ -279,12 +277,9 @@
   color: #ffffff;
   margin-top: 5px;
   cursor: pointer;
-  /* 鼠标悬停时显示小手 */
 }
 
 .content {
-  /* width: 400px; */
-  /* height: 100px; */
   position: fixed;
   top: 50%;
   left: 50%;
@@ -299,7 +294,6 @@
   border: none;
   text-transform: uppercase;
 }
-
 
 .contentSuccess {
   position: fixed;
@@ -357,7 +351,6 @@
   }
 }
 
-
 .contentCon {
   position: fixed;
   top: 50%;
@@ -386,8 +379,6 @@
     text-align: center;
     margin-top: 100px;
   }
-
- 
 
   &:nth-last-child(1) {
     text-transform: uppercase;
@@ -544,10 +535,11 @@ p {
 
 }
 
-.selectedRow {
+.firstBuy:hover {
   background-image: url("../../images/substance/111.png");
 
 }
+
 
 .fontBuy {
   font-size: 22px;
@@ -723,12 +715,12 @@ p {
 
 
 .dataIcon {
-  gap: 14px;
+  gap: 5px;
   padding: 11px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: px;
+  border: none;
 
   .pp {
     height: auto;
@@ -740,25 +732,18 @@ p {
     width: 23px;
     height: 23px;
     border: none;
-    /* gap: 30; */
-    background-image: url("../../images/welcome/addbackground.png");
+    /* gap: 10; */
+    /* background-image: url("../../images/welcome/addbackground.png"); */
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
+    background: none; /* 设置背景透明 */
     border-radius: 50px;
     font-size: 20px;
     justify-content: center;
     text-align: center;
     justify-content: center;
     margin-top: -13px;
-
-    &:active {
-      /* background-color: rgba(255, 255, 255, 0.05); */
-    }
-
-    &:hover {
-      /* background-color: rgba(255, 255, 255, 0.03); */
-    }
   }
 
   .disabled {
@@ -766,33 +751,22 @@ p {
     /* 设置按钮透明度为50% */
   }
 
-  .reduce {
-    width: 13px;
-    height: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: -1px;
-
-  }
-
   .addbox {
-    height: 12px;
-    width: 15px;
+    width: 23px;
+    height: 23px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: -2px;
+    margin-left: -6px;
+    margin-top: -1px;
   }
-
 
   .numData {
-    width: 35px;
+    width:55px;
     height: 20px;
     font-weight: 300;
     font-size: 20px;
     background-color: transparent;
-
     border: none;
     letter-spacing: 5px;
     color: #ffffff;
@@ -804,12 +778,10 @@ p {
     align-items: center;
     justify-content: center;
   }
-
   .numData:focus {
     outline: none;
     /* 移除默认的焦点边框 */
   }
-
 }
 
 .twoBuy {
@@ -849,19 +821,20 @@ p {
   height: 50px;
   border: none;
   opacity: 0px;
+  background-color: #d5f7ff;
   background-image: url("../../images/welcome/playnormal.png");
   background-size: 100% 100%;
   background-position: center;
-  background-repeat: no-repeat;
-  text-align: center;
-  font-size: 25px;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 23px;
   font-weight: 700;
   line-height: 24px;
   letter-spacing: 0.1em;
   text-align: center;
   color: #ffffff;
   transition: font-size 0.3s ease;
-  margin-top: 12px;
+  text-transform: uppercase;
   text-shadow:
     -2px -2px 0 rgba(149, 148, 148, 0.7),
     2px -2px 0 rgba(177, 175, 175, 0.7),
@@ -869,16 +842,15 @@ p {
     2px 2px 0 rgba(206, 206, 206, 0.7);
 }
 
-/* &:hover {
+.payBtn:hover {
   color: #ffffff;
-  font-size: 22px;
-} */
-
-&:active {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
+  font-size: 26px;
+  text-shadow:
+    -1px -1px 0 rgba(56, 56, 56, 0.7),
+    1px -1px 0 rgba(71, 71, 71, 0.7),
+    -1px 1px 0 rgba(59, 59, 59, 0.7),
+    1px 1px 0 rgba(69, 69, 69, 0.7)
 }
-
 
 .patment {
   text-transform: uppercase;

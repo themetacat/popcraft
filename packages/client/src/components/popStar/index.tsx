@@ -3,6 +3,7 @@ import style from "./index.module.css";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import loadingImg from "../../images/loadingto.png";
+import { confluxESpace } from "viem/chains";
 
 interface Props {
   setPopStar: any;
@@ -16,6 +17,8 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
   const playAction = localStorage.getItem("playAction");
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false); // 添加状态来跟踪按钮的点击状态
+  const [connectButtonClicked, setConnectButtonClicked] = useState(false); // 添加状态来跟踪CONNECT按钮的点击状态
+
 
   const { isConnected } = useAccount();
   const handleConnectClick = () => {
@@ -33,7 +36,6 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
     } else {
       // 呼起钱包进行登录
       openConnectModal();
-
     }
   };
 
@@ -57,10 +59,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
           {" "}
           for completing the game.
           <br />
-          {/* To complete the game, you may need materials from the game */}
         </span>
-        {/* <a href="https://thiscursedmachine.fun/" target="_blank" rel="noopener noreferrer" className={style.copywritingFour}> This Cursed Machine</a> */}
-        {/* <span className={style.copywritingTwo}>.</span> */}
         </div>
       </div>
       <ConnectButton.Custom>
@@ -96,9 +95,14 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
                 if (!connected) {
                   return (
                     <button
-                      onClick={openConnectModal}
+                    onClick={() => {
+                      openConnectModal();
+                      setConnectButtonClicked(true); // 更新CONNECT按钮的点击状态
+                    }}
                       type="button"
-                      className={isConnected ? style.btnPlayConnected : style.btnPlay}>
+                      // className={isConnected ? style.btnPlayConnected : style.btnPlay}>
+                      className={`${style.btnPlay} ${connectButtonClicked ? style.btnPlayConnectClicked : ''}`}
+                      >
                       CONNECT
                     </button>
                   );

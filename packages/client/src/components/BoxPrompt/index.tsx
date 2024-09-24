@@ -325,7 +325,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       key,
       quantity: numberData[key] * 10 ** 18
     }));
-
+  
     // 过滤掉数量为 0 的物质
     const itemsToPay = filteredNumberData.filter(item => item.quantity > 0);
     if (itemsToPay.length === 0) {
@@ -344,12 +344,13 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         setModalMessage("SUCCEED!");
         setTimeout(() => {
           setShowSuccessModal(false);
+          setdataq(false); // 关闭购买物质的弹出层
         }, 3000);
       } else {
         toast.error("Payment failed! Try again!");
         setcresa(false);
         setpay(true);
-        setModalMessage("SUCCEED!");
+        setModalMessage("PAYMENT FAILED! TRY AGAIN!");
         setShowModal(true);
         setTimeout(() => {
           setShowModal(false);
@@ -359,14 +360,14 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       .catch((error) => {
         setcresa(false);
         setpay(true);
-        setModalMessage("PAYMENT FALILED! TRY AGAIN!");
+        setModalMessage("PAYMENT FAILED! TRY AGAIN!");
         setShowModal(true);
         setTimeout(() => {
           setShowModal(false);
         }, 3000);
       });
   };
-
+  
   useEffect(() => {
     const fetchData = async () => {
       const matchedData = getMatchedData(
@@ -614,12 +615,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             />
             <div className={style.buyBoxContent}>
               {Object.entries(matchedData).slice(0, 5).map(([key, { src, name }]) => (
-                // <div key={key} className={style.firstBuy}>
-                <div
-                  key={key}
-                  className={`${style.firstBuy} ${selectedKey === key ? style.selectedRow : ''}`}
-                  onClick={() => handleRowClick(key)}
-                >
+                <div key={key} className={style.firstBuy}>
                   <img src={src} alt={name} className={style.itemImage} />
                   <div className={style.itemNameto}>
                     <div className={style.itemName}>
@@ -634,7 +630,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                         disabled={numberData === 1}
                         className={numberData === 1 ? style.disabled : (null as any)}
                       >
-                        <img src={reduce} className={style.reduce} alt="" />
+                        <img src={reduce} className={style.addbox} alt="" />
                       </button>
                       <input
                         value={numberData[key] || 0}
@@ -648,7 +644,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                         }}
                         disabled={data === 0}
                         className={data === 0 ? style.disabled : (null as any)}
-
                       >
                         <img src={add} className={style.addbox} alt="" />
                       </button>
