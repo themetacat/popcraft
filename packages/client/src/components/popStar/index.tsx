@@ -17,7 +17,6 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
   const playAction = localStorage.getItem("playAction");
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false); // 添加状态来跟踪按钮的点击状态
-  const [connectButtonClicked, setConnectButtonClicked] = useState(false); // 添加状态来跟踪CONNECT按钮的点击状态
 
 
   const { isConnected } = useAccount();
@@ -97,12 +96,9 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
                     <button
                     onClick={() => {
                       openConnectModal();
-                      setConnectButtonClicked(true); // 更新CONNECT按钮的点击状态
                     }}
                       type="button"
-                      // className={isConnected ? style.btnPlayConnected : style.btnPlay}>
-                      className={`${style.btnPlay} ${connectButtonClicked ? style.btnPlayConnectClicked : ''}`}
-                      >
+                      className={isConnected ? style.btnPlayConnected : style.btnPlay}>
                       CONNECT
                     </button>
                   );

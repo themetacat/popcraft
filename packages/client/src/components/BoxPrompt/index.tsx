@@ -73,6 +73,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [connectButtonClicked, setConnectButtonClicked] = useState(false);
 
 
   const resultBugs = useBalance({
@@ -325,7 +326,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       key,
       quantity: numberData[key] * 10 ** 18
     }));
-  
+
     // 过滤掉数量为 0 的物质
     const itemsToPay = filteredNumberData.filter(item => item.quantity > 0);
     if (itemsToPay.length === 0) {
@@ -367,7 +368,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         }, 3000);
       });
   };
-  
+
   useEffect(() => {
     const fetchData = async () => {
       const matchedData = getMatchedData(
@@ -534,14 +535,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     fetchPrices(matchedData);
   }, [numberData]);
 
-  const [selectedKey, setSelectedKey] = useState(null);
-
-  const handleRowClick = (key: any) => {
-    console.log('Clicked key:', key);
-
-    setSelectedKey(key);
-
-  };
 
   return (
     <>
@@ -740,24 +733,32 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           <div className={style.content}>
             <p className={style.title}>How to Play</p>
             <p className={style.actical}>
-              This is a composability-based elimination game. You have 4 minutes to eliminate all the materials.
-              <br /> You'll be rewarded with 150 $BUGS for completing the game.
+              <span className={style.copywritingTwo}>This is a composability-based elimination game. You have 4 </span>
+              <span className={style.copywritingTwo}> minutes to eliminate all the materials.</span>
+              <span className={style.copywritingTwo}>You'll be rewarded with&nbsp;
+                <p> 150 $BUGS</p>
+                &nbsp; for completing the game.
+              </span>
+              <span className={style.copywritingTwobox}>
+                On the game board,any two or more adjacent identical mater-ials
+                can be clicked to eliminate them. Isolated materials require a elimination tool
+                to remove.
+              </span>
+              <span className={style.copyBox}>Click the 'BUY' button in the top right corner of the game <br />
+              </span>
+              <span className={style.copyBoxto}>screen topurchase elimination tools that will help you remove isolated materials.</span>
               <br />
-              On the game board, any two or more adjacent identical materials can be
-              clicked to eliminate them. Isolated materials require a elimination tool
-              to remove. Click the 'BUY' button in the top right corner of the game screen to
-              purchase elimination tools that will help you remove isolated materials.
-              <p className={style.actical2}>Feedback</p>
-              <p >
-                We also need your feedback:
-                <a href="https://forms.gle/LSwhJUL5XZZmhLYJ9" target="_blank" rel="noopener noreferrer">
-                  https://forms.gle/LSwhJUL5XZZmhLYJ9
-                </a>
-              </p>
+              <span className={style.copywithing}>FeedbackWe also need your feedback:</span>
+              <br />
+              <a className={style.hrefbox} href="https://forms.gle/LSwhJUL5XZZmhLYJ9" target="_blank" rel="noopener noreferrer">
+                https://forms.gle/LSwhJUL5XZZmhLYJ9
+              </a>
             </p>
+
             <button
               className={style.btnOk}
               onClick={() => {
+                setConnectButtonClicked(true); // 更新CONNECT按钮的点击状态
                 setWarnBox(false);
               }}
             >

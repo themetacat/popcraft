@@ -279,22 +279,6 @@
   cursor: pointer;
 }
 
-.content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 700px;
-  height: 500px;
-  background-image: url("../../images/questionback/questionback.png");
-  background-size: 100% 100%;
-  background-position: center;
-  display: grid;
-  gap: 24px;
-  border: none;
-  text-transform: uppercase;
-}
-
 .contentSuccess {
   position: fixed;
   top: 50%;
@@ -382,7 +366,6 @@
 
   &:nth-last-child(1) {
     text-transform: uppercase;
-    /* font-family: Silkscreen; */
     font-size: 30px;
     font-weight: 700;
     line-height: 30.72px;
@@ -422,7 +405,7 @@
   z-index: 10000000;
   height: 100%;
   /* background-color: rgba(0, 0, 0, 0.6); */
-  pointer-events: auto !important;
+  /* pointer-events: auto !important; */
 }
 
 .overlayBuy {
@@ -436,61 +419,118 @@
   pointer-events: auto !important;
 }
 
+
+@font-face {
+  font-family: "AdobeHeitiStd-Regular";
+  src: url("/fonts/BRLNSR.ttf");
+}
+.content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 720px;
+  height: 580px;
+  background-image: url("../../images/welcome/saypage.png");
+  background-size: 100% 100%;
+  background-position: center;
+  display: grid;
+  gap: 24px;
+  border: none;
+}
+
 .title {
   font-weight: 700;
-  font-size: 18px;
+  font-size: 22px;
   line-height: 23.04px;
   color: #ffffff;
-  letter-spacing: 8px;
-  text-align: center;
-  line-height: 2.0;
-  line-height: 40px;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 5px rgba(49, 49, 49, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -20px;
+  text-transform: uppercase;
 }
 
 .actical {
-  color: #cccccc;
-  font-size: 14px;
+  width: 600px;
+  color: #000000;
   font-weight: 400;
-  line-height: 17.92px;
+  line-height: 16px;
   letter-spacing: 2px;
-  line-height: 1.5;
+  line-height: 1.7;
+  font-size: 18px;
+  letter-spacing: 2px;
+  margin-top: -60px;
+  margin-left: 70px;
+  font-family: "AdobeHeitiStd-Regular";
 }
-
-.actical2 {
-  font-weight: bold;
-  color: #ffffff;
-  line-height: 1.5;
+.copyBox{
+  display: flex;
+  letter-spacing: 2.7px;
+}
+.copyBoxto{
+  letter-spacing: 2.1px;
 
 }
+.copywritingTwo{
+  display: flex;
+  letter-spacing: 2px;
 
+}
+.copywritingTwobox{
+  letter-spacing: 1.8px;
+}
+.hrefbox{
+  color: #0d90ac;
+  margin-left: 100px;
+}
 p {
   margin: 0px;
 }
 
 .btnOk {
-  border: 1px solid #0b0113;
-  background-color: #200d2f;
-  width: 500px;
-  height: 44px;
-  padding: 10px 0px 10px 0px;
-  gap: 10px;
-  color: #ffffff;
-  font-family: Silkscreen;
+  width: 550px;
+  height: 50px;
+  background-color: #fff1c8;
+  opacity: 0px;
+  border: none;
+  background-image: url("../../images/welcome/ok.png");
+  background-size: 100% 100%;
+  background-position: center;
+  align-items: center;
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 23px;
   font-weight: 700;
-  font-size: 18px;
   line-height: 24px;
-  letter-spacing: 8px;
+  letter-spacing: 0.1em;
   text-align: center;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.03);
-    color: #ffffff;
-  }
-
+  color: #ffffff;
+  transition: font-size 0.3s ease;
+  text-transform: uppercase;
+  margin-top: 20px;
+  text-shadow:
+    -2px -2px 0 rgba(149, 148, 148, 0.7),
+    2px -2px 0 rgba(177, 175, 175, 0.7),
+    -2px 2px 0 rgba(165, 164, 164, 0.7),
+    2px 2px 0 rgba(206, 206, 206, 0.7);
   &:active {
     background-color: rgba(255, 255, 255, 0.05);
     color: #ffffff;
   }
+}
+.btnOk:hover {
+  color: #ffffff;
+  font-size: 26px;
+  text-shadow:
+    -1px -1px 0 rgba(56, 56, 56, 0.7),
+    1px -1px 0 rgba(71, 71, 71, 0.7),
+    -1px 1px 0 rgba(59, 59, 59, 0.7),
+    1px 1px 0 rgba(69, 69, 69, 0.7)
 }
 
 .buYBox {
