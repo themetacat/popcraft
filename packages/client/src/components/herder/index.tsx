@@ -561,7 +561,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           const loadingImgElement = new Image();
           loadingImgElement.src = loadingImg;
           const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
-          drawRotatingImage(ctx, loadingImgElement, currentX, currentY, GRID_SIZE, GRID_SIZE, angle);
+          drawRotatingImage(ctx, loadingImgElement, currentX + GRID_SIZE * 0.1, currentY + GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8, angle);
           ctx.canvas.style.cursor = "default";
         } else {
           const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
@@ -610,7 +610,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         const loadingImgElement = new Image();
         loadingImgElement.src = loadingImg;
         const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
-        drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX, loadingSquare.y * GRID_SIZE + offsetY, GRID_SIZE, GRID_SIZE, angle);
+        drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX + GRID_SIZE * 0.1, loadingSquare.y * GRID_SIZE + offsetY + GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8, angle);
       }
     },
     [

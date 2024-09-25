@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import style from "./index.module.css";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import loadingImg from "../../images/loadingto.png";
+import loadingImg from "../../images/welcome_pay_play_loading.webp";
 import { confluxESpace } from "viem/chains";
 
 interface Props {
