@@ -15,17 +15,28 @@
   display: grid;
   justify-content: center;
   align-items: center;
-  font-family: "AdobeHeitiStd-Regular";
 }
 
+.btnMeLoading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loadingImgbox{
+  animation: spin 5s linear infinite;
+  -webkit-transform: rotate(3600deg);
+  transform: rotate(3600deg);
+  -webkit-transition: -webkit-transform 5s linear;
+  transition: transform 5s linear;
+  width: 25px;
+  height: 25px;
+}
 
 .cant {
   height: 24px;
   line-height: 24px;
   gap: 24px;
-
-
-
 }
 
 .title {
@@ -68,18 +79,20 @@
   text-align: center;
   color: #ffffff;
   cursor: pointer;
+  text-transform: uppercase;
   text-shadow:
-    -1px -1px 0 rgba(192, 192, 192, 0.7),
+    -1px -1px 0 rgba(197, 195, 195, 0.7),
     1px -1px 0 rgba(192, 192, 192, 0.7),
-    -1px 1px 0 rgba(192, 192, 192, 0.7),
-    1px 1px 0 rgba(192, 192, 192, 0.7);
+    -1px 1px 0 rgba(207, 207, 207, 0.7),
+    1px 1px 0 rgba(197, 197, 197, 0.7);
 }
+
 
 .bridgeBTN:hover {
   color: #ffffff;
   font-size: 13px;
   text-shadow:
-    -1px -1px 0 rgba(101, 100, 100, 0.7),
+    -1px -1px 0 rgba(123, 122, 122, 0.7),
     1px -1px 0 rgba(105, 104, 104, 0.7),
     -1px 1px 0 rgba(120, 119, 119, 0.7),
     1px 1px 0 rgba(101, 101, 101, 0.7)
@@ -128,8 +141,10 @@
   font-family: "AdobeHeitiStd-Regular";
   color: #000000;
   letter-spacing: 0.5px;
-  line-height: 20px; /* 调整行高以确保文字铺满7行 */
-  text-align: justify; /* 使文字两端对齐 */
+  line-height: 20px;
+  /* 调整行高以确保文字铺满7行 */
+  text-align: justify;
+  /* 使文字两端对齐 */
   font-size: 13px;
 }
 
@@ -299,7 +314,6 @@
 
 .inputConto {
   width: 93px;
-  /* background-color: red; */
   height: 34px;
   display: grid;
   gap: 5px;
@@ -343,13 +357,14 @@
   color: #050404;
   font-family: Silkscreen;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 550;
   line-height: 15.36px;
   letter-spacing: 0.1em;
   margin-left: 10px;
   font-family: "AdobeHeitiStd-Regular";
 }
-.container{
+
+.container {
   display: flex;
   align-items: center;
 }
@@ -358,13 +373,15 @@
   width: 18px;
   height: 16px;
   margin-left: -25px;
-  cursor: pointer; 
-  transition: transform 0.3s ease; /* 添加过渡效果 */
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  /* 添加过渡效果 */
 
 }
 
 .warningImg:hover {
-  transform: scale(1.2); /* 放大到原来的1.2倍 */
+  transform: scale(1.2);
+  /* 放大到原来的1.2倍 */
 }
 
 .copyBtn {
@@ -387,27 +404,34 @@
 
 .imgUnioncopyBtn {
   position: absolute;
-  right: -1px;
+  right: -6px;
   top: 3px;
   width: 12px;
   height: 12px;
-  transition: transform 0.3s ease; 
+  transition: transform 0.3s ease;
 }
+
 .imgUnioncopyBtn:hover {
-  transform: scale(1.2); /* 放大到原来的1.2倍 */
+  transform: scale(1.2);
+  /* 放大到原来的1.2倍 */
+
 }
 
 
 .imgUnionCopyBtn {
   position: absolute;
-  right: -4px;
+  right: -10px;
   top: 1px;
   width: 12px;
   height: 12px;
-  transition: transform 0.3s ease; 
+  transition: transform 0.3s ease;
+  cursor: pointer;
+
 }
+
 .imgUnionCopyBtn:hover {
-  transform: scale(1.2); /* 放大到原来的1.2倍 */
+  transform: scale(1.2);
+  /* 放大到原来的1.2倍 */
 }
 
 
@@ -441,11 +465,21 @@
 
 }
 
-.imginputConPassWord {
-  width: 17px;
+.openEyeStyle {
+  width: 20px;
+  height: 11px;
+  margin-left: 4px;
+  margin-top: 3px;
+  cursor: pointer;
+}
+
+
+.turnOffEyeStyle {
+  width: 20px;
   height: 14px;
   margin-left: 4px;
   margin-top: 2px;
+  cursor: pointer;
 }
 
 .imginputConPassWordto {
@@ -453,28 +487,33 @@
   height: 12px;
   margin-left: 4px;
   margin-top: 3px;
-  transition: transform 0.3s ease; 
-
+  transition: transform 0.3s ease;
+  cursor: pointer;
 }
 
 .imginputConPassWordto:hover {
-  transform: scale(1.2); /* 放大到原来的1.2倍 */
+  transform: scale(1.2);
+  /* 放大到原来的1.2倍 */
 }
 
 .inputConPassWord {
   gap: 4px;
   opacity: 0px;
-  font-family: Silkscreen;
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 13px;
+  font-weight: 500;
   line-height: 15.36px;
-  letter-spacing: 0.1em;
+  letter-spacing: 2px;
   text-align: left;
-  color: #e38666;
+  color: #da4d62;
   background: none;
   border: none;
-  cursor: pointer;
   height: 15px;
+  font-family: "AdobeHeitiStd-Regular";
+  width: 17ch; /* 设置容器宽度为 17 个字符宽度 */
+}
+
+.inputConPassWord:focus {
+  outline: none; /* 移除默认的焦点边框 */
 }
 
 .partThree {
@@ -551,7 +590,7 @@
 .mainFontbox {
   font-family: "AdobeHeitiStd-Regular";
   font-size: 16px;
-  font-weight: 400;
+  /* font-weight: 400; */
   line-height: 15.36px;
   letter-spacing: 1px;
   text-align: left;
@@ -572,8 +611,12 @@
   justify-content: space-between;
   align-items: center;
   text-transform: uppercase;
+  font-weight: 5  00;
   /* 将文本转换为大写 */
-  color: #9a3916;
+  color: #9c3a15;
+  letter-spacing: 1px;
+  font-family: "AdobeHeitiStd-Regular";
+
 
 
   input {
@@ -625,11 +668,11 @@
   background-size: 100% 100%;
   background-position: center;
   border: none;
-  font-size: 19px;
+  font-size: 22px;
   margin-top: -25px;
   font-weight: 700;
   line-height: 24px;
-  letter-spacing: 0.2em;
+  letter-spacing: 3px;
   text-align: center;
   color: #ffffff;
   transition: font-size 0.3s ease;
@@ -642,7 +685,7 @@
 
 .footerBtn:hover {
   color: #ffffff;
-  font-size: 20px;
+  font-size: 24px;
   text-shadow:
     -1px -1px 0 rgba(101, 100, 100, 0.7),
     1px -1px 0 rgba(105, 104, 104, 0.7),
@@ -758,7 +801,7 @@
   justify-content: center;
   align-items: center;
 }
-  
+
 .modal {
   width: 250px;
   height: 10px;
@@ -769,6 +812,7 @@
   padding: 20px;
   border-radius: 8px;
 }
+
 .failto {
   width: 30px;
   height: 30px;
@@ -812,4 +856,15 @@
   justify-content: center;
   align-self: center;
   margin-top: -4px;
+}
+
+.loadingImg {
+  /* width: 20px;
+  height: 20px; */
+  animation: spin 5s linear infinite;
+  -webkit-transform: rotate(3600deg);
+  transform: rotate(3600deg);
+  -webkit-transition: -webkit-transform 5s linear;
+  transition: transform 5s linear;
+  height: 100%;
 }

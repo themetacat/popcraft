@@ -11,9 +11,9 @@ import turnOffEye from "../../images/turnOffEye.png";
 import { useMUD } from "../../MUDContext";
 import { getNetworkConfig } from "../../mud/getNetworkConfig";
 import { type Hex, parseEther } from "viem";
-import loadingImg from "../../images/loading.png";
 import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
+import LoadingImg from "../../images/loadingto.png"
 
 import {
   type BaseError,
@@ -56,6 +56,8 @@ export default function TopUp({
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
 
   // 修改 withDraw 函数
   async function withDraw() {
@@ -63,9 +65,10 @@ export default function TopUp({
     if (parseEther(balance_eth.toString()) > Number(MIN_SESSION_WALLET_BALANCE)) {
       const value = parseEther(balance_eth.toString()) - MIN_SESSION_WALLET_BALANCE;
       setIsWithdrawing(true);
-      setWithdrawButtonText("Waiting for confirmation...");
-      setIsWithdrawButtonClicked(true);
-      setIsWithdrawButtonWaiting(true);
+      // setWithdrawButtonText("Waiting for confirmation...");
+      setIsWithdrawLoading(true); // 设置加载状态
+      // setIsWithdrawButtonClicked(true);
+      // setIsWithdrawButtonWaiting(true);
       const hash = await walletClient.sendTransaction({
         to: address,
         value: value,
@@ -76,18 +79,7 @@ export default function TopUp({
     }
   }
 
-  // 修改按钮的样式
-  <div
-    className={`
-    ${style.btnMe}
-    ${isWithdrawButtonClicked ? style.btnMeClicked : ''}
-    ${isWithdrawButtonWaiting ? style.btnMeWaiting : ''}
-  `}
-    onClick={withDraw}
-    disabled={isWithdrawing || balance === 0}
-  >
-    {withdrawButtonText}
-  </div>
+
 
   const {
     network: { walletClient, publicClient },
@@ -128,31 +120,34 @@ export default function TopUp({
     address: address,
   });
 
-  async function withDraw() {
-    const balance_eth = balance / 1e18;
-    if (parseEther(balance_eth.toString()) > Number(MIN_SESSION_WALLET_BALANCE)) {
-      const value = parseEther(balance_eth.toString()) - MIN_SESSION_WALLET_BALANCE;
-      setIsWithdrawing(true);
-      setWithdrawButtonText("Waiting for confirmation...");
-      setIsWithdrawButtonClicked(true);
-      const hash = await walletClient.sendTransaction({
-        to: address,
-        value: value,
-      });
-      setwithDrawHashVal(hash);
-    } else {
-      toast.error("BALANCE not enough");
-    }
-  }
+  // async function withDraw() {
+  //   const balance_eth = balance / 1e18;
+  //   if (parseEther(balance_eth.toString()) > Number(MIN_SESSION_WALLET_BALANCE)) {
+  //     const value = parseEther(balance_eth.toString()) - MIN_SESSION_WALLET_BALANCE;
+  //     setIsWithdrawing(true);
+  //     setWithdrawButtonText("Waiting for confirmation...");
+  //     setIsWithdrawButtonClicked(true);
+  //     const hash = await walletClient.sendTransaction({
+  //       to: address,
+  //       value: value,
+  //     });
+  //     setwithDrawHashVal(hash);
+  //   } else {
+  //     toast.error("BALANCE not enough");
+  //   }
+  // }
+
   useEffect(() => {
     if (isConfirmedWith) {
       setIsWithdrawing(false);
       setWithdrawButtonText("WITHDRAW ALL");
+      setIsWithdrawLoading(false); // 重置加载状态
       publicClient.getBalance({ address: palyerAddress }).then((balance: any) => {
         setBalance(Number(balance));
       });
     }
   }, [isConfirmedWith]);
+
   useEffect(() => {
     const networkConfigPromise = getNetworkConfig();
     networkConfigPromise.then((networkConfigPromiseVal) => {
@@ -222,8 +217,9 @@ export default function TopUp({
       parseFloat(inputValue) < Number(balanceResultEOA.data?.value) / 1e18
     ) {
       setTransferPayType(false);
-      setIsDepositing(true); // 设置按钮状态为正在充值
-      setIsDepositButtonClicked(true); // 设置按钮点击状态
+      setIsDepositing(true);
+      setIsDepositButtonClicked(true);
+      setIsLoading(true);
       submit();
     } else {
       setLoading(false);
@@ -231,32 +227,6 @@ export default function TopUp({
     }
   };
 
-  // async function submit() {
-  //   const to = palyerAddress;
-  //   const value = inputValue;
-
-  //   try {
-  //     const nonce = await publicClient.getTransactionCount({ address: address });
-  //     const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue), nonce });
-  //     const result = await publicClient.waitForTransactionReceipt({ hash: result_hash });
-  //     if (result.status === "success") {
-  //       onTopUpSuccess(); // 调用回调函数
-  //       toast.success("Top up successful!"); // 显示成功消息
-  //       setModalMessage("COPIED!"); // 设置成功模态的消息
-  //       setShowSuccessModal(true); // 显示成功模态
-
-  //     } else {
-  //       setTransferPayType(true);
-  //       toast.error("Failed to top up!");
-  //     }
-  //   } catch (error) {
-  //     setTransferPayType(true);
-  //     toast.error("Failed to top up!");
-  //   } finally {
-  //     setTransferPayType(false); // 确保在任何情况下都将按钮文案恢复为“Deposit via transfer”
-  //     setIsDepositing(false); // 重置按钮状态
-  //   }
-  // }
   // 更新 submit 函数
   async function submit() {
     const to = palyerAddress;
@@ -267,30 +237,28 @@ export default function TopUp({
       const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue), nonce });
       const result = await publicClient.waitForTransactionReceipt({ hash: result_hash });
       if (result.status === "success") {
-        onTopUpSuccess(); // 调用回调函数
-        setModalMessage("COPIED!"); // 设置成功模态的消息
-        setShowSuccessModal(true); // 显示成功模态
+        onTopUpSuccess();
+        setModalMessage("COPIED!");
+        setShowSuccessModal(true);
         setTimeout(() => {
           setShowSuccessModal(false);
         }, 3000);
       } else {
-        setTransferPayType(true);
-        setModalMessage("Failed to top up!"); // 设置失败模态的消息
-        setShowModal(true); // 显示失败模态
+        setModalMessage("Failed to top up!");
+        setShowModal(true);
         setTimeout(() => {
-          setShowModal(false); // 自动关闭失败模态
+          setShowModal(false);
         }, 3000);
       }
     } catch (error) {
-      setTransferPayType(true);
-      setModalMessage("Failed to top up!"); // 设置失败模态的消息
-      setShowModal(true); // 显示失败模态
+      setModalMessage("Failed to top up!");
+      setShowModal(true);
       setTimeout(() => {
-        setShowModal(false); // 自动关闭失败模态
+        setShowModal(false);
       }, 3000);
     } finally {
-      setTransferPayType(false); // 确保在任何情况下都将按钮文案恢复为“Deposit via transfer”
-      setIsDepositing(false); // 重置按钮状态
+      setIsDepositing(false);
+      setIsLoading(false);
     }
   }
 
@@ -390,7 +358,7 @@ export default function TopUp({
                   <span
                     className={`${style.bridgeBTN} ${isPlayButtonClicked ? style.bridgeBTNClicked : ''}`}
                     onClick={bridgeHandle}>
-                    PLAY
+                    Bridge
                   </span>
                 </div>
               </div>
@@ -441,17 +409,24 @@ export default function TopUp({
                     </div>
 
                   </div>
+               
                   <div
-                    className={`
+                      className={`
                       ${style.btnMe}
                       ${isWithdrawButtonClicked ? style.btnMeClicked : ''}
                       ${isWithdrawButtonWaiting ? style.btnMeWaiting : ''}
+                      ${style.btnMeLoading}
                     `}
                     onClick={withDraw}
                     disabled={isWithdrawing || balance === 0}
                   >
-                    {withdrawButtonText}
+                    {isWithdrawLoading ? (
+                      <img src={LoadingImg} alt="Loading" className={style.loadingImgbox} />
+                    ) : (
+                      withdrawButtonText
+                    )}
                   </div>
+
                 </div>
                 <div className={style.prvkey}>
                   <p className={style.pqad}>PRIVATE KEY</p>
@@ -467,7 +442,7 @@ export default function TopUp({
                     <img
                       src={showPassword === true ? openEye : turnOffEye}
                       alt=""
-                      className={style.imginputConPassWord}
+                      className={showPassword ? style.openEyeStyle : style.turnOffEyeStyle}
                       onClick={() => {
                         setShowPassword(!showPassword);
                       }}
@@ -534,22 +509,29 @@ export default function TopUp({
                 <button
                   onClick={transferPay}
                   className={`
-                  ${transferPayType === false ? style.footerBtn : style.footerBtnElse}
-                  ${isDepositButtonClicked ? style.footerBtnClicked : ''}
-                `}
+                    ${transferPayType === false ? style.footerBtn : style.footerBtnElse}
+                    ${isDepositButtonClicked ? style.footerBtnClicked : ''}
+                  `}
                   disabled={transferPayType === true || isConfirming || isPending || isDepositing}
                 >
-                  {transferPayType === true && "Not enough funds"}
-                  {transferPayType === false &&
-                    !isConfirming &&
-                    !isPending &&
-                    !isDepositing &&
-                    "Deposit Via Transfer"}
-                  {transferPayType === false && (isConfirming || isPending || isDepositing) && (
-                    <div className={style.footerBtnbox}>Waiting for confirmation...</div>
+                  {isLoading ? (
+                    <img src={LoadingImg} alt="Loading" className={style.loadingImg} />
+                  ) : (
+                    <>
+                      {transferPayType === true && "Not enough funds"}
+                      {transferPayType === false &&
+                        !isConfirming &&
+                        !isPending &&
+                        !isDepositing &&
+                        "Deposit Via Transfer"}
+                      {/* {transferPayType === false && (isConfirming || isPending || isDepositing) && (
+                        <div className={style.footerBtnbox}>Waiting for confirmation...</div>
+                      )} */}
+                    </>
                   )}
                 </button>
               )}
+
 
               {chain.unsupported && (
                 <button
