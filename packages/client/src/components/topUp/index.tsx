@@ -179,10 +179,14 @@ export default function TopUp({
     setTransferPayType(false);
   };
 
-  const handleTogglePassword = (privateKey: any) => {
+  const handleTogglePassword = (privateKey) => {
     navigator.clipboard.writeText(privateKey).then(
       function () {
-        toast.success("Text copied to clipboard");
+        setModalMessage("COPIED!");
+        setShowSuccessModal(true);
+        setTimeout(() => {
+          setShowSuccessModal(false);
+        }, 3000);
       },
       function (err) {
         toast.error("Error in copying text");
@@ -193,13 +197,18 @@ export default function TopUp({
   const handleCopy = (addressToCopy) => {
     navigator.clipboard.writeText(addressToCopy).then(
       function () {
-        toast.success("Text copied to clipboard");
+        setModalMessage("COPIED!");
+        setShowSuccessModal(true);
+        setTimeout(() => {
+          setShowSuccessModal(false);
+        }, 3000);
       },
       function (err) {
         toast.error("Error in copying text");
       }
     );
   };
+
 
   const bridgeHandle = () => {
     setIsPlayButtonClicked(true); // 设置按钮点击状态
@@ -238,7 +247,7 @@ export default function TopUp({
       const result = await publicClient.waitForTransactionReceipt({ hash: result_hash });
       if (result.status === "success") {
         onTopUpSuccess();
-        setModalMessage("COPIED!");
+        setModalMessage("Top up successful!");
         setShowSuccessModal(true);
         setTimeout(() => {
           setShowSuccessModal(false);
@@ -409,9 +418,9 @@ export default function TopUp({
                     </div>
 
                   </div>
-               
+
                   <div
-                      className={`
+                    className={`
                       ${style.btnMe}
                       ${isWithdrawButtonClicked ? style.btnMeClicked : ''}
                       ${isWithdrawButtonWaiting ? style.btnMeWaiting : ''}

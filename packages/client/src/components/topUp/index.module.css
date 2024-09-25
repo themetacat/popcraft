@@ -7,7 +7,6 @@
   top: 50%;
   gap: 16px;
   transform: translate(-50%, -50%);
-  /* background-color: red; */
   color: #fff;
   background-image: url("../../images/topup/topupback.webp");
   background-size: 100% 100%;
@@ -71,7 +70,6 @@
   background-image: url("../../images/topup/Bridgeback.png");
   background-size: 100% 100%;
   background-position: center;
-  font-family: Silkscreen;
   font-size: 12px;
   font-weight: 400;
   line-height: 8.36px;
@@ -109,7 +107,7 @@
   background-color: #ffffff;
   position: relative;
   color: #D59E11;
-  border: 5px solid #fabe26;
+  border: 5px solid #fef200;
   width: 310px;
   height: 160px;
   left: 50%;
@@ -203,7 +201,7 @@
 
 .onePart {
   display: grid;
-  width: 376px;
+  width: 385px;
   height: 70px;
   padding: 12px;
   gap: 16px;
@@ -341,12 +339,13 @@
 }
 
 .partContent {
-  width: 376px;
+  width: 385px;
   padding: 12px;
   opacity: 0px;
   background-color: #fff2c8;
   border-radius: 10px;
   margin-top: -45px;
+  margin-left: -px;
 }
 
 .inputCon {
@@ -537,8 +536,9 @@
   width: 400px;
   height: 137px;
   opacity: 0px;
-  margin-top: -40px;
+  margin-top: -50px;
   line-height: 25px;
+  margin-left: 7px;
 
   p {
     font-size: 14px;
@@ -584,7 +584,9 @@
 .inputEth {
   margin-top: 6px;
   color: #000000;
-  margin-left: 3px;
+  margin-left: -3px;
+  font-family: "AdobeHeitiStd-Regular";
+
 }
 
 .mainFontbox {
@@ -596,7 +598,6 @@
   text-align: left;
   color: #9a3916;
   height: 15px;
-  /* margin-top: 5px; */
 
 }
 
@@ -609,9 +610,10 @@
 .partFive {
   display: flex;
   justify-content: space-between;
+  
   align-items: center;
   text-transform: uppercase;
-  font-weight: 5  00;
+  font-weight: 500;
   /* 将文本转换为大写 */
   color: #9c3a15;
   letter-spacing: 1px;
@@ -620,7 +622,7 @@
 
 
   input {
-    width: 80px;
+    width: 78px;
   }
 }
 
@@ -659,7 +661,7 @@
 }
 
 .footerBtn {
-  width: 400px;
+  width: 392px;
   height: 44px;
   gap: 10px;
   opacity: 0px;
@@ -670,6 +672,10 @@
   border: none;
   font-size: 22px;
   margin-top: -25px;
+  margin-left: 11px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-weight: 700;
   line-height: 24px;
   letter-spacing: 3px;
@@ -793,13 +799,14 @@
 
 .overlay {
   position: fixed;
-  top: 126px;
+  top: -22px;
   left: 0;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; 
+  z-index: 10000; 
 }
 
 .modal {
@@ -830,30 +837,31 @@
   padding: 20px;
   border-radius: 8px;
   text-align: center;
-  /* margin-top: -50px; */
 }
 
 .colorto {
   color: red;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   font-family: "AdobeHeitiStd-Regular4";
   align-items: center;
   display: flex;
   justify-content: center;
   align-self: center;
+  letter-spacing: 0.1em;
   margin-top: -4px;
 }
 
 .color {
   color: #03b243;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 20.48px;
   font-family: "AdobeHeitiStd-Regular4";
   align-items: center;
   display: flex;
   justify-content: center;
+  letter-spacing: 0.1em;
   align-self: center;
   margin-top: -4px;
 }
