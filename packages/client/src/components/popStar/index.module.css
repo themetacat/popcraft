@@ -92,7 +92,7 @@ p {
   background-color: #fff1c8;
   opacity: 0px;
   border: none;
-  background-image: url("../../images/welcome/playnormal.png");
+  background-image: url("../../images/welcome/playnormal.webp");
   background-size: 100% 100%;
   background-position: center;
   align-items: center;
@@ -151,12 +151,12 @@ p {
 }
 
 .btnPlayPlaying {
-  background-image: url("../../images/welcome/playhove.png");
+  background-image: url("../../images/welcome/playhove.webp");
   background-size: 100% 100%;
   background-position: center;
 }
 /* .btnPlayConnectClicked {
-  background-image: url("../../images/welcome/playhove.png");
+  background-image: url("../../images/welcome/playhove.webp");
   background-size: 100% 100%;
   background-position: center;
 } */

@@ -354,7 +354,7 @@ canvas {
   width: 200px;
   height: 160px;
   border: none;
-  background-image: url("../../images/pageback.png");
+  background-image: url("../../images/pageback.webp");
   background-size: 100% 100%;
   background-position: center;
   position: absolute;
