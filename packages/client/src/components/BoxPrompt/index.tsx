@@ -694,7 +694,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                       color: "#ffffff",
                       filter: "grayscale(100%)",
                     }}
-                    className={style.commonCls1}
+                    className={style.commonCls}
                   />
                 ) : (
                   <span>PAY</span>
