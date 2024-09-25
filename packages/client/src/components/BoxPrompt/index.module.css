@@ -284,7 +284,7 @@
   width: 450px;
   height: 350px;
   border: none;
-  background-image: url("../../images/gameover/fail.png");
+  background-image: url("../../images/gameover/fail.webp");
   background-size: 100% 100%;
   background-position: center;
   display: flex;
@@ -321,7 +321,7 @@
 
   button {
     text-transform: uppercase;
-    background-image: url("../../images/gameover/paybutton.png");
+    background-image: url("../../images/gameover/paybutton.webp");
     background-size: 100% 100%;
     background-position: center;
     border: none;
@@ -347,7 +347,7 @@
   width: 450px;
   height: 350px;
   border: none;
-  background-image: url("../../images/gameover/succeed.png");
+  background-image: url("../../images/gameover/succeed.webp");
   background-size: 100% 100%;
   background-position: center;
   display: flex;
@@ -383,7 +383,7 @@
 
   button {
     text-transform: uppercase;
-    background-image: url("../../images/gameover/succeedpay.png");
+    background-image: url("../../images/gameover/succeedpay.webp");
     background-size: 100% 100%;
     background-position: center;
     border: none;
@@ -767,7 +767,7 @@ p {
     height: 23px;
     border: none;
     /* gap: 10; */
-    /* background-image: url("../../images/welcome/addbackground.png"); */
+    /* background-image: url("../../images/welcome/addbackground.webp"); */
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
