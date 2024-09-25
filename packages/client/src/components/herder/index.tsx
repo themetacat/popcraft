@@ -23,7 +23,7 @@ import { useDisconnect } from 'wagmi';
 import popcraftLogo from '../../images/popcraft_logo.webp';
 import backgroundMusic from '../../audio/1.mp3';
 import effectSound from '../../audio/2.mp3';
-import loadingImg from "../../images/loading.png";
+import loadingImg from "../../images/checkerboard_loading.webp";
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
