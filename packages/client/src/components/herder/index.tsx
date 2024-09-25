@@ -1581,7 +1581,7 @@ export default function Header({ hoveredData, handleData }: Props) {
                         <button
                           onClick={openConnectModal}
                           type="button"
-                          className={style.btnConnect}
+                          className={style.btnConnectbox}
                         >
                           CONNECT
                         </button>
@@ -1633,17 +1633,20 @@ export default function Header({ hoveredData, handleData }: Props) {
                         </button>
                         {addressModel && (
                           <div className={style.downBox}>
-                            {addressContent.length > 0 &&
-                              addressContent.map((item, index) => (
-                                <div
-                                  className={style.downBoxItem}
-                                  key={index}
-                                  onClick={() => handleAddClick(item.value)}
-                                >
-                                  {item.name}
-                                </div>
-                              ))}
+                            <div className={style.downBoxclocese}>
+                              {addressContent.length > 0 &&
+                                addressContent.map((item, index) => (
+                                  <div
+                                    className={style.downBoxItem}
+                                    key={index}
+                                    onClick={() => handleAddClick(item.value)}
+                                  >
+                                    {item.name}
+                                  </div>
+                                ))}
+                            </div>
                           </div>
+
                         )}
                       </div>
                     );

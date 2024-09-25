@@ -59,6 +59,9 @@ canvas {
   position: relative;
   position: fixed;
   z-index: 9999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 
@@ -67,7 +70,6 @@ canvas {
   height: 46px;
   justify-content: space-between;
   align-items: center;
-  /* margin: 5px 0 5px 0; */
   position: absolute;
   top: 9px;
   left: 20px;
@@ -81,7 +83,8 @@ canvas {
   height: auto;
   line-height: 50px;
   font-weight: bold;
-  /* 使文字加粗 */
+  text-transform: uppercase; /* 将字母都大写 */
+  letter-spacing: 1px;
 }
 
 canvas {
@@ -107,7 +110,7 @@ canvas {
   left: 0;
   margin: auto;
   background-image: url('../../images/PinkButtonheader.webp');
-  background-size: contain; /* 确保背景图片的宽高比例与容器的宽高比例一致 */
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   font-size: 20px;
@@ -167,7 +170,6 @@ canvas {
   opacity: 1;
   font-family: "your-emoji-font", sans-serif !important;
   cursor: pointer;
-  /* 鼠标悬停时显示小手 */
 }
 
 .btnBoxY {
@@ -263,10 +265,7 @@ canvas {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
-  /* 允许水平滚动 */
   overflow-y: hidden;
-  /* 禁止垂直滚动 */
-  /* white-space: nowrap; 保证内容横向排列 */
 }
 
 .canvasWrapper::-webkit-scrollbar {
@@ -319,12 +318,31 @@ canvas {
 
 .btnConnect {
   border: none;
+  height: 40px;
+  width: 200px;
+  background: none;
+  color: #b00002;
+  text-transform: uppercase;
+  /* 将字母都大写 */
+  font-size: 15px;
+  font-weight: 700;
+  background-image: url("../../images/addressback.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px;
+  letter-spacing: 1px;
+}
+
+.btnConnectbox {
+  border: none;
   height: 50px;
   background: none;
   color: #fff;
   font-size: 15px;
   font-weight: 700;
-
 }
 
 .boldAddress {
@@ -333,54 +351,62 @@ canvas {
 }
 
 .downBox {
-  width: 180px;
-  height: 140px;
+  width: 200px;
+  height: 160px;
   border: none;
   background-image: url("../../images/pageback.png");
   background-size: 100% 100%;
   background-position: center;
   position: absolute;
-  left: 5rem;
+  left: 70px;
+  top: 38px;
   padding: 8px 16px;
-  gap: 0px;
-  opacity: 1; /* 修正 opacity 值 */
+  opacity: 1;
   box-shadow: inset 0 0 12px 0 #e7bdff33, 0 0 12px 0 #e7bdff0d;
   margin-left: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column; /* 确保子元素垂直排列 */
+  flex-direction: column;
 }
 
+
 .downBoxItem {
-  width: 100%; /* 确保子元素宽度占满父元素 */
-  height: auto; /* 自动调整高度 */
-  padding: 8px 0; /* 调整内边距 */
+  width: 100%;
+  height: auto;
+  padding: 8px 0;
   gap: 8px;
-  border: 0px 0px 0.5px 0px;
-  opacity: 1; /* 修正 opacity 值 */
+  opacity: 1;
   font-family: Silkscreen;
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 23.04px !important;
-  letter-spacing: 0.1em;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  justify-content: center; /* 确保文字居中 */
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 5px rgba(49, 49, 49, 0.5);
+  font-family: "AdobeHeitiStd-Regular";
+
+}
+
+.downBoxItem:hover {
+  color: #26727f;
+  text-shadow:
+    -1px -1px 0 white,
+    1px -1px 0 white,
+    -1px 1px 0 white,
+    1px 1px 0 white;
+}
+
+
+@font-face {
+  font-family: "AdobeHeitiStd-Regular";
+  src: url("/fonts/BRLNSR.ttf");
 }
 
 .downBoxItemContent {
   width: 100%;
-  text-align: center; /* 确保文字居中 */
+  text-align: center;
 }
 
-
-
-.magnifier {
-  position: absolute;
-  border: 2px solid #fff;
-  background-color: #fff;
-  padding: 5px;
-  z-index: 1000;
-}
