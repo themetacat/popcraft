@@ -45,7 +45,7 @@
 .firstPart {
   width: 220px;
   height: 83px;
-  background-image: url("../../images/PinkButton1.png");
+  background-image: url("../../images/PinkButton1.webp");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -113,7 +113,7 @@
 .twoPart {
   width: 220px;
   height: 83px;
-  background-image: url("../../images/PinkButton2.png");
+  background-image: url("../../images/PinkButton2.webp");
   /* margin-top: 7px; */
   background-size: contain;
   background-position: center;
@@ -155,7 +155,7 @@
 .threePart {
   width: 220px;
   height: 83px;
-  background-image: url("../../images/PinkButton3.png");
+  background-image: url("../../images/PinkButton3.webp");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -735,7 +735,7 @@ p {
   width: 600px;
   gap: 27px;
   border-radius: 50px;
-  background-image: url("../../images/PinkButton.png");
+  background-image: url("../../images/PinkButton.webp");
   background-size: cover;
   background-repeat: no-repeat;
 }
