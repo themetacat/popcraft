@@ -334,6 +334,7 @@ canvas {
   justify-content: center;
   margin-left: 20px;
   letter-spacing: 1px;
+  cursor: pointer;
 }
 
 .btnConnectbox {

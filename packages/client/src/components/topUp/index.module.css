@@ -719,6 +719,7 @@
   text-align: center;
   color: #fb5a5a;
   margin-top: -25px;
+  cursor: pointer;
 }
 
 .footerBtnElse {

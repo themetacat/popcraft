@@ -114,6 +114,7 @@ p {
     -2px 2px 0 rgba(165, 164, 164, 0.7),
     2px 2px 0 rgba(206, 206, 206, 0.7);
   /* 添加灰色边框效果 */
+  cursor: pointer;
 }
 
 .btnPlay:hover {
