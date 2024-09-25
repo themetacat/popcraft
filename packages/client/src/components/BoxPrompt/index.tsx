@@ -7,7 +7,8 @@ import { imageIconData } from "../imageIconData";
 import { useMUD } from "../../MUDContext";
 import { useAccount, useBalance } from 'wagmi';
 import { addressToEntityID } from "../rightPart";
-import loadingImg from "../../images/loading.png";
+import loadingImg from "../../images/loadingto.png";
+
 import xLogo from '../../images/xLogo.png';
 import TelegramLogo from '../../images/TelegramLogo.png'
 // import Select from "../select";
@@ -777,8 +778,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                   onClick={handlePlayAgain}
                   disabled={loading}
                   style={{
-                    cursor: loading ? "not-allowed" : "pointer", 
-                    pointerEvents: loading ? "none" : "auto" 
+                    cursor: loading ? "not-allowed" : "pointer",
+                    pointerEvents: loading ? "none" : "auto"
                   }}
                 >
                   {loading ? (
@@ -842,6 +843,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           </div>
         </div>
       ) : null}
+
+
 
       <div className={style.buttonBox}>
         <a href="https://x.com/metacat007" target="_blank" rel="noopener noreferrer">

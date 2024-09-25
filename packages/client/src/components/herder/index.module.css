@@ -7,6 +7,7 @@
 canvas {
   z-index: 1 !important;
 }
+
 .overlay {
   position: fixed;
   top: 0;
@@ -14,11 +15,13 @@ canvas {
   width: 100%;
   z-index: 999;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色 */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* 半透明黑色 */
   pointer-events: auto !important;
 }
+
 .overlayPopStar {
-  background-image: url('../../images/background.webp'); 
+  background-image: url('../../images/background.webp');
   background-size: 100% 100%;
   position: fixed;
   top: 0;
@@ -28,6 +31,7 @@ canvas {
   height: 100%;
   pointer-events: auto !important;
 }
+
 .overlayPopStarFl {
   background-color: #200d2f;
   position: fixed;
@@ -38,13 +42,15 @@ canvas {
   height: 100%;
   pointer-events: auto !important;
 }
+
 .topContentType {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 }
+
 .container {
-  background: radial-gradient(circle, #236975,#26727f);
+  background: radial-gradient(circle, #236975, #26727f);
   height: 70px;
   width: 100%;
   flex-direction: column;
@@ -66,6 +72,7 @@ canvas {
   top: 9px;
   left: 20px;
 }
+
 .addr {
   justify-content: right;
   color: #fff;
@@ -73,17 +80,20 @@ canvas {
   right: 3rem;
   height: auto;
   line-height: 50px;
-  font-weight: bold; /* 使文字加粗 */
+  font-weight: bold;
+  /* 使文字加粗 */
 }
 
 canvas {
   border: none;
   z-index: 1 !important;
 }
+
 .balanceNum {
   display: inline-block;
   margin-left: 25px;
 }
+
 .content {
   display: flex;
   align-items: center;
@@ -97,14 +107,16 @@ canvas {
   left: 0;
   margin: auto;
   background-image: url('../../images/PinkButtonheader.png');
-  background-size: contain; /* 确保背景图片的宽高比例与容器的宽高比例一致 */
+  background-size: contain;
+  /* 确保背景图片的宽高比例与容器的宽高比例一致 */
   background-position: center;
   background-repeat: no-repeat;
   font-size: 20px;
   border-radius: 50px;
   display: flex;
-  border: 1px solid #176572; /* 设置边框颜色 */
-  box-shadow: inset 0 0 10px 0.5px #302f2f; 
+  border: 1px solid #176572;
+  /* 设置边框颜色 */
+  box-shadow: inset 0 0 10px 0.5px #302f2f;
 }
 
 
@@ -115,11 +127,14 @@ canvas {
   color: #ffffff;
   padding-top: 7px;
   text-align: center;
-  font-weight: bold; /* 使文字加粗 */
+  font-weight: bold;
+  /* 使文字加粗 */
 }
+
 :root {
   --offset: 70px;
 }
+
 .cursor-not-allowed {
   color: #a073e2;
 }
@@ -127,13 +142,15 @@ canvas {
 .cursor-default {
   cursor: default;
 }
+
 .btnBox {
   border-radius: 50px;
   width: 80px;
   color: #fefefe;
   border: none;
   outline: none;
-  background-color: transparent; /* 将背景颜色设置为透明 */
+  background-color: transparent;
+  /* 将背景颜色设置为透明 */
   border-radius: 50px;
   display: flex;
   align-items: center;
@@ -150,8 +167,10 @@ canvas {
   flex-direction: column;
   opacity: 1;
   font-family: "your-emoji-font", sans-serif !important;
-  cursor: pointer; /* 鼠标悬停时显示小手 */
+  cursor: pointer;
+  /* 鼠标悬停时显示小手 */
 }
+
 .btnBoxY {
   border-radius: 50px;
   width: 80px;
@@ -188,6 +207,7 @@ canvas {
   padding: 0px !important;
   background-color: #000;
 }
+
 .gray {
   filter: grayscale(100%);
   color: #a073e2;
@@ -201,15 +221,18 @@ canvas {
   padding: 0px !important;
   background-color: #000;
 }
+
 .bodyCon {
   height: calc(100vh - 60px);
   margin-top: 60px !important;
   position: relative;
 }
+
 .color-picker {
   display: flex;
   flex-wrap: wrap;
 }
+
 .color-option {
   height: 15px;
   width: 15px;
@@ -218,6 +241,7 @@ canvas {
   cursor: pointer;
   border-radius: 50%;
 }
+
 .indicator {
   position: absolute;
   inset: 5px;
@@ -225,36 +249,46 @@ canvas {
   border-radius: 50%;
   opacity: 0;
 }
+
 .color-option.selected .indicator {
   opacity: 1;
 }
+
 .rightPart {
   right: 0px;
   background-color: #2b0e3a;
   z-index: 9999999;
 }
+
 .canvasWrapper {
   width: 100%;
   height: 100%;
-  overflow-x: hidden; /* 允许水平滚动 */
-  overflow-y: hidden; /* 禁止垂直滚动 */
+  overflow-x: hidden;
+  /* 允许水平滚动 */
+  overflow-y: hidden;
+  /* 禁止垂直滚动 */
   /* white-space: nowrap; 保证内容横向排列 */
 }
+
 .canvasWrapper::-webkit-scrollbar {
   width: 8px;
 }
+
 .canvasWrapper::-webkit-scrollbar-track {
   background-color: red;
   /* background-color: #2f1643; */
 }
+
 .canvasWrapper::-webkit-scrollbar-thumb {
   /* background-color: #2f1643; */
   background-color: red;
   border-radius: 4px;
 }
+
 .canvasWrapper::-webkit-scrollbar-thumb:hover {
   background-color: #2f1643;
 }
+
 .commonCls1 {
   animation: spin 5s linear infinite;
   -webkit-transform: rotate(3600deg);
@@ -264,14 +298,17 @@ canvas {
   width: 78px;
   height: 78px;
 }
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 .loadingContainer {
   /* position: absolute; */
   position: relative;
@@ -280,6 +317,7 @@ canvas {
   width: 100px;
   height: 100px;
 }
+
 .btnConnect {
   border: none;
   height: 50px;
@@ -287,44 +325,58 @@ canvas {
   color: #fff;
   font-size: 15px;
   font-weight: 700;
-  
+
 }
-.boldAddress{
+
+.boldAddress {
   font-size: 16px;
   font-weight: bold;
 }
+
 .downBox {
-  border: 1px solid #0b0113;
-  background-color: #170723;
-  width: 143px;
-  height: 118px;
+  width: 180px;
+  height: 140px;
+  border: none;
+  background-image: url("../../images/pageback.png");
+  background-size: 100% 100%;
+  background-position: center;
   position: absolute;
-  top: 56px;
-  left: 6rem;
-  padding: 8px 16px 8px 16px;
+  left: 5rem;
+  padding: 8px 16px;
   gap: 0px;
-  opacity: 0px;
+  opacity: 1; /* 修正 opacity 值 */
   box-shadow: inset 0 0 12px 0 #e7bdff33, 0 0 12px 0 #e7bdff0d;
   margin-left: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column; /* 确保子元素垂直排列 */
 }
+
 .downBoxItem {
-  width: 145px;
-  height: 23px;
-  padding: 16px 0px 16px 0px;
+  width: 100%; /* 确保子元素宽度占满父元素 */
+  height: auto; /* 自动调整高度 */
+  padding: 8px 0; /* 调整内边距 */
   gap: 8px;
   border: 0px 0px 0.5px 0px;
-  opacity: 0px;
+  opacity: 1; /* 修正 opacity 值 */
   font-family: Silkscreen;
   font-size: 18px;
   font-weight: 400;
   line-height: 23.04px !important;
   letter-spacing: 0.1em;
   text-align: left;
-  
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 确保文字居中 */
 }
-.downBoxItem:nth-child(1) {
-  border-bottom: 0.5px solid #0b0113;
+
+.downBoxItemContent {
+  width: 100%;
+  text-align: center; /* 确保文字居中 */
 }
+
+
 
 .magnifier {
   position: absolute;

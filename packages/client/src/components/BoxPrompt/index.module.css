@@ -291,7 +291,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 50px;
+  gap: 40px;
   text-transform: uppercase;
 
   .turnOff {
@@ -305,18 +305,28 @@
   p {
     text-transform: uppercase;
     font-size: 35px;
-    font-weight: 500;
+    font-weight: 400;
     /* line-height: 30.72px; */
-    letter-spacing: 5px;
+    letter-spacing: 2px;
     color: #ffffff;
     text-align: center;
-    margin-top: 120px;
+    margin-top: 110px;
     font-family: "AdobeHeitiStd-Regular4";
     text-shadow:
-    1px 1px 2px #7f7f7f, /* 第一层阴影 */
-    0 0 5px #7f7f7f, /* 第二层阴影 */
-    1px 1px 3px #7f7f7f, /* 第三层阴影 */
-    0 0 10px rgba(94, 94, 94, 0.5); /* 第四层阴影 */
+      1px 1px 2px #838383,
+      0 0 5px #8f8d8d,
+      1px 1px 3px #949494,
+      0 0 10px rgba(166, 166, 166, 0.5),
+      0 0 2px #a3a3a3,
+      0 0 3px #999898,
+      0 0 4px #868585,
+      0 0 5px rgba(183, 183, 183, 0.5),
+      2px 0 2px #7f7f7f,
+      /* 增加右侧阴影，颜色更重 */
+      3px 0 3px #7f7f7f,
+      /* 增加右侧阴影，颜色更重 */
+      4px 0 4px #7f7f7f;
+    /* 增加右侧阴影，颜色更重 */
   }
 
   button {
@@ -326,18 +336,40 @@
     background-position: center;
     border: none;
     background-color: #9bfffc;
-    width: 300px;
-    height: 50px;
-    gap: 10px;
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 20px;
+    width: 320px;
+    height: 45px;
+    /* gap: 10pxx; */
+    font-size: 23px;
+    font-weight: 600;
     line-height: 24px;
-    letter-spacing: 8px;
+    letter-spacing: 4px;
     text-align: center;
+    color: #ffffff;
+    transition: font-size 0.3s ease;
+    text-transform: uppercase;
+    text-shadow:
+      -2px -2px 0 rgba(163, 162, 162, 0.7),
+      2px -2px 0 rgba(180, 179, 179, 0.7),
+      -2px 2px 0 rgba(165, 164, 164, 0.7),
+      2px 2px 0 rgba(206, 206, 206, 0.7);
+    /* 添加灰色边框效果 */
+  }
+
+  button:hover {
+    color: #ffffff;
+    font-size: 26px;
+    text-shadow:
+      -1px -1px 0 rgba(56, 56, 56, 0.7),
+      1px -1px 0 rgba(71, 71, 71, 0.7),
+      -1px 1px 0 rgba(59, 59, 59, 0.7),
+      1px 1px 0 rgba(69, 69, 69, 0.7)
   }
 }
 
+@font-face {
+  font-family: "AdobeHeitiStd-Regular6";
+  src: url("/fonts/BRLNSR.TTF");
+}
 
 .contentCon {
   position: fixed;
@@ -360,25 +392,43 @@
 
   p:nth-child(1) {
     text-transform: uppercase;
-    font-size: 30px;
-    font-weight: 700;
-    line-height: 30.72px;
-    letter-spacing: 5px;
+    font-size: 35px;
+    font-weight: 400;
+    /* line-height: 30.72px; */
+    letter-spacing: 3px;
     color: #ffffff;
     text-align: center;
-    margin-top: 100px;
-    
+    margin-top: 90px;
+    font-family: "AdobeHeitiStd-Regular4";
+    text-shadow:
+      1px 1px 2px #838383,
+      0 0 5px #8f8d8d,
+      1px 1px 3px #949494,
+      0 0 10px rgba(166, 166, 166, 0.5),
+      0 0 2px #a3a3a3,
+      0 0 3px #999898,
+      0 0 4px #868585,
+      0 0 5px rgba(183, 183, 183, 0.5),
+      2px 0 2px #7f7f7f,
+      3px 0 3px #7f7f7f,
+      4px 0 4px #7f7f7f;
   }
 
   &:nth-last-child(1) {
     text-transform: uppercase;
-    font-size: 30px;
-    font-weight: 700;
+    font-size: 38px;
+    font-weight: 500;
     line-height: 30.72px;
     letter-spacing: 5px;
-    color: #d55884;
+    color: #f16999;
     text-align: center;
     margin: 0px;
+    font-family: "AdobeHeitiStd-Regular";
+    text-shadow:
+    1px 1px 2px #585858, 
+    0 0 1px #747373, 
+    1px 1px 1px #b3b3b3, 
+    0 0 1px rgba(131, 131, 131, 0.5); 
   }
 
   button {
@@ -388,17 +438,32 @@
     background-position: center;
     border: none;
     background-color: #ffc5d3;
-    width: 300px;
-    height: 50px;
-    gap: 10px;
-    color: #ffffff;
-    gap: 10px;
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 20px;
+    width: 320px;
+    height: 45px;
+    font-size: 23px;
+    font-weight: 600;
     line-height: 24px;
-    letter-spacing: 8px;
+    letter-spacing: 4px;
     text-align: center;
+    color: #ffffff;
+    transition: font-size 0.3s ease;
+    text-transform: uppercase;
+    text-shadow:
+      -2px -2px 0 rgba(163, 162, 162, 0.7),
+      2px -2px 0 rgba(180, 179, 179, 0.7),
+      -2px 2px 0 rgba(165, 164, 164, 0.7),
+      2px 2px 0 rgba(206, 206, 206, 0.7);
+    /* 添加灰色边框效果 */
+  }
+
+  button:hover {
+    color: #ffffff;
+    font-size: 26px;
+    text-shadow:
+      -1px -1px 0 rgba(56, 56, 56, 0.7),
+      1px -1px 0 rgba(71, 71, 71, 0.7),
+      -1px 1px 0 rgba(59, 59, 59, 0.7),
+      1px 1px 0 rgba(69, 69, 69, 0.7)
   }
 }
 
@@ -473,26 +538,32 @@
   margin-left: 70px;
   font-family: "AdobeHeitiStd-Regular";
 }
-.copyBox{
+
+.copyBox {
   display: flex;
   letter-spacing: 2.7px;
 }
-.copyBoxto{
+
+.copyBoxto {
   letter-spacing: 2.1px;
 
 }
-.copywritingTwo{
+
+.copywritingTwo {
   display: flex;
   letter-spacing: 2px;
 
 }
-.copywritingTwobox{
+
+.copywritingTwobox {
   letter-spacing: 1.8px;
 }
-.hrefbox{
+
+.hrefbox {
   color: #0d90ac;
   margin-left: 100px;
 }
+
 p {
   margin: 0px;
 }
@@ -525,11 +596,13 @@ p {
     2px -2px 0 rgba(177, 175, 175, 0.7),
     -2px 2px 0 rgba(165, 164, 164, 0.7),
     2px 2px 0 rgba(206, 206, 206, 0.7);
+
   &:active {
     background-color: rgba(255, 255, 255, 0.05);
     color: #ffffff;
   }
 }
+
 .btnOk:hover {
   color: #ffffff;
   font-size: 26px;
@@ -771,7 +844,8 @@ p {
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
-    background: none; /* 设置背景透明 */
+    background: none;
+    /* 设置背景透明 */
     border-radius: 50px;
     font-size: 20px;
     justify-content: center;
@@ -796,7 +870,7 @@ p {
   }
 
   .numData {
-    width:55px;
+    width: 55px;
     height: 20px;
     font-weight: 300;
     font-size: 20px;
@@ -812,6 +886,7 @@ p {
     align-items: center;
     justify-content: center;
   }
+
   .numData:focus {
     outline: none;
     /* 移除默认的焦点边框 */

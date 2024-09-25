@@ -395,7 +395,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     ctx.closePath();
     ctx.stroke();
   }
-  
+
   const drawGrid2 = useCallback(
     (
       ctx: CanvasRenderingContext2D,
@@ -465,7 +465,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       // ctx.lineWidth = 5; // 设置线条的粗细
       // ctx.strokeStyle = "#ffc974";
       // ctx.stroke();
-      
+
 
       // 绘制紧挨着棋盘的圆角边框
       const innerBorderRadius = 6; // 内部圆角半径
@@ -584,8 +584,8 @@ export default function Header({ hoveredData, handleData }: Props) {
                 img.onload = () => {
                   setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
                   // 重新绘制图像
-                  const imageWidth = drawSize * 0.8 
-                  const imageHeight = drawSize * 0.8; 
+                  const imageWidth = drawSize * 0.8
+                  const imageHeight = drawSize * 0.8;
                   const imageX = drawX + (drawSize - imageWidth) / 2;
                   const imageY = drawY + (drawSize - imageHeight) / 2;
                   ctx.drawImage(img, imageX, imageY, imageWidth, imageHeight);
