@@ -20,7 +20,7 @@ import { CANVAS_HEIGHT } from "../../global/constants";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useDisconnect } from 'wagmi';
-import popcraftLogo from '../../images/popcraft_logo.png';
+import popcraftLogo from '../../images/popcraft_logo.webp';
 import backgroundMusic from '../../audio/1.mp3';
 import effectSound from '../../audio/2.mp3';
 import loadingImg from "../../images/loading.png";
