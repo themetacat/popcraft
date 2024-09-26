@@ -9,6 +9,7 @@
   padding: 24px;
   display: flex;
   gap: 45px;
+
 }
 
 
@@ -66,6 +67,8 @@
   letter-spacing: 2px;
   color: rgba(255, 255, 255, 1);
   margin-top: 10px;
+  font-family: "简黑咪"; /* 应用自定义字体 */
+
 }
 
 .firstPart p:nth-child(2) {
@@ -76,7 +79,7 @@
   line-height: 19.36px;
   letter-spacing: 2px;
   margin-top: 7px;
-
+  font-family: "简黑咪"; /* 应用自定义字体 */
 }
 
 .itemName {
@@ -109,6 +112,10 @@
   margin-left: 18px;
   margin-top: 5px;
 }
+@font-face {
+  font-family: "简黑咪";
+  src: url("@/fonts/简黑咪.TTF") format("truetype");
+}
 
 .twoPart {
   width: 220px;
@@ -135,7 +142,6 @@
   color: floralwhite;
   font-size: 30px;
   margin-top: 10px;
-
 }
 
 .twoPart p:nth-child(2) {
@@ -212,6 +218,12 @@
   box-sizing: border-box;
 }
 
+
+@font-face {
+  font-family: "Alibaba-PuHuiTi-Medium";
+  src: url("/fonts/Alibaba-PuHuiTi-Light.otf");
+}
+
 .iconFont {
   display: flex;
   justify-content: center;
@@ -226,6 +238,8 @@
   height: 15px;
   padding: 3px;
   gap: 10px;
+  font-family: "Alibaba-PuHuiTi-Medium";
+  font-size: 15px;
 }
 
 .imgconItemFill {
@@ -236,6 +250,12 @@
   text-align: center;
   box-sizing: border-box;
 }
+
+@font-face {
+  font-family: "Alibaba-PuHuiTi-Heavy";
+  src: url("/fonts/Alibaba-PuHuiTi-Bold.otf");
+}
+
 
 .buyBtn {
   width: 55px;
@@ -251,13 +271,20 @@
   background-size: 100% 100%;
   color: #ffffff;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 19px;
   line-height: 24px;
   text-align: center;
-  letter-spacing: 2px;
+  /* letter-spacing: 1px; */
   border-radius: 50%;
   cursor: pointer;
-  /* 鼠标悬停时显示小手 */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  /* 添加底部黑色阴影 */
+  font-family: "Alibaba-PuHuiTi-Heavy";
+}
+
+.buyBtn:hover {
+  color: #ffffff;
+  font-size: 19px;
 }
 
 .warningIcon {
@@ -273,6 +300,7 @@
   color: #ffffff;
   margin-top: 5px;
   cursor: pointer;
+  font-family: "Alibaba-PuHuiTi-Heavy";
 }
 
 
@@ -425,10 +453,10 @@
     margin: 0px;
     font-family: "AdobeHeitiStd-Regular";
     text-shadow:
-    1px 1px 2px #585858, 
-    0 0 1px #747373, 
-    1px 1px 1px #b3b3b3, 
-    0 0 1px rgba(131, 131, 131, 0.5); 
+      1px 1px 2px #585858,
+      0 0 1px #747373,
+      1px 1px 1px #b3b3b3,
+      0 0 1px rgba(131, 131, 131, 0.5);
   }
 
   button {
@@ -625,6 +653,7 @@ p {
   background-image: url("../../images/substance/substance.webp");
   background-size: 100% 100%;
   position: relative;
+
 }
 
 .turnOff {
@@ -817,7 +846,6 @@ p {
   font-family: "AdobeHeitiStd-Regular";
   src: url("/fonts/BRLNSR.TTF");
 }
-
 
 
 

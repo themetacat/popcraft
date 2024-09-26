@@ -110,7 +110,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
                     <button
                       onClick={openChainModal}
                       type="button"
-                      className={style.btnPlay}
+                      className={style.btnPlaybox}
                     >
                       Wrong network
                     </button>

@@ -713,10 +713,11 @@
   line-height: 24px;
   letter-spacing: 0.1em;
   text-align: center;
-  color: #fb5a5a;
+  color: #e30c0c;
   margin-top: -25px;
   cursor: pointer;
 }
+
 
 .footerBtnElse {
   text-transform: uppercase;

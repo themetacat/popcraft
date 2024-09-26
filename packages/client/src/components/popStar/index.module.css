@@ -116,6 +116,40 @@ p {
   cursor: pointer;
 }
 
+.btnPlaybox{
+  width: 380px;
+  height: 50px;
+  background-color: #fff1c8;
+  opacity: 0px;
+  border: none;
+  background-image: url("../../images/topup/wrongnetwork.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  align-items: center;
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.1em;
+  text-align: center;
+  color: #e30c0c;
+  transition: font-size 0.3s ease;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.btnPlaybox:hover {
+  color: #ffffff;
+  font-size: 25px;
+  text-shadow:
+    -1px -1px 0 rgba(56, 56, 56, 0.7),
+    1px -1px 0 rgba(71, 71, 71, 0.7),
+    -1px 1px 0 rgba(59, 59, 59, 0.7),
+    1px 1px 0 rgba(69, 69, 69, 0.7)
+}
+
 .btnPlay:hover {
   color: #ffffff;
   font-size: 26px;
