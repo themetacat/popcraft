@@ -93,6 +93,8 @@ export default function Header({ hoveredData, handleData }: Props) {
   const playAction = localStorage.getItem('playAction');
   const hasExecutedRef = useRef(true);
   const [imageCache, setImageCache] = useState({});
+  const [showNewPopUp, setShowNewPopUp] = useState(false);
+
 
 
 
@@ -146,6 +148,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       const balanceFN = publicClient.getBalance({ address: palyerAddress });
       balanceFN.then((a: any) => {
         setBalance(a);
+
       });
     } else {
       setBalance(0n);
@@ -844,6 +847,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   };
   //点击方块触发事件
   const handleMouseUp = async (event: React.MouseEvent<HTMLDivElement>) => {
+
     if (pageClick === true) {
       return;
     }
@@ -888,6 +892,12 @@ export default function Header({ hoveredData, handleData }: Props) {
           setHoveredSquare(newHoveredSquare);
           setLoadingSquare(newHoveredSquare);// 设置 loading 状态
         }
+
+        // if ((Number(balance) / 1e18) < 3) {
+        //   // 显示弹出层提示用户充值
+        //   setShowNewPopUp(true)
+        //   return;
+        // }
 
         if (isEmpty) {
           if (selectedColor && coordinates) {
@@ -958,6 +968,8 @@ export default function Header({ hoveredData, handleData }: Props) {
     });
   };
 
+
+
   const interactHandle = (
     coordinates: any,
     palyerAddress: any,
@@ -986,6 +998,7 @@ export default function Header({ hoveredData, handleData }: Props) {
 
           } else {
             handleError();
+            setTopUpType(true)
             setLoadingSquare(null);
             onHandleLoading();
           }
@@ -996,50 +1009,95 @@ export default function Header({ hoveredData, handleData }: Props) {
       }
     });
   };
-  const interactHandleTCM = (
-    coordinates: any,
-    palyerAddress: any,
-    selectedColor: any,
-    actionData: any,
-    other_params: any
+
+  // const interactHandleTCM = (
+  //   coordinates: any,
+  //   palyerAddress: any,
+  //   selectedColor: any,
+  //   actionData: any,
+  //   other_params: any
+  // ) => {
+  //   setLoading(true);
+  //   // setLoadingpaly(true)
+  //   const interact_data = interactTCM(
+  //     coordinates,
+  //     palyerAddress,
+  //     selectedColor,
+  //     actionData,
+  //     other_params
+  //   );
+
+  //   interact_data.then((increDataVal: any) => {
+  //     if (increDataVal[1]) {
+  //       increDataVal[1].then((a: any) => {
+  //         if (a.status === "success") {
+  //           setLoading(false);
+  //           setLoadingpaly(false)
+  //           setTimeControl(true);
+  //           setLoadingSquare(null); // 清除 loading 状态
+  //           onHandleLoading();
+  //           localStorage.setItem('playAction', 'gameContinue');
+  //           if (actionData === "interact") {
+  //             // localStorage.setItem("showGameOver", "false");
+  //           }
+  //         } else {
+  //           handleError();
+  //           onHandleLoading();
+  //           setLoadingSquare(null); // 清除 loading 状态
+  //         }
+  //       });
+  //     } else {
+  //       handleError(); /^[^A-Za-z]*$/
+  //       setLoadingSquare(null); // 清除 loading 状态
+  //     }
+  //   });
+  // };
+
+  const interactHandleTCM = async (
+    coordinates,
+    palyerAddress,
+    selectedColor,
+    actionData,
+    other_params
   ) => {
     setLoading(true);
-    // setLoadingpaly(true)
+    setLoadingpaly(true);
+    try {
+      const interact_data = await interactTCM(
+        coordinates,
+        palyerAddress,
+        selectedColor,
+        actionData,
+        other_params
+      );
 
-    const interact_data = interactTCM(
-      coordinates,
-      palyerAddress,
-      selectedColor,
-      actionData,
-      other_params
-    );
-
-    interact_data.then((increDataVal: any) => {
-      if (increDataVal[1]) {
-        increDataVal[1].then((a: any) => {
-          if (a.status === "success") {
-            setLoading(false);
-            setLoadingpaly(false)
-            setTimeControl(true);
-            setLoadingSquare(null); // 清除 loading 状态
-            onHandleLoading();
-            localStorage.setItem('playAction', 'gameContinue');
-            if (actionData === "interact") {
-              // localStorage.setItem("showGameOver", "false");
-            }
-          } else {
-            handleError();
-            onHandleLoading();
-            setLoadingSquare(null); // 清除 loading 状态
+      if (interact_data[1]) {
+        const receipt = await interact_data[1];
+        if (receipt.status === "success") {
+          setLoading(false);
+          setLoadingpaly(false);
+          setTimeControl(true);
+          setLoadingSquare(null); // 清除 loading 状态
+          onHandleLoading();
+          localStorage.setItem('playAction', 'gameContinue');
+          if (actionData === "interact") {
+            // localStorage.setItem("showGameOver", "false");
           }
-        });
+        } else {
+          handleError(receipt.error);
+          onHandleLoading();
+          setLoadingSquare(null); // 清除 loading 状态
+        }
       } else {
-        handleError(); /^[^A-Za-z]*$/
+        handleError("No receipt returned");
+
         setLoadingSquare(null); // 清除 loading 状态
       }
-    });
+    } catch (error) {
+      handleError(error.message);
+      setLoadingSquare(null); // 清除 loading 状态
+    }
   };
-
 
 
   //判断时间倒计时
@@ -1126,6 +1184,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
     // localStorage.setItem('playAction', 'play'); // 设置 playAction 为 play
   };
+
 
 
   const playData = () => {
@@ -1371,8 +1430,23 @@ export default function Header({ hoveredData, handleData }: Props) {
     setLoading(false);
     setLoadingpaly(false)
     onHandleLoading();
-    // toast.error("An error was reported")
   };
+
+  // const handleError = (errorMessage) => {
+  //   setLoading(false);
+  //   setLoadingpaly(false);
+  //   onHandleLoading();
+  //   if (errorMessage.includes("0x897f6c58")) {
+  //     toast.error("Out of stock, please buy!");
+  //   } else if (errorMessage.includes("RPC Request failed")) {
+  //     toast.error("An error was reported");
+  //   } else if (errorMessage.includes("The contract function \"callFrom\" reverted with the following reason:")) {
+  //     setShowNewPopUp(false); // 设置显示新的弹出框
+  //   } else {
+  //     console.error("Failed to setup network:", errorMessage);
+  //     setShowNewPopUp(true);
+  //   }
+  // };
 
   const onHandleExe = () => {
     setPopExhibit(false);
@@ -1682,55 +1756,56 @@ export default function Header({ hoveredData, handleData }: Props) {
           </div>
 
         </div>
+        {/* 
+          {appName !== "BASE/PopCraftSystem" && (
+            <div
+              style={{
+                position: "absolute",
+                left: "5%",
+                bottom: "0px",
+                cursor: "pointer",
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+                backgroundColor: "#230732",
+                padding: "6px 6px 6px 6px",
+              }}
+            >
+              {Array.from(colorOptionsData).map((option, index) => (
+                <span
+                  key={index}
+                  className={`color-option${selectedColor === option.color ? " selected" : ""
+                    }`}
+                  data-color={option.color}
+                  style={{
+                    backgroundColor: option.color,
+                    width: "48px",
+                    height: "48px",
+                    display: "inline-block",
+                  }}
+                  onClick={() => handleColorOptionClick(option.color)}
+                >
+                  {selectedColor === option.color && (
+                    <div
+                      className="selected-circle"
+                      style={{
+                        backgroundColor: "black",
+                        borderRadius: "50%",
+                        width: "40px",
+                        height: "40px",
+                        margin: "5px auto",
+                      }}
+                    ></div>
+                  )}
+                </span>
+              ))}
+            </div>
+          )} */}
 
-        {appName !== "BASE/PopCraftSystem" && (
-          <div
-            style={{
-              position: "absolute",
-              left: "5%",
-              bottom: "0px",
-              cursor: "pointer",
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
-              backgroundColor: "#230732",
-              padding: "6px 6px 6px 6px",
-            }}
-          >
-            {Array.from(colorOptionsData).map((option, index) => (
-              <span
-                key={index}
-                className={`color-option${selectedColor === option.color ? " selected" : ""
-                  }`}
-                data-color={option.color}
-                style={{
-                  backgroundColor: option.color,
-                  width: "48px",
-                  height: "48px",
-                  display: "inline-block",
-                }}
-                onClick={() => handleColorOptionClick(option.color)}
-              >
-                {selectedColor === option.color && (
-                  <div
-                    className="selected-circle"
-                    style={{
-                      backgroundColor: "black",
-                      borderRadius: "50%",
-                      width: "40px",
-                      height: "40px",
-                      margin: "5px auto",
-                    }}
-                  ></div>
-                )}
-              </span>
-            ))}
-          </div>
-        )}
+
         <audio ref={audioRef} src={backgroundMusic} onEnded={handleEnded} loop />
       </div>
-
       {popExhibit === true ? (
         <>
           {showOverlay && <div className={style.overlay} />}
@@ -1802,6 +1877,19 @@ export default function Header({ hoveredData, handleData }: Props) {
           setPopStar={setPopStar}
         />
       ) : null}
+      {showNewPopUp && (
+        <div className={style.overlaybox}>
+          <div className={style.popup}>
+            <div className={style.contentbox}>
+              <p>INSUFFICIENT GASBALANCE</p>
+            </div>
+            <button className={style.topupbtn} onClick={() => {
+              setShowNewPopUp(false);
+              setTopUpType(true);
+            }}>TOP UP</button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

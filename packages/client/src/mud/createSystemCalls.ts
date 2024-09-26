@@ -456,6 +456,8 @@ export function createSystemCalls(
       //   console.error("Failed to setup network:", error.message);
       //   return [null, null];
       // }
+      // console.log(error.message);
+      
       if (error.message.includes("0x897f6c58")) {
         toast.error("Out of stock, please buy!");
       } else if (error.message.includes("RPC Request failed")) {
@@ -464,6 +466,7 @@ export function createSystemCalls(
         // 不弹框
       } else {
         console.error("Failed to setup network:", error.message);
+        toast.error("AN ERROR WAS REPORTED");
       }
     }
     return [tx, hashValpublic];
