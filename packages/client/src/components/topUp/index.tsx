@@ -75,7 +75,13 @@ export default function TopUp({
       });
       setwithDrawHashVal(hash);
     } else {
-      toast.error("BALANCE not enough");
+      // toast.error("BALANCE not enough");
+      setModalMessage("BALANCE not enough");
+      setShowModal(true);
+      setTimeout(() => {
+        setShowModal(false);
+      }, 3000);
+
     }
   }
 
@@ -119,23 +125,6 @@ export default function TopUp({
   const balanceResultEOA = useBalance({
     address: address,
   });
-
-  // async function withDraw() {
-  //   const balance_eth = balance / 1e18;
-  //   if (parseEther(balance_eth.toString()) > Number(MIN_SESSION_WALLET_BALANCE)) {
-  //     const value = parseEther(balance_eth.toString()) - MIN_SESSION_WALLET_BALANCE;
-  //     setIsWithdrawing(true);
-  //     setWithdrawButtonText("Waiting for confirmation...");
-  //     setIsWithdrawButtonClicked(true);
-  //     const hash = await walletClient.sendTransaction({
-  //       to: address,
-  //       value: value,
-  //     });
-  //     setwithDrawHashVal(hash);
-  //   } else {
-  //     toast.error("BALANCE not enough");
-  //   }
-  // }
 
   useEffect(() => {
     if (isConfirmedWith) {
@@ -182,14 +171,18 @@ export default function TopUp({
   const handleTogglePassword = (privateKey) => {
     navigator.clipboard.writeText(privateKey).then(
       function () {
-        setModalMessage("COPIED!");
+        setModalMessage("Copied!");
         setShowSuccessModal(true);
         setTimeout(() => {
           setShowSuccessModal(false);
         }, 3000);
       },
       function (err) {
-        toast.error("Error in copying text");
+        setModalMessage("Error in copying text");
+        setShowModal(true);
+        setTimeout(() => {
+          setShowModal(false);
+        }, 3000);
       }
     );
   };
@@ -197,14 +190,18 @@ export default function TopUp({
   const handleCopy = (addressToCopy) => {
     navigator.clipboard.writeText(addressToCopy).then(
       function () {
-        setModalMessage("COPIED!");
+        setModalMessage("Copied!");
         setShowSuccessModal(true);
         setTimeout(() => {
           setShowSuccessModal(false);
         }, 3000);
       },
       function (err) {
-        toast.error("Error in copying text");
+        setModalMessage("Error in copying text");
+        setShowModal(true);
+        setTimeout(() => {
+          setShowModal(false);
+        }, 3000);
       }
     );
   };
@@ -247,7 +244,7 @@ export default function TopUp({
       const result = await publicClient.waitForTransactionReceipt({ hash: result_hash });
       if (result.status === "success") {
         onTopUpSuccess();
-        setModalMessage("Top up successful!");
+        setModalMessage("Succeed！");
         setShowSuccessModal(true);
         setTimeout(() => {
           setShowSuccessModal(false);
@@ -381,9 +378,11 @@ export default function TopUp({
                     src={warningImg}
                     alt="Warning"
                     className={style.warningImg}
-                    onClick={() => {
-                      setWarningModel(!warningModel);
-                    }}
+                    // onClick={() => {
+                    //   setWarningModel(!warningModel);
+                    // }}
+                    onMouseEnter={() => setWarningModel(true)}
+                    onMouseLeave={() => setWarningModel(false)}
                   />
                 </div>
 
@@ -533,9 +532,6 @@ export default function TopUp({
                         !isPending &&
                         !isDepositing &&
                         "Deposit Via Transfer"}
-                      {/* {transferPayType === false && (isConfirming || isPending || isDepositing) && (
-                        <div className={style.footerBtnbox}>Waiting for confirmation...</div>
-                      )} */}
                     </>
                   )}
                 </button>
@@ -556,20 +552,26 @@ export default function TopUp({
         }}
       </ConnectButton.Custom>
 
-      {warningModel === true ? (
-        <div className={style.warningOverlay} onClick={() => setWarningModel(false)}>
+      {warningModel && (
+        <div className={style.warningOverlay} onClick={(e) => {
+          e.stopPropagation();
+          setWarningModel(false);
+        }}
+          onMouseEnter={() => setWarningModel(true)}
+          onMouseLeave={() => setWarningModel(false)}
+        >
           <div className={style.warningCon}>
             <div className={style.triangle}>
-              The session wallet is a private key stored in your
-              browser's local storage. It allows you to play games
-              without having to confirm transactions, but is less secure.
-              Only deposit very small amounts of ETH in this wallet. We
-              recommend no more than 0.0003 ETH at a time, this amount
-              lets you complete 1000 transactions in PixeLAW.
+              The session wallet is a private key stored in your 
+              browser's local storage. It allows you to play games without 
+              needing to confirm transactions, but it is less secure. Only deposit very
+               small amounts of ETH into this wallet; we recommend no more than 0.0003 ETH 
+               at a time. This amount lets you complete up to 1000 transactions in PopCraft.
+
             </div>
           </div>
         </div>
-      ) : null}
+      )}
       {showSuccessModal && (
         <div className={style.overlay}>
           <div className={style.modalto} >

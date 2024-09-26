@@ -22,7 +22,7 @@
   align-items: center;
 }
 
-.loadingImgbox{
+.loadingImgbox {
   animation: spin 5s linear infinite;
   -webkit-transform: rotate(3600deg);
   transform: rotate(3600deg);
@@ -138,18 +138,14 @@
   height: 140px;
   font-family: "AdobeHeitiStd-Regular";
   color: #000000;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.35px;
   line-height: 20px;
-  /* 调整行高以确保文字铺满7行 */
   text-align: justify;
-  /* 使文字两端对齐 */
   font-size: 13px;
 }
 
 
-.btnPartto {
-  /* margin-top: 10px; */
-}
+
 
 .titleOne {
   display: inline-block;
@@ -375,12 +371,10 @@
   cursor: pointer;
   transition: transform 0.3s ease;
   /* 添加过渡效果 */
-
 }
 
 .warningImg:hover {
   transform: scale(1.2);
-  /* 放大到原来的1.2倍 */
 }
 
 .copyBtn {
@@ -508,11 +502,13 @@
   border: none;
   height: 15px;
   font-family: "AdobeHeitiStd-Regular";
-  width: 17ch; /* 设置容器宽度为 17 个字符宽度 */
+  width: 17ch;
+  /* 设置容器宽度为 17 个字符宽度 */
 }
 
 .inputConPassWord:focus {
-  outline: none; /* 移除默认的焦点边框 */
+  outline: none;
+  /* 移除默认的焦点边框 */
 }
 
 .partThree {
@@ -610,7 +606,7 @@
 .partFive {
   display: flex;
   justify-content: space-between;
-  
+
   align-items: center;
   text-transform: uppercase;
   font-weight: 500;
@@ -805,8 +801,8 @@
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: flex-start; 
-  z-index: 10000; 
+  align-items: flex-start;
+  z-index: 10000;
 }
 
 .modal {
@@ -843,13 +839,14 @@
   color: red;
   font-size: 14px;
   font-weight: 500;
+  line-height: 20.48px;
   font-family: "AdobeHeitiStd-Regular4";
   align-items: center;
   display: flex;
   justify-content: center;
   align-self: center;
   letter-spacing: 0.1em;
-  margin-top: -4px;
+  margin-top: -6px;
 }
 
 .color {
@@ -858,17 +855,12 @@
   font-weight: 500;
   line-height: 20.48px;
   font-family: "AdobeHeitiStd-Regular4";
-  align-items: center;
-  display: flex;
-  justify-content: center;
+  /* align-items: center; */
   letter-spacing: 0.1em;
-  align-self: center;
-  margin-top: -4px;
+  margin-top: -7px;
 }
 
 .loadingImg {
-  /* width: 20px;
-  height: 20px; */
   animation: spin 5s linear infinite;
   -webkit-transform: rotate(3600deg);
   transform: rotate(3600deg);
