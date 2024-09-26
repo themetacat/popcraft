@@ -968,7 +968,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     });
   };
 
-  
+
 
   const interactHandle = (
     coordinates: any,
@@ -998,7 +998,7 @@ export default function Header({ hoveredData, handleData }: Props) {
 
           } else {
             handleError();
-              setTopUpType(true)
+            setTopUpType(true)
             setLoadingSquare(null);
             onHandleLoading();
           }
@@ -1070,7 +1070,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         actionData,
         other_params
       );
-  
+
       if (interact_data[1]) {
         const receipt = await interact_data[1];
         if (receipt.status === "success") {
@@ -1877,7 +1877,6 @@ export default function Header({ hoveredData, handleData }: Props) {
           setPopStar={setPopStar}
         />
       ) : null}
-
       {showNewPopUp && (
         <div className={style.overlaybox}>
           <div className={style.popup}>

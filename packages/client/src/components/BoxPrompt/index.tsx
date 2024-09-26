@@ -10,7 +10,6 @@ import { addressToEntityID } from "../rightPart";
 import loadingImg from "../../images/loadingto.png";
 import xLogo from '../../images/xLogo.png';
 import TelegramLogo from '../../images/TelegramLogo.png'
-// import Select from "../select";
 import reduce from '../../images/substance/reduce.png'
 import add from '../../images/substance/add.png'
 import failto from '../../images/substance/failto.png'
