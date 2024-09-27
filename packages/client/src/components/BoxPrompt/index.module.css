@@ -211,7 +211,7 @@
 .imgconItem {
   width: 8.75rem;
   height: 8.75rem;
-  border-radius: 50px;
+  /* border-radius: 50px; */
   box-sizing: border-box;
 }
 
