@@ -1,15 +1,14 @@
 .container {
+  width: 249.25rem;
+  height: 13.125rem;
   position: fixed;
   justify-content: center;
   align-items: center;
-  top: 160px;
+  top: 25rem;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: 64px;
-  padding: 24px;
   display: flex;
-  gap: 45px;
-
+  gap: 5rem;
 }
 
 
@@ -35,23 +34,29 @@
 }
 
 .container2 {
-  height: 100px;
+  width: 121.875rem;
+  height: 13.125rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 45px;
+  gap: 7rem;
+}
+@font-face {
+  font-family: "AdobeHeitiStd-Regular";
+  src: url("/fonts/BRLNSR.TTF");
+}
+@font-face {
+  font-family: "Simplicity";
+  src: url("/fonts/Simplicity.ttf");
 }
 
-
 .firstPart {
-  width: 220px;
-  height: 83px;
+  width: 35rem;
+  height: 13.125rem;
   background-image: url("../../images/PinkButton1.webp");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 50px;
-  padding: 12px 16px 12px 16px;
   display: grid;
   gap: 4px;
 }
@@ -60,26 +65,25 @@
   display: flex;
   align-items: center;
   justify-self: center;
-  font-size: 30px;
+  font-size: 3.5rem;
   font-weight: 400;
-  line-height: 23.04px;
+  line-height: 5rem;
   text-align: center;
-  letter-spacing: 2px;
+  letter-spacing: 0.4rem;
   color: rgba(255, 255, 255, 1);
-  margin-top: 10px;
-  font-family: "简黑咪"; /* 应用自定义字体 */
-
+  margin-top: 2rem;
+  font-family: "Simplicity";
 }
 
 .firstPart p:nth-child(2) {
   text-align: center;
   color: #ffffff;
-  font-size: 26px;
+  font-size: 2.8rem;
   font-weight: 400;
-  line-height: 19.36px;
-  letter-spacing: 2px;
-  margin-top: 7px;
-  font-family: "简黑咪"; /* 应用自定义字体 */
+  line-height: 5rem;
+  letter-spacing: 0.1rem;
+  margin-top: -0.2rem;
+  font-family: "Simplicity";
 }
 
 .itemName {
@@ -112,23 +116,15 @@
   margin-left: 18px;
   margin-top: 5px;
 }
-@font-face {
-  font-family: "简黑咪";
-  src: url("@/fonts/简黑咪.TTF") format("truetype");
-}
 
 .twoPart {
-  width: 220px;
-  height: 83px;
+  width: 35rem;
+  height: 13.125rem;
   background-image: url("../../images/PinkButton2.webp");
-  /* margin-top: 7px; */
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 50px;
-  padding: 12px 16px 12px 16px;
   display: grid;
-  gap: 4px;
 }
 
 .twoPart p:nth-child(1) {
@@ -136,39 +132,37 @@
   align-items: center;
   justify-content: center;
   font-weight: 400;
-  line-height: 23.04px;
+  line-height: 5rem;
   text-align: center;
-  letter-spacing: 2px;
+  letter-spacing: 0.4rem;
   color: floralwhite;
-  font-size: 30px;
-  margin-top: 10px;
+  font-size: 3.5rem;
+  margin-top: 2rem;
+  font-family: "Simplicity";
 }
 
 .twoPart p:nth-child(2) {
   text-align: center;
   color: #ffffff;
-  font-size: 26px;
+  font-size: 2.8rem;
   font-weight: 400;
-  line-height: 18.36px;
-  letter-spacing: 2px;
+  letter-spacing: 0.1rem;
+  line-height: 5rem;
   align-items: center;
   justify-content: center;
-  margin-top: 7px;
+  margin-top: -0.1rem;
+  font-family: "Simplicity";
 }
 
-
-
 .threePart {
-  width: 220px;
-  height: 83px;
+  width: 35rem;
+  height: 13.125rem;
   background-image: url("../../images/PinkButton3.webp");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 50px;
-  padding: 12px 16px 12px 16px;
   display: grid;
-  gap: 4px;
+  /* gap: 4px; */
 }
 
 .threePart p:nth-child(1) {
@@ -176,44 +170,47 @@
   align-items: center;
   justify-content: center;
   font-weight: 400;
-  line-height: 23.04px;
   text-align: center;
   align-items: center;
-  justify-content: center;
-  letter-spacing: 2px;
   color: floralwhite;
-  font-size: 30px;
-  margin-top: 10px;
+  line-height: 5rem;
+  letter-spacing: 0.4rem;
+  font-size: 3.5rem;
+  margin-top: 2rem;
+  font-family: "Simplicity";
 }
 
 .threePart p:nth-child(2) {
   text-align: center;
   color: #ffffff;
-  font-size: 26px;
+  font-size: 2.8rem;
   font-weight: 400;
-  line-height: 18.36px;
-  letter-spacing: 2px;
-  margin-top: 7px;
+  line-height: 5rem;
+  letter-spacing: 0.1rem;
+  margin-top: -0.2rem;
+  font-family: "Simplicity";
 }
 
 .imgContent {
+  width: 61.25rem;
+  height: 9.375rem;
+  /* background-color: red; */
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 35px;
-  width: 378px;
-  height: 66px;
+  gap: 4rem;
+  width: 60rem;
+  height: 6.875rem;
 }
 
 .containerItem {
   position: relative;
   display: inline-block;
-  /* 让每个图像和其角标在同一行 */
 }
 
 .imgconItem {
-  width: 50px !important;
-  height: 50px !important;
+  width: 8.75rem;
+  height: 8.75rem;
   border-radius: 50px;
   box-sizing: border-box;
 }
@@ -230,16 +227,15 @@
   align-items: center;
   border-radius: 50px;
   position: absolute;
-  right: -7px;
-  top: 37px;
+  right: -0.5rem;
+  top: 6.5rem;
   color: #ffffff;
   background-color: #ffb739;
-  width: 15px;
-  height: 15px;
-  padding: 3px;
+  width: 2.8125rem;
+  height: 2.8125rem;
   gap: 10px;
-  font-family: "Alibaba-PuHuiTi-Medium";
-  font-size: 15px;
+  font-family: "Alibaba-PuHuiTi-TIMESBD";
+  font-size: 2.5rem;
 }
 
 .imgconItemFill {
@@ -251,40 +247,53 @@
   box-sizing: border-box;
 }
 
-@font-face {
-  font-family: "Alibaba-PuHuiTi-Heavy";
-  src: url("/fonts/Alibaba-PuHuiTi-Bold.otf");
+
+
+.buyBtnBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3.6rem;
 }
 
+@font-face {
+  font-family: "Alibaba-PuHuiTi-TIMESBD";
+  src: url("/fonts/TIMESBD.TTF");
+}
+@font-face {
+  font-family: "Simplicity";
+  src: url("/fonts/Simplicity.ttf");
+}
 
 .buyBtn {
-  width: 55px;
-  height: 55px;
-  /* border: 1px solid #ffb739; */
+  width: 9.375rem;
+  height: 9.5rem;
   border: none;
-  padding: 9px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 13px;
   background-image: url("../../images/Buttonto.png");
   background-size: 100% 100%;
   color: #ffffff;
-  font-weight: 700;
-  font-size: 19px;
-  line-height: 24px;
+  font-weight: 600;
+  font-size: 2.5rem;
+  line-height: 5rem;
   text-align: center;
-  /* letter-spacing: 1px; */
   border-radius: 50%;
   cursor: pointer;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  /* 添加底部黑色阴影 */
-  font-family: "Alibaba-PuHuiTi-Heavy";
+  text-shadow: 0 2px 4px rgba(31, 31, 31, 0.5);
+  margin-left: -2rem;
+  font-family: "Simplicity";
 }
 
 .buyBtn:hover {
   color: #ffffff;
-  font-size: 19px;
+  font-size: 2.7rem;
+}
+
+@font-face {
+  font-family: "Alibaba-PuHuiTi";
+  src: url("/fonts/Alibaba-PuHuiTi-Bold.otf");
 }
 
 .warningIcon {
@@ -292,15 +301,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 24px;
-  height: 24px;
-  font-size: 30px;
+  width: 2.1875rem;
+  height: 3.125rem;
+  font-size: 4rem;
   border: none;
-  gap: 34px;
   color: #ffffff;
-  margin-top: 5px;
   cursor: pointer;
-  font-family: "Alibaba-PuHuiTi-Heavy";
+  font-family: "Alibaba-PuHuiTi";
 }
 
 
@@ -321,6 +328,8 @@
   justify-content: center;
   gap: 40px;
   text-transform: uppercase;
+  font-family: "Alibaba-PuHuiTi-TIMESBD";
+
 
   .turnOff {
     width: 16px;
@@ -350,11 +359,8 @@
       0 0 4px #868585,
       0 0 5px rgba(183, 183, 183, 0.5),
       2px 0 2px #7f7f7f,
-      /* 增加右侧阴影，颜色更重 */
       3px 0 3px #7f7f7f,
-      /* 增加右侧阴影，颜色更重 */
       4px 0 4px #7f7f7f;
-    /* 增加右侧阴影，颜色更重 */
   }
 
   button {
@@ -812,7 +818,6 @@ p {
   transform: rotate(3600deg);
   -webkit-transition: -webkit-transform 5s linear;
   transition: transform 5s linear;
-  /* width: 100%; */
   height: 100%;
 }
 
@@ -830,16 +835,17 @@ p {
 
 
 .container3 {
-  height: 92px;
+  height: 13.125rem;
+  width: 93.1875rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 600px;
-  gap: 27px;
-  border-radius: 50px;
+  gap: 6em;
+  border-radius: 8rem;
   background-image: url("../../images/PinkButton.webp");
   background-size: cover;
   background-repeat: no-repeat;
+  background-color: red;
 }
 
 @font-face {
@@ -867,8 +873,6 @@ p {
     width: 23px;
     height: 23px;
     border: none;
-    /* gap: 10; */
-    /* background-image: url("../../images/welcome/addbackground.webp"); */
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
@@ -917,7 +921,6 @@ p {
 
   .numData:focus {
     outline: none;
-    /* 移除默认的焦点边框 */
   }
 }
 
@@ -946,7 +949,6 @@ p {
   letter-spacing: 0.5px;
   font-family: "AdobeHeitiStd-Regular2";
   text-shadow: 2px 2px 4px #605f5f;
-
 }
 
 .fontNum1 {

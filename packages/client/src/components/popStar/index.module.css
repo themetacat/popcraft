@@ -3,36 +3,35 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 500px;
-  height: 350px;
-  padding: 40px;
+  width: 68.75rem;
+  height: 56.25rem;
   border: none;
   background-image: url("../../images/welcome/welcome.webp");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   display: grid;
-  gap: 24px;
 }
 
 p {
-  margin: 0px;
+  margin: 0;
 }
 
-
 .title {
+  width: 52.5rem;
+  height: 3.75rem;
   font-weight: 700;
-  font-size: 22px;
-  line-height: 23.04px;
+  font-size: 3rem;
+  line-height: 10rem;
   color: #ffffff;
-  letter-spacing: 2px;
+  letter-spacing: 0.2rem;
   text-shadow: 2px 2px 5px rgba(49, 49, 49, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 6px;
+  margin-top: 7.2rem;
+  margin-left: 8rem;
 }
-
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
@@ -40,39 +39,39 @@ p {
 }
 
 .Container {
-  width: 400px;
-  height: 200px;
+  width: 56.25rem;
+  height: 25.625rem;
   display: block;
   justify-content: center;
   align-items: center;
-  line-height: 2em;
-  margin-left: 63px;
-  /* margin-top: -px; */
+  line-height: 2rem;
+  margin-left: 9.2rem;
+  margin-top: -2.5rem;
 }
 
 
 .copywritingThree {
   font-weight: 600;
-  font-size: 21px;
+  font-size: 2.5rem;
   color: #000000;
 }
 
 .copywritingTwo {
-  font-size: 18px;
-  line-height: 5px;
-  letter-spacing: 3px;
+  font-size: 2.2rem;
+  line-height: 4rem;
+  letter-spacing: 0.3rem;
   color: #020202;
   font-family: "AdobeHeitiStd-Regular";
 }
 
 .copywritingTwobox {
-  margin-top: 10px;
+  margin-top: 2rem;
 }
 
 .copywritingTwoyo {
-  font-size: 18px;
-  line-height: 5px;
-  letter-spacing: 3px;
+  font-size: 2.2rem;
+  line-height: 4rem;
+  letter-spacing: 0.3rem;
   font-family: "AdobeHeitiStd-Regular";
 }
 
@@ -86,8 +85,8 @@ p {
 }
 
 .btnPlay {
-  width: 380px;
-  height: 50px;
+  width: 49rem;
+  height: 6.5rem;
   background-color: #fff1c8;
   opacity: 0px;
   border: none;
@@ -99,10 +98,9 @@ p {
   top: 80%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 23px;
+  font-size: 3rem;
   font-weight: 700;
-  line-height: 24px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.3rem;
   text-align: center;
   color: #ffffff;
   transition: font-size 0.3s ease;
@@ -112,13 +110,12 @@ p {
     2px -2px 0 rgba(177, 175, 175, 0.7),
     -2px 2px 0 rgba(165, 164, 164, 0.7),
     2px 2px 0 rgba(206, 206, 206, 0.7);
-  /* 添加灰色边框效果 */
   cursor: pointer;
 }
 
-.btnPlaybox{
-  width: 380px;
-  height: 50px;
+.btnPlaybox {
+  width: 49rem;
+  height: 6.5rem;
   background-color: #fff1c8;
   opacity: 0px;
   border: none;
@@ -130,19 +127,19 @@ p {
   top: 80%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 23px;
+  font-size: 3rem;
   font-weight: 700;
-  line-height: 24px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.3rem;
   text-align: center;
   color: #e30c0c;
   transition: font-size 0.3s ease;
   text-transform: uppercase;
   cursor: pointer;
 }
+
 .btnPlaybox:hover {
   color: #ffffff;
-  font-size: 25px;
+  font-size: 3.1rem;
   text-shadow:
     -1px -1px 0 rgba(56, 56, 56, 0.7),
     1px -1px 0 rgba(71, 71, 71, 0.7),
@@ -152,7 +149,7 @@ p {
 
 .btnPlay:hover {
   color: #ffffff;
-  font-size: 26px;
+  font-size: 3.1rem;
   text-shadow:
     -1px -1px 0 rgba(56, 56, 56, 0.7),
     1px -1px 0 rgba(71, 71, 71, 0.7),
@@ -189,6 +186,7 @@ p {
   background-size: 100% 100%;
   background-position: center;
 }
+
 /* .btnPlayConnectClicked {
   background-image: url("../../images/welcome/playhove.webp");
   background-size: 100% 100%;

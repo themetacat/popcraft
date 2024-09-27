@@ -570,23 +570,26 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 </div>
               ))}
             </div>
-            <button
-              className={style.buyBtn}
-              onClick={async () => {
-                setdataq(!warnBox);
-                getRoute()
-              }}
-            >
-              BUY
-            </button>
-            <button
-              className={style.warningIcon}
-              onClick={() => {
-                setWarnBox(!warnBox);
-              }}
-            >
-              ?
-            </button>
+            <div className={style.buyBtnBox}>
+              <button
+                className={style.buyBtn}
+                onClick={async () => {
+                  setdataq(!warnBox);
+                  getRoute()
+                }}
+              >
+                BUY
+              </button>
+              <button
+                className={style.warningIcon}
+                onClick={() => {
+                  setWarnBox(!warnBox);
+                }}
+              >
+                ?
+              </button>
+            </div>
+
           </div>
         </div>
       )}

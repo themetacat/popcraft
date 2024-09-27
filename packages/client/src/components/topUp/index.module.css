@@ -466,7 +466,6 @@
   cursor: pointer;
 }
 
-
 .turnOffEyeStyle {
   width: 20px;
   height: 14px;
@@ -483,10 +482,8 @@
   transition: transform 0.3s ease;
   cursor: pointer;
 }
-
 .imginputConPassWordto:hover {
   transform: scale(1.2);
-  /* 放大到原来的1.2倍 */
 }
 
 .inputConPassWord {
@@ -563,7 +560,6 @@
     opacity: 0px;
     border: none;
     outline: none;
-    /* 取消焦点轮廓 */
     border-radius: 5px;
     background-color: #fff2c8;
     font-family: Silkscreen;
@@ -576,13 +572,12 @@
   }
 }
 
-
 .inputEth {
   margin-top: 6px;
   color: #000000;
   margin-left: -3px;
   font-family: "AdobeHeitiStd-Regular";
-
+  font-size: 17px;
 }
 
 .mainFontbox {
@@ -600,23 +595,18 @@
 .svgIcon {
   width: 30.86px;
   height: 30.86px;
-  /* border-radius: 50%; */
 }
 
 .partFive {
   display: flex;
   justify-content: space-between;
-
   align-items: center;
   text-transform: uppercase;
   font-weight: 500;
-  /* 将文本转换为大写 */
   color: #9c3a15;
   letter-spacing: 1px;
   font-family: "AdobeHeitiStd-Regular";
-
-
-
+  font-size: 14px;
   input {
     width: 78px;
   }

@@ -1,7 +1,5 @@
 * {
-  margin: 0px;
-  /* overflow-y: hidden;
-    overflow-x: hidden; */
+  margin: 0;
 }
 
 canvas {
@@ -16,7 +14,6 @@ canvas {
   z-index: 999;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  /* 半透明黑色 */
   pointer-events: auto !important;
 }
 
@@ -51,7 +48,7 @@ canvas {
 
 .container {
   background: radial-gradient(circle, #236975, #26727f);
-  height: 70px;
+  height: 10rem;
   width: 100%;
   flex-direction: column;
   justify-content: center;
@@ -64,15 +61,14 @@ canvas {
   justify-content: center;
 }
 
-
 .containerImg {
-  width: 139px;
-  height: 46px;
-  justify-content: space-between;
+  width: 25rem;
+  height: 7rem;
+  display: flex;
   align-items: center;
   position: absolute;
-  top: 9px;
-  left: 20px;
+  top: 1.8rem;
+  left: 1.5rem;
 }
 
 .addr {
@@ -81,11 +77,10 @@ canvas {
   position: absolute;
   right: 3rem;
   height: auto;
-  line-height: 50px;
   font-weight: bold;
   text-transform: uppercase;
-  /* 将字母都大写 */
-  letter-spacing: 1px;
+  letter-spacing: 0.1em;
+  font-size: 2.2rem;
 }
 
 canvas {
@@ -102,10 +97,10 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 300px;
-  height: 50px;
+  width: 47.8125rem;
+  height: 6.875rem;
   position: absolute;
-  top: 0px;
+  top: 0;
   right: 0;
   bottom: 0;
   left: 0;
@@ -114,24 +109,16 @@ canvas {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  font-size: 20px;
-  border-radius: 50px;
+  font-size: 3rem;
   display: flex;
-  border: 1px solid #176572;
-  /* 设置边框颜色 */
-  box-shadow: inset 0 0 10px 0.5px #302f2f;
 }
-
 
 .spanData {
   display: inline-block;
-  width: 78px;
-  line-height: 36px;
+  line-height: 1.5rem;
   color: #ffffff;
-  padding-top: 7px;
   text-align: center;
   font-weight: bold;
-  /* 使文字加粗 */
 }
 
 :root {
@@ -147,25 +134,20 @@ canvas {
 }
 
 .btnBox {
-  border-radius: 50px;
-  width: 80px;
+  width: 23rem;
   color: #fefefe;
   border: none;
   outline: none;
   background-color: transparent;
-  /* 将背景颜色设置为透明 */
-  border-radius: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: color 0.3s;
   outline: none;
-  outline-offset: 2px;
   font-family: "your-emoji-font", sans-serif;
   font-weight: bold;
   color: #f8f8f8;
-  font-size: 34px;
-  gap: 8px;
+  font-size: 4.5rem;
   padding: 0;
   flex-direction: column;
   opacity: 1;
@@ -174,55 +156,27 @@ canvas {
 }
 
 .btnBoxY {
-  border-radius: 50px;
-  width: 80px;
+  width: 23rem;
+  color: #fefefe;
   border: none;
   outline: none;
-  border-radius: 50px;
-  background-color: #000;
-  cursor: not-allowed !important;
+  background-color: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: color 0.3s;
   outline: none;
-  outline-offset: 2px;
   font-family: "your-emoji-font", sans-serif;
   font-weight: bold;
-  color: #aba7b2;
-  font-size: 34px;
-  gap: 8px;
+  color: #f8f8f8;
+  font-size: 4.5rem;
   padding: 0;
   flex-direction: column;
-  opacity: 0.3;
+  opacity: 1;
+  font-family: "your-emoji-font", sans-serif !important;
+  cursor: pointer;
 }
 
-.btn1 {
-  color: #a073e2;
-  color: #000;
-  width: 20px;
-  margin-bottom: 8px;
-  height: 20px;
-  font-size: 30px;
-  border: none;
-  outline: none;
-  padding: 0px !important;
-  background-color: #000;
-}
-
-.gray {
-  filter: grayscale(100%);
-  color: #a073e2;
-  color: #000;
-  width: 20px;
-  margin-bottom: 8px;
-  height: 20px;
-  font-size: 30px;
-  border: none;
-  outline: none;
-  padding: 0px !important;
-  background-color: #000;
-}
 
 .bodyCon {
   height: calc(100vh - 60px);
@@ -235,31 +189,8 @@ canvas {
   flex-wrap: wrap;
 }
 
-.color-option {
-  height: 15px;
-  width: 15px;
-  margin-right: 5px;
-  margin-bottom: 5px;
-  cursor: pointer;
-  border-radius: 50%;
-}
-
-.indicator {
-  position: absolute;
-  inset: 5px;
-  background: rgb(255, 255, 255);
-  border-radius: 50%;
-  opacity: 0;
-}
-
 .color-option.selected .indicator {
   opacity: 1;
-}
-
-.rightPart {
-  right: 0px;
-  background-color: #2b0e3a;
-  z-index: 9999999;
 }
 
 .canvasWrapper {
@@ -319,13 +250,13 @@ canvas {
 
 .btnConnect {
   border: none;
-  height: 40px;
-  width: 200px;
+  height: 6.875rem;
+  width: 40rem;
   background: none;
   color: #b00002;
   text-transform: uppercase;
   /* 将字母都大写 */
-  font-size: 15px;
+  font-size: 2.5rem;
   font-weight: 700;
   background-image: url("../../images/addressback.webp");
   background-size: 100% 100%;
@@ -333,39 +264,37 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 20px;
-  letter-spacing: 1px;
+  letter-spacing: 0.2rem;
   cursor: pointer;
 }
 
 .btnConnectbox {
   border: none;
-  height: 50px;
   background: none;
   color: #fff;
-  font-size: 15px;
+  font-size: 2.3rem;
   font-weight: 700;
 }
 
 .boldAddress {
-  font-size: 16px;
+  font-size: 2.3rem;
   font-weight: bold;
+  border: none;
+  background: none;
+  color: #fff;
 }
 
 .downBox {
-  width: 200px;
-  height: 160px;
+  width: 34rem;
+  height: 23rem;
   border: none;
   background-image: url("../../images/pageback.webp");
   background-size: 100% 100%;
   background-position: center;
   position: absolute;
-  left: 70px;
-  top: 38px;
-  padding: 8px 16px;
+  left: 22rem;
+  top: 3.8rem;
   opacity: 1;
-  /* box-shadow: inset 0 0 12px 0 #e7bdff33, 0 0 12px 0 #e7bdff0d; */
-  margin-left: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -375,29 +304,22 @@ canvas {
 .downBoxclocese {
   display: flex;
   flex-direction: column;
-  /* 纵向排列 */
   align-items: center;
-  /* 水平居中每个项 */
 }
 
 .downBoxItem {
-
   width: 100%;
   height: auto;
-  padding: 8px 0;
-  gap: 5px;
+  padding: 1rem 0;
   opacity: 1;
   font-family: Silkscreen;
-  font-size: 18px;
+  font-size: 2.5rem;
   font-weight: 600;
-  line-height: 23.04px !important;
-  letter-spacing: 2px;
+  letter-spacing: 0.5rem;
   text-transform: uppercase;
-  margin-top: 10px;
-  margin-bottom: 10px;
   text-shadow: 2px 2px 5px rgba(49, 49, 49, 0.5);
   font-family: "AdobeHeitiStd-Regular";
-  margin: 5px 0;
+  margin: 1rem 0;
 }
 
 .downBoxItem:hover {
@@ -408,7 +330,6 @@ canvas {
     -1px 1px 0 white,
     1px 1px 0 white;
 }
-
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
@@ -443,24 +364,20 @@ canvas {
   align-items: center;
 }
 
-
 .popup {
   padding: 20px;
   border-radius: 8px;
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-
 .contentbox {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* width: 100%; */
   margin-bottom: 30px;
   font-weight: 700;
   font-size: 23px;
@@ -469,9 +386,6 @@ canvas {
   letter-spacing: 2px;
   margin-top: 20px;
 }
-
-
-
 
 .topupbtn {
   width: 330px;

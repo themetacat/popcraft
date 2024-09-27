@@ -1,4 +1,4 @@
-.GameBoard {
+/* .GameBoard {
   width: 25%;
   height: 3%;
   position: absolute;
@@ -21,28 +21,22 @@
   0 0 5px rgba(163, 229, 181, 0.9),
   0 0 10px rgba(104, 183, 127, 0.8),
   0 0 15px rgba(185, 244, 201, 0.6);
-}
+} */
 
 
-.page {
+/* .page {
   width: 100%;
   height: 100vh;
-  /* background-color: rgba(0, 0, 0, 0.8); */
-  /* background-image: linear-gradient(45deg, #fffce3 0%, #bdf1b6 100%); */
   background-image: url('images/background.webp');
   background-size: 100% 100%;
-  /* font-family: 'Silkscreen'; */
+} */
 
-}
-
-/* 根据您的字体文件类型调整格式 */
-@font-face {
+/* @font-face {
   font-family: 'SansationLight';
-  /* 重命名字体名 */
   src: url('/fonts/SansationLight.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
-}
+} */
 
 
 
@@ -50,8 +44,55 @@
    font-family: 'Silkscreen';
    src: url('./path/to/slkscr (2).ttf') format('truetype'); 
  }   */
+/* 
+@font-face {
+  font-family: 'NotoEmoji';
+  src: url('./path/to/Noto_Emoji/NotoEmoji-VariableFont_wght.ttf') format('truetype');
+} */
+
+
+/* app.module.css */
+.GameBoard {
+  width: 25%;
+  height: 3%;
+  position: absolute;
+  margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  text-transform: uppercase;
+  color: #26737d;
+  font-weight: 400;
+  font-size: 2.5rem;
+  border: none;
+  letter-spacing: 0.0625rem; 
+  text-shadow:
+  -0.125rem -0.125rem 0 rgba(255, 255, 255, 0.7), 
+  0.125rem -0.125rem 0 rgb(255, 255, 255), 
+  -0.125rem 0.125rem 0 rgba(255, 255, 255, 0.7),
+  0.125rem 0.125rem 0 rgba(255, 255, 255, 0.7), 
+  0 0 0.3125rem rgba(163, 229, 181, 0.9),
+  0 0 0.625rem rgba(104, 183, 127, 0.8),
+  0 0 0.9375rem rgba(185, 244, 201, 0.6);
+}
+
+.page {
+  width: 100%;
+  height: 100vh;
+  background-image: url('images/background.webp');
+  background-size: 100% 100%;
+}
+
+@font-face {
+  font-family: 'SansationLight';
+  src: url('/fonts/SansationLight.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 @font-face {
   font-family: 'NotoEmoji';
   src: url('./path/to/Noto_Emoji/NotoEmoji-VariableFont_wght.ttf') format('truetype');
 }
+

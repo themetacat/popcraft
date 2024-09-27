@@ -461,14 +461,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       ctx.lineWidth = 2; // 设置边框的粗细
       ctx.strokeStyle = "#ffc974";
       ctx.stroke();
-      //绘制立体
-      // ctx.beginPath();
-      // ctx.moveTo(outerBorderX + outerBorderRadius, outerBorderY + outerBorderHeight);
-      // ctx.lineTo(outerBorderX + outerBorderWidth - outerBorderRadius, outerBorderY + outerBorderHeight);
-      // ctx.lineWidth = 5; // 设置线条的粗细
-      // ctx.strokeStyle = "#ffc974";
-      // ctx.stroke();
-
 
       // 绘制紧挨着棋盘的圆角边框
       const innerBorderRadius = 6; // 内部圆角半径
@@ -1689,13 +1681,6 @@ export default function Header({ hoveredData, handleData }: Props) {
                         {" "}
                         {chain.name}&nbsp;&nbsp;
                         <button
-                          style={{
-                            border: "none",
-                            background: "none",
-                            color: "#fff",
-                            fontFamily: "Silkscreen,cursive",
-                            height: "68px",
-                          }}
                           type="button"
                           className={style.boldAddress} // 添加这个类名
 
