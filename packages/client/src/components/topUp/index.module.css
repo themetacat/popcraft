@@ -67,7 +67,7 @@
   gap: 10px;
   border: 1px 0px 0px 0px;
   opacity: 0px;
-  background-image: url("../../images/topup/Bridgeback.png");
+  background-image: url("../../images/topup/Bridgeback.webp");
   background-size: 100% 100%;
   background-position: center;
   font-size: 12px;
@@ -98,7 +98,7 @@
 
 .bridgeBTNClicked {
   /* 点击后的按钮样式 */
-  background-image: url("../../images/topup/btnMeback.png");
+  background-image: url("../../images/topup/btnMeback.webp");
   background-size: cover;
   background-position: center;
 }
@@ -251,7 +251,7 @@
   opacity: 0px;
   border: none;
   /* background-color: #200d2f; */
-  background-image: url("../../images/topup/btnMe.png");
+  background-image: url("../../images/topup/btnMe.webp");
   background-size: 100% 100%;
   background-position: center;
   font-family: Silkscreen;
@@ -281,7 +281,7 @@
 
 .btnMeClicked {
   /* 点击后的按钮样式 */
-  background-image: url("../../images/topup/btnMebj.png");
+  background-image: url("../../images/topup/btnMebj.webp");
   background-size: 100% 100%;
 }
 
@@ -652,7 +652,7 @@
   gap: 10px;
   opacity: 0px;
   background-color: #fbae6a;
-  background-image: url("../../images/topup/footerBtn.png");
+  background-image: url("../../images/topup/footerBtn.webp");
   background-size: 100% 100%;
   background-position: center;
   border: none;
@@ -717,7 +717,7 @@
   gap: 10px;
   opacity: 0px;
   background-color: #fbae6a;
-  background-image: url("../../images/topup/footerBtn.png");
+  background-image: url("../../images/topup/footerBtn.webp");
   background-size: 100% 100%;
   background-position: center;
   color: #200d2f;
@@ -730,7 +730,7 @@
 }
 
 .footerBtnClicked {
-  background-image: url("../../images/topup/footerBtnto.png");
+  background-image: url("../../images/topup/footerBtnto.webp");
   background-size: 100% 100%;
   background-position: center;
 }

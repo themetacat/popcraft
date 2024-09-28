@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import style from "./index.module.css";
 import loadingIcon from "../../images/welcome_pay_play_loading.webp";
-import trunOff from "../../images/turnOffBtn.png";
+import trunOff from "../../images/turnOffBtn.webp";
 import { imageIconData } from "../imageIconData";
 import { useMUD } from "../../MUDContext";
 import { useAccount, useBalance } from 'wagmi';

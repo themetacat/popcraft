@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import style from "./index.module.css";
-import trunOff from "../../images/turnOffBtntopup.png"
+import trunOff from "../../images/turnOffBtntopup.webp"
 import toast, { Toaster } from "react-hot-toast";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import warningImg from "../../images/warning.png";
