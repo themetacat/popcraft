@@ -16,7 +16,7 @@ import leftIcon from "../../images/zuojiantou.png";
 import rightIcon from "../../images/youjiantou.png";
 import { Hex, fromBytes, hexToString, isHex } from "viem";
 import { SetupNetworkResult } from "../../mud/setupNetwork";
-import loadingImg from "../../images/loading.png";
+import loadingImg from "../../images/loading.webp";
 
 import { hexToUtf8 } from "web3-utils";
 import { abi_json, update_app_value } from "../../mud/createSystemCalls";

@@ -7,7 +7,7 @@ import { imageIconData } from "../imageIconData";
 import { useMUD } from "../../MUDContext";
 import { useAccount, useBalance } from 'wagmi';
 import { addressToEntityID } from "../rightPart";
-import loadingImg from "../../images/loadingto.png";
+import loadingImg from "../../images/loadingto.webp";
 import xLogo from '../../images/xLogo.png';
 import TelegramLogo from '../../images/TelegramLogo.png'
 import reduce from '../../images/substance/reduce.png'

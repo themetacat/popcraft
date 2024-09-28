@@ -13,7 +13,7 @@ import { getNetworkConfig } from "../../mud/getNetworkConfig";
 import { type Hex, parseEther } from "viem";
 import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
-import LoadingImg from "../../images/loadingto.png"
+import LoadingImg from "../../images/loadingto.webp"
 
 import {
   type BaseError,
