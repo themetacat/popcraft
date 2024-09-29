@@ -389,7 +389,6 @@ export default function TopUp({
                 <div className={style.partTwo}>
                   <div style={{ display: "flex", gap: "4px" }}>
                     <img src={FrameIcon} alt="" className={style.imgICon} />
-                    <div className={style.inputConto}>
                       <div className={style.addcon}>
                         <input
                           type="text"
@@ -413,7 +412,7 @@ export default function TopUp({
                             <>{(Number(balance) / 1e18).toFixed(8)}&nbsp;&nbsp;&nbsp;ETH</>
                           )}
                         </span>
-                      </div>
+             
                     </div>
 
                   </div>
@@ -472,7 +471,7 @@ export default function TopUp({
 
 
               <div className={style.partFour}>
-                <p>
+                <p className={style.partFourFont}>
                   Every onchain interaction uses gas. Top up your gasbalance
                   with funds from any chain.
                 </p>
@@ -487,7 +486,6 @@ export default function TopUp({
                     }}
                   >
                     <img src={FrameIcon} alt="" className={style.svgIcon} />
-
                     <input
                       name="value"
                       placeholder="Amount (ETH)"
@@ -507,9 +505,11 @@ export default function TopUp({
                         : " 0ETH"}&nbsp;&nbsp;ETH
                     </div>
                   </div>
-                  <div className={style.partFive}>
+                  <div className={style.partFiveboxto}>
                     <span>Time to deposit</span>
+                    <div className={style.partFivebox}>
                     <span>A few seconds</span>
+                    </div>
                   </div>
                 </div>
               </div>
