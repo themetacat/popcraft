@@ -1,11 +1,10 @@
 .topBox {
-  width: 450px;
-  height: 550px;
+  width: 70rem;
+  height: 89.625rem;
   position: absolute;
-  padding: 40px;
   left: 50%;
   top: 50%;
-  gap: 16px;
+  gap: 3rem;
   transform: translate(-50%, -50%);
   color: #fff;
   background-image: url("../../images/topup/topupback.webp");
@@ -14,6 +13,15 @@
   display: grid;
   justify-content: center;
   align-items: center;
+}
+
+.cant {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2.3rem;
+  width: 55rem;
+  margin-left: 2rem;
 }
 
 .btnMeLoading {
@@ -32,63 +40,58 @@
   height: 25px;
 }
 
-.cant {
-  height: 24px;
-  line-height: 24px;
-  gap: 24px;
-}
-
 .title {
+  width: 70rem;
+  height: 2rem;
   font-weight: 700;
-  font-size: 22px;
-  line-height: 23.04px;
+  font-size: 3rem;
+  line-height: 10rem;
   color: #ffffff;
-  letter-spacing: 2px;
+  letter-spacing: 0.5rem;
   text-shadow: 2px 2px 5px rgba(49, 49, 49, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -10px;
+  /* margin-top: 2rem; */
   text-transform: uppercase
 }
 
 .imgOff {
-  width: 35px;
-  height: 35px;
+  width: 6rem;
+  height: 6rem;
   position: absolute;
-  left: 475px;
-  top: 15px;
+  left: 62rem;
+  top: 1rem;
 }
 
 .bridgeBTN {
-  width: 90px;
-  height: 10px;
-  padding: 8px;
-  gap: 10px;
-  border: 1px 0px 0px 0px;
-  opacity: 0px;
+  width: 15rem;
+  height: 3.8rem;
   background-image: url("../../images/topup/Bridgeback.webp");
   background-size: 100% 100%;
   background-position: center;
-  font-size: 12px;
+  gap: 10px;
+  font-size: 1.7rem;
   font-weight: 400;
-  line-height: 8.36px;
   letter-spacing: 0.3em;
-  text-align: center;
+  margin: 0 auto;
   color: #ffffff;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-transform: uppercase;
   text-shadow:
     -1px -1px 0 rgba(197, 195, 195, 0.7),
     1px -1px 0 rgba(192, 192, 192, 0.7),
     -1px 1px 0 rgba(207, 207, 207, 0.7),
     1px 1px 0 rgba(197, 197, 197, 0.7);
+  margin-left: 20rem;
 }
-
 
 .bridgeBTN:hover {
   color: #ffffff;
-  font-size: 13px;
+  font-size: 1.8rem;
   text-shadow:
     -1px -1px 0 rgba(123, 122, 122, 0.7),
     1px -1px 0 rgba(105, 104, 104, 0.7),
@@ -97,7 +100,6 @@
 }
 
 .bridgeBTNClicked {
-  /* 点击后的按钮样式 */
   background-image: url("../../images/topup/btnMeback.webp");
   background-size: cover;
   background-position: center;
@@ -144,72 +146,67 @@
   font-size: 13px;
 }
 
-
-
-
 .titleOne {
   display: inline-block;
-  width: 173px;
-  height: 20px;
+  /* width: 20rem; */
+  height: 2rem;
   font-family: Silkscreen;
-  font-size: 16px;
+  font-size: 2.3rem;
   font-weight: 400;
   line-height: 20.48px;
   letter-spacing: 0.1em;
   text-align: left;
   color: #080808;
   font-family: "AdobeHeitiStd-Regular";
+  margin-top: 1rem;
+  margin-left: 2rem;
 }
-
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
   src: url("/fonts/BRLNSR.TTF");
 }
 
-
 .titleOne1 {
-  font-size: 16px;
+  font-size: 2.3rem;
   font-weight: 400;
   line-height: 20.48px;
   letter-spacing: 0.1em;
-  text-align: left;
   color: #000000;
-  width: 136px;
-  height: 20px;
   gap: 0px;
   opacity: 0px;
   font-family: "AdobeHeitiStd-Regular";
+  margin-left: 2rem;
+  margin-top: 1rem;
 }
 
 .prilf {
   font-family: Silkscreen;
-  font-size: 13px;
+  font-size: 1.8rem;
   font-weight: 400;
-  line-height: 14.08px;
   letter-spacing: 0.1em;
   text-align: left;
   color: #e38666;
-  height: 14px;
   text-transform: uppercase;
   font-family: "AdobeHeitiStd-Regular"
+
 }
 
 .onePart {
   display: grid;
-  width: 385px;
-  height: 70px;
-  padding: 12px;
-  gap: 16px;
+  width: 55rem;
+  height: 12rem;
   opacity: 0px;
-  margin-top: -50px;
+  margin: 0 auto;
+  margin-top: -12rem;
   background-color: #fff2c8;
-  border-radius: 10px;
+  border-radius: 1rem;
 }
 
 .imgICon {
-  width: 12px;
-  height: 12px;
+  width: 1.5rem;
+  height: 1.4rem;
+  margin-left: 1.3rem;
 }
 
 .btnPart {
@@ -220,44 +217,54 @@
   gap: 5px;
   color: #000000;
   margin-top: -5px;
+  margin-left: 1rem;
 }
-
-
 
 .partImo {
-  height: 70px;
+  width: 55rem;
+  height: 11rem;
+  margin: 0 auto;
   display: grid;
   gap: 8px;
-  margin-top: 10px;
+  margin-top: 1rem;
+  margin-left: -1rem;
 }
 
-.partTwo {
+.partTwobox {
   display: flex;
   cursor: pointer;
   justify-content: space-between;
   vertical-align: middle;
+  height: 6rem;
+  width: 50rem;
+  margin-top: 1.7rem;
+}
+
+.partTwo {
+  width: 53rem;
+  height: 8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-bottom: 3px solid #c4572e;
-  height: 41px;
-  width: 376px;
-  margin-top: 8px;
+  margin-top: 1rem;
+  margin: 0 auto;
+  /* 使盒子在页面中居中对齐 */
+
 }
 
 .btnMe {
-  width: 135px;
-  height: 10px;
-  padding: 8px;
-  gap: 10px;
-  border: 1px 0px 0px 0px;
+  width: 30rem;
+  height: 3.8rem;
   opacity: 0px;
+  gap: 10px;
   border: none;
-  /* background-color: #200d2f; */
   background-image: url("../../images/topup/btnMe.webp");
   background-size: 100% 100%;
   background-position: center;
   font-family: Silkscreen;
-  font-size: 12px;
+  font-size: 1.7rem;
   font-weight: 400;
-  line-height: 8.36px;
   letter-spacing: 0.2em;
   text-align: center;
   color: #ffffff;
@@ -271,7 +278,7 @@
 
 .btnMe:hover {
   color: #ffffff;
-  font-size: 13px;
+  font-size: 1.8rem;
   text-shadow:
     -1px -1px 0 rgba(101, 100, 100, 0.7),
     1px -1px 0 rgba(105, 104, 104, 0.7),
@@ -280,7 +287,6 @@
 }
 
 .btnMeClicked {
-  /* 点击后的按钮样式 */
   background-image: url("../../images/topup/btnMebj.webp");
   background-size: 100% 100%;
 }
@@ -306,56 +312,41 @@
   border: 1px solid #0b0113;
 }
 
-.inputConto {
-  width: 93px;
-  height: 34px;
-  display: grid;
-  gap: 5px;
-  position: relative;
-  margin-top: -4px;
-  font-size: 15px;
-}
-
 .ConfirmingFont {
   display: inline-block;
   font-family: Silkscreen;
-  font-size: 14px;
+  font-size: 1.8rem;
   font-weight: 400;
-  line-height: 15.36px;
   letter-spacing: 0.1em;
   text-align: left;
   color: #dc5468;
-  width: 75px;
-  height: 15px;
   gap: 0px;
   opacity: 0px;
-  margin-left: 13px;
-  margin-top: 5px;
+  margin-left: 1.3rem;
   font-family: "AdobeHeitiStd-Regular";
+  margin-top: 1rem;
 }
 
 .partContent {
-  width: 385px;
-  padding: 12px;
+  width: 55rem;
+  height: 25rem;
   opacity: 0px;
+  margin: 0 auto;
   background-color: #fff2c8;
-  border-radius: 10px;
-  margin-top: -45px;
-  margin-left: -px;
+  border-radius: 1rem;
+  margin-top: -13rem;
 }
 
 .inputCon {
-  width: 100px !important;
   background: none;
-  /* background-color: red; */
   border: none;
   color: #050404;
   font-family: Silkscreen;
-  font-size: 15px;
-  font-weight: 550;
-  line-height: 15.36px;
+  font-size: 2rem;
+  font-weight: 500;
   letter-spacing: 0.1em;
-  margin-left: 10px;
+  margin-left: 1rem;
+  margin-top: -0.6rem;
   font-family: "AdobeHeitiStd-Regular";
 }
 
@@ -365,9 +356,10 @@
 }
 
 .warningImg {
-  width: 18px;
-  height: 16px;
-  margin-left: -25px;
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-left: 0.8rem;
+  margin-top: 1.5rem;
   cursor: pointer;
   transition: transform 0.3s ease;
   /* 添加过渡效果 */
@@ -388,19 +380,14 @@
   color: #ad9134;
 }
 
-.addcon {
-  width: 110px;
-  position: relative;
-  vertical-align: middle;
-
-}
 
 .imgUnioncopyBtn {
   position: absolute;
-  right: -6px;
-  top: 3px;
-  width: 12px;
-  height: 12px;
+  /* right: -1rem; */
+  margin-left: -6.5rem;
+  /* top: 0.5rem; */
+  width: 1.5rem;
+  height: 1.5rem;
   transition: transform 0.3s ease;
 }
 
@@ -413,10 +400,10 @@
 
 .imgUnionCopyBtn {
   position: absolute;
-  right: -10px;
-  top: 1px;
-  width: 12px;
-  height: 12px;
+  margin-left: 12.5rem;
+  top: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
   transition: transform 0.3s ease;
   cursor: pointer;
 
@@ -430,11 +417,12 @@
 
 .prvkey {
   position: relative;
-  gap: 8px;
+  gap: 2rem;
   opacity: 0px;
-  margin-top: 8px;
+  margin-top: 1rem;
   display: grid;
-  height: 56px;
+  margin-left: 2rem;
+  align-items: center;
 }
 
 @font-face {
@@ -443,64 +431,57 @@
 }
 
 .pqad {
-  width: 106px;
-  height: 15px;
   gap: 0px;
   opacity: 0px;
   font-family: Silkscreen;
-  font-size: 13px;
+  font-size: 1.8rem;
   font-weight: 400;
-  line-height: 15.36px;
   letter-spacing: 0.1em;
   text-align: left;
   color: #999999;
   font-family: "AdobeHeitiStd-Regular";
-
 }
 
 .openEyeStyle {
-  width: 20px;
-  height: 11px;
-  margin-left: 4px;
-  margin-top: 3px;
+  width: 2.5rem;
+  height: 1.3rem;
+  margin-left: 0.3rem;
+  margin-top: 0.3rem;
   cursor: pointer;
 }
 
 .turnOffEyeStyle {
-  width: 20px;
-  height: 14px;
-  margin-left: 4px;
-  margin-top: 2px;
+  width: 2.5rem;
+  height: 1.7rem;
+  margin-left: 0.3rem;
+  margin-top: 0.3rem;
   cursor: pointer;
 }
 
 .imginputConPassWordto {
-  width: 12px;
-  height: 12px;
-  margin-left: 4px;
-  margin-top: 3px;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 0.3rem;
+  margin-top: 0.4rem;
   transition: transform 0.3s ease;
   cursor: pointer;
 }
+
 .imginputConPassWordto:hover {
   transform: scale(1.2);
 }
 
 .inputConPassWord {
-  gap: 4px;
   opacity: 0px;
-  font-size: 13px;
+  font-size: 1.8rem;
   font-weight: 500;
-  line-height: 15.36px;
-  letter-spacing: 2px;
+  letter-spacing: 0.2rem;
   text-align: left;
   color: #da4d62;
   background: none;
   border: none;
-  height: 15px;
   font-family: "AdobeHeitiStd-Regular";
   width: 17ch;
-  /* 设置容器宽度为 17 个字符宽度 */
 }
 
 .inputConPassWord:focus {
@@ -526,33 +507,18 @@
 }
 
 .partFour {
-  width: 400px;
-  height: 137px;
-  opacity: 0px;
-  margin-top: -50px;
-  line-height: 25px;
-  margin-left: 7px;
-
-  p {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 25px;
-    letter-spacing: 1px;
-    /* text-align: left; */
-    width: 400px;
-    height: 45px;
-    top: 284px;
-    gap: 0px;
-    opacity: 0px;
-    display: grid;
-    color: #000000;
-    text-transform: uppercase;
-    font-family: "AdobeHeitiStd-Regular";
-  }
+  display: grid;
+  place-items: center;
+  /* 这将使内容在水平和垂直方向上都居中对齐 */
+  width: 55rem;
+  /* height: 25rem; */
+  margin: 0 auto;
+  margin-top: -9rem;
+  /* background-color: red; */
 
   input {
-    width: 342px !important;
-    height: 16px !important;
+    width: 38rem;
+    height: 1.4rem;
     padding: 8px 12px 8px 12px;
     gap: 0px;
     border: 1px 0px 0px 0px;
@@ -563,92 +529,122 @@
     border-radius: 5px;
     background-color: #fff2c8;
     font-family: Silkscreen;
-    font-size: 20px;
+    font-size: 2.5rem;
     font-weight: 500;
-    line-height: 17.92px;
     letter-spacing: 0.1em;
     color: #000000;
     font-family: "AdobeHeitiStd-Regular";
   }
 }
 
-.inputEth {
-  margin-top: 6px;
+.partFourFont {
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 3.3rem;
+  letter-spacing: 0.1rem;
+  /* gap: 10px; */
+  opacity: 0px;
+  display: grid;
   color: #000000;
-  margin-left: -3px;
+  text-transform: uppercase;
   font-family: "AdobeHeitiStd-Regular";
-  font-size: 17px;
+  margin-left: 1rem;
+  margin-top: -4rem;
+}
+
+.inputEth {
+  color: #000000;
+  margin-top: 0.5rem;
+  font-family: "AdobeHeitiStd-Regular";
+  font-size: 2.4rem;
+  margin-left: 1.3rem;
 }
 
 .mainFontbox {
   font-family: "AdobeHeitiStd-Regular";
-  font-size: 16px;
-  /* font-weight: 400; */
-  line-height: 15.36px;
-  letter-spacing: 1px;
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 0.2rem;
   text-align: left;
   color: #9a3916;
-  height: 15px;
-
+  margin-left: 13rem;
 }
 
 .svgIcon {
-  width: 30.86px;
-  height: 30.86px;
+  width: 3.3rem;
+  height: 3.3rem;
+  margin-top: 0.3rem;
+  margin-left: 2.1rem;
 }
+
 
 .partFive {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   text-transform: uppercase;
   font-weight: 500;
   color: #9c3a15;
-  letter-spacing: 1px;
+  letter-spacing: 0.2rem;
   font-family: "AdobeHeitiStd-Regular";
-  font-size: 14px;
-  input {
-    width: 78px;
-  }
+  font-size: 2rem;
+  margin-left: 2.3rem;
+}
+
+.partFiveboxto {
+  display: flex;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #9c3a15;
+  letter-spacing: 0.2rem;
+  font-family: "AdobeHeitiStd-Regular";
+  font-size: 2rem;
+  margin-left: 2.3rem;
+}
+
+.partFivebox {
+  font-family: "AdobeHeitiStd-Regular";
+  font-size: 2rem;
+  font-weight: 400;
+  /* letter-spacing: 2rem; */
+  text-align: left;
+  color: #9a3916;
+  margin-left: 16.7rem;
 }
 
 .mainFont {
-  width: 95px;
-  height: 34px;
   display: grid;
   gap: 5px;
   position: relative;
-  margin-left: 10px;
-  margin-top: -3px;
+  margin-left: 1rem;
+  margin-top: -0.5rem;
 
   span {
-    font-size: 15px;
+    font-size: 2rem;
     font-weight: 500;
-    line-height: 15.36px;
     letter-spacing: 0.1em;
     text-align: left;
     color: #000000;
     display: inline-block;
-    height: 15px;
     font-family: "AdobeHeitiStd-Regular";
   }
 
   p {
     font-family: "AdobeHeitiStd-Regular";
-    font-size: 14px;
+    font-size: 1.8rem;
     font-weight: 400;
-    line-height: 15.36px;
     letter-spacing: 0.1em;
     text-align: left;
     color: #dc5468;
-    height: 15px;
-    margin-top: 5px;
+    margin-top: 1rem;
   }
 }
 
 .footerBtn {
-  width: 392px;
-  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 52rem;
+  height: 6rem;
   gap: 10px;
   opacity: 0px;
   background-color: #fbae6a;
@@ -656,15 +652,15 @@
   background-size: 100% 100%;
   background-position: center;
   border: none;
-  font-size: 22px;
-  margin-top: -25px;
-  margin-left: 11px;
+  font-size: 3.3rem;
+  margin-top: -14rem;
+  margin-left: 2.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 700;
-  line-height: 24px;
-  letter-spacing: 3px;
+  /* line-height: 24px; */
+  letter-spacing: 0.4rem;
   text-align: center;
   color: #ffffff;
   transition: font-size 0.3s ease;
@@ -677,7 +673,7 @@
 
 .footerBtn:hover {
   color: #ffffff;
-  font-size: 24px;
+  font-size: 3.4rem;
   text-shadow:
     -1px -1px 0 rgba(101, 100, 100, 0.7),
     1px -1px 0 rgba(105, 104, 104, 0.7),
@@ -707,7 +703,6 @@
   margin-top: -25px;
   cursor: pointer;
 }
-
 
 .footerBtnElse {
   text-transform: uppercase;
