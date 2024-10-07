@@ -11,7 +11,7 @@ canvas {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 1000;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   pointer-events: auto !important;
@@ -422,3 +422,4 @@ canvas {
     -1px 1px 0 rgba(59, 59, 59, 0.7),
     1px 1px 0 rgba(69, 69, 69, 0.7)
 }
+

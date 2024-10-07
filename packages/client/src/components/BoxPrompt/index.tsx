@@ -72,6 +72,9 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  // const [loadingPrices, setLoadingPrices] = useState(false);
+  const [loadingPrices, setLoadingPrices] = useState({});
+
 
 
   const resultBugs = useBalance({
@@ -389,13 +392,14 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const fetchPrices = async (matchedData: any) => {
     const pricePromises = Object.keys(matchedData).map(async (key) => {
       const quantity = numberData[key] || 0;
-
       if (quantity > 0) {
+        setLoadingPrices(prev => ({ ...prev, [key]: true }));
         const route = await generateRoute(key, quantity);
         const price = route.quote.toExact(); // 获取报价
         const methodParameters = route.methodParameters;
         methodParameters['tokenAddress'] = key;
         methodParameters['amount'] = quantity;
+        setLoadingPrices(prev => ({ ...prev, [key]: false })); 
         return { [key]: { price, methodParameters } };
       } else {
         return { [key]: { price: 0, methodParameters: {} } };
@@ -425,6 +429,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       [key]: Math.max(prev[key] - 1, 0)
     }));
     // fetchPrices(matchedData);
+    setLoadingPrices(prev => ({ ...prev, [key]: true })); 
   };
 
   const upHandleNumber = (key) => {
@@ -434,6 +439,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       [key]: prev[key] + 1
     }));
     // fetchPrices(matchedData);
+    setLoadingPrices(prev => ({ ...prev, [key]: true })); 
     setLoadingUpHandle(false);
   };
 
@@ -533,6 +539,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     fetchPrices(matchedData);
   }, [numberData]);
 
+  
 
   return (
     <>
@@ -643,10 +650,20 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                       </button>
                     </div>
                   </div>
-
+                  {/* 
                   <div className={style.twoBuy}>
                     <span className={style.fontNum}>
                       {formatAmount(prices[key] ? prices[key].price : 0)}
+                      <p className={style.fontNum1}>ETH</p>
+                    </span> */}
+
+                  <div className={style.twoBuy}>
+                    <span className={style.fontNum}>
+                      {loadingPrices[key] ? (
+                        <img src={loadingImg} alt="" className={style.loadingImg} />
+                      ) : (
+                        formatAmount(prices[key] ? prices[key].price : 0)
+                      )}
                       <p className={style.fontNum1}>ETH</p>
                     </span>
 
