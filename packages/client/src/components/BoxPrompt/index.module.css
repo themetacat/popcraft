@@ -71,7 +71,7 @@
   text-align: center;
   letter-spacing: 0.4rem;
   color: rgba(255, 255, 255, 1);
-  margin-top: 2rem;
+  margin-top: 1.3rem;
   font-family: "Simplicity";
 }
 
@@ -1112,4 +1112,13 @@ p {
 
 .modal button:hover {
   background-color: #0056b3;
+}
+
+.loadingImg {
+  animation: spin 5s linear infinite;
+  -webkit-transform: rotate(3600deg);
+  transform: rotate(3600deg);
+  -webkit-transition: -webkit-transform 5s linear;
+  transition: transform 5s linear;
+  height: 100%;
 }

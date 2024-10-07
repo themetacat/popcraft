@@ -1741,53 +1741,6 @@ export default function Header({ hoveredData, handleData }: Props) {
           </div>
 
         </div>
-        {/* 
-          {appName !== "BASE/PopCraftSystem" && (
-            <div
-              style={{
-                position: "absolute",
-                left: "5%",
-                bottom: "0px",
-                cursor: "pointer",
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "flex-start",
-                alignItems: "flex-start",
-                backgroundColor: "#230732",
-                padding: "6px 6px 6px 6px",
-              }}
-            >
-              {Array.from(colorOptionsData).map((option, index) => (
-                <span
-                  key={index}
-                  className={`color-option${selectedColor === option.color ? " selected" : ""
-                    }`}
-                  data-color={option.color}
-                  style={{
-                    backgroundColor: option.color,
-                    width: "48px",
-                    height: "48px",
-                    display: "inline-block",
-                  }}
-                  onClick={() => handleColorOptionClick(option.color)}
-                >
-                  {selectedColor === option.color && (
-                    <div
-                      className="selected-circle"
-                      style={{
-                        backgroundColor: "black",
-                        borderRadius: "50%",
-                        width: "40px",
-                        height: "40px",
-                        margin: "5px auto",
-                      }}
-                    ></div>
-                  )}
-                </span>
-              ))}
-            </div>
-          )} */}
-
 
         <audio ref={audioRef} src={backgroundMusic} onEnded={handleEnded} loop />
       </div>
