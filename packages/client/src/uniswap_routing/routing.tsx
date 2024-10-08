@@ -26,7 +26,6 @@ export async function generateRoute(tokenAddress: string, amount: number): Promi
         deadlineOrPreviousBlockhash: Math.floor(Date.now() / 1000 + 600),
     };
     
-
     const route = await router.route(
         CurrencyAmount.fromRawAmount(
             TOKEN_MAP[tokenAddress],

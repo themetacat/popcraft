@@ -155,7 +155,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   // 判断用户临时钱包有没有钱 
   useEffect(() => {
     if (isConnected && appName === "BASE/PopCraftSystem" && !hasExecutedRef.current) {
-      if ((Number(balance) / 1e18) < 0.000015) {
+      if ((Number(balance) / 1e18) < 3) {
         setTopUpType(true);
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
@@ -1045,7 +1045,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       balanceFN.then((balance: any) => {
         setBalance(balance);
 
-        if ((Number(balance) / 1e18) < 0.000015) {
+        if ((Number(balance) / 1e18) < 3) {
           setTopUpType(true);
           localStorage.setItem('money', 'nomoney')
           localStorage.setItem('playAction', 'noplay')
