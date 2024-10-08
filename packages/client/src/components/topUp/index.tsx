@@ -378,9 +378,6 @@ export default function TopUp({
                     src={warningImg}
                     alt="Warning"
                     className={style.warningImg}
-                    // onClick={() => {
-                    //   setWarningModel(!warningModel);
-                    // }}
                     onMouseEnter={() => setWarningModel(true)}
                     onMouseLeave={() => setWarningModel(false)}
                   />

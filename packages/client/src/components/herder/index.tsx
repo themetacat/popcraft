@@ -95,9 +95,6 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [imageCache, setImageCache] = useState({});
   const [showNewPopUp, setShowNewPopUp] = useState(false);
 
-
-
-
   // 将 CANVAS_WIDTH 和 CANVAS_HEIGHT 保存到 state 中
   const [canvasSize, setCanvasSize] = useState({
     width: document.documentElement.clientWidth,
@@ -163,7 +160,6 @@ export default function Header({ hoveredData, handleData }: Props) {
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
         setPopStar(true);
-        // setShowTopElements(false)
       } else {
         setTopUpType(false);
         setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
@@ -730,9 +726,7 @@ export default function Header({ hoveredData, handleData }: Props) {
               } else {
                 ctx.fillStyle = entity.value.color;
                 ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-
               }
-
             }
             if (entity.value.text && entity.value.app !== "PopCraft") {
               ctx.fillStyle = "#000";
@@ -748,7 +742,6 @@ export default function Header({ hoveredData, handleData }: Props) {
               } else {
                 pix_text = entity.value.text;
               }
-
               const textX = currentX + GRID_SIZE / 2;
               const textY = currentY + GRID_SIZE / 2;
               ctx.fillText(pix_text, textX, textY);
@@ -839,7 +832,6 @@ export default function Header({ hoveredData, handleData }: Props) {
   };
   //点击方块触发事件
   const handleMouseUp = async (event: React.MouseEvent<HTMLDivElement>) => {
-
     if (pageClick === true) {
       return;
     }
@@ -884,12 +876,6 @@ export default function Header({ hoveredData, handleData }: Props) {
           setHoveredSquare(newHoveredSquare);
           setLoadingSquare(newHoveredSquare);// 设置 loading 状态
         }
-
-        // if ((Number(balance) / 1e18) < 3) {
-        //   // 显示弹出层提示用户充值
-        //   setShowNewPopUp(true)
-        //   return;
-        // }
 
         if (isEmpty) {
           if (selectedColor && coordinates) {
@@ -950,7 +936,6 @@ export default function Header({ hoveredData, handleData }: Props) {
         } else {
           setPopExhibit(true);
         }
-
         setIsDragging(false);
         setShowOverlay(true);
 
@@ -959,8 +944,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       }
     });
   };
-
-
 
   const interactHandle = (
     coordinates: any,
@@ -1002,55 +985,14 @@ export default function Header({ hoveredData, handleData }: Props) {
     });
   };
 
-  // const interactHandleTCM = (
-  //   coordinates: any,
-  //   palyerAddress: any,
-  //   selectedColor: any,
-  //   actionData: any,
-  //   other_params: any
-  // ) => {
-  //   setLoading(true);
-  //   // setLoadingpaly(true)
-  //   const interact_data = interactTCM(
-  //     coordinates,
-  //     palyerAddress,
-  //     selectedColor,
-  //     actionData,
-  //     other_params
-  //   );
-
-  //   interact_data.then((increDataVal: any) => {
-  //     if (increDataVal[1]) {
-  //       increDataVal[1].then((a: any) => {
-  //         if (a.status === "success") {
-  //           setLoading(false);
-  //           setLoadingpaly(false)
-  //           setTimeControl(true);
-  //           setLoadingSquare(null); // 清除 loading 状态
-  //           onHandleLoading();
-  //           localStorage.setItem('playAction', 'gameContinue');
-  //           if (actionData === "interact") {
-  //             // localStorage.setItem("showGameOver", "false");
-  //           }
-  //         } else {
-  //           handleError();
-  //           onHandleLoading();
-  //           setLoadingSquare(null); // 清除 loading 状态
-  //         }
-  //       });
-  //     } else {
-  //       handleError(); /^[^A-Za-z]*$/
-  //       setLoadingSquare(null); // 清除 loading 状态
-  //     }
-  //   });
-  // };
+ 
 
   const interactHandleTCM = async (
-    coordinates,
-    palyerAddress,
-    selectedColor,
-    actionData,
-    other_params
+    coordinates: any,
+    palyerAddress: any,
+    selectedColor: any,
+    actionData: any,
+    other_params: any
   ) => {
     setLoading(true);
     setLoadingpaly(true);

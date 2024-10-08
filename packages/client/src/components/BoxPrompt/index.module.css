@@ -1122,3 +1122,25 @@ p {
   transition: transform 5s linear;
   height: 100%;
 }
+
+.wrongNetworkBtn {
+  width: 370px;
+  height: 50px;
+  border: none;
+  opacity: 0px;
+  background-color: #d5f7ff;
+  background-image: url("../../images/topup/wrongnetwork.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.1em;
+  text-align: center;
+  color: red;
+  transition: font-size 0.3s ease;
+  text-transform: uppercase;
+  cursor: pointer;
+}

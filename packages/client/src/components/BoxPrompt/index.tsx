@@ -15,6 +15,7 @@ import add from '../../images/substance/add.png'
 import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
 import { generateRoute } from '../../uniswap_routing/routing'
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import {
   encodeEntity,
@@ -72,10 +73,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  // const [loadingPrices, setLoadingPrices] = useState(false);
   const [loadingPrices, setLoadingPrices] = useState({});
-
-
 
   const resultBugs = useBalance({
     address: address,
@@ -91,12 +89,14 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     setLoading(true);
     playFun();
     setPopStar(false);
+    setdataq(false);
   };
 
   const handlePlayAgaintow = () => {
     setLoadingPlayAgain(true);
     playFun();
     setPopStar(false);
+    setdataq(false);
   };
 
   //控制奖励bugs
@@ -273,53 +273,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     setAllZero(allZero);
   }, [numberData]);
 
-
-  // const handlePayMent = () => {
-  //   // 过滤 numberData 和 prices 以仅包含页面上渲染的物质
-  //   const renderedMaterials = Object.keys(matchedData);
-  //   const filteredNumberData = renderedMaterials.map(key => ({
-  //     key,
-  //     quantity: numberData[key] * 10 ** 18
-  //   }));
-
-  //   // 过滤掉数量为 0 的物质
-  //   const itemsToPay = filteredNumberData.filter(item => item.quantity > 0);
-  //   if (itemsToPay.length === 0) {
-  //     toast.error("Payment failed! Try again!");
-  //     return;
-  //   }
-  //   const methodParametersArray = itemsToPay.map(item => prices[item.key]?.methodParameters);
-  //   const payFunctionTwo = payFunction(
-  //     methodParametersArray
-
-  //   );
-  //   setcresa(true);
-  //   payFunctionTwo.then((result) => {
-  //     if (result.status === "success") {
-  //       toast.success("Payment successed!");
-  //       setcresa(false);
-  //       setTimeout(() => {
-  //         setdataq(false);
-  //       }, 3000);
-  //     } else {
-  //       toast.error("Payment failed! Try again!");
-  //       setcresa(false);
-  //       setpay(true);
-  //       setTimeout(() => {
-  //         setpay(false);
-  //       }, 3000);
-  //     }
-  //   })
-  //     .catch((error) => {
-  //       toast.error("Payment failed! Try again！");
-  //       setcresa(false);
-  //       setpay(true);
-  //       setTimeout(() => {
-  //         setpay(false);
-  //       }, 3000);
-  //     });
-  // };
-
   const handlePayMent = () => {
     // 过滤 numberData 和 prices 以仅包含页面上渲染的物质
     const renderedMaterials = Object.keys(matchedData);
@@ -399,7 +352,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         const methodParameters = route.methodParameters;
         methodParameters['tokenAddress'] = key;
         methodParameters['amount'] = quantity;
-        setLoadingPrices(prev => ({ ...prev, [key]: false })); 
+        setLoadingPrices(prev => ({ ...prev, [key]: false }));
         return { [key]: { price, methodParameters } };
       } else {
         return { [key]: { price: 0, methodParameters: {} } };
@@ -429,7 +382,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       [key]: Math.max(prev[key] - 1, 0)
     }));
     // fetchPrices(matchedData);
-    setLoadingPrices(prev => ({ ...prev, [key]: true })); 
+    setLoadingPrices(prev => ({ ...prev, [key]: true }));
   };
 
   const upHandleNumber = (key) => {
@@ -439,7 +392,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       [key]: prev[key] + 1
     }));
     // fetchPrices(matchedData);
-    setLoadingPrices(prev => ({ ...prev, [key]: true })); 
+    setLoadingPrices(prev => ({ ...prev, [key]: true }));
     setLoadingUpHandle(false);
   };
 
@@ -502,7 +455,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       balanceData
     );
     const prices = await fetchPrices(matchedData);
-    // console.log("111");
   };
 
   useEffect(() => {
@@ -539,15 +491,13 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     fetchPrices(matchedData);
   }, [numberData]);
 
-  
-
   return (
     <>
       {showTopElements && (
         <div className={style.container}>
           <div className={style.container2}>
             <div className={style.firstPart}>
-              <p style={{ cursor: "pointer" }}>
+              <p className={style.firstnew}>
                 {timeControl && timeLeft !== 0 && gameSuccess === false ? formatTime(timeLeft) :
                   <div onClick={() => {
                     playFun()
@@ -650,13 +600,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                       </button>
                     </div>
                   </div>
-                  {/* 
-                  <div className={style.twoBuy}>
-                    <span className={style.fontNum}>
-                      {formatAmount(prices[key] ? prices[key].price : 0)}
-                      <p className={style.fontNum1}>ETH</p>
-                    </span> */}
-
                   <div className={style.twoBuy}>
                     <span className={style.fontNum}>
                       {loadingPrices[key] ? (
@@ -685,7 +628,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 </div>
               ))}
             </div>
-
             <div className={style.totalAmount}>
               <span className={style.fontNumyo}>
                 TOTAL: {formatAmount(totalPrice)} ETH
@@ -693,32 +635,81 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             </div>
 
             <div className={style.payBtnBox}>
-              <button
-                className={style.payBtn}
-                onClick={() => {
-                  handlePayMent()
+              <ConnectButton.Custom>
+                {({
+                  account,
+                  chain,
+                  openAccountModal,
+                  openChainModal,
+                  openConnectModal,
+                  authenticationStatus,
+                  mounted,
+                }) => {
+                  const ready = mounted && authenticationStatus !== "loading";
+                  const connected =
+                    ready &&
+                    account &&
+                    chain &&
+                    (!authenticationStatus || authenticationStatus === "authenticated");
 
+                  return (
+                    <>
+                      {!chain.unsupported && (
+                        <button
+                          className={style.payBtn}
+                          onClick={() => {
+                            handlePayMent();
+                          }}
+                          disabled={
+                            Object.values(numberData).every(num => num === 0) ||
+                            cresa ||
+                            !isPriceLoaded ||
+                            Object.values(loadingPrices).some(isLoading => isLoading)
+                          }
+                          style={{
+                            cursor:
+                              Object.values(numberData).every(num => num === 0) ||
+                                cresa ||
+                                !isPriceLoaded ||
+                                Object.values(loadingPrices).some(isLoading => isLoading)
+                                ? "not-allowed"
+                                : "auto"
+                          }}
+                        >
+                          {cresa ? (
+                            <img
+                              src={loadingIcon}
+                              alt=""
+                              style={{
+                                width: "40px",
+                                height: "40px",
+                                marginTop: "5px",
+                                color: "#ffffff",
+                                filter: "grayscale(100%)",
+                              }}
+                              className={style.commonCls1}
+                            />
+                          ) : (
+                            <span>PAY</span>
+                          )}
+                        </button>
+                      )}
+
+                      {chain.unsupported && (
+                        <button
+                          onClick={openChainModal}
+                          type="button"
+                          className={style.wrongNetworkBtn}
+                        >
+                          Wrong network
+                        </button>
+                      )}
+                    </>
+                  );
                 }}
-                disabled={Object.values(numberData).every(num => num === 0) || cresa || !isPriceLoaded} // 添加 isPriceLoaded 状态来禁用按钮
-                style={{ cursor: Object.values(numberData).every(num => num === 0) || cresa || !isPriceLoaded ? "not-allowed" : "auto" }}
-              >
-                {cresa ? (
-                  <img
-                    src={loadingIcon}
-                    alt=""
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      marginTop: "5px",
-                      color: "#ffffff",
-                      filter: "grayscale(100%)",
-                    }}
-                    className={style.commonCls}
-                  />
-                ) : (
-                  <span>PAY</span>
-                )}
-              </button>
+              </ConnectButton.Custom>
+
+
             </div>
 
           </div>
