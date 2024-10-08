@@ -18,7 +18,6 @@ export async function generateRoute(tokenAddress: string, amount: number): Promi
         chainId: ChainId.REDSTONE,
         provider: getMainnetProvider(),
     })
-    // console.log(amount);
     const currencyIn = nativeOnChain(690)
     const options: SwapOptionsUniversalRouter = {
         type: SwapType.UNIVERSAL_ROUTER,
