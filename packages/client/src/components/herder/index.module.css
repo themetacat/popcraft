@@ -423,3 +423,43 @@ canvas {
     1px 1px 0 rgba(69, 69, 69, 0.7)
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: calc(100%);
+  z-index: 10000000;
+  height: 100%;
+  pointer-events: auto !important;
+}
+
+.modal {
+  width: 35rem;
+  background-image: url("../../images/substance/fail.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  border-radius: 8px;
+  margin-left: 104rem;
+  margin-top: 32rem;
+}
+
+.failto {
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin-top: -10px;
+}
+
+.colorto {
+  color: red;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "AdobeHeitiStd-Regular4";
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin-top: -4px;
+}

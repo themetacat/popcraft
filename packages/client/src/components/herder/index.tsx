@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useLayoutEffect } from "react";
 import style from "./index.module.css";
 import { Has, getComponentValueStrict, getComponentValue, AnyComponentValue, } from "@latticexyz/recs";
-import { formatUnits } from "viem";
+import { formatUnits, decodeErrorResult } from "viem";
 import { imageIconData } from "../imageIconData";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import toast, { Toaster } from "react-hot-toast";
@@ -24,6 +24,8 @@ import popcraftLogo from '../../images/popcraft_logo.webp';
 import backgroundMusic from '../../audio/1.mp3';
 import effectSound from '../../audio/2.mp3';
 import loadingImg from "../../images/checkerboard_loading.webp";
+import success from '../../images/substance/successto.png'
+import failto from '../../images/substance/failto.png'
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -94,6 +96,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const hasExecutedRef = useRef(true);
   const [imageCache, setImageCache] = useState({});
   const [showNewPopUp, setShowNewPopUp] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // 将 CANVAS_WIDTH 和 CANVAS_HEIGHT 保存到 state 中
   const [canvasSize, setCanvasSize] = useState({
@@ -985,7 +988,51 @@ export default function Header({ hoveredData, handleData }: Props) {
     });
   };
 
- 
+  // const interactHandleTCM = async (
+  //   coordinates: any,
+  //   palyerAddress: any,
+  //   selectedColor: any,
+  //   actionData: any,
+  //   other_params: any
+  // ) => {
+  //   setLoading(true);
+  //   setLoadingpaly(true);
+  //   try {
+  //     const interact_data = await interactTCM(
+  //       coordinates,
+  //       palyerAddress,
+  //       selectedColor,
+  //       actionData,
+  //       other_params
+  //     );
+
+  //     if (interact_data[1]) {
+  //       const receipt = await interact_data[1];
+  //       if (receipt.status === "success") {
+  //         setLoading(false);
+  //         setLoadingpaly(false);
+  //         setTimeControl(true);
+  //         setLoadingSquare(null); // 清除 loading 状态
+  //         onHandleLoading();
+  //         localStorage.setItem('playAction', 'gameContinue');
+  //         if (actionData === "interact") {
+  //           // localStorage.setItem("showGameOver", "false");
+  //         }
+  //       } else {
+  //         handleError(receipt.error);
+  //         onHandleLoading();
+  //         setLoadingSquare(null); // 清除 loading 状态
+  //       }
+  //     } else {
+  //       handleError("No receipt returned");
+
+  //       setLoadingSquare(null); // 清除 loading 状态
+  //     }
+  //   } catch (error) {
+  //     handleError(error.message);
+  //     setLoadingSquare(null); // 清除 loading 状态
+  //   }
+  // };
 
   const interactHandleTCM = async (
     coordinates: any,
@@ -1005,34 +1052,32 @@ export default function Header({ hoveredData, handleData }: Props) {
         other_params
       );
 
-      if (interact_data[1]) {
-        const receipt = await interact_data[1];
-        if (receipt.status === "success") {
-          setLoading(false);
-          setLoadingpaly(false);
-          setTimeControl(true);
-          setLoadingSquare(null); // 清除 loading 状态
-          onHandleLoading();
-          localStorage.setItem('playAction', 'gameContinue');
-          if (actionData === "interact") {
-            // localStorage.setItem("showGameOver", "false");
-          }
-        } else {
-          handleError(receipt.error);
-          onHandleLoading();
-          setLoadingSquare(null); // 清除 loading 状态
+      if (interact_data.error) {
+        handleError(interact_data.error);
+        setLoadingSquare(null); // 清除 loading 状态
+        return;
+      }
+
+      const receipt = await interact_data.hashValpublic;
+      if (receipt.status === "success") {
+        setLoading(false);
+        setLoadingpaly(false);
+        setTimeControl(true);
+        setLoadingSquare(null); // 清除 loading 状态
+        onHandleLoading();
+        localStorage.setItem('playAction', 'gameContinue');
+        if (actionData === "interact") {
+          // localStorage.setItem("showGameOver", "false");
         }
       } else {
-        handleError("No receipt returned");
-
+        handleError(receipt.error);
+        onHandleLoading();
         setLoadingSquare(null); // 清除 loading 状态
       }
     } catch (error) {
-      handleError(error.message);
       setLoadingSquare(null); // 清除 loading 状态
     }
   };
-
 
   //判断时间倒计时
   const handleEoaContractData = (data: any) => {
@@ -1151,7 +1196,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
     // localStorage.setItem('playAction', 'gameContinue'); // 设置 playAction 为 gameContinue
   };
-
 
   //拖拽函数 
   const handleMouseEnter = useCallback(
@@ -1330,7 +1374,6 @@ export default function Header({ hoveredData, handleData }: Props) {
 
     return res;
   };
-
   const get_value_type = (type: string) => {
     if (type === undefined) {
       return type;
@@ -1343,7 +1386,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       return type;
     }
   };
-
   const addressDataCopy = (text: any) => {
     navigator.clipboard.writeText(text).then(
       function () {
@@ -1360,27 +1402,30 @@ export default function Header({ hoveredData, handleData }: Props) {
     setShowOverlay(false);
     setPanningFromChild(newPanningValue);
   };
-  const handleError = () => {
-    setLoading(false);
-    setLoadingpaly(false)
-    onHandleLoading();
-  };
-
-  // const handleError = (errorMessage) => {
+  // const handleError = () => {
   //   setLoading(false);
-  //   setLoadingpaly(false);
+  //   setLoadingpaly(false)
   //   onHandleLoading();
-  //   if (errorMessage.includes("0x897f6c58")) {
-  //     toast.error("Out of stock, please buy!");
-  //   } else if (errorMessage.includes("RPC Request failed")) {
-  //     toast.error("An error was reported");
-  //   } else if (errorMessage.includes("The contract function \"callFrom\" reverted with the following reason:")) {
-  //     setShowNewPopUp(false); // 设置显示新的弹出框
-  //   } else {
-  //     console.error("Failed to setup network:", errorMessage);
-  //     setShowNewPopUp(true);
-  //   }
   // };
+
+  const handleError = (errorMessage) => {
+    setLoading(false);
+    setLoadingpaly(false);
+    onHandleLoading();
+    if (errorMessage.includes("0x897f6c58")) {
+      setShowSuccessModal(true);
+      setTimeout(() => {
+        setShowSuccessModal(false);
+      }, 1000);
+    } else if (errorMessage.includes("RPC Request failed")) {
+      setShowNewPopUp(true);
+    } else if (errorMessage.includes("The contract function \"callFrom\" reverted with the following reason:")) {
+      // 不弹框
+    } else {
+      console.error("Failed to setup network:", errorMessage);
+      setShowNewPopUp(true);
+    }
+  };
 
   const onHandleExe = () => {
     setPopExhibit(false);
@@ -1767,6 +1812,14 @@ export default function Header({ hoveredData, handleData }: Props) {
               setShowNewPopUp(false);
               setTopUpType(true);
             }}>TOP UP</button>
+          </div>
+        </div>
+      )}
+      {showSuccessModal && (
+        <div className={style.overlay}>
+          <div className={style.modal}>
+            <img src={failto} alt="" className={style.failto} />
+            <p className={style.colorto}>Out of stock, please buy!</p>
           </div>
         </div>
       )}

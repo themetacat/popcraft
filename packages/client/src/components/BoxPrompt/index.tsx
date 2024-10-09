@@ -90,6 +90,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     playFun();
     setPopStar(false);
     setdataq(false);
+    fetchPrices(matchedData); // 重新询价
   };
 
   const handlePlayAgaintow = () => {
@@ -97,6 +98,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     playFun();
     setPopStar(false);
     setdataq(false);
+    fetchPrices(matchedData); // 重新询价
   };
 
   //控制奖励bugs
@@ -227,7 +229,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     if (isConnected) {
       const interval = setInterval(() => {
         updateTCMPopStarData();
-      }, 500);
+      }, 5000);
       return () => clearInterval(interval);
     }
   }, [isConnected]);
