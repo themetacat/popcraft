@@ -3,7 +3,6 @@ import style from "./index.module.css";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import loadingImg from "../../images/welcome_pay_play_loading.webp";
-import { confluxESpace } from "viem/chains";
 
 interface Props {
   setPopStar: any;
@@ -11,13 +10,13 @@ interface Props {
   playFuntop: any;
   onTopUpClick: any; // 添加回调函数
   loadingplay: any;
+  setTopUpType: any;
 }
 
-export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop, loadingplay }: Props) {
+export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpType, loadingplay }: Props) {
   const playAction = localStorage.getItem("playAction");
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false); // 添加状态来跟踪按钮的点击状态
-
 
   const { isConnected } = useAccount();
   const handleConnectClick = () => {
@@ -27,9 +26,9 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, playFuntop,
         playFun();
         setPlayButtonClicked(true);
         setIsPlaying(true); // 更新状态
-
       } else {
         setPopStar(false);
+        setTopUpType(true)
       }
 
     } else {

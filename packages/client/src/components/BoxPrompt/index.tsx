@@ -66,7 +66,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [balance, setBalance] = useState(0);
   const [loadingPlayAgain, setLoadingPlayAgain] = useState(false);
   const [loadingUpHandle, setLoadingUpHandle] = useState(false);
-  const [isPriceLoaded, setIsPriceLoaded] = useState(false); // 价格是否已加载
+  const [isPriceLoaded, setIsPriceLoaded] = useState(false);
   const [prices, setPrices] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
   const [allZero, setAllZero] = useState(false);
@@ -74,7 +74,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [modalMessage, setModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loadingPrices, setLoadingPrices] = useState({});
-
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
@@ -90,7 +89,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     playFun();
     setPopStar(false);
     setdataq(false);
-    fetchPrices(matchedData); // 重新询价
+    fetchPrices(matchedData); 
   };
 
   const handlePlayAgaintow = () => {
@@ -98,16 +97,14 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     playFun();
     setPopStar(false);
     setdataq(false);
-    fetchPrices(matchedData); // 重新询价
+    fetchPrices(matchedData);
   };
 
-  //控制奖励bugs
   useEffect(() => {
     let interval: any;
     if (gameSuccess) {
       interval = setInterval(() => {
         resultBugs.refetch().then((data) => {
-
           if (data.data?.value) {
             setBalance(Math.floor(Number(data.data?.value) / 1e18));
           }
@@ -332,7 +329,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         imageIconData,
         balanceData
       );
-      // const prices = await fetchPrices(matchedData);
       setForPayMonType(true);
       setIsPriceLoaded(true);
       setForPayMonType(false);
@@ -375,7 +371,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       initialData[key] = 5;
     });
     setNumberData(initialData);
-    // fetchPrices(matchedData); // 初始化时也调用 fetchPrices
   }, []);
 
   const downHandleNumber = (key) => {
@@ -383,7 +378,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       ...prev,
       [key]: Math.max(prev[key] - 1, 0)
     }));
-    // fetchPrices(matchedData);
     setLoadingPrices(prev => ({ ...prev, [key]: true }));
   };
 
@@ -393,7 +387,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       ...prev,
       [key]: prev[key] + 1
     }));
-    // fetchPrices(matchedData);
     setLoadingPrices(prev => ({ ...prev, [key]: true }));
     setLoadingUpHandle(false);
   };
@@ -513,7 +506,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               <p>REWARDS</p>
             </div>
             <div className={style.threePart}>
-              <p>
+              <p className={style.balance}>
                 {formatBalance(balance)}&nbsp;$BUGS
               </p>
               <p>BALANCE</p>
