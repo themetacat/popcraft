@@ -89,7 +89,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     playFun();
     setPopStar(false);
     setdataq(false);
-    fetchPrices(matchedData); 
   };
 
   const handlePlayAgaintow = () => {
@@ -97,7 +96,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     playFun();
     setPopStar(false);
     setdataq(false);
-    fetchPrices(matchedData);
   };
 
   useEffect(() => {
@@ -340,6 +338,30 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
 
   //获取的5种物质信息以及价格
+  // const fetchPrices = async (matchedData: any) => {
+  //   const pricePromises = Object.keys(matchedData).map(async (key) => {
+  //     const quantity = numberData[key] || 0;
+  //     if (quantity > 0) {
+  //       setLoadingPrices(prev => ({ ...prev, [key]: true }));
+  //       const route = await generateRoute(key, quantity);
+  //       const price = route.quote.toExact(); // 获取报价
+  //       const methodParameters = route.methodParameters;
+  //       methodParameters['tokenAddress'] = key;
+  //       methodParameters['amount'] = quantity;
+  //       setLoadingPrices(prev => ({ ...prev, [key]: false }));
+  //       return { [key]: { price, methodParameters } };
+  //     } else {
+  //       return { [key]: { price: 0, methodParameters: {} } };
+  //     }
+  //   });
+  //   const prices = await Promise.all(pricePromises);
+  //   const priceObject = prices.reduce((acc, curr) => ({ ...acc, ...curr }), {});
+  //   const total = Object.values(priceObject).reduce((sum, { price }) => sum + Number(price), 0);
+  //   setPrices(priceObject);
+  //   setTotalPrice(total);
+  //   return priceObject;
+  // };
+
   const fetchPrices = async (matchedData: any) => {
     const pricePromises = Object.keys(matchedData).map(async (key) => {
       const quantity = numberData[key] || 0;
@@ -364,6 +386,28 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     return priceObject;
   };
 
+  const fetchPriceForSingleItem = async (key, quantity) => {
+    if (quantity > 0) {
+      setLoadingPrices(prev => ({ ...prev, [key]: true }));
+      try {
+        const route = await generateRoute(key, quantity);
+        const price = route.quote.toExact(); // 获取报价
+        const methodParameters = route.methodParameters;
+        methodParameters['tokenAddress'] = key;
+        methodParameters['amount'] = quantity;
+        setPrices(prev => ({
+          ...prev,
+          [key]: { price, methodParameters }
+        }));
+        setLoadingPrices(prev => ({ ...prev, [key]: false }));
+        updateTotalPrice();
+      } catch (error) {
+        console.error(`Error fetching price for ${key}:`, error);
+        setLoadingPrices(prev => ({ ...prev, [key]: false }));
+      }
+    }
+  };
+
   //默认购买数量为5
   useEffect(() => {
     const initialData = {};
@@ -378,7 +422,16 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       ...prev,
       [key]: Math.max(prev[key] - 1, 0)
     }));
-    setLoadingPrices(prev => ({ ...prev, [key]: true }));
+    if (numberData[key] > 1) {
+      setLoadingPrices(prev => ({ ...prev, [key]: true }));
+      fetchPriceForSingleItem(key, numberData[key] - 1);
+    } else {
+      setPrices(prev => ({
+        ...prev,
+        [key]: { price: 0, methodParameters: {} }
+      }));
+      setLoadingPrices(prev => ({ ...prev, [key]: false }));
+    }
   };
 
   const upHandleNumber = (key) => {
@@ -388,6 +441,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       [key]: prev[key] + 1
     }));
     setLoadingPrices(prev => ({ ...prev, [key]: true }));
+    fetchPriceForSingleItem(key, numberData[key] + 1);
     setLoadingUpHandle(false);
   };
 
@@ -406,7 +460,16 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       ...prev,
       [key]: Number(numericValue)
     }));
-    fetchPrices(matchedData);
+    if (Number(numericValue) > 0) {
+      setLoadingPrices(prev => ({ ...prev, [key]: true }));
+      fetchPriceForSingleItem(key, Number(numericValue));
+    } else {
+      setPrices(prev => ({
+        ...prev,
+        [key]: { price: 0, methodParameters: {} }
+      }));
+      setLoadingPrices(prev => ({ ...prev, [key]: false }));
+    }
   };
 
   //计算总价
@@ -418,6 +481,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
     setTotalPrice(total);
   };
+
+
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60).toString().padStart(2, '0');
     const seconds = (time % 60).toString().padStart(2, '0');
@@ -482,9 +547,15 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     updateTotalPrice();
   }, [numberData, prices]);
 
+  // useEffect(() => {
+  //   fetchPrices(matchedData);
+  // }, [numberData]);
+
   useEffect(() => {
-    fetchPrices(matchedData);
-  }, [numberData]);
+    if (dataq) {
+      fetchPrices(matchedData);
+    }
+  }, [dataq]);
 
   return (
     <>
@@ -573,8 +644,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                         onClick={() => {
                           downHandleNumber(key);
                         }}
-                        disabled={numberData === 1}
-                        className={numberData === 1 ? style.disabled : (null as any)}
+                        disabled={numberData[key] <= 0 || loadingPrices[key]}
+                        style={{
+                          cursor: numberData[key] <= 0 || loadingPrices[key] ? "not-allowed" : "pointer"
+                        }}
                       >
                         <img src={reduce} className={style.addbox} alt="" />
                       </button>
@@ -588,8 +661,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                         onClick={() => {
                           upHandleNumber(key);
                         }}
-                        disabled={data === 0}
-                        className={data === 0 ? style.disabled : (null as any)}
+                        disabled={loadingPrices[key]}
+                        style={{
+                          cursor: loadingPrices[key] ? "not-allowed" : "pointer"
+                        }}
                       >
                         <img src={add} className={style.addbox} alt="" />
                       </button>
@@ -597,12 +672,17 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                   </div>
                   <div className={style.twoBuy}>
                     <span className={style.fontNum}>
-                      {loadingPrices[key] ? (
-                        <img src={loadingImg} alt="" className={style.loadingImg} />
+                      {numberData[key] > 0 ? (
+                        loadingPrices[key] ? (
+                          <img src={loadingImg} alt="" className={style.loadingImg} />
+                        ) : (
+                          formatAmount(prices[key] ? prices[key].price : 0)
+                        )
                       ) : (
-                        formatAmount(prices[key] ? prices[key].price : 0)
+                        "0.0000000"
                       )}
-                      <p className={style.fontNum1}>ETH</p>
+                      <br />
+                      ETH
                     </span>
 
                     {forPayMonType === true ? (
@@ -847,8 +927,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           </div>
         </div>
       ) : null}
-
-
 
       <div className={style.buttonBox}>
         <a href="https://x.com/metacat007" target="_blank" rel="noopener noreferrer">

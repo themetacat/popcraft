@@ -89,7 +89,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioCache: { [url: string]: HTMLAudioElement } = {};
   const [showTopUp, setShowTopUp] = useState(false);
-  const [showTopElements, setShowTopElements] = useState(false); 
+  const [showTopElements, setShowTopElements] = useState(false);
   const [playFuntop, setPlayFun] = useState(false);
   const playAction = localStorage.getItem('playAction');
   const hasExecutedRef = useRef(true);
@@ -987,52 +987,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     });
   };
 
-  // const interactHandleTCM = async (
-  //   coordinates: any,
-  //   palyerAddress: any,
-  //   selectedColor: any,
-  //   actionData: any,
-  //   other_params: any
-  // ) => {
-  //   setLoading(true);
-  //   setLoadingpaly(true);
-  //   try {
-  //     const interact_data = await interactTCM(
-  //       coordinates,
-  //       palyerAddress,
-  //       selectedColor,
-  //       actionData,
-  //       other_params
-  //     );
-
-  //     if (interact_data[1]) {
-  //       const receipt = await interact_data[1];
-  //       if (receipt.status === "success") {
-  //         setLoading(false);
-  //         setLoadingpaly(false);
-  //         setTimeControl(true);
-  //         setLoadingSquare(null); // 清除 loading 状态
-  //         onHandleLoading();
-  //         localStorage.setItem('playAction', 'gameContinue');
-  //         if (actionData === "interact") {
-  //           // localStorage.setItem("showGameOver", "false");
-  //         }
-  //       } else {
-  //         handleError(receipt.error);
-  //         onHandleLoading();
-  //         setLoadingSquare(null); // 清除 loading 状态
-  //       }
-  //     } else {
-  //       handleError("No receipt returned");
-
-  //       setLoadingSquare(null); // 清除 loading 状态
-  //     }
-  //   } catch (error) {
-  //     handleError(error.message);
-  //     setLoadingSquare(null); // 清除 loading 状态
-  //   }
-  // };
-
   const interactHandleTCM = async (
     coordinates: any,
     palyerAddress: any,
@@ -1056,27 +1010,36 @@ export default function Header({ hoveredData, handleData }: Props) {
         setLoadingSquare(null); // 清除 loading 状态
         return;
       }
-
       const receipt = await interact_data.hashValpublic;
-      if (receipt.status === "success") {
-        setLoading(false);
-        setLoadingpaly(false);
-        setTimeControl(true);
-        setLoadingSquare(null); // 清除 loading 状态
-        onHandleLoading();
-        localStorage.setItem('playAction', 'gameContinue');
-        if (actionData === "interact") {
-          // localStorage.setItem("showGameOver", "false");
+      if (interact_data[1]) {
+        const receipt = await interact_data[1];
+        if (receipt.status === "success") {
+          setLoading(false);
+          setLoadingpaly(false);
+          setTimeControl(true);
+          setLoadingSquare(null); // 清除 loading 状态
+          onHandleLoading();
+          localStorage.setItem('playAction', 'gameContinue');
+          if (actionData === "interact") {
+            // localStorage.setItem("showGameOver", "false");
+          }
+        } else {
+          handleError(receipt.error);
+          onHandleLoading();
+          setLoadingSquare(null); // 清除 loading 状态
         }
       } else {
-        handleError(receipt.error);
-        onHandleLoading();
-        setLoadingSquare(null); 
+        handleError("No receipt returned");
+
+        setLoadingSquare(null); // 清除 loading 状态
       }
     } catch (error) {
-      setLoadingSquare(null); 
+      handleError(error.message);
+      setLoadingSquare(null); // 清除 loading 状态
     }
   };
+
+
 
   //判断时间倒计时
   const handleEoaContractData = (data: any) => {
@@ -1162,8 +1125,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
     // localStorage.setItem('playAction', 'play'); // 设置 playAction 为 play
   };
-
-
 
   const playData = () => {
     let EmptyRegionNum = 0
@@ -1787,9 +1748,9 @@ export default function Header({ hoveredData, handleData }: Props) {
             playFun={playFun}
             playFuntop={playFuntop}
             onTopUpClick={handleTopUpClick}
-            loadingplay={loadingplay} 
+            loadingplay={loadingplay}
             setTopUpType={setTopUpType}
-            />
+          />
         </div>
       ) : null}
 

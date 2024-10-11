@@ -478,6 +478,7 @@ export function createSystemCalls(
   };
 
   const payFunction = async (methodParametersArray: any[]) => {
+    
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
     const [account] = await window.ethereum!.request({
