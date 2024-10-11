@@ -1,0 +1,3 @@
+[submodule "packages/popcraft_contracts"]
+	path = packages/popcraft_contracts
+	url = https://github.com/themetacat/popcraft_contracts.git
