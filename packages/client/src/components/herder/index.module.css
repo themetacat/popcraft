@@ -59,6 +59,7 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.5); 
 }
 
 .containerImg {
@@ -72,15 +73,44 @@ canvas {
 }
 
 .addr {
-  justify-content: right;
+  width: 60rem;
+  height: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #fff;
   position: absolute;
   right: 3rem;
-  height: auto;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-size: 2.2rem;
+  /* background-color: red; */
+}
+
+.chainbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chain {
+  width: 30rem;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addressbox {
+  width: 30rem;
+  height: 5rem;
+  position: relative;
+  display: flex;
+  border-radius: 30rem;
+  align-items: center;
+  justify-content: center;
+  background-color: #2b8e9d;
 }
 
 canvas {
@@ -255,7 +285,6 @@ canvas {
   background: none;
   color: #b00002;
   text-transform: uppercase;
-  /* 将字母都大写 */
   font-size: 2.5rem;
   font-weight: 700;
   background-image: url("../../images/addressback.webp");
@@ -266,6 +295,7 @@ canvas {
   justify-content: center;
   letter-spacing: 0.2rem;
   cursor: pointer;
+  margin-left: 20rem;
 }
 
 .btnConnectbox {
@@ -274,6 +304,7 @@ canvas {
   color: #fff;
   font-size: 2.3rem;
   font-weight: 700;
+  margin-left: 40rem;
 }
 
 .boldAddress {
@@ -285,41 +316,44 @@ canvas {
 }
 
 .downBox {
-  width: 34rem;
-  height: 23rem;
+  width: 36rem;
+  height: 25rem;
   border: none;
   background-image: url("../../images/pageback.webp");
   background-size: 100% 100%;
   background-position: center;
   position: absolute;
-  left: 22rem;
-  top: 3.8rem;
+  top: 100%;
+  left: -1;
   opacity: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin-top: -0.45rem;
 }
 
 .downBoxclocese {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: -1rem;
 }
 
 .downBoxItem {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
   width: 100%;
+  padding: 2.5rem 0;
   height: auto;
-  padding: 1rem 0;
-  opacity: 1;
-  font-family: Silkscreen;
   font-size: 2.5rem;
   font-weight: 600;
   letter-spacing: 0.5rem;
   text-transform: uppercase;
   text-shadow: 2px 2px 5px rgba(49, 49, 49, 0.5);
   font-family: "AdobeHeitiStd-Regular";
-  margin: 1rem 0;
 }
 
 .downBoxItem:hover {
@@ -423,6 +457,7 @@ canvas {
     -1px 1px 0 rgba(59, 59, 59, 0.7),
     1px 1px 0 rgba(69, 69, 69, 0.7)
 }
+
 .overlay {
   position: fixed;
   top: 0;
@@ -432,6 +467,7 @@ canvas {
   height: 100%;
   pointer-events: auto !important;
 }
+
 .modal {
   width: 35rem;
   background-image: url("../../images/substance/fail.webp");
@@ -443,12 +479,14 @@ canvas {
   margin-left: 104rem;
   margin-top: 32rem;
 }
+
 .failto {
   width: 30px;
   height: 30px;
   float: left;
   margin-top: -10px;
 }
+
 .colorto {
   color: red;
   font-size: 13px;

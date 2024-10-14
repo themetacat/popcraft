@@ -1614,46 +1614,50 @@ export default function Header({ hoveredData, handleData }: Props) {
                     }
 
                     return (
-                      <div
-                        style={{
-                          gap: 12,
-                        }}
-                        onMouseEnter={() => {
-                          setAddressModel(true);
-                        }}
-                        onMouseLeave={() => {
-                          setAddressModel(false);
-                        }}
-                      >
-                        {" "}
-                        {chain.name}&nbsp;&nbsp;
-                        <button
-                          type="button"
-                          className={style.boldAddress} // 添加这个类名
-
-                        >
-                          {account.displayName}
-                          {account.displayBalance
-                            ? ` (${account.displayBalance})`
-                            : ""}
-                        </button>
-                        {addressModel && (
-                          <div className={style.downBox}>
-                            <div className={style.downBoxclocese}>
-                              {addressContent.length > 0 &&
-                                addressContent.map((item, index) => (
-                                  <div
-                                    className={style.downBoxItem}
-                                    key={index}
-                                    onClick={() => handleAddClick(item.value)}
-                                  >
-                                    {item.name}
-                                  </div>
-                                ))}
-                            </div>
+                      <div>
+                        <div className={style.chainbox}>
+                          <div className={style.chain}>
+                            {chain.name} &nbsp;&nbsp;
                           </div>
-
-                        )}
+                          <div className={style.addressbox}
+                            style={{
+                              gap: 12,
+                            }}
+                            onMouseEnter={() => {
+                              setAddressModel(true);
+                            }}
+                            onMouseLeave={() => {
+                              setAddressModel(false);
+                            }}
+                          >
+                            <button
+                              type="button"
+                              className={style.boldAddress} // 添加这个类名
+                            >
+                              {account.displayName}
+                              {account.displayBalance
+                                ? ` (${account.displayBalance})`
+                                : ""}
+                            </button>
+                            {addressModel && (
+                              <div className={style.downBox}>
+                                <div className={style.downBoxclocese}>
+                                  {addressContent.length > 0 &&
+                                    addressContent.map((item, index) => (
+                                      <div
+                                        className={style.downBoxItem}
+                                        key={index}
+                                        onClick={() => handleAddClick(item.value)}
+                                      >
+                                        {item.name}
+                                      </div>
+                                    ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        {" "}
                       </div>
                     );
                   })()}
