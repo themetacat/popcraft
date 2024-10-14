@@ -10,9 +10,6 @@
   display: flex;
   gap: 5rem;
 }
-
-
-
 .buttonBox {
   position: fixed;
   justify-content: center;
@@ -26,13 +23,11 @@
   display: flex;
   gap: 15px;
 }
-
 .buttonBox img {
   max-width: 30px;
   max-height: 30px;
   cursor: pointer;
 }
-
 .container2 {
   width: 121.875rem;
   height: 13.125rem;
@@ -49,7 +44,6 @@
   font-family: "Simplicity";
   src: url("/fonts/Simplicity.ttf");
 }
-
 .firstPart {
   width: 35rem;
   height: 13.125rem;
@@ -60,7 +54,6 @@
   display: grid;
   gap: 4px;
 }
-
 .firstPart p:nth-child(1) {
   display: flex;
   align-items: center;
@@ -74,7 +67,6 @@
   margin-top: 1.3rem;
   font-family: "Simplicity";
 }
-
 .firstPart p:nth-child(2) {
   text-align: center;
   color: #ffffff;
@@ -85,7 +77,6 @@
   margin-top: -0.2rem;
   font-family: "Simplicity";
 }
-
 .itemName {
   font-weight: 600;
   color: #feed95;
@@ -98,7 +89,6 @@
   justify-content: center;
   text-align: center;
 }
-
 .itemImage {
   width: 69px;
   height: 65px;
@@ -106,7 +96,6 @@
   flex-shrink: 0;
   margin-left: 10px;
 }
-
 .itemNameto {
   display: flex;
   flex-direction: column;
@@ -116,7 +105,6 @@
   margin-left: 18px;
   margin-top: 5px;
 }
-
 .twoPart {
   width: 35rem;
   height: 13.125rem;
@@ -126,7 +114,6 @@
   background-repeat: no-repeat;
   display: grid;
 }
-
 .twoPart p:nth-child(1) {
   display: flex;
   align-items: center;
@@ -140,7 +127,6 @@
   margin-top: 2rem;
   font-family: "Simplicity";
 }
-
 .twoPart p:nth-child(2) {
   text-align: center;
   color: #ffffff;
@@ -161,14 +147,15 @@
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  white-space: nowrap;
   display: grid;
-  /* gap: 4px; */
 }
 
-.threePart p:nth-child(1) {
-  display: flex;
+.balance{
+  display: inline-block;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
   font-weight: 400;
   text-align: center;
   align-items: center;
@@ -179,7 +166,6 @@
   margin-top: 2rem;
   font-family: "Simplicity";
 }
-
 .threePart p:nth-child(2) {
   text-align: center;
   color: #ffffff;
@@ -190,11 +176,9 @@
   margin-top: -0.2rem;
   font-family: "Simplicity";
 }
-
 .imgContent {
   width: 61.25rem;
   height: 9.375rem;
-  /* background-color: red; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -202,25 +186,19 @@
   width: 60rem;
   height: 6.875rem;
 }
-
 .containerItem {
   position: relative;
   display: inline-block;
 }
-
 .imgconItem {
   width: 8.75rem;
   height: 8.75rem;
-  /* border-radius: 50px; */
   box-sizing: border-box;
 }
-
-
 @font-face {
   font-family: "Alibaba-PuHuiTi-Medium";
   src: url("/fonts/Alibaba-PuHuiTi-Light.otf");
 }
-
 .iconFont {
   display: flex;
   justify-content: center;
@@ -237,7 +215,6 @@
   font-family: "Alibaba-PuHuiTi-TIMESBD";
   font-size: 2.5rem;
 }
-
 .imgconItemFill {
   width: 66px;
   height: 66px;
@@ -246,16 +223,12 @@
   text-align: center;
   box-sizing: border-box;
 }
-
-
-
 .buyBtnBox {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 3.6rem;
 }
-
 @font-face {
   font-family: "Alibaba-PuHuiTi-TIMESBD";
   src: url("/fonts/TIMESBD.TTF");
@@ -264,7 +237,6 @@
   font-family: "Simplicity";
   src: url("/fonts/Simplicity.ttf");
 }
-
 .buyBtn {
   width: 9.375rem;
   height: 9.5rem;
@@ -285,17 +257,14 @@
   margin-left: -2rem;
   font-family: "Simplicity";
 }
-
 .buyBtn:hover {
   color: #ffffff;
   font-size: 2.7rem;
 }
-
 @font-face {
   font-family: "Alibaba-PuHuiTi";
   src: url("/fonts/Alibaba-PuHuiTi-Bold.otf");
 }
-
 .warningIcon {
   background-color: transparent;
   display: flex;
@@ -309,7 +278,6 @@
   cursor: pointer;
   font-family: "Alibaba-PuHuiTi";
 }
-
 
 .contentSuccess {
   position: fixed;
@@ -423,7 +391,6 @@
   gap: 25px;
   text-transform: uppercase;
 
-
   p:nth-child(1) {
     text-transform: uppercase;
     font-size: 35px;
@@ -501,7 +468,6 @@
   }
 }
 
-
 .overlay {
   position: fixed;
   top: 0;
@@ -523,7 +489,6 @@
   background-color: rgba(0, 0, 0, 0.6);
   pointer-events: auto !important;
 }
-
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
@@ -692,9 +657,7 @@ p {
 
 .firstBuy:hover {
   background-image: url("../../images/substance/111.png");
-
 }
-
 
 .fontBuy {
   font-size: 22px;
@@ -705,8 +668,6 @@ p {
   color: #cccccc;
   display: inline-block;
 }
-
-
 
 .patment {
   text-transform: uppercase;
@@ -833,7 +794,6 @@ p {
   align-items: center;
 }
 
-
 .container3 {
   height: 13.125rem;
   width: 93.1875rem;
@@ -845,15 +805,12 @@ p {
   background-image: url("../../images/PinkButton.webp");
   background-size: cover;
   background-repeat: no-repeat;
-  background-color: red;
 }
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
   src: url("/fonts/BRLNSR.TTF");
 }
-
-
 
 .dataIcon {
   gap: 5px;
@@ -1121,4 +1078,26 @@ p {
   -webkit-transition: -webkit-transform 5s linear;
   transition: transform 5s linear;
   height: 100%;
+}
+
+.wrongNetworkBtn {
+  width: 370px;
+  height: 50px;
+  border: none;
+  opacity: 0px;
+  background-color: #d5f7ff;
+  background-image: url("../../images/topup/wrongnetwork.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.1em;
+  text-align: center;
+  color: red;
+  transition: font-size 0.3s ease;
+  text-transform: uppercase;
+  cursor: pointer;
 }

@@ -18,7 +18,6 @@ export async function generateRoute(tokenAddress: string, amount: number): Promi
         chainId: ChainId.REDSTONE,
         provider: getMainnetProvider(),
     })
-    // console.log(amount);
     const currencyIn = nativeOnChain(690)
     const options: SwapOptionsUniversalRouter = {
         type: SwapType.UNIVERSAL_ROUTER,
@@ -27,7 +26,6 @@ export async function generateRoute(tokenAddress: string, amount: number): Promi
         deadlineOrPreviousBlockhash: Math.floor(Date.now() / 1000 + 600),
     };
     
-
     const route = await router.route(
         CurrencyAmount.fromRawAmount(
             TOKEN_MAP[tokenAddress],
@@ -40,6 +38,5 @@ export async function generateRoute(tokenAddress: string, amount: number): Promi
         TradeType.EXACT_OUTPUT,
         options
     )
-    
     return route
 }

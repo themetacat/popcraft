@@ -59,33 +59,25 @@ export default function TopUp({
   const [isLoading, setIsLoading] = useState(false);
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
 
-  // 修改 withDraw 函数
   async function withDraw() {
     const balance_eth = balance / 1e18;
     if (parseEther(balance_eth.toString()) > Number(MIN_SESSION_WALLET_BALANCE)) {
       const value = parseEther(balance_eth.toString()) - MIN_SESSION_WALLET_BALANCE;
       setIsWithdrawing(true);
-      // setWithdrawButtonText("Waiting for confirmation...");
-      setIsWithdrawLoading(true); // 设置加载状态
-      // setIsWithdrawButtonClicked(true);
-      // setIsWithdrawButtonWaiting(true);
+      setIsWithdrawLoading(true); 
       const hash = await walletClient.sendTransaction({
         to: address,
         value: value,
       });
       setwithDrawHashVal(hash);
     } else {
-      // toast.error("BALANCE not enough");
       setModalMessage("BALANCE not enough");
       setShowModal(true);
       setTimeout(() => {
         setShowModal(false);
       }, 3000);
-
     }
   }
-
-
 
   const {
     network: { walletClient, publicClient },
@@ -206,7 +198,6 @@ export default function TopUp({
     );
   };
 
-
   const bridgeHandle = () => {
     setIsPlayButtonClicked(true); // 设置按钮点击状态
     if (mainContent === "MAINNET") {
@@ -233,11 +224,9 @@ export default function TopUp({
     }
   };
 
-  // 更新 submit 函数
   async function submit() {
     const to = palyerAddress;
     const value = inputValue;
-
     try {
       const nonce = await publicClient.getTransactionCount({ address: address });
       const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue), nonce });
@@ -267,7 +256,6 @@ export default function TopUp({
       setIsLoading(false);
     }
   }
-
   return (
     <div className={style.topBox}>
       <div className={style.cant}>
@@ -360,7 +348,6 @@ export default function TopUp({
                       </div>
                     </button>
                   </div>
-
                   <span
                     className={`${style.bridgeBTN} ${isPlayButtonClicked ? style.bridgeBTNClicked : ''}`}
                     onClick={bridgeHandle}>
@@ -378,9 +365,6 @@ export default function TopUp({
                     src={warningImg}
                     alt="Warning"
                     className={style.warningImg}
-                    // onClick={() => {
-                    //   setWarningModel(!warningModel);
-                    // }}
                     onMouseEnter={() => setWarningModel(true)}
                     onMouseLeave={() => setWarningModel(false)}
                   />
@@ -412,9 +396,7 @@ export default function TopUp({
                             <>{(Number(balance) / 1e18).toFixed(8)}&nbsp;&nbsp;&nbsp;ETH</>
                           )}
                         </span>
-             
                     </div>
-
                   </div>
 
                   <div
@@ -444,8 +426,7 @@ export default function TopUp({
                       style={{
                         width: showPassword === false ? "140px" : "auto",
                       }}
-                      className={style.inputConPassWord}
-                    />
+                      className={style.inputConPassWord}/>
                     <img
                       src={showPassword === true ? openEye : turnOffEye}
                       alt=""
@@ -468,12 +449,10 @@ export default function TopUp({
                   </p>
                 </div>
               </div>
-
-
               <div className={style.partFour}>
                 <p className={style.partFourFont}>
-                  Every onchain interaction uses gas. Top up your gasbalance
-                  with funds from any chain.
+                  Every onchain interaction uses gas. Top up your 
+                  gasbalancewith funds from any chain.
                 </p>
                 <div className={style.partImo}>
                   <div
@@ -483,8 +462,7 @@ export default function TopUp({
                       verticalAlign: "middle",
                       height: "34px",
                       width: "400px",
-                    }}
-                  >
+                    }}>
                     <img src={FrameIcon} alt="" className={style.svgIcon} />
                     <input
                       name="value"
@@ -536,8 +514,6 @@ export default function TopUp({
                   )}
                 </button>
               )}
-
-
               {chain.unsupported && (
                 <button
                   onClick={openChainModal}
@@ -572,6 +548,7 @@ export default function TopUp({
           </div>
         </div>
       )}
+
       {showSuccessModal && (
         <div className={style.overlay}>
           <div className={style.modalto} >

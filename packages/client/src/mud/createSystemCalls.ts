@@ -450,29 +450,35 @@ export function createSystemCalls(
       }
 
     } catch (error) {
-      //   if (error.message.includes("0x897f6c58")) {
-      //       toast.error("Out of stock, please buy!");
-      //   }
-      //   console.error("Failed to setup network:", error.message);
-      //   return [null, null];
-      // }
-      // console.log(error.message);
-      
-      if (error.message.includes("0x897f6c58")) {
-        toast.error("Out of stock, please buy!");
-      } else if (error.message.includes("RPC Request failed")) {
-        toast.error("AN ERROR WAS REPORTED");
-      } else if (error.message.includes("The contract function \"callFrom\" reverted with the following reason:")) {
-        // 不弹框
-      } else {
-        console.error("Failed to setup network:", error.message);
-        toast.error("AN ERROR WAS REPORTED");
-      }
+      // console.error("Failed to setup network:", error.message);
+      return { error: error.message };
     }
+    
+    // catch (error) {
+    //     if (error.message.includes("0x897f6c58")) {
+    //         toast.error("Out of stock, please buy!");
+    //     }
+    //     console.error("Failed to setup network:", error.message);
+    //     return [null, null];
+    //   }
+    //   console.log(error.message);
+      
+      // if (error.message.includes("0x897f6c58")) {
+      //   toast.error("Out of stock, please buy!");
+      // } else if (error.message.includes("RPC Request failed")) {
+      //   toast.error("AN ERROR WAS REPORTED");
+      // } else if (error.message.includes("The contract function \"callFrom\" reverted with the following reason:")) {
+      //   // 不弹框
+      // } else {
+      //   console.error("Failed to setup network:", error.message);
+      //   toast.error("AN ERROR WAS REPORTED");
+      // }
+    // }
     return [tx, hashValpublic];
   };
 
   const payFunction = async (methodParametersArray: any[]) => {
+    
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
     const [account] = await window.ethereum!.request({

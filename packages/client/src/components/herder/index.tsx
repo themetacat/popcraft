@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useLayoutEffect } from "react";
 import style from "./index.module.css";
 import { Has, getComponentValueStrict, getComponentValue, AnyComponentValue, } from "@latticexyz/recs";
-import { formatUnits } from "viem";
+import { formatUnits, decodeErrorResult } from "viem";
 import { imageIconData } from "../imageIconData";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import toast, { Toaster } from "react-hot-toast";
@@ -24,6 +24,8 @@ import popcraftLogo from '../../images/popcraft_logo.webp';
 import backgroundMusic from '../../audio/1.mp3';
 import effectSound from '../../audio/2.mp3';
 import loadingImg from "../../images/checkerboard_loading.webp";
+import success from '../../images/substance/successto.png'
+import failto from '../../images/substance/failto.png'
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -81,22 +83,19 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [mainContent, setMainContent] = useState("MAINNET");
   const [TCMPopStarData, setTCMPopStarData] = useState(null);
   const [matchedData, setMatchedData] = useState(null);
-  const [showList, setShowList] = useState(false);
   const [addressModel, setAddressModel] = useState(false);
   const [enumValue, setEnumValue] = useState({});
   const [ownerData, setOwnerData] = useState(null);
-  const audioRef = useRef<HTMLAudioElement>(null);//控制背景音乐
-  const audioCache: { [url: string]: HTMLAudioElement } = {};//控制背景音效
-  const [showTopUp, setShowTopUp] = useState(false); //控制弹出层的显示与隐藏
-  const [showTopElements, setShowTopElements] = useState(false);  //控制顶部第一次显示隐藏
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioCache: { [url: string]: HTMLAudioElement } = {};
+  const [showTopUp, setShowTopUp] = useState(false);
+  const [showTopElements, setShowTopElements] = useState(false);
   const [playFuntop, setPlayFun] = useState(false);
   const playAction = localStorage.getItem('playAction');
   const hasExecutedRef = useRef(true);
   const [imageCache, setImageCache] = useState({});
   const [showNewPopUp, setShowNewPopUp] = useState(false);
-
-
-
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // 将 CANVAS_WIDTH 和 CANVAS_HEIGHT 保存到 state 中
   const [canvasSize, setCanvasSize] = useState({
@@ -158,12 +157,11 @@ export default function Header({ hoveredData, handleData }: Props) {
   // 判断用户临时钱包有没有钱 
   useEffect(() => {
     if (isConnected && appName === "BASE/PopCraftSystem" && !hasExecutedRef.current) {
-      if ((Number(balance) / 1e18) < 0.000015) {
+      if ((Number(balance) / 1e18) <  0.000015) {
         setTopUpType(true);
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
         setPopStar(true);
-        // setShowTopElements(false)
       } else {
         setTopUpType(false);
         setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
@@ -730,9 +728,7 @@ export default function Header({ hoveredData, handleData }: Props) {
               } else {
                 ctx.fillStyle = entity.value.color;
                 ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-
               }
-
             }
             if (entity.value.text && entity.value.app !== "PopCraft") {
               ctx.fillStyle = "#000";
@@ -748,7 +744,6 @@ export default function Header({ hoveredData, handleData }: Props) {
               } else {
                 pix_text = entity.value.text;
               }
-
               const textX = currentX + GRID_SIZE / 2;
               const textY = currentY + GRID_SIZE / 2;
               ctx.fillText(pix_text, textX, textY);
@@ -839,7 +834,6 @@ export default function Header({ hoveredData, handleData }: Props) {
   };
   //点击方块触发事件
   const handleMouseUp = async (event: React.MouseEvent<HTMLDivElement>) => {
-
     if (pageClick === true) {
       return;
     }
@@ -884,12 +878,6 @@ export default function Header({ hoveredData, handleData }: Props) {
           setHoveredSquare(newHoveredSquare);
           setLoadingSquare(newHoveredSquare);// 设置 loading 状态
         }
-
-        // if ((Number(balance) / 1e18) < 3) {
-        //   // 显示弹出层提示用户充值
-        //   setShowNewPopUp(true)
-        //   return;
-        // }
 
         if (isEmpty) {
           if (selectedColor && coordinates) {
@@ -950,7 +938,6 @@ export default function Header({ hoveredData, handleData }: Props) {
         } else {
           setPopExhibit(true);
         }
-
         setIsDragging(false);
         setShowOverlay(true);
 
@@ -959,8 +946,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       }
     });
   };
-
-
 
   const interactHandle = (
     coordinates: any,
@@ -1002,55 +987,12 @@ export default function Header({ hoveredData, handleData }: Props) {
     });
   };
 
-  // const interactHandleTCM = (
-  //   coordinates: any,
-  //   palyerAddress: any,
-  //   selectedColor: any,
-  //   actionData: any,
-  //   other_params: any
-  // ) => {
-  //   setLoading(true);
-  //   // setLoadingpaly(true)
-  //   const interact_data = interactTCM(
-  //     coordinates,
-  //     palyerAddress,
-  //     selectedColor,
-  //     actionData,
-  //     other_params
-  //   );
-
-  //   interact_data.then((increDataVal: any) => {
-  //     if (increDataVal[1]) {
-  //       increDataVal[1].then((a: any) => {
-  //         if (a.status === "success") {
-  //           setLoading(false);
-  //           setLoadingpaly(false)
-  //           setTimeControl(true);
-  //           setLoadingSquare(null); // 清除 loading 状态
-  //           onHandleLoading();
-  //           localStorage.setItem('playAction', 'gameContinue');
-  //           if (actionData === "interact") {
-  //             // localStorage.setItem("showGameOver", "false");
-  //           }
-  //         } else {
-  //           handleError();
-  //           onHandleLoading();
-  //           setLoadingSquare(null); // 清除 loading 状态
-  //         }
-  //       });
-  //     } else {
-  //       handleError(); /^[^A-Za-z]*$/
-  //       setLoadingSquare(null); // 清除 loading 状态
-  //     }
-  //   });
-  // };
-
   const interactHandleTCM = async (
-    coordinates,
-    palyerAddress,
-    selectedColor,
-    actionData,
-    other_params
+    coordinates: any,
+    palyerAddress: any,
+    selectedColor: any,
+    actionData: any,
+    other_params: any
   ) => {
     setLoading(true);
     setLoadingpaly(true);
@@ -1063,6 +1005,12 @@ export default function Header({ hoveredData, handleData }: Props) {
         other_params
       );
 
+      if (interact_data.error) {
+        handleError(interact_data.error);
+        setLoadingSquare(null); // 清除 loading 状态
+        return;
+      }
+      const receipt = await interact_data.hashValpublic;
       if (interact_data[1]) {
         const receipt = await interact_data[1];
         if (receipt.status === "success") {
@@ -1092,6 +1040,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   };
 
 
+
   //判断时间倒计时
   const handleEoaContractData = (data: any) => {
 
@@ -1103,7 +1052,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       balanceFN.then((balance: any) => {
         setBalance(balance);
 
-        if ((Number(balance) / 1e18) < 0.000015) {
+        if ((Number(balance) / 1e18) <  0.000015) {
           setTopUpType(true);
           localStorage.setItem('money', 'nomoney')
           localStorage.setItem('playAction', 'noplay')
@@ -1177,8 +1126,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     // localStorage.setItem('playAction', 'play'); // 设置 playAction 为 play
   };
 
-
-
   const playData = () => {
     let EmptyRegionNum = 0
     if (TCMPopStarData === undefined) {
@@ -1209,7 +1156,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
     // localStorage.setItem('playAction', 'gameContinue'); // 设置 playAction 为 gameContinue
   };
-
 
   //拖拽函数 
   const handleMouseEnter = useCallback(
@@ -1388,7 +1334,6 @@ export default function Header({ hoveredData, handleData }: Props) {
 
     return res;
   };
-
   const get_value_type = (type: string) => {
     if (type === undefined) {
       return type;
@@ -1401,7 +1346,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       return type;
     }
   };
-
   const addressDataCopy = (text: any) => {
     navigator.clipboard.writeText(text).then(
       function () {
@@ -1418,27 +1362,30 @@ export default function Header({ hoveredData, handleData }: Props) {
     setShowOverlay(false);
     setPanningFromChild(newPanningValue);
   };
-  const handleError = () => {
-    setLoading(false);
-    setLoadingpaly(false)
-    onHandleLoading();
-  };
-
-  // const handleError = (errorMessage) => {
+  // const handleError = () => {
   //   setLoading(false);
-  //   setLoadingpaly(false);
+  //   setLoadingpaly(false)
   //   onHandleLoading();
-  //   if (errorMessage.includes("0x897f6c58")) {
-  //     toast.error("Out of stock, please buy!");
-  //   } else if (errorMessage.includes("RPC Request failed")) {
-  //     toast.error("An error was reported");
-  //   } else if (errorMessage.includes("The contract function \"callFrom\" reverted with the following reason:")) {
-  //     setShowNewPopUp(false); // 设置显示新的弹出框
-  //   } else {
-  //     console.error("Failed to setup network:", errorMessage);
-  //     setShowNewPopUp(true);
-  //   }
   // };
+
+  const handleError = (errorMessage) => {
+    setLoading(false);
+    setLoadingpaly(false);
+    onHandleLoading();
+    if (errorMessage.includes("0x897f6c58")) {
+      setShowSuccessModal(true);
+      setTimeout(() => {
+        setShowSuccessModal(false);
+      }, 1000);
+    } else if (errorMessage.includes("RPC Request failed")) {
+      setShowNewPopUp(true);
+    } else if (errorMessage.includes("The contract function \"callFrom\" reverted with the following reason:")) {
+      // 不弹框
+    } else {
+      console.error("Failed to setup network:", errorMessage);
+      setShowNewPopUp(true);
+    }
+  };
 
   const onHandleExe = () => {
     setPopExhibit(false);
@@ -1604,7 +1551,6 @@ export default function Header({ hoveredData, handleData }: Props) {
             +
           </button>
         </div>
-
         <div
           className={style.addr}
           style={{
@@ -1667,46 +1613,50 @@ export default function Header({ hoveredData, handleData }: Props) {
                     }
 
                     return (
-                      <div
-                        style={{
-                          gap: 12,
-                        }}
-                        onMouseEnter={() => {
-                          setAddressModel(true);
-                        }}
-                        onMouseLeave={() => {
-                          setAddressModel(false);
-                        }}
-                      >
-                        {" "}
-                        {chain.name}&nbsp;&nbsp;
-                        <button
-                          type="button"
-                          className={style.boldAddress} // 添加这个类名
-
-                        >
-                          {account.displayName}
-                          {account.displayBalance
-                            ? ` (${account.displayBalance})`
-                            : ""}
-                        </button>
-                        {addressModel && (
-                          <div className={style.downBox}>
-                            <div className={style.downBoxclocese}>
-                              {addressContent.length > 0 &&
-                                addressContent.map((item, index) => (
-                                  <div
-                                    className={style.downBoxItem}
-                                    key={index}
-                                    onClick={() => handleAddClick(item.value)}
-                                  >
-                                    {item.name}
-                                  </div>
-                                ))}
-                            </div>
+                      <div>
+                        <div className={style.chainbox}>
+                          <div className={style.chain}>
+                            {chain.name}
                           </div>
-
-                        )}
+                          <div className={style.addressbox}
+                            style={{
+                              gap: 12,
+                            }}
+                            onMouseEnter={() => {
+                              setAddressModel(true);
+                            }}
+                            onMouseLeave={() => {
+                              setAddressModel(false);
+                            }}
+                          >
+                            <button
+                              type="button"
+                              className={style.boldAddress} 
+                            >
+                              {account.displayName}
+                              {account.displayBalance
+                                ? ` (${account.displayBalance})`
+                                : ""}
+                            </button>
+                            {addressModel && (
+                              <div className={style.downBox}>
+                                <div className={style.downBoxclocese}>
+                                  {addressContent.length > 0 &&
+                                    addressContent.map((item, index) => (
+                                      <div
+                                        className={style.downBoxItem}
+                                        key={index}
+                                        onClick={() => handleAddClick(item.value)}
+                                      >
+                                        {item.name}
+                                      </div>
+                                    ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        {" "}
                       </div>
                     );
                   })()}
@@ -1801,7 +1751,9 @@ export default function Header({ hoveredData, handleData }: Props) {
             playFun={playFun}
             playFuntop={playFuntop}
             onTopUpClick={handleTopUpClick}
-            loadingplay={loadingplay} />
+            loadingplay={loadingplay}
+            setTopUpType={setTopUpType}
+          />
         </div>
       ) : null}
 
@@ -1819,12 +1771,20 @@ export default function Header({ hoveredData, handleData }: Props) {
         <div className={style.overlaybox}>
           <div className={style.popup}>
             <div className={style.contentbox}>
-              <p>INSUFFICIENT GASBALANCE</p>
+              <p>INSUFFICIENT GASBALANCE</p><br />
             </div>
             <button className={style.topupbtn} onClick={() => {
               setShowNewPopUp(false);
               setTopUpType(true);
             }}>TOP UP</button>
+          </div>
+        </div>
+      )}
+      {showSuccessModal && (
+        <div className={style.overlay}>
+          <div className={style.modal}>
+            <img src={failto} alt="" className={style.failto} />
+            <p className={style.colorto}>Out of stock, please buy!</p>
           </div>
         </div>
       )}
