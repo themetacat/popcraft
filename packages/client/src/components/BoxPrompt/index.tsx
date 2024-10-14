@@ -219,7 +219,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       }
     });
   };
-
   useEffect(() => {
     if (isConnected) {
       const interval = setInterval(() => {

@@ -157,7 +157,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   // 判断用户临时钱包有没有钱 
   useEffect(() => {
     if (isConnected && appName === "BASE/PopCraftSystem" && !hasExecutedRef.current) {
-      if ((Number(balance) / 1e18) <  0.000015) {
+      if ((Number(balance) / 1e18) < 3) {
         setTopUpType(true);
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
@@ -1052,7 +1052,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       balanceFN.then((balance: any) => {
         setBalance(balance);
 
-        if ((Number(balance) / 1e18) <  0.000015) {
+        if ((Number(balance) / 1e18) < 3) {
           setTopUpType(true);
           localStorage.setItem('money', 'nomoney')
           localStorage.setItem('playAction', 'noplay')
@@ -1551,6 +1551,7 @@ export default function Header({ hoveredData, handleData }: Props) {
             +
           </button>
         </div>
+
         <div
           className={style.addr}
           style={{
@@ -1616,7 +1617,7 @@ export default function Header({ hoveredData, handleData }: Props) {
                       <div>
                         <div className={style.chainbox}>
                           <div className={style.chain}>
-                            {chain.name}
+                            {chain.name} &nbsp;&nbsp;
                           </div>
                           <div className={style.addressbox}
                             style={{
@@ -1631,7 +1632,7 @@ export default function Header({ hoveredData, handleData }: Props) {
                           >
                             <button
                               type="button"
-                              className={style.boldAddress} 
+                              className={style.boldAddress} // 添加这个类名
                             >
                               {account.displayName}
                               {account.displayBalance
