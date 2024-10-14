@@ -31,8 +31,8 @@ export interface ExampleConfig {
 export const CurrentConfig: ExampleConfig = {
   env: Environment.LOCAL,
   rpc: {
-    local: 'https://devnet.pixelaw.world/rpc',
-    mainnet: 'https://devnet.pixelaw.world/rpc',
+    local: 'https://rpc.redstonechain.com',
+    mainnet: 'https://rpc.redstonechain.com',
   },
   wallet: {
     address: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',

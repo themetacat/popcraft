@@ -21,7 +21,7 @@ export async function generateRoute(tokenAddress: string, amount: number): Promi
     const currencyIn = nativeOnChain(690)
     const options: SwapOptionsUniversalRouter = {
         type: SwapType.UNIVERSAL_ROUTER,
-        recipient: "0xdfa57287c291e763a9452738b67ac56179ab5f69",
+        recipient: "0x784844480280ca865ac8ef89bb554283dddff737",
         slippageTolerance: new Percent(50, 10_000),
         deadlineOrPreviousBlockhash: Math.floor(Date.now() / 1000 + 600),
     };
