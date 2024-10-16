@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import style from "./index.module.css";
 import loadingIcon from "../../images/welcome_pay_play_loading.webp";
@@ -74,6 +74,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [modalMessage, setModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loadingPrices, setLoadingPrices] = useState({});
+  const [lastPrices, setLastPrices] = useState({});
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
@@ -126,6 +127,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     imageIconData,
     balanceData
   );
+
   function getMatchedData(tokenAddresses, imageData, balanceData) {
     const result = {};
     tokenAddresses?.forEach((address) => {
@@ -148,7 +150,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     });
     return result;
   }
-
 
   const fetchData = async () => {
     try {
@@ -335,33 +336,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }
   }, [isConnected, getEoaContractData, balanceData]);
 
-
   //获取的5种物质信息以及价格
-  // const fetchPrices = async (matchedData: any) => {
-  //   const pricePromises = Object.keys(matchedData).map(async (key) => {
-  //     const quantity = numberData[key] || 0;
-  //     if (quantity > 0) {
-  //       setLoadingPrices(prev => ({ ...prev, [key]: true }));
-  //       const route = await generateRoute(key, quantity);
-  //       const price = route.quote.toExact(); // 获取报价
-  //       const methodParameters = route.methodParameters;
-  //       methodParameters['tokenAddress'] = key;
-  //       methodParameters['amount'] = quantity;
-  //       setLoadingPrices(prev => ({ ...prev, [key]: false }));
-  //       return { [key]: { price, methodParameters } };
-  //     } else {
-  //       return { [key]: { price: 0, methodParameters: {} } };
-  //     }
-  //   });
-  //   const prices = await Promise.all(pricePromises);
-  //   const priceObject = prices.reduce((acc, curr) => ({ ...acc, ...curr }), {});
-  //   const total = Object.values(priceObject).reduce((sum, { price }) => sum + Number(price), 0);
-  //   setPrices(priceObject);
-  //   setTotalPrice(total);
-  //   return priceObject;
-  // };
-
-  const fetchPrices = async (matchedData: any) => {
+  const fetchPrices = useCallback(async (matchedData: any) => {
     const pricePromises = Object.keys(matchedData).map(async (key) => {
       const quantity = numberData[key] || 0;
       if (quantity > 0) {
@@ -372,20 +348,40 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         methodParameters['tokenAddress'] = key;
         methodParameters['amount'] = quantity;
         setLoadingPrices(prev => ({ ...prev, [key]: false }));
-        return { [key]: { price, methodParameters } };
+        if (lastPrices[key]?.price !== price) {
+          return { [key]: { price, methodParameters } };
+        } else {
+          return { [key]: { price: lastPrices[key]?.price, methodParameters: lastPrices[key]?.methodParameters } };
+        }
       } else {
         return { [key]: { price: 0, methodParameters: {} } };
       }
     });
+
     const prices = await Promise.all(pricePromises);
     const priceObject = prices.reduce((acc, curr) => ({ ...acc, ...curr }), {});
     const total = Object.values(priceObject).reduce((sum, { price }) => sum + Number(price), 0);
+
+    setLastPrices(priceObject);
     setPrices(priceObject);
     setTotalPrice(total);
     return priceObject;
-  };
+  }, [numberData, lastPrices]);
 
-  const fetchPriceForSingleItem = async (key, quantity) => {
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const matchedData = getMatchedData(
+        getEoaContractData,
+        imageIconData,
+        balanceData
+      );
+      await fetchPrices(matchedData);
+    }, 10000); // 每隔10秒获取价格
+
+    return () => clearInterval(interval);
+  }, [fetchPrices, getEoaContractData, balanceData]);
+
+  const fetchPriceForSingleItem = useCallback(async (key, quantity) => {
     if (quantity > 0) {
       setLoadingPrices(prev => ({ ...prev, [key]: true }));
       try {
@@ -394,18 +390,23 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         const methodParameters = route.methodParameters;
         methodParameters['tokenAddress'] = key;
         methodParameters['amount'] = quantity;
-        setPrices(prev => ({
-          ...prev,
-          [key]: { price, methodParameters }
-        }));
-        setLoadingPrices(prev => ({ ...prev, [key]: false }));
-        updateTotalPrice();
+
+        if (lastPrices[key]?.price !== price) {
+          setPrices(prev => ({
+            ...prev,
+            [key]: { price, methodParameters }
+          }));
+          setLoadingPrices(prev => ({ ...prev, [key]: false }));
+          updateTotalPrice();
+        } else {
+          setLoadingPrices(prev => ({ ...prev, [key]: false }));
+        }
       } catch (error) {
         console.error(`Error fetching price for ${key}:`, error);
         setLoadingPrices(prev => ({ ...prev, [key]: false }));
       }
     }
-  };
+  }, [lastPrices]);
 
   //默认购买数量为5
   useEffect(() => {
@@ -481,7 +482,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     setTotalPrice(total);
   };
 
-
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60).toString().padStart(2, '0');
     const seconds = (time % 60).toString().padStart(2, '0');
@@ -513,42 +513,12 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       imageIconData,
       balanceData
     );
-    const prices = await fetchPrices(matchedData);
   };
-
-  useEffect(() => {
-    if (dataq) {
-      const timer = setInterval(getRoute, 500000);
-      setPriceTimer(timer);
-    } else {
-      if (priceTimer) {
-        clearInterval(priceTimer);
-        setPriceTimer(null);
-      }
-    }
-    return () => {
-      if (priceTimer) {
-        clearInterval(priceTimer);
-      }
-    };
-  }, [dataq]);
-
-  useEffect(() => {
-    return () => {
-      if (priceTimer) {
-        clearInterval(priceTimer);
-      }
-    };
-  }, []);
 
   //监听价格的变化
   useEffect(() => {
     updateTotalPrice();
   }, [numberData, prices]);
-
-  // useEffect(() => {
-  //   fetchPrices(matchedData);
-  // }, [numberData]);
 
   useEffect(() => {
     if (dataq) {
@@ -597,7 +567,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 className={style.buyBtn}
                 onClick={async () => {
                   setdataq(!warnBox);
-                  getRoute()
+                  // getRoute()
+                  
                 }}
               >
                 BUY
@@ -611,7 +582,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 ?
               </button>
             </div>
-
           </div>
         </div>
       )}
@@ -783,7 +753,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 }}
               </ConnectButton.Custom>
 
-
             </div>
 
           </div>
@@ -795,7 +764,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           <div className={style.modalto} >
             <img src={success} alt="" className={style.failto} />
             <p className={style.color}>{modalMessage}</p>
-
           </div>
         </div>
       )}
