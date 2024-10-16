@@ -10,6 +10,7 @@ import { addressToEntityID } from "../rightPart";
 import loadingImg from "../../images/loadingto.webp";
 import xLogo from '../../images/xLogo.png';
 import TelegramLogo from '../../images/TelegramLogo.png'
+import GithubLogo from '../../images/GithubLogo.webp'
 import reduce from '../../images/substance/reduce.png'
 import add from '../../images/substance/add.png'
 import failto from '../../images/substance/failto.png'
@@ -901,6 +902,9 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         </a>
         <a href="https://t.me/+R8NfZkneQYZkYWE1" target="_blank" rel="noopener noreferrer">
           <img src={TelegramLogo} className={TelegramLogo} />
+        </a>
+        <a href="https://github.com/themetacat/popcraft" target="_blank" rel="noopener noreferrer">
+          <img src={GithubLogo} className={GithubLogo} />
         </a>
       </div>
     </>
