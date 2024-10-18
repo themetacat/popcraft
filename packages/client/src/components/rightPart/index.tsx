@@ -50,7 +50,8 @@ export function coorToEntityID(x: number, y: number) {
 }
 export const addressToEntityID = (address: Hex) =>
   encodeEntity({ address: "address" }, { address });
-
+  export const numToEntityID = (num: number) =>
+  encodeEntity({ num: "uint256" }, { num: BigInt(num) });
 
 export default function RightPart({
   coordinates,

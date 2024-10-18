@@ -73,25 +73,25 @@ canvas {
 }
 
 .addr {
-  width: 60rem;
+  width: 80rem;
   height: 10rem;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   position: absolute;
-  right: 3rem;
+  right: -5rem;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-size: 2.2rem;
-  /* background-color: red; */
 }
 
 .chainbox {
   display: flex;
   align-items: center;
   justify-content: center;
+  right: 20rem;
 }
 
 .chain {
@@ -497,4 +497,13 @@ canvas {
   justify-content: center;
   align-self: center;
   margin-top: -4px;
+}
+
+.RankingListimg{
+  display: flex;
+}
+
+.RankingListimg img{
+  width: 6rem;
+  height: 6rem;
 }

@@ -4,18 +4,13 @@ import { Has, getComponentValueStrict, getComponentValue, AnyComponentValue, } f
 import { formatUnits, decodeErrorResult } from "viem";
 import { imageIconData } from "../imageIconData";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
-import toast, { Toaster } from "react-hot-toast";
-// import RightPart, { addressToEntityID } from "../rightPart";
 import { useMUD } from "../../MUDContext";
 import BoxPrompt from "../BoxPrompt";
 import PopStar from "../popStar";
-import { convertToString, coorToEntityID } from "../rightPart/index";
 import PopUpBox from "../popUpBox";
 import TopUpContent from "../topUp";
 import { encodeEntity, syncToRecs, decodeEntity, } from "@latticexyz/store-sync/recs";
 import { update_app_value } from "../../mud/createSystemCalls";
-import powerIcon from "../../images/jian_sekuai.png";
-import AddIcon from "../../images/jia.png";
 import { CANVAS_HEIGHT } from "../../global/constants";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
@@ -26,7 +21,9 @@ import effectSound from '../../audio/2.mp3';
 import loadingImg from "../../images/checkerboard_loading.webp";
 import success from '../../images/substance/successto.png'
 import failto from '../../images/substance/failto.png'
-
+import RankingListimg from '../../images/RankingList/trophy.png'
+import RankingList from '../RankingList'
+import { rankTransports } from "viem/_types/clients/transports/fallback";
 interface Props {
   hoveredData: { x: number; y: number } | null;
   handleData: (data: { x: number; y: number }) => void;
@@ -93,6 +90,8 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [imageCache, setImageCache] = useState({});
   const [showNewPopUp, setShowNewPopUp] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showRankingList, setShowRankingList] = useState(false);
+
 
   // 将 CANVAS_WIDTH 和 CANVAS_HEIGHT 保存到 state 中
   const [canvasSize, setCanvasSize] = useState({
@@ -1526,6 +1525,10 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
   }, [appName]);
 
+  const rankTransports = () => {
+    setShowRankingList(true)
+  }
+
 
   return (
     <>
@@ -1549,13 +1552,19 @@ export default function Header({ hoveredData, handleData }: Props) {
           </button>
         </div>
 
+
+
         <div
           className={style.addr}
-          style={{
-            cursor: "pointer",
-            marginLeft: "32px",
-          }}
+        // style={{
+        //   cursor: "pointer",
+        //   marginLeft: "32px",
+        // }}
         >
+          <div className={style.RankingListimg} onClick={() => rankTransports()}>
+            <img src={RankingListimg} alt="" />
+          </div>
+
           <ConnectButton.Custom>
             {({
               account,
@@ -1636,6 +1645,7 @@ export default function Header({ hoveredData, handleData }: Props) {
                                 ? ` (${account.displayBalance})`
                                 : ""}
                             </button>
+
                             {addressModel && (
                               <div className={style.downBox}>
                                 <div className={style.downBoxclocese}>
@@ -1765,6 +1775,15 @@ export default function Header({ hoveredData, handleData }: Props) {
           setPopStar={setPopStar}
         />
       ) : null}
+
+      {showRankingList && (
+        <div className={style.overlay}>
+          <RankingList onClose={() => setShowRankingList(false)}
+          setShowRankingList ={setShowRankingList}
+          />
+        </div>
+      )}
+
       {showNewPopUp && (
         <div className={style.overlaybox}>
           <div className={style.popup}>

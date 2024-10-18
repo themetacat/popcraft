@@ -506,7 +506,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const formatBalance = (balance) => {
     return balance.toLocaleString();
   };
-  const [priceTimer, setPriceTimer] = useState(null);
 
   const getRoute = async () => {
     const matchedData = getMatchedData(

@@ -17,8 +17,9 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
   const playAction = localStorage.getItem("playAction");
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false); // 添加状态来跟踪按钮的点击状态
-
+ 
   const { isConnected } = useAccount();
+
   const handleConnectClick = () => {
     if (isConnected) {
       if (playAction === 'play') {
@@ -50,14 +51,14 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
         </span>
         <br />
         <div className={style.copywritingTwobox}>
-        <span className={style.copywritingTwoyo}>You'll be rewarded with
-          <span className={style.copywritingThree}> 150 $BUGS</span>
-        </span>
-        <span className={style.copywritingTwoyo}>
-          {" "}
-          for completing the game.
-          <br />
-        </span>
+          <span className={style.copywritingTwoyo}>You'll be rewarded with
+            <span className={style.copywritingThree}> 150 $BUGS</span>
+          </span>
+          <span className={style.copywritingTwoyo}>
+            {" "}
+            for completing the game.
+            <br />
+          </span>
         </div>
       </div>
       <ConnectButton.Custom>
@@ -93,12 +94,11 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
                 if (!connected) {
                   return (
                     <button
-                    onClick={() => {
-                      openConnectModal();
-                    }}
+                      onClick={() => {
+                        openConnectModal();
+                      }}
                       type="button"
                       className={isConnected ? style.btnPlayConnected : style.btnPlay}>
-                     
                       CONNECT
                     </button>
                   );
