@@ -37,17 +37,15 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
         return `${address.slice(0, 4)}...${address.slice(-4)}`;
     };
 
-    const rankRecord = getComponentValue(
+    const rankRecord = address ? getComponentValue(
         RankingRecord,
         addressToEntityID(address)
-    );
+    ) : undefined;
 
-    const gameRecord = getComponentValue(
+    const gameRecord = address ? getComponentValue(
         GameRecord,
         addressToEntityID(address)
-    );
-    // console.log(address);
-
+    ) : undefined;
 
     const dayScoresDict: { [key: number]: number; } = {};
     for (let i = 0; i <= 7; i++) {
@@ -92,7 +90,6 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                 const winRate = totalGames > 0 ? (wins / totalGames) * 100 : 0;
                 const address = decodeEntity({ address: "address" }, entity);
 
-
                 return {
                     entity: address.address,
                     totalScore: Number(value.totalScore),
@@ -107,18 +104,15 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
         })
         .sort((a, b) => b.totalScore - a.totalScore);
 
-
-
-    const gameRecordSelf = getComponentValue(
+    const gameRecordSelf = address ? getComponentValue(
         GameRecord,
         addressToEntityID(address),
-    );
-    // console.log(gameRecordSelf);
-    const totalGames = Number(gameRecordSelf.times);
-    const wins = Number(gameRecordSelf.successTimes);
+    ) : undefined;
+
+    const totalGames = gameRecordSelf ? Number(gameRecordSelf.times) : 0;
+    const wins = gameRecordSelf ? Number(gameRecordSelf.successTimes) : 0;
     const losses = totalGames - wins;
     const winRate = totalGames > 0 ? (wins / totalGames) * 100 : 0;
-
 
     // 找到当前用户的排名
     let userRank = null;
@@ -128,13 +122,6 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
             break;
         }
     }
-
-
-
-    // console.log(rankRecord);
-    // console.log(gameRecord);
-    // console.log(dayScoresDict);
-    // console.log(starScoresDict);
 
     // 模拟30条数据
     const mockData = Array.from({ length: 30 }, (_, index) => ({
@@ -147,7 +134,6 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
         losses: 5,
         winRate: 50,
     }));
-
 
     return (
         <div>
@@ -183,7 +169,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                     key={item.address}
                                     style={{
                                         backgroundColor: index % 2 === 0 ? '#fff1c8' : '#f5cca6',
-                                        color: item.entity === address ? 'red' : 'inherit' 
+                                        color: item.entity === address ? 'red' : 'inherit'
                                     }}
                                 >
                                     <td className={style.rankCell}>
@@ -218,9 +204,9 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                             <tr className={style.trbox}>
                                 <td className={style.rankCell}>{userRank ? `${userRank} (You)` : 'N/A'}</td>
                                 <td>{formatAddress(address)}</td>
-                                <td>{Number(rankRecord.totalScore)}</td>
-                                <td>{Number(rankRecord.highestScore)}</td>
-                                <td>{Number(rankRecord.shortestTime)}</td>
+                                <td>{rankRecord ? Number(rankRecord.totalScore) : 0}</td>
+                                <td>{rankRecord ? Number(rankRecord.highestScore) : 0}</td>
+                                <td>{rankRecord ? Number(rankRecord.shortestTime) : 0}</td>
                                 <td>{wins}/{losses}</td>
                                 <td>{winRate}%</td>
                             </tr>
