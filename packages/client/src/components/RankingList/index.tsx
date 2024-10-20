@@ -87,7 +87,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                 const totalGames = Number(gameRecord.times);
                 const wins = Number(gameRecord.successTimes);
                 const losses = totalGames - wins;
-                const winRate = totalGames > 0 ? (wins / totalGames) * 100 : 0;
+                const winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
                 const address = decodeEntity({ address: "address" }, entity);
 
                 return {
@@ -112,7 +112,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
     const totalGames = gameRecordSelf ? Number(gameRecordSelf.times) : 0;
     const wins = gameRecordSelf ? Number(gameRecordSelf.successTimes) : 0;
     const losses = totalGames - wins;
-    const winRate = totalGames > 0 ? (wins / totalGames) * 100 : 0;
+    const winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
 
     // 找到当前用户的排名
     let userRank = null;
@@ -172,20 +172,19 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                         color: item.entity === address ? 'red' : 'inherit'
                                     }}
                                 >
-                                    <td className={style.rankCell}>
-                                        <span className={style.rankImage}>
-                                            {index < 3 && (
-                                                <img
-                                                    src={index === 0 ? Gold : index === 1 ? Silver : Copper}
-                                                    alt={`Rank ${index + 1}`}
-                                                />
-                                            )}
-                                        </span>
+
+                                    <tr className={style.rankCell}>
+                                        {index < 3 && (
+                                            <img
+                                                src={index === 0 ? Gold : index === 1 ? Silver : Copper}
+                                                alt={`Rank ${index + 1}`}
+                                            />
+                                        )}
                                         <span className={style.rankNumber}>{index + 1}</span>
                                         {item.entity === address && (
                                             <span className={style.youSpan}>(You)</span>
                                         )}
-                                    </td>
+                                    </tr>
                                     <td>{formatAddress(item.entity)}</td>
                                     <td>{item.totalScore}</td>
                                     <td>{item.bestScore}</td>
@@ -198,7 +197,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                     </table>
                 </div>
 
-                <div className={style.tablecontainerbox}>
+                {/* <div className={style.tablecontainerbox}>
                     <table className={style.tableBox}>
                         <tbody className={style.tbodybox}>
                             <tr className={style.trbox}>
@@ -212,6 +211,23 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                             </tr>
                         </tbody>
                     </table>
+                </div> */}
+
+
+                <div className={style.tablecontainerbox}>
+                    <div className={style.tableBox}>
+                        <div className={style.YouBox}>
+                            <span>{userRank ? `${userRank} (You)` : 'N/A'}</span>
+                            <span>{formatAddress(address)}</span>
+                        </div>
+                        <div className={style.scoreBox}>
+                        <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
+                        <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
+                        <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.shortestTime) : 0}</span>
+                        <span className={style.scoreItem}>{wins}/{losses}</span>
+                        <span className={style.scoreItem}>{winRate}%</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

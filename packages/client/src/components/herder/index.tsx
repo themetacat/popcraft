@@ -1561,7 +1561,13 @@ export default function Header({ hoveredData, handleData }: Props) {
         //   marginLeft: "32px",
         // }}
         >
-          <div className={style.RankingListimg} onClick={() => rankTransports()}>
+          <div
+            className={isConnected ? style.RankingListimg : style.RankingListimgNotConnected}
+            onClick={() => rankTransports()}
+          style={{
+            cursor: "pointer",
+          }}
+          >
             <img src={RankingListimg} alt="" />
           </div>
 
@@ -1779,7 +1785,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       {showRankingList && (
         <div className={style.overlay}>
           <RankingList onClose={() => setShowRankingList(false)}
-          setShowRankingList ={setShowRankingList}
+            setShowRankingList={setShowRankingList}
           />
         </div>
       )}

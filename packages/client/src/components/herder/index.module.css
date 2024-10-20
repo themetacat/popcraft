@@ -59,7 +59,7 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.5); 
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .containerImg {
@@ -305,6 +305,7 @@ canvas {
   font-size: 2.3rem;
   font-weight: 700;
   margin-left: 40rem;
+  margin-left: 3rem;
 }
 
 .boldAddress {
@@ -499,11 +500,20 @@ canvas {
   margin-top: -4px;
 }
 
-.RankingListimg{
+.RankingListimg {
   display: flex;
 }
 
-.RankingListimg img{
+.RankingListimg img {
+  width: 6rem;
+  height: 6rem;
+}
+
+.RankingListimgNotConnected {
+  margin-left: 35rem;
+}
+
+.RankingListimgNotConnected img {
   width: 6rem;
   height: 6rem;
 }

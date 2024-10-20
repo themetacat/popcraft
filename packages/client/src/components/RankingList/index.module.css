@@ -46,13 +46,15 @@
     justify-content: center;
     align-items: flex-start;
     margin-top: -13rem;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    overflow-y: auto;
 }
 
 .table {
     width: 120rem;
     height: 60rem;
     border-collapse: collapse;
-    border: 2px solid #ddd;
     font-family: "AdobeHeitiStd-Regular";
 }
 
@@ -63,6 +65,9 @@
     color: #b13200;
     font-size: 2.5rem;
     letter-spacing: 0.3rem;
+    position: sticky;
+    top: 0;
+    z-index: 1; 
 }
 
 .tbody {
@@ -76,7 +81,7 @@
 
 }
 
-.rankImage img{
+.rankImage img {
     width: 2.5rem;
     margin-right: 5px;
     vertical-align: middle;
@@ -84,82 +89,79 @@
     margin-top: -0.5rem;
 }
 
-.rankCell {
-    width: 15rem; /* 调整 Rank 列的宽度 */
-}
-.youSpan{
-    margin-left: 1rem;
-}
+
 
 .tablecontainerbox {
     width: 120rem;
     height: 6rem;
-    margin-top: -12rem;
+    margin-top: -11rem;
     background-image: url('../../images/RankingList/buttombackages.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     border: none;
+    font-family: "AdobeHeitiStd-Regular";
 }
+
 
 .tableBox {
     width: 120rem;
     height: 6rem;
     border: none;
-    border-collapse: collapse; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 3rem;
+    text-align: center;
+    font-size: 2rem;
     color: #ffffff;
     letter-spacing: 0.3rem;
 }
+.YouBox{
+    width: 30rem;
+    display: flex;
+    align-items: center;
+    gap: 5rem;
 
-.tbodybox {
-    border-collapse: collapse;
-    height: 3.5rem;
-    border-left: none;
-    border-right: none;
-    padding: 8px;
-    text-align: center;
-    font-size: 2rem;
-    font-family: "AdobeHeitiStd-Regular";
+}
+.YouBox span {
+    justify-content: center;
+    align-items: center;
+    
+}
+.scoreBox{
+    display: flex;
+    align-items: center;
+    width: 80rem;
+    gap: 8rem;
 }
 
-.trbox td {
-    padding: 10px;
+.scoreItem{
+    width: 16rem;
+    margin-left: 1rem;
 }
-
-.trbox{
+.rankCell {
     width: 15rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 2rem;
+    margin-top: 1.5rem;
 }
 
-/* 确保每个列的宽度一致 */
-.table th:nth-child(1), .tableBox td:nth-child(1) {
-    width: 15rem; /* Rank 列的宽度 */
+.rankCell img {
+    width: 3rem;
+    margin-right: 4rem;
+    margin-left: -7rem;
 }
 
-.table th:nth-child(2), .tableBox td:nth-child(2) {
-    width: 20rem; /* Address 列的宽度 */
-}
+.youSpan {
+    margin-right: -6.5rem;
+    margin-left: 1rem;
 
-.table th:nth-child(3), .tableBox td:nth-child(3) {
-    width: 15rem; /* Total Score 列的宽度 */
-}
-
-.table th:nth-child(4), .tableBox td:nth-child(4) {
-    width: 15rem; /* Best Score 列的宽度 */
-}
-
-.table th:nth-child(5), .tableBox td:nth-child(5) {
-    width: 15rem; /* Fastest Time 列的宽度 */
-}
-
-.table th:nth-child(6), .tableBox td:nth-child(6) {
-    width: 15rem; /* Wins/Losses 列的宽度 */
-}
-
-.table th:nth-child(7), .tableBox td:nth-child(7) {
-    width: 15rem; /* Win Rate 列的宽度 */
 }
 
 @font-face {
     font-family: "AdobeHeitiStd-Regular";
     src: url("/fonts/BRLNSR.ttf");
-  }
+}
