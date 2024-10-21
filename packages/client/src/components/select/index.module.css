@@ -23,7 +23,7 @@
 }
 .downPoint{
     position: absolute;
-    right: 8px; /* 调整右边距 */
+    right: 8px;
     top: 50%;
     transform: translateY(-50%); /* 使用transform来垂直居中 */
     width: 20px;

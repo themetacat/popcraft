@@ -37,6 +37,12 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
         return `${address.slice(0, 4)}...${address.slice(-4)}`;
     };
 
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    };
+    
     const rankRecord = address ? getComponentValue(
         RankingRecord,
         addressToEntityID(address)
@@ -188,7 +194,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                     <td>{formatAddress(item.entity)}</td>
                                     <td>{item.totalScore}</td>
                                     <td>{item.bestScore}</td>
-                                    <td>{item.shortestTime}</td>
+                                    <td>{formatTime(item.shortestTime)}</td>
                                     <td>{item.wins}/{item.losses}</td>
                                     <td>{item.winRate}%</td>
                                 </tr>
@@ -196,24 +202,6 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                         </tbody>
                     </table>
                 </div>
-
-                {/* <div className={style.tablecontainerbox}>
-                    <table className={style.tableBox}>
-                        <tbody className={style.tbodybox}>
-                            <tr className={style.trbox}>
-                                <td className={style.rankCell}>{userRank ? `${userRank} (You)` : 'N/A'}</td>
-                                <td>{formatAddress(address)}</td>
-                                <td>{rankRecord ? Number(rankRecord.totalScore) : 0}</td>
-                                <td>{rankRecord ? Number(rankRecord.highestScore) : 0}</td>
-                                <td>{rankRecord ? Number(rankRecord.shortestTime) : 0}</td>
-                                <td>{wins}/{losses}</td>
-                                <td>{winRate}%</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div> */}
-
-
                 <div className={style.tablecontainerbox}>
                     <div className={style.tableBox}>
                         <div className={style.YouBox}>
@@ -223,7 +211,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                         <div className={style.scoreBox}>
                         <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
                         <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
-                        <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.shortestTime) : 0}</span>
+                        <span className={style.scoreItem}>{rankRecord ? formatTime(Number(rankRecord.shortestTime)) : '00:00'}</span>
                         <span className={style.scoreItem}>{wins}/{losses}</span>
                         <span className={style.scoreItem}>{winRate}%</span>
                         </div>

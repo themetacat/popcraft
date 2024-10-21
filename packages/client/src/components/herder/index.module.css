@@ -507,13 +507,24 @@ canvas {
 .RankingListimg img {
   width: 6rem;
   height: 6rem;
+  transition: transform 0.3s ease; 
+}
+
+.RankingListimg img:hover {
+  transform: scale(1.1); 
 }
 
 .RankingListimgNotConnected {
   margin-left: 35rem;
+  
 }
 
 .RankingListimgNotConnected img {
   width: 6rem;
   height: 6rem;
+  transition: transform 0.3s ease; 
+}
+
+.RankingListimgNotConnected img:hover {
+  transform: scale(1.1); 
 }

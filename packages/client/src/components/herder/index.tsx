@@ -24,6 +24,7 @@ import failto from '../../images/substance/failto.png'
 import RankingListimg from '../../images/RankingList/trophy.png'
 import RankingList from '../RankingList'
 import { rankTransports } from "viem/_types/clients/transports/fallback";
+import { log } from "@uniswap/smart-order-router";
 interface Props {
   hoveredData: { x: number; y: number } | null;
   handleData: (data: { x: number; y: number }) => void;
@@ -970,14 +971,12 @@ export default function Header({ hoveredData, handleData }: Props) {
             onHandleLoading();
 
           } else {
-            handleError();
             setTopUpType(true)
             setLoadingSquare(null);
             onHandleLoading();
           }
         });
       } else {
-        handleError();
         setLoadingSquare(null);
       }
     });
@@ -1006,6 +1005,8 @@ export default function Header({ hoveredData, handleData }: Props) {
         setLoadingSquare(null); // 清除 loading 状态
         return;
       }
+      console.log(interact_data.error);
+      
       const receipt = await interact_data.hashValpublic;
       if (interact_data[1]) {
         const receipt = await interact_data[1];
@@ -1368,21 +1369,25 @@ export default function Header({ hoveredData, handleData }: Props) {
     setLoading(false);
     setLoadingpaly(false);
     onHandleLoading();
+  
     if (errorMessage.includes("0x897f6c58")) {
       setShowSuccessModal(true);
       setTimeout(() => {
         setShowSuccessModal(false);
       }, 1000);
-    } else if (errorMessage.includes("RPC Request failed")) {
-      setShowNewPopUp(true);
-    } else if (errorMessage.includes("The contract function \"callFrom\" reverted with the following reason:")) {
+    } 
+    // else if (errorMessage.includes("Execution reverted with reason: RPC Request failed.") && errorMessage.includes("eth_estimateGas")
+    //  && errorMessage.includes("Details: execution reverted")) {
+    //   setShowNewPopUp(true);
+    // } 
+    else if (errorMessage.includes("The contract function \"callFrom\" reverted with the following reason:")) {
       // 不弹框
     } else {
-      console.error("Failed to setup network:", errorMessage);
-      setShowNewPopUp(true);
+      // 处理其他错误
+      console.error("Unhandled error:", errorMessage);
     }
   };
-
+  
   const onHandleExe = () => {
     setPopExhibit(false);
     setShowOverlay(false);
