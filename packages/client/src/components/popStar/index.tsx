@@ -42,7 +42,8 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
     <div className={style.content}>
       <p className={style.title}>WELCOME TO POPCRAFT!</p>
       <div className={style.Container}>
-        <span className={style.copywritingTwo}>This is a composability-based elimi <br/>-nation game. You have
+        <span className={style.copywritingTwo}>This is a composability-based elimi-<br/>
+        <span className={style.copywritingbox}>nation game. You have</span>
           <span className={style.copywritingThree}> 4 minutes</span>&nbsp;<br />
         </span>
         <span className={style.copywritingTwo}>

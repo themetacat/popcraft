@@ -47,6 +47,7 @@ p {
   line-height: 2rem;
   margin-left: 9.2rem;
   margin-top: -2.5rem;
+  font-size: 2.5rem;
 }
 
 
@@ -54,24 +55,29 @@ p {
   font-weight: 600;
   font-size: 2.5rem;
   color: #000000;
+  
+
 }
 
 .copywritingTwo {
-  font-size: 2.2rem;
-  line-height: 4rem;
-  letter-spacing: 0.5rem;
+  line-height: 4.5rem;
+  letter-spacing: 0.35rem;
   color: #020202;
   font-family: "AdobeHeitiStd-Regular";
 }
+.copywritingbox{
+  line-height: 4rem;
+  letter-spacing: 0.5rem;
+}
 
 .copywritingTwobox {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .copywritingTwoyo {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   line-height: 4rem;
-  letter-spacing: 0.33rem;
+  letter-spacing: 0.25rem;
   font-family: "AdobeHeitiStd-Regular";
 }
 
