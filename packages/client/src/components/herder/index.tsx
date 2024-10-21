@@ -830,6 +830,122 @@ export default function Header({ hoveredData, handleData }: Props) {
     setPageClick(false);
   };
   //点击方块触发事件
+  // const handleMouseUp = async (event: React.MouseEvent<HTMLDivElement>) => {
+  //   if (pageClick === true) {
+  //     return;
+  //   }
+  //   setIsLongPress(false);
+  //   setIsDragging(false);
+  //   setPopExhibit(false);
+  //   await playEffect();
+  //   if (downTimerRef.current) {
+  //     clearTimeout(downTimerRef.current);
+  //     downTimerRef.current = null;
+  //   }
+
+  //   const a = get_function_param(action);
+  //   a.then((x) => {
+  //     const isEmpty = Object.keys(x).length === 0;
+
+  //     if (isLongPress) {
+  //       setIsLongPress(false);
+  //       setIsDragging(false);
+  //     } else {
+  //       const canvas = canvasRef.current as any;
+  //       const rect = canvas.getBoundingClientRect();
+  //       const mouseX = event.clientX - rect.left;
+  //       const mouseY = event.clientY - rect.top;
+
+  //       if (appName === "BASE/PopCraftSystem") {
+  //         const CANVAS_WIDTH = document.documentElement.clientWidth;
+  //         const CANVAS_HEIGHT = document.documentElement.clientHeight;
+  //         const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+  //         const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+
+  //         const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
+  //         const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
+  //         const newHoveredSquare = { x: gridX, y: gridY };
+  //         setHoveredSquare(newHoveredSquare);
+  //         setLoadingSquare(newHoveredSquare); // 设置 loading 状态
+  //       } else {
+  //         const gridX = Math.floor(mouseX / GRID_SIZE);
+  //         const gridY = Math.floor(mouseY / GRID_SIZE);
+  //         setCoordinatesData({ x: gridX, y: gridY });
+  //         const newHoveredSquare = { x: gridX, y: gridY };
+  //         setHoveredSquare(newHoveredSquare);
+  //         setLoadingSquare(newHoveredSquare);// 设置 loading 状态
+  //       }
+
+  //       if (isEmpty) {
+  //         if (selectedColor && coordinates) {
+  //           hoveredSquareRef.current = coordinates;
+  //           setIsDragging(false);
+  //           if (appName === "BASE/PopCraftSystem") {
+  //             // if (action === "pop") {
+  //             if (TCMPopStarData && coordinates.x < 10 && coordinates.x >= 0 && coordinates.y < 10 && coordinates.y >= 0) {
+  //               const new_coor = {
+  //                 x: coordinates.x + TCMPopStarData.x,
+  //                 y: coordinates.y + TCMPopStarData.y,
+  //               }
+  //               if (new_coor.x >= 0 && new_coor.y >= 0) {
+  //                 interactHandleTCM(
+  //                   new_coor,
+  //                   palyerAddress,
+  //                   selectedColor,
+  //                   'pop',
+  //                   null
+  //                 );
+  //               }
+  //             }
+  //           } else {
+  //             interactHandle(
+  //               coordinates,
+  //               palyerAddress,
+  //               selectedColor,
+  //               action,
+  //               null
+  //             );
+  //           }
+
+  //           mouseXRef.current = mouseX;
+  //           mouseYRef.current = mouseY;
+  //           handleData(hoveredSquare as any);
+  //           const ctx = canvas.getContext("2d");
+  //           if (ctx) {
+  //             const { x, y } = coordinates;
+  //             ctx.fillStyle = selectedColor;
+  //             ctx.fillRect(
+  //               x * GRID_SIZE - scrollOffset.x,
+  //               y * GRID_SIZE - scrollOffset.y,
+  //               GRID_SIZE,
+  //               GRID_SIZE
+  //             );
+  //             if (appName === "BASE/PopCraftSystem") {
+  //               // drawGrid2
+  //               if (coordinates.x < 10 && coordinates.x >= 0 && coordinates.y < 10 && coordinates.y >= 0) {
+  //                 ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  //                 drawGrid2(ctx, coordinates, true);
+  //               }
+  //             } else {
+  //               ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  //               drawGrid(ctx, coordinates, false);
+  //             }
+  //           }
+  //         }
+  //       } else {
+  //         setPopExhibit(true);
+  //       }
+  //       setIsDragging(false);
+  //       setShowOverlay(true);
+
+  //       setTranslateX(0);
+  //       setTranslateY(0);
+  //     }
+  //   });
+  // };
+
+
+
   const handleMouseUp = async (event: React.MouseEvent<HTMLDivElement>) => {
     if (pageClick === true) {
       return;
@@ -942,7 +1058,18 @@ export default function Header({ hoveredData, handleData }: Props) {
         setTranslateY(0);
       }
     });
+
+    // 检查余额
+    if (isConnected) {
+      const balanceFN = publicClient.getBalance({ address: palyerAddress });
+      balanceFN.then((balance: any) => {
+        if ((Number(balance) / 1e18) < 3) {
+          setShowNewPopUp(true);
+        }
+      });
+    }
   };
+
 
   const interactHandle = (
     coordinates: any,
@@ -1005,8 +1132,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         setLoadingSquare(null); // 清除 loading 状态
         return;
       }
-      console.log(interact_data.error);
-      
+
       const receipt = await interact_data.hashValpublic;
       if (interact_data[1]) {
         const receipt = await interact_data[1];
@@ -1369,13 +1495,13 @@ export default function Header({ hoveredData, handleData }: Props) {
     setLoading(false);
     setLoadingpaly(false);
     onHandleLoading();
-  
+
     if (errorMessage.includes("0x897f6c58")) {
       setShowSuccessModal(true);
       setTimeout(() => {
         setShowSuccessModal(false);
       }, 1000);
-    } 
+    }
     // else if (errorMessage.includes("Execution reverted with reason: RPC Request failed.") && errorMessage.includes("eth_estimateGas")
     //  && errorMessage.includes("Details: execution reverted")) {
     //   setShowNewPopUp(true);
@@ -1387,7 +1513,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       console.error("Unhandled error:", errorMessage);
     }
   };
-  
+
   const onHandleExe = () => {
     setPopExhibit(false);
     setShowOverlay(false);
@@ -1569,9 +1695,9 @@ export default function Header({ hoveredData, handleData }: Props) {
           <div
             className={isConnected ? style.RankingListimg : style.RankingListimgNotConnected}
             onClick={() => rankTransports()}
-          style={{
-            cursor: "pointer",
-          }}
+            style={{
+              cursor: "pointer",
+            }}
           >
             <img src={RankingListimg} alt="" />
           </div>

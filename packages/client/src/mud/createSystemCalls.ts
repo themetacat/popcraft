@@ -450,7 +450,7 @@ export function createSystemCalls(
       }
 
     } catch (error) {
-      console.error("Failed to setup network:", error.message);
+      // console.error("Failed to setup network:", error.message);
       return { error: error.message };
     }
     
