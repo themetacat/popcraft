@@ -88,14 +88,15 @@ canvas {
 }
 
 .chainbox {
+  width: 65rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  right: 20rem;
+  margin-left: 5rem;
 }
 
 .chain {
-  width: 30rem;
+  width: 28rem;
   height: 5rem;
   display: flex;
   align-items: center;
@@ -103,7 +104,7 @@ canvas {
 }
 
 .addressbox {
-  width: 30rem;
+  width: 37rem;
   height: 5rem;
   position: relative;
   display: flex;
@@ -304,8 +305,7 @@ canvas {
   color: #fff;
   font-size: 2.3rem;
   font-weight: 700;
-  margin-left: 40rem;
-  margin-left: 3rem;
+  margin-left: 5rem;
 }
 
 .boldAddress {
@@ -313,6 +313,7 @@ canvas {
   font-weight: bold;
   border: none;
   background: none;
+  letter-spacing: 0.15rem;
   color: #fff;
 }
 
@@ -502,6 +503,8 @@ canvas {
 
 .RankingListimg {
   display: flex;
+  /* background-color: red; */
+  margin-left: -10rem
 }
 
 .RankingListimg img {
@@ -516,7 +519,6 @@ canvas {
 
 .RankingListimgNotConnected {
   margin-left: 35rem;
-  
 }
 
 .RankingListimgNotConnected img {

@@ -15,6 +15,7 @@ import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
 import LoadingImg from "../../images/loadingto.webp"
 // import { useTopUpAmount,useMinSessionWalletBalance  } from "../select"; // 导入 select.tsx 文件
+import { useTopUp } from "../select"; // 导入自定义 Hook
 
 import {
   type BaseError,
@@ -61,6 +62,7 @@ export default function TopUp({
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
   // const {inputValue, setInputValue } = useTopUpAmount(); 
   // const { minSessionWalletBalance } = useMinSessionWalletBalance(); 
+  const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE } = useTopUp(); // 使用自定义 Hook
 
   async function withDraw() {
     const balance_eth = balance / 1e18;
@@ -86,7 +88,7 @@ export default function TopUp({
     network: { walletClient, publicClient },
   } = useMUD();
   const { address, isConnected } = useAccount();
-  const MIN_SESSION_WALLET_BALANCE = parseEther("0.03");
+  // const MIN_SESSION_WALLET_BALANCE = parseEther("0.03");
   const balanceResultSW = useBalance({
     address: palyerAddress,
   });
@@ -97,7 +99,7 @@ export default function TopUp({
     });
   }, []);
 
-  const [inputValue, setInputValue] = useState("10");
+  // const [inputValue, setInputValue] = useState("10");
   const {
     data: hash,
     error,

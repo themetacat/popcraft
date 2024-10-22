@@ -85,6 +85,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       setBalance(Math.floor(Number(resultBugs.data?.value) / 1e18));
     }
   }, [resultBugs.data]);
+  
 
   const handlePlayAgain = () => {
     setLoading(true);

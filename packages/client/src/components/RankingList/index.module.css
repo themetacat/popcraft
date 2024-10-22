@@ -190,3 +190,28 @@
     font-family: "AdobeHeitiStd-Regular";
     src: url("/fonts/BRLNSR.ttf");
 }
+
+
+.tablecontainer::-webkit-scrollbar {
+    width: 8px; 
+}
+
+.tablecontainer::-webkit-scrollbar-track {
+    background: #d3724c; 
+}
+
+.tablecontainer::-webkit-scrollbar-thumb {
+    background: #fff1c8; 
+    border-radius: 6px;
+}
+
+.tablecontainer::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+
+/* Firefox 滚动条样式 */
+.tablecontainer {
+    scrollbar-width: thin;
+    scrollbar-color: #fff1c8 #d3724c; 
+}

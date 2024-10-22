@@ -120,6 +120,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
     const losses = totalGames - wins;
     const winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
 
+    
     // 找到当前用户的排名
     let userRank = null;
     for (let i = 0; i < sortedRankingRecords.length; i++) {

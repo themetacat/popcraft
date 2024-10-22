@@ -14,7 +14,7 @@ import { update_app_value } from "../../mud/createSystemCalls";
 import { CANVAS_HEIGHT } from "../../global/constants";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
-import { useDisconnect } from 'wagmi';
+import { useDisconnect, useBalance } from 'wagmi';
 import popcraftLogo from '../../images/popcraft_logo.webp';
 import backgroundMusic from '../../audio/1.mp3';
 import effectSound from '../../audio/2.mp3';
@@ -25,6 +25,7 @@ import RankingListimg from '../../images/RankingList/trophy.png'
 import RankingList from '../RankingList'
 import { rankTransports } from "viem/_types/clients/transports/fallback";
 import { log } from "@uniswap/smart-order-router";
+
 interface Props {
   hoveredData: { x: number; y: number } | null;
   handleData: (data: { x: number; y: number }) => void;
@@ -92,7 +93,22 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [showNewPopUp, setShowNewPopUp] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showRankingList, setShowRankingList] = useState(false);
+  const [balancover, setBalancover] = useState(0);
+  
+  const resultBugs = useBalance({
+    address: address,
+    token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
+  })
 
+  useEffect(() => {
+    if (resultBugs.data?.value) {
+      setBalancover(Math.floor(Number(resultBugs.data?.value) / 1e18));
+    }
+  }, [resultBugs.data]);
+
+  const formatBalance = (balancover: any) => {
+    return balancover.toLocaleString();
+  };
 
   // 将 CANVAS_WIDTH 和 CANVAS_HEIGHT 保存到 state 中
   const [canvasSize, setCanvasSize] = useState({
@@ -1485,11 +1501,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     setShowOverlay(false);
     setPanningFromChild(newPanningValue);
   };
-  // const handleError = () => {
-  //   setLoading(false);
-  //   setLoadingpaly(false)
-  //   onHandleLoading();
-  // };
 
   const handleError = (errorMessage) => {
     setLoading(false);
@@ -1779,7 +1790,7 @@ export default function Header({ hoveredData, handleData }: Props) {
                             >
                               {account.displayName}
                               {account.displayBalance
-                                ? ` (${account.displayBalance})`
+                                ? ` (${formatBalance(balancover)}  $BUGS)`
                                 : ""}
                             </button>
 
