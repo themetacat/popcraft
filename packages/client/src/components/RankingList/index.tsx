@@ -42,12 +42,12 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
         const remainingSeconds = seconds % 60;
         return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     };
-    
+
     const rankRecord = address ? getComponentValue(
         RankingRecord,
         addressToEntityID(address)
     ) : undefined;
-    
+
 
     const gameRecord = address ? getComponentValue(
         GameRecord,
@@ -114,7 +114,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
     const gameRecordSelf = address ? getComponentValue(
         GameRecord,
         addressToEntityID(address),
-    ) : undefined;  
+    ) : undefined;
 
 
     const totalGames = gameRecordSelf ? Number(gameRecordSelf.times) : 0;
@@ -122,7 +122,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
     const losses = totalGames - wins;
     const winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
 
-    
+
     // 找到当前用户的排名
     let userRank = null;
     for (let i = 0; i < sortedRankingRecords.length; i++) {
@@ -207,17 +207,26 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                 </div>
                 <div className={style.tablecontainerbox}>
                     <div className={style.tableBox}>
-                        <div className={style.YouBox}>
-                            <span>{userRank ? `${userRank} (You)` : 'N/A'}</span>
-                            <span>{formatAddress(address)}</span>
-                        </div>
-                        <div className={style.scoreBox}>
-                        <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
-                        <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
-                        <span className={style.scoreItem}>{rankRecord ? formatTime(Number(rankRecord.shortestTime)) : '00:00'}</span>
-                        <span className={style.scoreItem}>{wins}/{losses}</span>
-                        <span className={style.scoreItem}>{winRate}%</span>
-                        </div>
+                        {isConnected ? (
+                            <>
+                                <div className={style.YouBox}>
+                                    <span>{userRank ? `${userRank} (You)` : 'N/A'}</span>
+                                    <span>{formatAddress(address)}</span>
+                                </div>
+                                <div className={style.scoreBox}>
+                                    <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
+                                    <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
+                                    <span className={style.scoreItem}>{rankRecord ? formatTime(Number(rankRecord.shortestTime)) : '00:00'}</span>
+                                    <span className={style.scoreItem}>{wins}/{losses}</span>
+                                    <span className={style.scoreItem}>{winRate}%</span>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className={style.YouBox}></div>
+                                <div className={style.scoreBox}></div>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

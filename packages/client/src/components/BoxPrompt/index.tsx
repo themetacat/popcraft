@@ -549,7 +549,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               <p className={style.balance}>
               {rankRecord ? Number(rankRecord.latestScores) : 0}
               </p>
-              <p>ROUND SCORE</p>
+              <p>SCORE</p>
             </div>
           </div>
 

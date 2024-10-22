@@ -88,11 +88,11 @@ canvas {
 }
 
 .chainbox {
-  width: 65rem;
+  width: 70rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 5rem;
+  margin-left: 3rem;
 }
 
 .chain {
@@ -104,7 +104,9 @@ canvas {
 }
 
 .addressbox {
-  width: 37rem;
+  /* width: 37rem; */
+  min-width: 37rem;
+  max-width: 40rem; 
   height: 5rem;
   position: relative;
   display: flex;
@@ -112,6 +114,8 @@ canvas {
   align-items: center;
   justify-content: center;
   background-color: #2b8e9d;
+  white-space: nowrap; /* 防止内容换行 */
+
 }
 
 canvas {
