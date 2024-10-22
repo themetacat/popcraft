@@ -23,8 +23,8 @@ import success from '../../images/substance/successto.png'
 import failto from '../../images/substance/failto.png'
 import RankingListimg from '../../images/RankingList/trophy.png'
 import RankingList from '../RankingList'
-import { rankTransports } from "viem/_types/clients/transports/fallback";
-import { log } from "@uniswap/smart-order-router";
+import { useTopUp } from "../select"; // 导入自定义 Hook
+
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -94,7 +94,8 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showRankingList, setShowRankingList] = useState(false);
   const [balancover, setBalancover] = useState(0);
-  
+  const { balanceCheck } = useTopUp();  //控制判断余额的hooks
+
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
@@ -845,123 +846,8 @@ export default function Header({ hoveredData, handleData }: Props) {
   const handlePageClickIs = () => {
     setPageClick(false);
   };
+      
   //点击方块触发事件
-  // const handleMouseUp = async (event: React.MouseEvent<HTMLDivElement>) => {
-  //   if (pageClick === true) {
-  //     return;
-  //   }
-  //   setIsLongPress(false);
-  //   setIsDragging(false);
-  //   setPopExhibit(false);
-  //   await playEffect();
-  //   if (downTimerRef.current) {
-  //     clearTimeout(downTimerRef.current);
-  //     downTimerRef.current = null;
-  //   }
-
-  //   const a = get_function_param(action);
-  //   a.then((x) => {
-  //     const isEmpty = Object.keys(x).length === 0;
-
-  //     if (isLongPress) {
-  //       setIsLongPress(false);
-  //       setIsDragging(false);
-  //     } else {
-  //       const canvas = canvasRef.current as any;
-  //       const rect = canvas.getBoundingClientRect();
-  //       const mouseX = event.clientX - rect.left;
-  //       const mouseY = event.clientY - rect.top;
-
-  //       if (appName === "BASE/PopCraftSystem") {
-  //         const CANVAS_WIDTH = document.documentElement.clientWidth;
-  //         const CANVAS_HEIGHT = document.documentElement.clientHeight;
-  //         const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
-  //         const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
-
-  //         const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
-  //         const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
-  //         const newHoveredSquare = { x: gridX, y: gridY };
-  //         setHoveredSquare(newHoveredSquare);
-  //         setLoadingSquare(newHoveredSquare); // 设置 loading 状态
-  //       } else {
-  //         const gridX = Math.floor(mouseX / GRID_SIZE);
-  //         const gridY = Math.floor(mouseY / GRID_SIZE);
-  //         setCoordinatesData({ x: gridX, y: gridY });
-  //         const newHoveredSquare = { x: gridX, y: gridY };
-  //         setHoveredSquare(newHoveredSquare);
-  //         setLoadingSquare(newHoveredSquare);// 设置 loading 状态
-  //       }
-
-  //       if (isEmpty) {
-  //         if (selectedColor && coordinates) {
-  //           hoveredSquareRef.current = coordinates;
-  //           setIsDragging(false);
-  //           if (appName === "BASE/PopCraftSystem") {
-  //             // if (action === "pop") {
-  //             if (TCMPopStarData && coordinates.x < 10 && coordinates.x >= 0 && coordinates.y < 10 && coordinates.y >= 0) {
-  //               const new_coor = {
-  //                 x: coordinates.x + TCMPopStarData.x,
-  //                 y: coordinates.y + TCMPopStarData.y,
-  //               }
-  //               if (new_coor.x >= 0 && new_coor.y >= 0) {
-  //                 interactHandleTCM(
-  //                   new_coor,
-  //                   palyerAddress,
-  //                   selectedColor,
-  //                   'pop',
-  //                   null
-  //                 );
-  //               }
-  //             }
-  //           } else {
-  //             interactHandle(
-  //               coordinates,
-  //               palyerAddress,
-  //               selectedColor,
-  //               action,
-  //               null
-  //             );
-  //           }
-
-  //           mouseXRef.current = mouseX;
-  //           mouseYRef.current = mouseY;
-  //           handleData(hoveredSquare as any);
-  //           const ctx = canvas.getContext("2d");
-  //           if (ctx) {
-  //             const { x, y } = coordinates;
-  //             ctx.fillStyle = selectedColor;
-  //             ctx.fillRect(
-  //               x * GRID_SIZE - scrollOffset.x,
-  //               y * GRID_SIZE - scrollOffset.y,
-  //               GRID_SIZE,
-  //               GRID_SIZE
-  //             );
-  //             if (appName === "BASE/PopCraftSystem") {
-  //               // drawGrid2
-  //               if (coordinates.x < 10 && coordinates.x >= 0 && coordinates.y < 10 && coordinates.y >= 0) {
-  //                 ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  //                 drawGrid2(ctx, coordinates, true);
-  //               }
-  //             } else {
-  //               ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  //               drawGrid(ctx, coordinates, false);
-  //             }
-  //           }
-  //         }
-  //       } else {
-  //         setPopExhibit(true);
-  //       }
-  //       setIsDragging(false);
-  //       setShowOverlay(true);
-
-  //       setTranslateX(0);
-  //       setTranslateY(0);
-  //     }
-  //   });
-  // };
-
-
-
   const handleMouseUp = async (event: React.MouseEvent<HTMLDivElement>) => {
     if (pageClick === true) {
       return;

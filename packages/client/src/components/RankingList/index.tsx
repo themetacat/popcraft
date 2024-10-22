@@ -47,6 +47,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
         RankingRecord,
         addressToEntityID(address)
     ) : undefined;
+    
 
     const gameRecord = address ? getComponentValue(
         GameRecord,
@@ -113,7 +114,8 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
     const gameRecordSelf = address ? getComponentValue(
         GameRecord,
         addressToEntityID(address),
-    ) : undefined;
+    ) : undefined;  
+
 
     const totalGames = gameRecordSelf ? Number(gameRecordSelf.times) : 0;
     const wins = gameRecordSelf ? Number(gameRecordSelf.successTimes) : 0;

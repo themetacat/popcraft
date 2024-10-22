@@ -60,8 +60,6 @@ export default function TopUp({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
-  // const {inputValue, setInputValue } = useTopUpAmount(); 
-  // const { minSessionWalletBalance } = useMinSessionWalletBalance(); 
   const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE } = useTopUp(); // 使用自定义 Hook
 
   async function withDraw() {

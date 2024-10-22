@@ -17,17 +17,12 @@ import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
 import { generateRoute } from '../../uniswap_routing/routing'
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-
 import {
   encodeEntity,
 } from "@latticexyz/store-sync/recs";
 import {
   getComponentValue,
 } from "@latticexyz/recs";
-import { flare } from "viem/chains";
-import { log } from "@uniswap/smart-order-router";
-import { q } from "@latticexyz/store/dist/store-e0caabe3";
-
 interface Props {
   coordinates: any;
   timeControl: any;
@@ -42,6 +37,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       TCMPopStar,
       TokenBalance,
       UserDelegationControl,
+      RankingRecord,
     },
     network: { palyerAddress },
     systemCalls: { interact, payFunction, registerDelegation },
@@ -86,7 +82,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }
   }, [resultBugs.data]);
   
-
   const handlePlayAgain = () => {
     setLoading(true);
     playFun();
@@ -222,6 +217,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       }
     });
   };
+
   useEffect(() => {
     if (isConnected) {
       const interval = setInterval(() => {
@@ -273,13 +269,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   }, [numberData]);
 
   const handlePayMent = () => {
-    // 过滤 numberData 和 prices 以仅包含页面上渲染的物质
     const renderedMaterials = Object.keys(matchedData);
     const filteredNumberData = renderedMaterials.map(key => ({
       key,
       quantity: numberData[key] * 10 ** 18
     }));
-
     // 过滤掉数量为 0 的物质
     const itemsToPay = filteredNumberData.filter(item => item.quantity > 0);
     if (itemsToPay.length === 0) {
@@ -298,7 +292,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         setModalMessage("SUCCEED!");
         setTimeout(() => {
           setShowSuccessModal(false);
-          setdataq(false); // 关闭购买物质的弹出层
+          setdataq(false); 
         }, 3000);
       } else {
         toast.error("Payment failed! Try again!");
@@ -526,6 +520,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       fetchPrices(matchedData);
     }
   }, [dataq]);
+  
+  const rankRecord = address ? getComponentValue(
+    RankingRecord,
+    addressToEntityID(address)
+) : undefined;
 
   return (
     <>
@@ -548,9 +547,9 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             </div>
             <div className={style.threePart}>
               <p className={style.balance}>
-                {formatBalance(balance)}&nbsp;$BUGS
+              {rankRecord ? Number(rankRecord.latestScores) : 0}
               </p>
-              <p>BALANCE</p>
+              <p>ROUND SCORE</p>
             </div>
           </div>
 
@@ -569,7 +568,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 onClick={async () => {
                   setdataq(!warnBox);
                   // getRoute()
-                  
                 }}
               >
                 BUY
