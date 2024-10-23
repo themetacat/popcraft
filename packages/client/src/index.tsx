@@ -33,6 +33,7 @@ const config = getDefaultConfig({
   }],
   chains: [
     local,
+    redstone,
   ],
   ssr: true,
 });

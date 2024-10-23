@@ -17,6 +17,8 @@ import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
 import { generateRoute } from '../../uniswap_routing/routing'
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useTopUp } from "../select"; // 导入自定义 Hook
+
 import {
   encodeEntity,
 } from "@latticexyz/store-sync/recs";
@@ -72,6 +74,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loadingPrices, setLoadingPrices] = useState({});
   const [lastPrices, setLastPrices] = useState({});
+  const { rewardInfo } = useTopUp(); // 使用自定义 Hook
+
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
@@ -542,7 +546,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
             </div>
             <div className={style.twoPart} >
-              <p >150&nbsp;$BUGS</p>
+              {/* <p >150&nbsp;$BUGS</p> */}
+              <p dangerouslySetInnerHTML={{ __html: rewardInfo }}></p>
               <p>REWARDS</p>
             </div>
             <div className={style.threePart}>

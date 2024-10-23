@@ -94,7 +94,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showRankingList, setShowRankingList] = useState(false);
   const [balancover, setBalancover] = useState(0);
-  const { balanceCheck } = useTopUp();  //控制判断余额的hooks
+  const { balanceCheck } = useTopUp();   
 
   const resultBugs = useBalance({
     address: address,
@@ -171,7 +171,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   // 判断用户临时钱包有没有钱 
   useEffect(() => {
     if (isConnected && appName === "BASE/PopCraftSystem" && !hasExecutedRef.current) {
-      if ((Number(balance) / 1e18) < 3) {
+      if ((Number(balance) / 1e18) < balanceCheck) {
         setTopUpType(true);
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
@@ -965,7 +965,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     if (isConnected) {
       const balanceFN = publicClient.getBalance({ address: palyerAddress });
       balanceFN.then((balance: any) => {
-        if ((Number(balance) / 1e18) < 3) {
+        if ((Number(balance) / 1e18) < balanceCheck) {
           setShowNewPopUp(true);
         }
       });
@@ -1077,7 +1077,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       balanceFN.then((balance: any) => {
         setBalance(balance);
 
-        if ((Number(balance) / 1e18) < 3) {
+        if ((Number(balance) / 1e18) < balanceCheck) {
           setTopUpType(true);
           localStorage.setItem('money', 'nomoney')
           localStorage.setItem('playAction', 'noplay')
@@ -1393,6 +1393,10 @@ export default function Header({ hoveredData, handleData }: Props) {
     setLoadingpaly(false);
     onHandleLoading();
 
+    if (!errorMessage) {
+      console.error("Error message is undefined or null");
+      return;
+    }
     if (errorMessage.includes("0x897f6c58")) {
       setShowSuccessModal(true);
       setTimeout(() => {
@@ -1405,8 +1409,8 @@ export default function Header({ hoveredData, handleData }: Props) {
     // } 
     else if (errorMessage.includes("The contract function \"callFrom\" reverted with the following reason:")) {
       // 不弹框
-    } else {
-      // 处理其他错误
+    } 
+    else {  
       console.error("Unhandled error:", errorMessage);
     }
   };
@@ -1657,7 +1661,13 @@ export default function Header({ hoveredData, handleData }: Props) {
                       <div>
                         <div className={style.chainbox}>
                           <div className={style.chain}>
+                            {/* <button
+                              onClick={(event) => {
+                                openChainModal();
+                              }}
+                             > */}
                             {chain.name} &nbsp;&nbsp;
+                            {/* </button> */}
                           </div>
                           <div className={style.addressbox}
                             style={{
