@@ -386,7 +386,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     if (quantity > 0) {
       setLoadingPrices(prev => ({ ...prev, [key]: true }));
       try {
-        const route = await generateRoute(key, quantity,re  cipient);
+        const route = await generateRoute(key, quantity,recipient);
         const price = route.quote.toExact(); // 获取报价
         const methodParameters = route.methodParameters;
         methodParameters['tokenAddress'] = key;
