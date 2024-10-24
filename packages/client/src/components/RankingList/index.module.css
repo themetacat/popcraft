@@ -144,16 +144,16 @@
 }
 
 .YouBox {
-    width: 30rem;
+    width: 32rem;
     display: flex;
     align-items: center;
-    gap: 5rem;
+    gap: 3rem;
 }
 
 .YouBox span {
     justify-content: center;
     align-items: center;
-    margin-left: 2rem;
+    margin-left: 2.8rem;
 }
 
 .scoreBox {
@@ -165,7 +165,7 @@
 
 .scoreItem {
     width: 18rem;
-    margin-left: 6.3rem;
+    margin-left: 5rem;
 }
 
 .rankCell {
