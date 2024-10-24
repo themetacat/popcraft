@@ -45,7 +45,7 @@ const core_foundry = defineChain({
   id: 31_338,
   name: 'MetaCat Devnet',
   network: 'MetaCat Devnet',
-  iconUrl:'https://poster-phi.vercel.app/metacat_logo.png',
+  iconUrl:'https://poster-phi.vercel.app/MetaCat_Logo_Circle.png',
   nativeCurrency: {
     decimals: 18,
     name: 'Ether',
