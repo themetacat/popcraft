@@ -74,8 +74,9 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loadingPrices, setLoadingPrices] = useState({});
   const [lastPrices, setLastPrices] = useState({});
-  const { rewardInfo } = useTopUp(); // 使用自定义 Hook
-
+  const { rewardInfo,recipient } = useTopUp(); // 使用自定义 Hook
+  // console.log(recipient);
+  
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
@@ -342,7 +343,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       const quantity = numberData[key] || 0;
       if (quantity > 0) {
         setLoadingPrices(prev => ({ ...prev, [key]: true }));
-        const route = await generateRoute(key, quantity);
+        const route = await generateRoute(key, quantity,recipient);
         const price = route.quote.toExact(); // 获取报价
         const methodParameters = route.methodParameters;
         methodParameters['tokenAddress'] = key;
@@ -385,7 +386,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     if (quantity > 0) {
       setLoadingPrices(prev => ({ ...prev, [key]: true }));
       try {
-        const route = await generateRoute(key, quantity);
+        const route = await generateRoute(key, quantity,re  cipient);
         const price = route.quote.toExact(); // 获取报价
         const methodParameters = route.methodParameters;
         methodParameters['tokenAddress'] = key;

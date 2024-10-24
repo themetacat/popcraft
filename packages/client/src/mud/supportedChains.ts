@@ -45,6 +45,7 @@ const core_foundry = defineChain({
   id: 31_338,
   name: 'MetaCat Devnet',
   network: 'MetaCat Devnet',
+  iconUrl:'https://poster-phi.vercel.app/metacat_logo.png',
   nativeCurrency: {
     decimals: 18,
     name: 'Ether',
@@ -93,6 +94,7 @@ const redstone = defineChain({
   id: 690,
   name: 'Redstone',
   network: 'redstone',
+  iconUrl:'https://redstone.xyz/icons/redstone.svg',
   nativeCurrency: {
     decimals: 18,
     name: 'Ether',

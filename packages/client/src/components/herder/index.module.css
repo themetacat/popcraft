@@ -73,14 +73,12 @@ canvas {
 }
 
 .addr {
-  width: 80rem;
-  height: 10rem;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   position: absolute;
-  right: -5rem;
+  right: 2rem;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -88,25 +86,108 @@ canvas {
 }
 
 .chainbox {
-  width: 70rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 3rem;
+  margin-left: 4rem;
+  gap: 1rem;
 }
 
 .chain {
-  width: 28rem;
-  height: 5rem;
+  width: 15rem;
+  height: 8rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  /* background-color: red; */
+}
+
+.Chainbutton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10rem;
+  height: 5rem;
+  border: none;
+  border-radius: 10rem;
+  background-color: #2b8e9d;
+}
+
+.iconimg {
+  width: 3rem;
+  height: 3rem;
+}
+
+.arrow {
+  width: 2rem;
+  height: 1.5rem;
+  margin-left: 1rem;
+  background-color: #2b8e9d;
+  background-color: none;
+}
+
+.arrow-rotated {
+  transform: rotate(180deg);
+}
+
+.chainlinks {
+  width: 35rem;
+  display: block;
+  position: absolute;
+  background-color: #2b8e9d;
+  margin-left: -25rem;
+  margin-top: 1rem;
+  z-index: 1;
+  border-radius: 1rem;
+}
+
+.chainlinks a {
+  color: #ffffff;
+  padding: 12px 16px;
+  font-size: 2rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center; 
+  justify-content: left;
+  position: relative;
+  text-transform: none;
+}
+
+.chainlinks a img {
+  margin-right: 1rem; 
+}
+
+.chainlinks a::after {
+  content: '';
+  display: block;
+  width: 75%; 
+  height: 1px;
+  background-color: white;
+  position: absolute;
+  bottom: 0;
+}
+
+.chainlinks a:last-child::after {
+  display: none;
+}
+.chainlinks a .checkmark {
+  width: 3rem;
+  height: 3rem;
+  margin-left: auto; 
+}
+.chainlinks a:hover {
+  background-color: #45a0ae; /* 悬停时的背景颜色 */
+  cursor: pointer; 
+}
+
+.chainlinks img {
+  width: 3rem;
+  height: 3rem;
 }
 
 .addressbox {
-  /* width: 37rem; */
   min-width: 37rem;
-  max-width: 40rem; 
+  max-width: 40rem;
   height: 5rem;
   position: relative;
   display: flex;
@@ -114,8 +195,8 @@ canvas {
   align-items: center;
   justify-content: center;
   background-color: #2b8e9d;
-  white-space: nowrap; /* 防止内容换行 */
-
+  white-space: nowrap;
+  /* 防止内容换行 */
 }
 
 canvas {
@@ -507,18 +588,16 @@ canvas {
 
 .RankingListimg {
   display: flex;
-  /* background-color: red; */
-  margin-left: -10rem
 }
 
 .RankingListimg img {
   width: 6rem;
   height: 6rem;
-  transition: transform 0.3s ease; 
+  transition: transform 0.3s ease;
 }
 
 .RankingListimg img:hover {
-  transform: scale(1.1); 
+  transform: scale(1.1);
 }
 
 .RankingListimgNotConnected {
@@ -528,9 +607,9 @@ canvas {
 .RankingListimgNotConnected img {
   width: 6rem;
   height: 6rem;
-  transition: transform 0.3s ease; 
+  transition: transform 0.3s ease;
 }
 
 .RankingListimgNotConnected img:hover {
-  transform: scale(1.1); 
+  transform: scale(1.1);
 }

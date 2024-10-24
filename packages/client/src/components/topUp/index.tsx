@@ -311,7 +311,7 @@ export default function TopUp({
                       }}
                       type="button"
                     >
-                      {chain.hasIcon && (
+                      {/* {chain.hasIcon && (
                         <div
                           style={{
                             background: chain.iconBackground,
@@ -330,7 +330,7 @@ export default function TopUp({
                             />
                           )}
                         </div>
-                      )}
+                      )} */}
 
                       <div className={style.mainFont}>
                         <span>{account.displayName}</span>

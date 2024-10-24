@@ -9,9 +9,9 @@ import {
 import {getMainnetProvider,} from './providers'
 import { fromReadableAmount } from './conversion'
 import { TOKEN_MAP} from './constants'
-import { useTopUp } from '../components/select' // 导入 useTopUp 钩子
 
-export async function generateRoute(tokenAddress: string, amount: number): Promise<SwapRoute | null> {    
+export async function generateRoute(tokenAddress: string, amount: number, recipient: string): Promise<SwapRoute | null> {  
+      
     const router = new AlphaRouter({
         chainId: ChainId.REDSTONE,
         provider: getMainnetProvider(),
@@ -19,12 +19,11 @@ export async function generateRoute(tokenAddress: string, amount: number): Promi
     const currencyIn = nativeOnChain(690)
     const options: SwapOptionsUniversalRouter = {
         type: SwapType.UNIVERSAL_ROUTER,
-        recipient: "0xdfa57287c291e763a9452738b67ac56179ab5f69", //pixeLaw core world contract address
+        recipient: "0xdfa57287c291e763a9452738b67ac56179ab5f69",  //pixeLaw core world contract address
+        // recipient: recipient, 
         slippageTolerance: new Percent(50, 10_000),
         deadlineOrPreviousBlockhash: Math.floor(Date.now() / 1000 + 600),
     };
-    
-    
     
     const route = await router.route(
         CurrencyAmount.fromRawAmount(

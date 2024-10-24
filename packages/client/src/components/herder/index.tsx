@@ -24,7 +24,8 @@ import failto from '../../images/substance/failto.png'
 import RankingListimg from '../../images/RankingList/trophy.png'
 import RankingList from '../RankingList'
 import { useTopUp } from "../select"; // 导入自定义 Hook
-
+import Arrow from "../../images/Arrow.png"
+import duigou from '../../images/duigou.png'
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -94,7 +95,9 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showRankingList, setShowRankingList] = useState(false);
   const [balancover, setBalancover] = useState(0);
-  const { balanceCheck } = useTopUp();   
+  const { balanceCheck, currencySymbol } = useTopUp();
+  const [isOpen, setIsOpen] = useState(false);
+
 
   const resultBugs = useBalance({
     address: address,
@@ -300,6 +303,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     "..." +
     palyerAddress.substring(palyerAddress.length - 4);
   const chainName = publicClient.chain.name;
+
   const capitalizedString =
     chainName.charAt(0).toUpperCase() + chainName?.slice(1).toLowerCase();
   const natIve = publicClient.chain.nativeCurrency.decimals;
@@ -846,7 +850,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const handlePageClickIs = () => {
     setPageClick(false);
   };
-      
+
   //点击方块触发事件
   const handleMouseUp = async (event: React.MouseEvent<HTMLDivElement>) => {
     if (pageClick === true) {
@@ -1409,8 +1413,8 @@ export default function Header({ hoveredData, handleData }: Props) {
     // } 
     else if (errorMessage.includes("The contract function \"callFrom\" reverted with the following reason:")) {
       // 不弹框
-    } 
-    else {  
+    }
+    else {
       console.error("Unhandled error:", errorMessage);
     }
   };
@@ -1560,7 +1564,15 @@ export default function Header({ hoveredData, handleData }: Props) {
   const rankTransports = () => {
     setShowRankingList(true)
   }
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
+  const chainLinks = [
+    { name: "MetaCat Devnet", iconUrl: "https://poster-phi.vercel.app/metacat_logo.png" },
+    { name: "Redstone", iconUrl: "https://redstone.xyz/icons/redstone.svg" },
+    // { name: "Garnet", iconUrl: "https://redstone.xyz/icons/redstone.svg" },
+  ];
 
   return (
     <>
@@ -1583,8 +1595,6 @@ export default function Header({ hoveredData, handleData }: Props) {
             +
           </button>
         </div>
-
-
 
         <div
           className={style.addr}
@@ -1648,7 +1658,7 @@ export default function Header({ hoveredData, handleData }: Props) {
                     if (chain.unsupported) {
                       return (
                         <button
-                          onClick={openChainModal}
+                          onClick={openChainModal(chain)}
                           type="button"
                           className={style.btnConnect}
                         >
@@ -1658,56 +1668,95 @@ export default function Header({ hoveredData, handleData }: Props) {
                     }
 
                     return (
-                      <div>
-                        <div className={style.chainbox}>
-                          <div className={style.chain}>
-                            {/* <button
+                      // <div>
+                      <div className={style.chainbox}>
+                        {/* <div className={style.chain}>
+                            <button
                               onClick={(event) => {
                                 openChainModal();
                               }}
-                             > */}
+                             >
                             {chain.name} &nbsp;&nbsp;
-                            {/* </button> */}
-                          </div>
-                          <div className={style.addressbox}
-                            style={{
-                              gap: 12,
-                            }}
-                            onMouseEnter={() => {
-                              setAddressModel(true);
-                            }}
-                            onMouseLeave={() => {
-                              setAddressModel(false);
-                            }}
-                          >
-                            <button
-                              type="button"
-                              className={style.boldAddress} // 添加这个类名
-                            >
-                              {account.displayName}
-                              {account.displayBalance
-                                ? ` (${formatBalance(balancover)}  $BUGS)`
-                                : ""}
+                            </button>
+                          </div> */}
+
+                        <div className={style.chain}>
+                          <div className={style.chainsbox}>
+                            <button onClick={toggleDropdown} className={style.Chainbutton}>
+                              {chain.iconUrl && (
+                                <img
+                                  alt={chain.name ?? 'Chain icon'}
+                                  src={chain.iconUrl}
+                                  className={style.iconimg}
+                                />
+                              )}
+                              <img
+                                src={Arrow}
+                                className={`${style.arrow} ${isOpen ? '' : style.arrowRotated}`}
+                              />
                             </button>
 
-                            {addressModel && (
-                              <div className={style.downBox}>
-                                <div className={style.downBoxclocese}>
-                                  {addressContent.length > 0 &&
-                                    addressContent.map((item, index) => (
-                                      <div
-                                        className={style.downBoxItem}
-                                        key={index}
-                                        onClick={() => handleAddClick(item.value)}
-                                      >
-                                        {item.name}
-                                      </div>
-                                    ))}
-                                </div>
+                            {isOpen && (
+                              <div className={style.chainlinks}>
+                                {chainLinks.map((link, index) => (
+                                  <a
+                                    onClick={(event) => {
+                                      openChainModal();
+                                    }}
+                                    key={index}
+                                  >
+                                    <img src={link.iconUrl} />
+                                    {link.name}
+                                    {chain.name === link.name && (
+                                      <img src={duigou} className={style.checkmark} />
+                                    )}
+                                  </a>
+                                ))}
                               </div>
                             )}
                           </div>
                         </div>
+
+                        <div className={style.addressbox}
+                          style={{
+                            gap: 12,
+                          }}
+                          onMouseEnter={() => {
+                            setAddressModel(true);
+                          }}
+                          onMouseLeave={() => {
+                            setAddressModel(false);
+                          }}
+                        >
+                          <button
+                            type="button"
+                            className={style.boldAddress} // 添加这个类名
+                          >
+                            {account.displayName}
+                            {account.displayBalance
+                              // ? ` (${formatBalance(balancover)}  $BUGS)`
+                              ? ` (${formatBalance(balancover)}  ${currencySymbol})`
+                              : ""}
+                          </button>
+
+                          {addressModel && (
+                            <div className={style.downBox}>
+                              <div className={style.downBoxclocese}>
+                                {addressContent.length > 0 &&
+                                  addressContent.map((item, index) => (
+                                    <div
+                                      className={style.downBoxItem}
+                                      key={index}
+                                      onClick={() => handleAddClick(item.value)}
+                                    >
+                                      {item.name}
+                                    </div>
+                                  ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        {/* </div> */}
                         {" "}
                       </div>
                     );
