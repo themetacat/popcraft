@@ -52,7 +52,7 @@
 
 .table {
     width: 120rem;
-    height: 60rem;
+    /* height: auto; */
     border-collapse: collapse; 
     font-family: "AdobeHeitiStd-Regular";
 }
@@ -95,13 +95,17 @@
 
 
 .trbox {
-    height: 5.76rem;
     border: none !important; 
 }
-.trbox td {
+.trbox td{
+    height: 2.55rem;
+    /* background-color: red; */
     border: none !important;
     padding: 10px; 
+    /* background-color: red; */
 }
+
+
 
 .rankImage img {
     width: 2.5rem;
@@ -149,19 +153,19 @@
 .YouBox span {
     justify-content: center;
     align-items: center;
-    margin-left: 0.5rem;
+    margin-left: 2rem;
 }
 
 .scoreBox {
     display: flex;
     align-items: center;
     width: 80rem;
-    gap: 5rem;
+    gap: 4rem;
 }
 
 .scoreItem {
     width: 18rem;
-    margin-left: 3rem;
+    margin-left: 6.3rem;
 }
 
 .rankCell {
@@ -169,8 +173,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
     margin-left: 2rem;
-    margin-top: 1.5rem;
 }
 
 .rankCell img {

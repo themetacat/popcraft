@@ -1692,8 +1692,8 @@ export default function Header({ hoveredData, handleData }: Props) {
                               )}
                               <img
                                 src={Arrow}
-                                className={`${style.arrow} ${isOpen ? '' : style.arrowRotated}`}
-                              />
+                                className={`${style.arrow} ${isOpen ? style.arrowRotated : ''}`}
+                                />
                             </button>
 
                             {isOpen && (

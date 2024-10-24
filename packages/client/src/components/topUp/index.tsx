@@ -350,12 +350,13 @@ export default function TopUp({
                         </p>
                       </div>
                     </button>
-                  </div>
-                  <span
+                    <span
                     className={`${style.bridgeBTN} ${isPlayButtonClicked ? style.bridgeBTNClicked : ''}`}
                     onClick={bridgeHandle}>
                     Bridge
                   </span>
+                  </div>
+                
                 </div>
               </div>
 

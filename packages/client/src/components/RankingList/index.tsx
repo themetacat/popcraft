@@ -182,7 +182,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                     }}
                                 >
 
-                                    <tr className={style.rankCell}>
+                                    <td className={style.rankCell}>
                                         {index < 3 && (
                                             <img
                                                 src={index === 0 ? Gold : index === 1 ? Silver : Copper}
@@ -193,7 +193,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                         {item.entity === address && (
                                             <span className={style.youSpan}>(You)</span>
                                         )}
-                                    </tr>
+                                    </td>
                                     <td>{formatAddress(item.entity)}</td>
                                     <td>{item.totalScore}</td>
                                     <td>{item.bestScore}</td>

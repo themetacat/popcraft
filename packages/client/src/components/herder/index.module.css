@@ -124,9 +124,10 @@ canvas {
   margin-left: 1rem;
   background-color: #2b8e9d;
   background-color: none;
+  transform: rotate(0deg); 
 }
 
-.arrow-rotated {
+.arrowRotated {
   transform: rotate(180deg);
 }
 
@@ -176,7 +177,7 @@ canvas {
   margin-left: auto; 
 }
 .chainlinks a:hover {
-  background-color: #45a0ae; /* 悬停时的背景颜色 */
+  background-color: #45a0ae; 
   cursor: pointer; 
 }
 
