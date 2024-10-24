@@ -97,12 +97,11 @@
 .trbox {
     border: none !important; 
 }
+
 .trbox td{
-    height: 2.55rem;
-    /* background-color: red; */
+    /* height: 2.55rem; */
     border: none !important;
-    padding: 10px; 
-    /* background-color: red; */
+    padding: 1.6rem; 
 }
 
 
@@ -170,6 +169,7 @@
 
 .rankCell {
     width: 15rem;
+    height: 2.55rem;
     display: flex;
     align-items: center;
     justify-content: center;
