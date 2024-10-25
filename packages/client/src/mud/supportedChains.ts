@@ -13,33 +13,33 @@
 
 import { MUDChain, latticeTestnet, mudFoundry } from "@latticexyz/common/chains";
 import {defineChain} from "viem/utils"
-const holesky = defineChain({
-    id: 17_001,
-    name: 'REDSTONE HOLESKY',
-    network: 'redstone-holesky',
-    nativeCurrency: {
-      name: 'redstone holesky Ether',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    rpcUrls: {
-      default: {
-        http: ['https://rpc.holesky.redstone.xyz'],
-        webSocket: ['wss://rpc.holesky.redstone.xyz/ws']
-      },
-      public: {
-        http: ['https://rpc.holesky.redstone.xyz'],
-        webSocket: ['wss://rpc.holesky.redstone.xyz/ws']
-      },
-    },
-    blockExplorers: {
-      default: {
-        name: 'Blockscout',
-        url: 'https://explorer.holesky.redstone.xyz',
-      },
-    },
-    testnet: true,
-})
+// const holesky = defineChain({
+//     id: 17_001,
+//     name: 'REDSTONE HOLESKY',
+//     network: 'redstone-holesky',
+//     nativeCurrency: {
+//       name: 'redstone holesky Ether',
+//       symbol: 'ETH',
+//       decimals: 18,
+//     },
+//     rpcUrls: {
+//       default: {
+//         http: ['https://rpc.holesky.redstone.xyz'],
+//         webSocket: ['wss://rpc.holesky.redstone.xyz/ws']
+//       },
+//       public: {
+//         http: ['https://rpc.holesky.redstone.xyz'],
+//         webSocket: ['wss://rpc.holesky.redstone.xyz/ws']
+//       },
+//     },
+//     blockExplorers: {
+//       default: {
+//         name: 'Blockscout',
+//         url: 'https://explorer.holesky.redstone.xyz',
+//       },
+//     },
+//     testnet: true,
+// })
 
 const core_foundry = defineChain({
   id: 31_338,
@@ -69,26 +69,26 @@ const core_foundry = defineChain({
   },
 })
 
-const garnet = defineChain({
-  id: 17069,
-  name: 'Garnet',
-  network: 'garnet',
-  nativeCurrency: {
-    decimals: 18,
-    name: 'Ether',
-    symbol: 'ETH',
-  },
-  rpcUrls: {
-    default: {
-      http: ['https://rpc.garnet.qry.live'],
-      webSocket: ['wss://rpc.garnet.qry.live'],
-    },
-    public: {
-      http: ['https://rpc.garnet.qry.live'],
-      webSocket: ['wss://rpc.garnet.qry.live'],
-    },
-  },
-})
+// const garnet = defineChain({
+//   id: 17069,
+//   name: 'Garnet',
+//   network: 'garnet',
+//   nativeCurrency: {
+//     decimals: 18,
+//     name: 'Ether',
+//     symbol: 'ETH',
+//   },
+//   rpcUrls: {
+//     default: {
+//       http: ['https://rpc.garnet.qry.live'],
+//       webSocket: ['wss://rpc.garnet.qry.live'],
+//     },
+//     public: {
+//       http: ['https://rpc.garnet.qry.live'],
+//       webSocket: ['wss://rpc.garnet.qry.live'],
+//     },
+//   },
+// })
 
 const redstone = defineChain({
   id: 690,
@@ -112,18 +112,18 @@ const redstone = defineChain({
   },
 })
 
-export const newMudFoundry = {
-  ...mudFoundry,
-  blockExplorers: {
-    default: {
-      name: "Blockscout",
-      url: "http://127.0.0.1:8545",
-    },
-  }
-};
+// export const newMudFoundry = {
+//   ...mudFoundry,
+//   blockExplorers: {
+//     default: {
+//       name: "Blockscout",
+//       url: "http://127.0.0.1:8545",
+//     },
+//   }
+// };
 
 /*
  * See https://mud.dev/tutorials/minimal/deploy#run-the-user-interface
  * for instructions on how to add networks.
  */
-export const supportedChains: MUDChain[] = [newMudFoundry, latticeTestnet, holesky, core_foundry, garnet, redstone];
+export const supportedChains: MUDChain[] = [ latticeTestnet,  core_foundry, redstone];
