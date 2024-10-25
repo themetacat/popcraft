@@ -55,8 +55,9 @@ p {
   font-weight: 600;
   font-size: 2.5rem;
   color: #000000;
-  
-
+}
+.defaultTokens{
+  letter-spacing: 0.15rem;
 }
 
 .copywritingTwo {

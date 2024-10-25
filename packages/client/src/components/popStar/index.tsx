@@ -3,7 +3,7 @@ import style from "./index.module.css";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import loadingImg from "../../images/welcome_pay_play_loading.webp";
-import { useTopUp } from "../select"; 
+import { useTopUp } from "../select";
 
 interface Props {
   setPopStar: any;
@@ -18,7 +18,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
   const playAction = localStorage.getItem("playAction");
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const { rewardInfo } = useTopUp(); 
+  const { rewardInfo } = useTopUp();
 
   const { isConnected } = useAccount();
 
@@ -28,7 +28,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
         setPopStar(true)
         playFun();
         setPlayButtonClicked(true);
-        setIsPlaying(true); 
+        setIsPlaying(true);
       } else {
         setPopStar(false);
         setTopUpType(true)
@@ -43,8 +43,8 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
     <div className={style.content}>
       <p className={style.title}>WELCOME TO POPCRAFT!</p>
       <div className={style.Container}>
-        <span className={style.copywritingTwo}>This is a composability-based elimi-<br/>
-        <span className={style.copywritingbox}>nation game. You have</span>
+        <span className={style.copywritingTwo}>This is a composability-based elimi-<br />
+          <span className={style.copywritingbox}>nation game. You have</span>
           <span className={style.copywritingThree}> 4 minutes</span>&nbsp;<br />
         </span>
         <span className={style.copywritingTwo}>
@@ -53,14 +53,21 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
         </span>
         <br />
         <div className={style.copywritingTwobox}>
-          <span className={style.copywritingTwoyo}>You'll be rewarded with
-            <span className={style.copywritingThree}> {rewardInfo}</span>
-          </span>
-          <span className={style.copywritingTwoyo}>
+          <span className={style.copywritingTwoyo}>You'll be rewarded with&nbsp;
+            <span className={style.copywritingThree}>
+              {rewardInfo ? (
+                rewardInfo
+              ) : (
+                <span className={style.defaultTokens}> ERC-20 Tokens <br /></span>
+              )}
+            </span>
+            <span className={style.copywritingTwoyo}>
             {" "}
             for completing the game.
             <br />
           </span>
+          </span>
+        
         </div>
       </div>
       <ConnectButton.Custom>
@@ -122,7 +129,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
                   <button
                     onClick={handleConnectClick}
                     type="button"
-                    disabled={playButtonClicked} 
+                    disabled={playButtonClicked}
                     className={`${style.btnPlay} ${playButtonClicked ? style.btnPlayClicked : ''} ${isPlaying ? style.btnPlayPlaying : ''}`}
                   >
                     {
