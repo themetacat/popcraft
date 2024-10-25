@@ -41,7 +41,7 @@ export async function getNetworkConfig() {
   const chainIdHex= await window.ethereum!.request({
     method: "eth_chainId",
   });
-  const chainId = parseInt(chainIdHex, 16); 
+  var chainId = parseInt(chainIdHex, 16); 
   
   /*
    * The chain ID is the first item available from this list:
@@ -56,10 +56,13 @@ export async function getNetworkConfig() {
   /*
    * Find the chain (unless it isn't in the list of supported chains).
    */
-  const chainIndex = supportedChains.findIndex((c) => c.id === chainId);
-  const chain = supportedChains[chainIndex];
+  var chainIndex = supportedChains.findIndex((c) => c.id === chainId);
+  var chain = supportedChains[chainIndex];
   if (!chain) {
-    throw new Error(`Chain ${chainId} not found`);
+    // throw new Error(`Chain ${chainId} not found`);
+    chainId = 31338;
+    chainIndex = supportedChains.findIndex((c) => c.id === chainId);
+    chain = supportedChains[chainIndex];
   }
 
   /*

@@ -1570,7 +1570,6 @@ export default function Header({ hoveredData, handleData }: Props) {
   const chainLinks = [
     { name: "MetaCat Devnet", iconUrl: "https://poster-phi.vercel.app/MetaCat_Logo_Circle.png" },
     { name: "Redstone", iconUrl: "https://redstone.xyz/icons/redstone.svg" },
-    // { name: "Garnet", iconUrl: "https://redstone.xyz/icons/redstone.svg" },
   ];
 
   return (
