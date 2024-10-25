@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import style from "./index.module.css";
 import loadingIcon from "../../images/welcome_pay_play_loading.webp";
 import trunOff from "../../images/turnOffBtn.webp";
@@ -17,14 +16,10 @@ import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
 import { generateRoute } from '../../uniswap_routing/routing'
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useTopUp } from "../select"; // 导入自定义 Hook
+import { useTopUp } from "../select";
+import {encodeEntity} from "@latticexyz/store-sync/recs";
+import {getComponentValue} from "@latticexyz/recs";
 
-import {
-  encodeEntity,
-} from "@latticexyz/store-sync/recs";
-import {
-  getComponentValue,
-} from "@latticexyz/recs";
 interface Props {
   coordinates: any;
   timeControl: any;
@@ -74,9 +69,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loadingPrices, setLoadingPrices] = useState({});
   const [lastPrices, setLastPrices] = useState({});
-  const { rewardInfo,recipient } = useTopUp(); // 使用自定义 Hook
-  // console.log(recipient);
-  
+  const { rewardInfo, recipient, } = useTopUp();
+
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
@@ -86,13 +80,14 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       setBalance(Math.floor(Number(resultBugs.data?.value) / 1e18));
     }
   }, [resultBugs.data]);
-  
+
   const handlePlayAgain = () => {
     setLoading(true);
     playFun();
     setPopStar(false);
     setdataq(false);
   };
+
 
   const handlePlayAgaintow = () => {
     setLoadingPlayAgain(true);
@@ -279,7 +274,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       key,
       quantity: numberData[key] * 10 ** 18
     }));
-    // 过滤掉数量为 0 的物质
     const itemsToPay = filteredNumberData.filter(item => item.quantity > 0);
     if (itemsToPay.length === 0) {
       toast.error("Payment failed! Try again!");
@@ -297,7 +291,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         setModalMessage("SUCCEED!");
         setTimeout(() => {
           setShowSuccessModal(false);
-          setdataq(false); 
+          setdataq(false);
         }, 3000);
       } else {
         toast.error("Payment failed! Try again!");
@@ -337,14 +331,14 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }
   }, [isConnected, getEoaContractData, balanceData]);
 
-  //获取的5种物质信息以及价格
   const fetchPrices = useCallback(async (matchedData: any) => {
     const pricePromises = Object.keys(matchedData).map(async (key) => {
       const quantity = numberData[key] || 0;
       if (quantity > 0) {
         setLoadingPrices(prev => ({ ...prev, [key]: true }));
-        const route = await generateRoute(key, quantity,recipient);
-        const price = route.quote.toExact(); // 获取报价
+        // console.log(recipient);
+        const route = await generateRoute(key, quantity, recipient);
+        const price = route.quote.toExact(); 
         const methodParameters = route.methodParameters;
         methodParameters['tokenAddress'] = key;
         methodParameters['amount'] = quantity;
@@ -358,16 +352,14 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         return { [key]: { price: 0, methodParameters: {} } };
       }
     });
-
     const prices = await Promise.all(pricePromises);
     const priceObject = prices.reduce((acc, curr) => ({ ...acc, ...curr }), {});
     const total = Object.values(priceObject).reduce((sum, { price }) => sum + Number(price), 0);
-
     setLastPrices(priceObject);
     setPrices(priceObject);
     setTotalPrice(total);
     return priceObject;
-  }, [numberData, lastPrices]);
+  }, [numberData, lastPrices, recipient]);
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -377,21 +369,19 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         balanceData
       );
       await fetchPrices(matchedData);
-    }, 10000); // 每隔10秒获取价格
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [fetchPrices, getEoaContractData, balanceData]);
-
   const fetchPriceForSingleItem = useCallback(async (key, quantity) => {
     if (quantity > 0) {
       setLoadingPrices(prev => ({ ...prev, [key]: true }));
       try {
-        const route = await generateRoute(key, quantity,recipient);
+        const route = await generateRoute(key, quantity, recipient);
         const price = route.quote.toExact(); // 获取报价
         const methodParameters = route.methodParameters;
         methodParameters['tokenAddress'] = key;
         methodParameters['amount'] = quantity;
-
         if (lastPrices[key]?.price !== price) {
           setPrices(prev => ({
             ...prev,
@@ -407,9 +397,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         setLoadingPrices(prev => ({ ...prev, [key]: false }));
       }
     }
-  }, [lastPrices]);
+  }, [lastPrices, recipient]);
 
-  //默认购买数量为5
   useEffect(() => {
     const initialData = {};
     Object.keys(imageIconData).forEach(key => {
@@ -446,7 +435,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     setLoadingUpHandle(false);
   };
 
-  // 关闭在打开默认为5
   const resetNumberData = () => {
     const initialData = {};
     Object.keys(imageIconData).forEach(key => {
@@ -515,7 +503,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     );
   };
 
-  //监听价格的变化
   useEffect(() => {
     updateTotalPrice();
   }, [numberData, prices]);
@@ -525,11 +512,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       fetchPrices(matchedData);
     }
   }, [dataq]);
-  
+
   const rankRecord = address ? getComponentValue(
     RankingRecord,
     addressToEntityID(address)
-) : undefined;
+  ) : undefined;
 
   return (
     <>
@@ -547,13 +534,12 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
             </div>
             <div className={style.twoPart} >
-              {/* <p >150&nbsp;$BUGS</p> */}
-              <p dangerouslySetInnerHTML={{ __html: rewardInfo }}></p>
+              <p>{rewardInfo}</p>
               <p>REWARDS</p>
             </div>
             <div className={style.threePart}>
               <p className={style.balance}>
-              {rankRecord ? Number(rankRecord.latestScores) : 0}
+                {rankRecord ? Number(rankRecord.latestScores) : 0}
               </p>
               <p>SCORE</p>
             </div>
@@ -612,7 +598,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                     <div className={style.itemName}>
                       <span className={style.itemNameText}>{name}</span>
                     </div>
-
                     <div className={style.dataIcon}>
                       <button
                         onClick={() => {
@@ -757,9 +742,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                   );
                 }}
               </ConnectButton.Custom>
-
             </div>
-
           </div>
         </div>
       ) : null}
@@ -792,7 +775,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               <span className={style.copywritingTwo}>This is a composability-based elimination game. You have 4 </span>
               <span className={style.copywritingTwo}> minutes to eliminate all the materials.</span>
               <span className={style.copywritingTwo}>You'll be rewarded with&nbsp;
-                <p> 150 $BUGS</p>
+                <p> {rewardInfo}</p>
                 &nbsp; for completing the game.
               </span>
               <span className={style.copywritingTwobox}>
@@ -859,13 +842,13 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           >
             <div className={style.contentCon}>
               <p>Congrats!</p>
-              <p>+150 $bugs!</p>
+              <p>+{rewardInfo}!</p>
               <button
                 onClick={handlePlayAgaintow}
                 disabled={loadingPlayAgain}
                 style={{
-                  cursor: loadingPlayAgain ? "not-allowed" : "pointer", // 鼠标悬停时显示小手，禁用状态时显示不可点击光标
-                  pointerEvents: loadingPlayAgain ? "none" : "auto" // 禁用按钮时防止点击事件
+                  cursor: loadingPlayAgain ? "not-allowed" : "pointer",
+                  pointerEvents: loadingPlayAgain ? "none" : "auto"
                 }}
               >
                 {loadingPlayAgain ? (

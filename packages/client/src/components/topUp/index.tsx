@@ -14,8 +14,7 @@ import { type Hex, parseEther } from "viem";
 import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
 import LoadingImg from "../../images/loadingto.webp"
-// import { useTopUpAmount,useMinSessionWalletBalance  } from "../select"; // 导入 select.tsx 文件
-import { useTopUp } from "../select"; // 导入自定义 Hook
+import { useTopUp } from "../select"; 
 
 import {
   type BaseError,
@@ -60,8 +59,8 @@ export default function TopUp({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
-  const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE } = useTopUp(); // 使用自定义 Hook
-
+  const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE  } = useTopUp(); 
+    
   async function withDraw() {
     const balance_eth = balance / 1e18;
     if (parseEther(balance_eth.toString()) > Number(MIN_SESSION_WALLET_BALANCE)) {
@@ -143,7 +142,6 @@ export default function TopUp({
   const handleChange = (event) => {
     const value = event.target.value;
     const balanceEOA = Number(balanceResultEOA.data?.value) / 1e18;
-
     if (parseFloat(value) < 0) {
       setInputValue("0");
     }
@@ -153,7 +151,6 @@ export default function TopUp({
     else {
       setInputValue(value);
     }
-
     setTransferPayType(false);
   };
 
@@ -386,6 +383,7 @@ export default function TopUp({
                             palyerAddress.substring(palyerAddress.length - 4)
                           }
                           className={style.inputCon}
+                          readOnly
                         />
                         <img
                           src={UnioncopyBtn}
@@ -430,6 +428,7 @@ export default function TopUp({
                       style={{
                         width: showPassword === false ? "140px" : "auto",
                       }}
+                      readOnly
                       className={style.inputConPassWord}/>
                     <img
                       src={showPassword === true ? openEye : turnOffEye}

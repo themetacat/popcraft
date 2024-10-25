@@ -175,7 +175,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                             {sortedRankingRecords.map((item, index) => (
                                 <tr
                                     className={style.trbox}
-                                    key={item.address}
+                                    key={item.entity}
                                     style={{
                                         backgroundColor: index % 2 === 0 ? '#fff1c8' : '#f5cca6',
                                         color: item.entity === address ? 'red' : 'inherit'

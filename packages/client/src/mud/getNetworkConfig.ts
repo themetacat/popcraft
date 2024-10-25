@@ -38,7 +38,11 @@ import { supportedChains } from "./supportedChains";
 
 export async function getNetworkConfig() {
   const params = new URLSearchParams(window.location.search);
-
+  const chainIdHex= await window.ethereum!.request({
+    method: "eth_chainId",
+  });
+  const chainId = parseInt(chainIdHex, 16); 
+  
   /*
    * The chain ID is the first item available from this list:
    * 1. chainId query parameter
@@ -47,7 +51,7 @@ export async function getNetworkConfig() {
    *    vite dev server was started or client was built
    * 4. The default, 31337 (anvil)
    */
-  const chainId = Number(params.get("chainId") || params.get("chainid") || import.meta.env.VITE_CHAIN_ID || 31337);
+  // const chainId = Number(params.get("chainId") || params.get("chainid") || import.meta.env.VITE_CHAIN_ID || 31337);
   
   /*
    * Find the chain (unless it isn't in the list of supported chains).

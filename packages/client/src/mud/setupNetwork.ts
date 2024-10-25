@@ -47,7 +47,6 @@ export type SetupNetworkResult = {
   clientOptions:any
 };
 export async function setupNetwork(): Promise<SetupNetworkResult> {
-
   return new Promise<SetupNetworkResult>((resolve, reject) => {
     const networkConfigPromise = getNetworkConfig();
     networkConfigPromise.then(networkConfig => {
@@ -66,7 +65,7 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
         pollingInterval: 3000,
       } as const satisfies ClientConfig;
       const publicClient = createPublicClient(clientOptions);
-
+      
       /*
        * Create a temporary wallet and a viem client for it
        * (see https://viem.sh/docs/clients/wallet.html).

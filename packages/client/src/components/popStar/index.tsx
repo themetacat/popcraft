@@ -3,6 +3,7 @@ import style from "./index.module.css";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import loadingImg from "../../images/welcome_pay_play_loading.webp";
+import { useTopUp } from "../select"; 
 
 interface Props {
   setPopStar: any;
@@ -16,8 +17,9 @@ interface Props {
 export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpType, loadingplay }: Props) {
   const playAction = localStorage.getItem("playAction");
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false); // 添加状态来跟踪按钮的点击状态
- 
+  const [isPlaying, setIsPlaying] = useState(false);
+  const { rewardInfo } = useTopUp(); 
+
   const { isConnected } = useAccount();
 
   const handleConnectClick = () => {
@@ -26,14 +28,13 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
         setPopStar(true)
         playFun();
         setPlayButtonClicked(true);
-        setIsPlaying(true); // 更新状态
+        setIsPlaying(true); 
       } else {
         setPopStar(false);
         setTopUpType(true)
       }
 
     } else {
-      // 呼起钱包进行登录
       openConnectModal();
     }
   };
@@ -53,7 +54,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
         <br />
         <div className={style.copywritingTwobox}>
           <span className={style.copywritingTwoyo}>You'll be rewarded with
-            <span className={style.copywritingThree}> 150 $BUGS</span>
+            <span className={style.copywritingThree}> {rewardInfo}</span>
           </span>
           <span className={style.copywritingTwoyo}>
             {" "}
@@ -121,7 +122,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
                   <button
                     onClick={handleConnectClick}
                     type="button"
-                    disabled={playButtonClicked} // 禁用按钮
+                    disabled={playButtonClicked} 
                     className={`${style.btnPlay} ${playButtonClicked ? style.btnPlayClicked : ''} ${isPlaying ? style.btnPlayPlaying : ''}`}
                   >
                     {

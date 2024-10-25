@@ -23,7 +23,7 @@ import success from '../../images/substance/successto.png'
 import failto from '../../images/substance/failto.png'
 import RankingListimg from '../../images/RankingList/trophy.png'
 import RankingList from '../RankingList'
-import { useTopUp } from "../select"; // 导入自定义 Hook
+import { useTopUp } from "../select"; 
 import Arrow from "../../images/Arrow.png"
 import duigou from '../../images/duigou.png'
 
@@ -97,7 +97,6 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [balancover, setBalancover] = useState(0);
   const { balanceCheck, currencySymbol } = useTopUp();
   const [isOpen, setIsOpen] = useState(false);
-
 
   const resultBugs = useBalance({
     address: address,
@@ -1756,7 +1755,6 @@ export default function Header({ hoveredData, handleData }: Props) {
                             </div>
                           )}
                         </div>
-                        {/* </div> */}
                         {" "}
                       </div>
                     );
