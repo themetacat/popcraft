@@ -14,7 +14,7 @@ import { type Hex, parseEther } from "viem";
 import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
 import LoadingImg from "../../images/loadingto.webp"
-import { useTopUp } from "../select"; 
+import { useTopUp } from "../select";
 
 import {
   type BaseError,
@@ -59,14 +59,14 @@ export default function TopUp({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
-  const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE  } = useTopUp(); 
-    
+  const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE } = useTopUp();
+
   async function withDraw() {
     const balance_eth = balance / 1e18;
     if (parseEther(balance_eth.toString()) > Number(MIN_SESSION_WALLET_BALANCE)) {
       const value = parseEther(balance_eth.toString()) - MIN_SESSION_WALLET_BALANCE;
       setIsWithdrawing(true);
-      setIsWithdrawLoading(true); 
+      setIsWithdrawLoading(true);
       const hash = await walletClient.sendTransaction({
         to: address,
         value: value,
@@ -291,69 +291,50 @@ export default function TopUp({
           return (
             <>
               <div className={style.onePart}>
-                <p className={style.titleOne1}>MAIN WALLET</p>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <div style={{ display: "flex" }} className={style.btnPart}>
-                    <img src={FrameIcon} alt="" className={style.imgICon} />
-                    <button
-                      onClick={(event) => {
-                        openChainModal();
-                      }}
-                      style={{
-                        border: "none",
-                        background: "none",
-                        padding: "0px",
-                      }}
-                      type="button"
-                    >
-                      {/* {chain.hasIcon && (
-                        <div
-                          style={{
-                            background: chain.iconBackground,
-                            width: 12,
-                            height: 12,
-                            borderRadius: 999,
-                            color: "#000",
-                            marginRight: 4,
-                          }}
-                        >
-                          {chain.iconUrl && (
-                            <img
-                              alt={chain.name ?? "Chain icon"}
-                              src={chain.iconUrl}
-                              style={{ width: 12, height: 12 }}
-                            />
-                          )}
+                <div className={style.onePartMain}>
+                  <p className={style.titleOne1}>MAIN WALLET</p>
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <div style={{ display: "flex" }} className={style.btnPart}>
+                      <img src={FrameIcon} alt="" className={style.imgICon} />
+                      <button
+                        onClick={(event) => {
+                          openChainModal();
+                        }}
+                        style={{
+                          border: "none",
+                          background: "none",
+                          padding: "0px",
+                        }}
+                        type="button"
+                      >
+                        <div className={style.mainFont}>
+                          <span>{account.displayName}</span>
+                          <img
+                            src={UnioncopyBtn}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleCopy(address);
+                            }}
+                            alt=""
+                            className={style.imgUnionCopyBtn}
+                          />
+                          <p>
+                            {balanceResultEOA.data?.value
+                              ? ` ${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)}`
+                              : " 0ETH"}&nbsp;&nbsp;&nbsp;&nbsp;ETH
+                          </p>
                         </div>
-                      )} */}
-
-                      <div className={style.mainFont}>
-                        <span>{account.displayName}</span>
-                        <img
-                          src={UnioncopyBtn}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleCopy(address);
-                          }}
-                          alt=""
-                          className={style.imgUnionCopyBtn}
-                        />
-                        <p>
-                          {balanceResultEOA.data?.value
-                            ? ` ${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)}`
-                            : " 0ETH"}&nbsp;&nbsp;&nbsp;&nbsp;ETH
-                        </p>
-                      </div>
-                    </button>
-                    <span
-                    className={`${style.bridgeBTN} ${isPlayButtonClicked ? style.bridgeBTNClicked : ''}`}
-                    onClick={bridgeHandle}>
-                    Bridge
-                  </span>
+                      </button>
+                      
+                      <span
+                        className={`${style.bridgeBTN} ${isPlayButtonClicked ? style.bridgeBTNClicked : ''}`}
+                        onClick={bridgeHandle}>
+                        Bridge
+                      </span>
+                    </div>
                   </div>
-                
                 </div>
               </div>
 
@@ -374,30 +355,30 @@ export default function TopUp({
                 <div className={style.partTwo}>
                   <div style={{ display: "flex", gap: "4px" }}>
                     <img src={FrameIcon} alt="" className={style.imgICon} />
-                      <div className={style.addcon}>
-                        <input
-                          type="text"
-                          value={
-                            palyerAddress.substring(0, 4) +
-                            "..." +
-                            palyerAddress.substring(palyerAddress.length - 4)
-                          }
-                          className={style.inputCon}
-                          readOnly
-                        />
-                        <img
-                          src={UnioncopyBtn}
-                          onClick={() => {
-                            handleCopy(palyerAddress);
-                          }}
-                          alt=""
-                          className={style.imgUnioncopyBtn}
-                        />
-                        <span className={style.ConfirmingFont}>
-                          {!isConfirmingWith && (
-                            <>{(Number(balance) / 1e18).toFixed(8)}&nbsp;&nbsp;&nbsp;ETH</>
-                          )}
-                        </span>
+                    <div className={style.addcon}>
+                      <input
+                        type="text"
+                        value={
+                          palyerAddress.substring(0, 4) +
+                          "..." +
+                          palyerAddress.substring(palyerAddress.length - 4)
+                        }
+                        className={style.inputCon}
+                        readOnly
+                      />
+                      <img
+                        src={UnioncopyBtn}
+                        onClick={() => {
+                          handleCopy(palyerAddress);
+                        }}
+                        alt=""
+                        className={style.imgUnioncopyBtn}
+                      />
+                      <span className={style.ConfirmingFont}>
+                        {!isConfirmingWith && (
+                          <>{(Number(balance) / 1e18).toFixed(8)}&nbsp;&nbsp;&nbsp;ETH</>
+                        )}
+                      </span>
                     </div>
                   </div>
 
@@ -429,7 +410,7 @@ export default function TopUp({
                         width: showPassword === false ? "140px" : "auto",
                       }}
                       readOnly
-                      className={style.inputConPassWord}/>
+                      className={style.inputConPassWord} />
                     <img
                       src={showPassword === true ? openEye : turnOffEye}
                       alt=""
@@ -454,7 +435,7 @@ export default function TopUp({
               </div>
               <div className={style.partFour}>
                 <p className={style.partFourFont}>
-                  Every onchain interaction uses gas. Top up your 
+                  Every onchain interaction uses gas. Top up your
                   gasbalancewith funds from any chain.
                 </p>
                 <div className={style.partImo}>
@@ -489,7 +470,7 @@ export default function TopUp({
                   <div className={style.partFiveboxto}>
                     <span>Time to deposit</span>
                     <div className={style.partFivebox}>
-                    <span>A few seconds</span>
+                      <span>A few seconds</span>
                     </div>
                   </div>
                 </div>
@@ -541,11 +522,11 @@ export default function TopUp({
         >
           <div className={style.warningCon}>
             <div className={style.triangle}>
-              The session wallet is a private key stored in your 
-              browser's local storage. It allows you to play games without 
+              The session wallet is a private key stored in your
+              browser's local storage. It allows you to play games without
               needing to confirm transactions, but it is less secure. Only deposit very
-               small amounts of ETH into this wallet; we recommend no more than 0.0003 ETH 
-               at a time. This amount lets you complete up to 1000 transactions in PopCraft.
+              small amounts of ETH into this wallet; we recommend no more than 0.0003 ETH
+              at a time. This amount lets you complete up to 1000 transactions in PopCraft.
 
             </div>
           </div>

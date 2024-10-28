@@ -174,6 +174,8 @@ export default function Header({ hoveredData, handleData }: Props) {
   useEffect(() => {
     if (isConnected && appName === "BASE/PopCraftSystem" && !hasExecutedRef.current) {
       if ((Number(balance) / 1e18) < balanceCheck) {
+        // console.log(Number(balance));
+        
         setTopUpType(true);
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
@@ -212,6 +214,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         localStorage.setItem('playAction', 'noplay')
         localStorage.setItem('showGameOver', 'false')
         hasExecutedRef.current = true
+        
       }
       if (appName === "BASE/PopCraftSystem") {
         setPopStar(true);

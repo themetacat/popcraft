@@ -24,13 +24,13 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
 
   const handleConnectClick = () => {
     if (isConnected) {
-      if (playAction === 'play') {
+      if (playAction === 'play') {        
         setPopStar(true)
         playFun();
         setPlayButtonClicked(true);
         setIsPlaying(true);
       } else {
-        setPopStar(false);
+        setPopStar(true);
         setTopUpType(true)
       }
 

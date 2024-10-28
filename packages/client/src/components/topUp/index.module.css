@@ -58,7 +58,7 @@
   top: 1rem;
 }
 .bridgeBTN {
-  width: 15rem;
+  width: 15.5rem;
   height: 3.8rem;
   background-image: url("../../images/topup/Bridgeback.webp");
   background-size: 100% 100%;
@@ -78,7 +78,7 @@
     1px -1px 0 rgba(192, 192, 192, 0.7),
     -1px 1px 0 rgba(207, 207, 207, 0.7),
     1px 1px 0 rgba(197, 197, 197, 0.7);
-  margin-left: 18rem;
+  margin-left: 18.1rem;
 }
 .bridgeBTN:hover {
   color: #ffffff;
@@ -151,6 +151,8 @@
   src: url("/fonts/BRLNSR.TTF");
 }
 .titleOne1 {
+  width: 20rem;
+  height: 3rem;
   font-size: 2.3rem;
   font-weight: 400;
   line-height: 20.48px;
@@ -161,6 +163,7 @@
   font-family: "AdobeHeitiStd-Regular";
   margin-left: 2rem;
   margin-top: 1rem;
+  /* background-color: red; */
 }
 .prilf {
   font-family: Silkscreen;
@@ -182,19 +185,23 @@
   background-color: #fff2c8;
   border-radius: 1rem;
 }
+.onePartMain{
+  width: 30rem;
+}
 .imgICon {
   width: 1.5rem;
   height: 1.4rem;
   margin-left: 1.3rem;
 }
 .btnPart {
-  height: 35px;
+  width: 55rem;
   justify-content: space-between;
-  opacity: 0px;
-  display: grid;
-  gap: 5px;
+  /* opacity: 0px; */
+  /* display: grid; */
+  /* gap: 5px; */
   color: #000000;
-  margin-top: -5px;
+  margin-top: 6px;
+  /* background-color: red; */
   margin-left: 1rem;
 }
 .partImo {
@@ -507,10 +514,11 @@
 }
 .mainFont {
   display: grid;
-  gap: 5px;
+  gap: 4px;
   position: relative;
-  margin-left: 1rem;
-  margin-top: -0.5rem;
+  margin-left: 2rem;
+  /* margin-top: -0.5rem; */
+  /* background-color: red; */
   span {
     font-size: 2rem;
     font-weight: 500;
