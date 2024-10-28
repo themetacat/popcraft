@@ -23,7 +23,7 @@ import success from '../../images/substance/successto.png'
 import failto from '../../images/substance/failto.png'
 import RankingListimg from '../../images/RankingList/trophy.png'
 import RankingList from '../RankingList'
-import { useTopUp } from "../select"; 
+import { useTopUp } from "../select";
 import Arrow from "../../images/Arrow.png"
 import duigou from '../../images/duigou.png'
 
@@ -1563,14 +1563,14 @@ export default function Header({ hoveredData, handleData }: Props) {
   const rankTransports = () => {
     setShowRankingList(true)
   }
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
+  // const toggleDropdown = () => {
+  //   setIsOpen(!isOpen);
+  // };
 
-  const chainLinks = [
-    { name: "MetaCat Devnet", iconUrl: "https://poster-phi.vercel.app/MetaCat_Logo_Circle.png" },
-    { name: "Redstone", iconUrl: "https://redstone.xyz/icons/redstone.svg" },
-  ];
+  // const chainLinks = [
+  //   { name: "MetaCat Devnet", iconUrl: "https://poster-phi.vercel.app/MetaCat_Logo_Circle.png" },
+  //   { name: "Redstone", iconUrl: "https://redstone.xyz/icons/redstone.svg" },
+  // ];
 
   return (
     <>
@@ -1680,7 +1680,9 @@ export default function Header({ hoveredData, handleData }: Props) {
 
                         <div className={style.chain}>
                           <div className={style.chainsbox}>
-                            <button onClick={toggleDropdown} className={style.Chainbutton}>
+                            <button onClick={(event) => {
+                              openChainModal();
+                            }} className={style.Chainbutton}>
                               {chain.iconUrl && (
                                 <img
                                   alt={chain.name ?? 'Chain icon'}
@@ -1691,9 +1693,9 @@ export default function Header({ hoveredData, handleData }: Props) {
                               <img
                                 src={Arrow}
                                 className={`${style.arrow} ${isOpen ? style.arrowRotated : ''}`}
-                                />
+                              />
                             </button>
-
+                            {/* 
                             {isOpen && (
                               <div className={style.chainlinks}>
                                 {chainLinks.map((link, index) => (
@@ -1711,7 +1713,7 @@ export default function Header({ hoveredData, handleData }: Props) {
                                   </a>
                                 ))}
                               </div>
-                            )}
+                            )} */}
                           </div>
                         </div>
 
@@ -1732,7 +1734,6 @@ export default function Header({ hoveredData, handleData }: Props) {
                           >
                             {account.displayName}
                             {account.displayBalance
-                              // ? ` (${formatBalance(balancover)}  $BUGS)`
                               ? ` (${formatBalance(balancover)}  ${currencySymbol})`
                               : ""}
                           </button>

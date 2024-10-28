@@ -99,7 +99,6 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* background-color: red; */
 }
 
 .Chainbutton {
@@ -111,6 +110,7 @@ canvas {
   border: none;
   border-radius: 10rem;
   background-color: #2b8e9d;
+  cursor: pointer;
 }
 
 .iconimg {
