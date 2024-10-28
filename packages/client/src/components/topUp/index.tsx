@@ -327,15 +327,17 @@ export default function TopUp({
                           </p>
                         </div>
                       </button>
-                      
-                      <span
+                    </div>
+                    <div className={style.bridgePart}>
+                    <span
                         className={`${style.bridgeBTN} ${isPlayButtonClicked ? style.bridgeBTNClicked : ''}`}
                         onClick={bridgeHandle}>
                         Bridge
                       </span>
-                    </div>
                   </div>
+                    </div>
                 </div>
+                
               </div>
 
               <div className={style.partContent}>
@@ -354,7 +356,7 @@ export default function TopUp({
 
                 <div className={style.partTwo}>
                   <div style={{ display: "flex", gap: "4px" }}>
-                    <img src={FrameIcon} alt="" className={style.imgICon} />
+                    <img src={FrameIcon} alt="" className={style.imgIConbox} />
                     <div className={style.addcon}>
                       <input
                         type="text"
@@ -400,6 +402,7 @@ export default function TopUp({
                   </div>
 
                 </div>
+
                 <div className={style.prvkey}>
                   <p className={style.pqad}>PRIVATE KEY</p>
                   <div style={{ display: "flex", gap: "4px" }}>
