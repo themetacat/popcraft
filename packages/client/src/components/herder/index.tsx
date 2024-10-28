@@ -102,6 +102,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
   })
+  
 
   useEffect(() => {
     if (resultBugs.data?.value) {

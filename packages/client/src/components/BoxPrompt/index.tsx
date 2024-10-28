@@ -221,11 +221,13 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   useEffect(() => {
     if (isConnected) {
       const interval = setInterval(() => {
+        const currentTime = new Date().toLocaleString(); 
         updateTCMPopStarData();
-      }, 5000);
+      },500);
       return () => clearInterval(interval);
     }
   }, [isConnected]);
+  
 
   useEffect(() => {
     if (timeControl === true && gameSuccess === false) {
