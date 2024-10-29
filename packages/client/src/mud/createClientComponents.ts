@@ -10,12 +10,17 @@
  */
 
 import { SetupNetworkResult } from "./setupNetwork";
+import { overridableComponent } from "@latticexyz/recs";
 
 export type ClientComponents = ReturnType<typeof createClientComponents>;
 
 export function createClientComponents({ components }: SetupNetworkResult) {
+  console.log(components);
+  
   return {
     ...components,
+    TCMPopStar: overridableComponent(components.TCMPopStar),
+    TokenBalance: overridableComponent(components.TokenBalance),
     // add your client components or overrides here
   };
 }

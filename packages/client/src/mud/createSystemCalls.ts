@@ -2,38 +2,18 @@
  * Create the system calls that the client can use to ask
  * for changes in the World state (using the System contracts).
  */
-import { useContext } from "react";
-import { getComponentValue } from "@latticexyz/recs";
+
 import { ClientComponents } from "./createClientComponents";
-import { resourceToHex, ContractWrite, getContract } from "@latticexyz/common";
+import { resourceToHex } from "@latticexyz/common";
 import { SetupNetworkResult } from "./setupNetwork";
-import toast, { Toaster } from "react-hot-toast";
-import { generateRoute } from "../uniswap_routing/routing"
+import { uuid } from "@latticexyz/utils";
+import { getComponentValue } from "@latticexyz/recs";
+import { encodeEntity } from "@latticexyz/store-sync/recs";
 import {
-  encodeSystemCall,
-  SystemCall,
-  encodeSystemCallFrom,
-} from "@latticexyz/world";
-import {
-  Abi,
   encodeFunctionData,
-  parseEther,
-  decodeErrorResult,
-  toHex,
 } from "viem";
-import {
-  getBurnerPrivateKey,
-  createBurnerAccount,
-  transportObserver,
-} from "@latticexyz/common";
-import { callWithSignature } from "@latticexyz/world-modules";
-// import { callWithSignatureTypes } from "@latticexyz/world/internal";
-import { Subject, share } from "rxjs";
-import { useWalletClient } from "wagmi";
 import { createWalletClient, custom } from "viem";
-import { mainnet } from "viem/chains";
-import { privateKeyToAccount } from "viem/accounts";
-import CallWithSignatureAbi from "@latticexyz/world-modules/out/Unstable_CallWithSignatureSystem.sol/Unstable_CallWithSignatureSystem.abi.json";
+
 let args_index: number = -1;
 
 export const update_app_value = (index: number) => {
@@ -71,7 +51,7 @@ export function createSystemCalls(
     abi,
     clientOptions,
   }: SetupNetworkResult,
-  { }: ClientComponents
+  { TCMPopStar, TokenBalance }: ClientComponents
 ) {
   const app_name: string = window.localStorage.getItem("app_name") || "paint";
   // https://pixelaw-game.vercel.app/TCMPopStarSystem.abi.json
@@ -144,7 +124,7 @@ export function createSystemCalls(
     const eoaWalletClient = await getEoaContractFun();
     try {
       const nonce = await getAccountNonce();
-      
+
       const hash = await eoaWalletClient.writeContract({
         address: worldContract.address,
         // address: "0x4AB7E8B94347cb0236e3De126Db9c50599F7DB2d",
@@ -436,24 +416,31 @@ export function createSystemCalls(
 
       }
       else {
-        const txData = await worldContract.write.callFrom([
-          account,
-          resourceToHex({
-            type: "system",
-            namespace: namespace,
-            name: system_name,
-          }),
-          encodeData,
-        ]);
 
-        hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
+        const popStarId = opRendering(coordinates.x, coordinates.y, account);
+        try {
+          const txData = await worldContract.write.callFrom([
+            account,
+            resourceToHex({
+              type: "system",
+              namespace: namespace,
+              name: system_name,
+            }),
+            encodeData,
+          ]);
+
+          hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
+          await waitForTransaction(txData);
+        } finally {
+          TCMPopStar.removeOverride(popStarId);
+        }
       }
 
     } catch (error) {
       // console.error("Failed to setup network:", error.message);
       return { error: error.message };
     }
-    
+
     // catch (error) {
     //     if (error.message.includes("0x897f6c58")) {
     //         toast.error("Out of stock, please buy!");
@@ -462,23 +449,23 @@ export function createSystemCalls(
     //     return [null, null];
     //   }
     //   console.log(error.message);
-      
-      // if (error.message.includes("0x897f6c58")) {
-      //   toast.error("Out of stock, please buy!");
-      // } else if (error.message.includes("RPC Request failed")) {
-      //   toast.error("AN ERROR WAS REPORTED");
-      // } else if (error.message.includes("The contract function \"callFrom\" reverted with the following reason:")) {
-      //   // 不弹框
-      // } else {
-      //   console.error("Failed to setup network:", error.message);
-      //   toast.error("AN ERROR WAS REPORTED");
-      // }
+
+    // if (error.message.includes("0x897f6c58")) {
+    //   toast.error("Out of stock, please buy!");
+    // } else if (error.message.includes("RPC Request failed")) {
+    //   toast.error("AN ERROR WAS REPORTED");
+    // } else if (error.message.includes("The contract function \"callFrom\" reverted with the following reason:")) {
+    //   // 不弹框
+    // } else {
+    //   console.error("Failed to setup network:", error.message);
+    //   toast.error("AN ERROR WAS REPORTED");
+    // }
     // }
     return [tx, hashValpublic];
   };
 
   const payFunction = async (methodParametersArray: any[]) => {
-    
+
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
     const [account] = await window.ethereum!.request({
@@ -502,14 +489,14 @@ export function createSystemCalls(
       args.push(arg_single);
     }
     const nonce = await getAccountNonce();
-    
+
     const encodeData = encodeFunctionData({
       abi: popCraftAbi,
 
       functionName: "buyToken",
       args: [args],
     });
-    
+
     try {
       const eoaWalletClient = await getEoaContractFun();
       const hash = await eoaWalletClient.writeContract({
@@ -521,7 +508,7 @@ export function createSystemCalls(
         nonce: nonce
       });
       // const txData = await worldContract.write.call([resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData], { value: totalValue });
-      
+
       hashValpublic = await publicClient.waitForTransactionReceipt({ hash: hash })
     } catch (error) {
       console.error("Failed to setup network:", error.message);
@@ -529,6 +516,194 @@ export function createSystemCalls(
 
     return hashValpublic;
   };
+
+  function opRendering(positionX: number, positionY: number, playerAddr: any) {
+    const popStarId = uuid();
+    let tokenBalanceId;
+    const playerEntity = encodeEntity({ address: "address" }, { address: playerAddr });
+
+    const tcmPopStarData = getComponentValue(TCMPopStar, playerEntity);
+    if (!tcmPopStarData) {
+      console.warn("game data is null");
+      return { error: "no game" };
+    }
+    const newTcmPopStarData = {
+      ...tcmPopStarData,
+      matrixArray: [...tcmPopStarData.matrixArray as bigint[]]
+    };
+    
+    const matrixIndex = (positionX - Number(tcmPopStarData.x)) + (positionY - Number(tcmPopStarData.y)) * 10;
+    const matrixArray = newTcmPopStarData.matrixArray as bigint[];
+    const targetValue = matrixArray[matrixIndex];
+
+    // const popAccess: boolean =  checkPopAccess(matrixIndex, targetValue, matrixArray);
+    // if(!popAccess){
+    
+    //   matrixArray[matrixIndex] = 0n;
+    //   const finalEliminateAmount = 1;
+
+    //   const tokenAddr = tcmPopStarData.tokenAddressArr[Number(targetValue)-1];
+    //   const tokenBalanceEntity = encodeEntity({ playerAddress: "address", tokenAddress: "address" }, { playerAddress: playerAddr, tokenAddress: tokenAddr });
+
+    //   const tokenBalanceData = getComponentValue(TokenBalance, tokenBalanceEntity);
+    //   if (!tokenBalanceData) {
+    //     // 抛出错误
+    //     console.warn("token not enough");
+    //     return { error: "no game" };
+    //   }
+    //   tokenBalanceId = uuid();
+      
+    //   TokenBalance.addOverride(tokenBalanceId, {
+    //     entity: tokenBalanceEntity,
+    //     value: newTcmPopStarData,
+    //   });
+      
+    // }else{
+      const [updatedMatrixArray, finalEliminateAmount] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0);
+    // }
+
+    moveMatrixArray(matrixArray);
+
+    TCMPopStar.addOverride(popStarId, {
+      entity: playerEntity,
+      value: newTcmPopStarData,
+    });
+
+    return popStarId;
+  }
+
+  function dfsPopCraft(matrixIndex: number, targetValue: bigint, matrixArray: bigint[], eliminateAmount: number): [bigint[], number] {
+    const x = matrixIndex % 10;
+    const y = Math.floor(matrixIndex / 10);
+
+    let index: number;
+
+    // 检查左边
+    if (x > 0) {
+      index = matrixIndex - 1;
+      if (matrixArray[index] === targetValue) {
+        matrixArray[index] = 0n;
+        eliminateAmount += 1;
+        [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount);
+      }
+    }
+
+    // 检查右边
+    if (x < 9) {
+      index = matrixIndex + 1;
+      if (matrixArray[index] === targetValue) {
+        matrixArray[index] = 0n;
+        eliminateAmount += 1;
+        [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount);
+      }
+    }
+
+    // 检查上方
+    if (y > 0) {
+      index = matrixIndex - 10;
+      if (matrixArray[index] === targetValue) {
+        matrixArray[index] = 0n;
+        eliminateAmount += 1;
+        [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount);
+      }
+    }
+
+    // 检查下方
+    if (y < 9) {
+      index = matrixIndex + 10;
+      if (matrixArray[index] === targetValue) {
+        matrixArray[index] = 0n;
+        eliminateAmount += 1;
+        [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount);
+      }
+    }
+
+    return [matrixArray, eliminateAmount];
+  }
+
+  function moveMatrixArray(matrixArray: bigint[]): bigint[] {
+    let index: number;
+    let zeroIndexRow: number;
+    let zeroIndexColBot = 89;
+    let zeroIndexCol: number;
+
+    for (let i = 0; i < 10; i++) {
+      zeroIndexRow = 90 + i;
+
+      for (let j = 10; j > 0; j--) {
+        index = i + (j - 1) * 10; 
+
+        if (matrixArray[index] !== 0n) {
+          if (index !== zeroIndexRow) {
+            matrixArray[zeroIndexRow] = matrixArray[index];
+            matrixArray[index] = 0n;
+          }
+          zeroIndexRow -= 10;
+        }
+      }
+
+      if (i > 0 && matrixArray[zeroIndexColBot] === 0n) {
+        if (matrixArray[90 + i] !== 0n) {
+          zeroIndexCol = zeroIndexColBot - 90;
+
+          for (let x = 0; x < 10; x++) {
+            index = i + x * 10;
+            if (matrixArray[index] !== 0n) {
+              matrixArray[x * 10 + zeroIndexCol] = matrixArray[index];
+              matrixArray[index] = 0n;
+            }
+          }
+          zeroIndexColBot += 1;
+        }
+      } else {
+        zeroIndexColBot += 1;
+      }
+    }
+
+    return matrixArray;
+  }
+
+  function checkPopAccess(matrixIndex: number, targetValue: bigint, matrixArray: bigint[]): boolean {
+    const x = matrixIndex % 10;
+    const y = Math.floor(matrixIndex / 10);
+
+    let index: number;
+
+    // 检查左侧的元素
+    if (x > 0) {
+        index = matrixIndex - 1;
+        if (matrixArray[index] === targetValue) {
+            return true;
+        }
+    }
+
+    // 检查右侧的元素
+    if (x < 9) {
+        index = matrixIndex + 1;
+        if (matrixArray[index] === targetValue) {
+            return true;
+        }
+    }
+
+    // 检查上方的元素
+    if (y > 0) {
+        index = matrixIndex - 10;
+        if (matrixArray[index] === targetValue) {
+            return true;
+        }
+    }
+
+    // 检查下方的元素
+    if (y < 9) {
+        index = matrixIndex + 10;
+        if (matrixArray[index] === targetValue) {
+            return true;
+        }
+    }
+
+    return false;
+  }
+
 
   return {
     update_abi,
