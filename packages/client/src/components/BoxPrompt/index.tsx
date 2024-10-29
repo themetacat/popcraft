@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
 import style from "./index.module.css";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import loadingIcon from "../../images/welcome_pay_play_loading.webp";
 import trunOff from "../../images/turnOffBtn.webp";
 import { imageIconData } from "../imageIconData";

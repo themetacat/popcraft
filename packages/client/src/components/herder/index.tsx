@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback, useLayoutEffect } from "react";
 import style from "./index.module.css";
+import React, { useState, useEffect, useRef, useCallback, useLayoutEffect } from "react";
 import { Has, getComponentValueStrict, getComponentValue, AnyComponentValue, } from "@latticexyz/recs";
 import { formatUnits, decodeErrorResult } from "viem";
 import { imageIconData } from "../imageIconData";
@@ -417,6 +417,8 @@ export default function Header({ hoveredData, handleData }: Props) {
     ctx.closePath();
     ctx.stroke();
   }
+
+
 
   const drawGrid2 = useCallback(
     (

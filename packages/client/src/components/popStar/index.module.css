@@ -6,17 +6,15 @@
   width: 68.75rem;
   height: 56.25rem;
   border: none;
-  background-image: url("../../images/welcome/welcome.webp");
+  /* background-image: url("../../images/welcome/welcome.webp"); */
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   display: grid;
 }
-
 p {
   margin: 0;
 }
-
 .title {
   width: 52.5rem;
   height: 3.75rem;
@@ -32,12 +30,11 @@ p {
   margin-top: 7.2rem;
   margin-left: 8rem;
 }
-
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
   src: url("/fonts/BRLNSR.ttf");
+  font-display: block;
 }
-
 .Container {
   width: 56.25rem;
   height: 25.625rem;
@@ -48,9 +45,8 @@ p {
   margin-left: 9.2rem;
   margin-top: -2.5rem;
   font-size: 2.5rem;
+  font-family: "AdobeHeitiStd-Regular";
 }
-
-
 .copywritingThree {
   font-weight: 600;
   font-size: 2.5rem;
@@ -59,29 +55,25 @@ p {
 .defaultTokens{
   letter-spacing: 0.15rem;
 }
-
 .copywritingTwo {
   line-height: 4.5rem;
   letter-spacing: 0.35rem;
   color: #020202;
-  font-family: "AdobeHeitiStd-Regular";
+  /* font-family: "AdobeHeitiStd-Regular"; */
 }
 .copywritingbox{
   line-height: 4rem;
   letter-spacing: 0.5rem;
 }
-
 .copywritingTwobox {
   margin-top: 1rem;
 }
-
 .copywritingTwoyo {
   font-size: 2.5rem;
   line-height: 4rem;
   letter-spacing: 0.25rem;
-  font-family: "AdobeHeitiStd-Regular";
+  /* font-family: "AdobeHeitiStd-Regular"; */
 }
-
 .copywritingFour {
   font-size: 14px;
   font-weight: 400;
@@ -90,7 +82,6 @@ p {
   color: #294bff;
   text-decoration: underline;
 }
-
 .btnPlay {
   width: 49rem;
   height: 6.5rem;
@@ -119,7 +110,6 @@ p {
     2px 2px 0 rgba(206, 206, 206, 0.7);
   cursor: pointer;
 }
-
 .btnPlaybox {
   width: 49rem;
   height: 6.5rem;
@@ -143,7 +133,6 @@ p {
   text-transform: uppercase;
   cursor: pointer;
 }
-
 .btnPlaybox:hover {
   color: #ffffff;
   font-size: 3.1rem;
@@ -153,7 +142,6 @@ p {
     -1px 1px 0 rgba(59, 59, 59, 0.7),
     1px 1px 0 rgba(69, 69, 69, 0.7)
 }
-
 .btnPlay:hover {
   color: #ffffff;
   font-size: 3.1rem;
@@ -163,12 +151,10 @@ p {
     -1px 1px 0 rgba(59, 59, 59, 0.7),
     1px 1px 0 rgba(69, 69, 69, 0.7)
 }
-
 .btnPlay:active {
   background-color: rgba(255, 255, 255, 0.05);
   color: #ffffff;
 }
-
 .commonCls1 {
   animation: spin 5s linear infinite;
   -webkit-transform: rotate(3600deg);
@@ -177,7 +163,6 @@ p {
   transition: transform 5s linear;
   height: 100%;
 }
-
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -187,19 +172,11 @@ p {
     transform: rotate(360deg);
   }
 }
-
 .btnPlayPlaying {
   background-image: url("../../images/welcome/playhove.webp");
   background-size: 100% 100%;
   background-position: center;
 }
-
-/* .btnPlayConnectClicked {
-  background-image: url("../../images/welcome/playhove.webp");
-  background-size: 100% 100%;
-  background-position: center;
-} */
-
 .btnPlayClicked:hover {
   cursor: not-allowed;
 }

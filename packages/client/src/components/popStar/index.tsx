@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
 import style from "./index.module.css";
+import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import loadingImg from "../../images/welcome_pay_play_loading.webp";
 import { useTopUp } from "../select";
+import backgroundImage from "../../images/welcome/welcome.webp"; 
 
 interface Props {
   setPopStar: any;
@@ -40,7 +41,9 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
   };
 
   return (
-    <div className={style.content}>
+    // <div className={style.content}>
+    <div className={style.content} style={{ backgroundImage: `url(${backgroundImage})` }}>
+
       <p className={style.title}>WELCOME TO POPCRAFT!</p>
       <div className={style.Container}>
         <span className={style.copywritingTwo}>This is a composability-based elimi-<br />
