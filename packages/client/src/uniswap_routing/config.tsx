@@ -28,7 +28,19 @@ export interface ExampleConfig {
 
 // 获取链 ID 和配置 RPC URLs 的函数
 async function getChainIdAndConfig(): Promise<ExampleConfig> {
-  const chainIdHex = await window.ethereum!.request({ method: "eth_chainId" });
+  // const chainIdHex = await window.ethereum!.request({ method: "eth_chainId" });
+  let chainIdHex = '31338';
+  try {
+      if (window.ethereum) {
+        chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
+    } else {
+      // chainIdHex = '31338'; 
+      throw new Error("Ethereum provider not found");
+    }
+  } catch (error) {
+    console.error("Failed to get chain ID:", error);
+  }
+
   const chainId = parseInt(chainIdHex, 16);
 
   const rpcUrls: Record<string, { local: string; mainnet: string }> = {

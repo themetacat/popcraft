@@ -38,11 +38,29 @@ import { supportedChains } from "./supportedChains";
 
 export async function getNetworkConfig() {
   const params = new URLSearchParams(window.location.search);
-  const chainIdHex= await window.ethereum!.request({
-    method: "eth_chainId",
-  });
-  var chainId = parseInt(chainIdHex, 16); 
-  
+  // let chainIdHex = '31338'
+  // if (window.ethereum) {
+  //   chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
+  // } else {
+  //   throw new Error("Ethereum provider not found");
+  // }
+  // const chainIdHex= await window.ethereum!.request({
+  //   method: "eth_chainId",
+  // });
+  let chainIdHex = '31338';
+  try {
+    if (window.ethereum) {
+      chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
+    } else {
+      // chainIdHex = '31338'; 
+      throw new Error("Ethereum provider not found");
+    }
+  } catch (error) {
+    console.error("Failed to get chain ID:", error);
+  }
+  var chainId = parseInt(chainIdHex, 16);
+  // console.log(chainId);
+
   /*
    * The chain ID is the first item available from this list:
    * 1. chainId query parameter
@@ -52,7 +70,7 @@ export async function getNetworkConfig() {
    * 4. The default, 31337 (anvil)
    */
   // const chainId = Number(params.get("chainId") || params.get("chainid") || import.meta.env.VITE_CHAIN_ID || 31337);
-  
+
   /*
    * Find the chain (unless it isn't in the list of supported chains).
    */
@@ -86,7 +104,7 @@ export async function getNetworkConfig() {
   const initialBlockNumber = params.has("initialBlockNumber")
     ? Number(params.get("initialBlockNumber"))
     : world?.blockNumber ?? 0n;
-    
+
   return {
     privateKey: getBurnerPrivateKey(),
     chainId,
