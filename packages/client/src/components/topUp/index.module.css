@@ -7,7 +7,7 @@
   gap: 3rem;
   transform: translate(-50%, -50%);
   color: #fff;
-  background-image: url("../../images/topup/topupback.webp");
+  /* background-image: url("../../images/topup/topupback.webp"); */
   background-size: 100% 100%;
   background-position: center;
   display: grid;

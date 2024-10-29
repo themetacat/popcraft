@@ -15,6 +15,7 @@ import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
 import LoadingImg from "../../images/loadingto.webp"
 import { useTopUp } from "../select";
+import topupbackImg from "../../images/topup/topupback.webp"; 
 
 import {
   type BaseError,
@@ -257,7 +258,7 @@ export default function TopUp({
     }
   }
   return (
-    <div className={style.topBox}>
+    <div className={style.topBox} style={{ backgroundImage: `url(${topupbackImg})` }}>
       <div className={style.cant}>
         <div className={style.title}>
           TOP UP

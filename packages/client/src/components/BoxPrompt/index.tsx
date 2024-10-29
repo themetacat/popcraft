@@ -19,6 +19,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useTopUp } from "../select";
 import {encodeEntity} from "@latticexyz/store-sync/recs";
 import {getComponentValue} from "@latticexyz/recs";
+import substanceImg from "../../images/substance/substance.webp"; 
 
 interface Props {
   coordinates: any;
@@ -581,7 +582,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
       {dataq === true ? (
         <div className={panningType !== "false" ? style.overlayBuy : style.overlay}>
-          <div className={style.buYBox}>
+          <div className={style.buYBox} style={{ backgroundImage: `url(${substanceImg})` }}>
             <img
               className={style.turnOff}
               src={trunOff}
