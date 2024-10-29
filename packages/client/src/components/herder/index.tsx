@@ -573,13 +573,13 @@ export default function Header({ hoveredData, handleData }: Props) {
         const currentY = j * GRID_SIZE + offsetY;
 
         // 如果正在加载，则不放大并且只展示加载状态
-        if (loadingSquare && loadingSquare.x === i && loadingSquare.y === j) {
-          const loadingImgElement = new Image();
-          loadingImgElement.src = loadingImg;
-          const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
-          drawRotatingImage(ctx, loadingImgElement, currentX + GRID_SIZE * 0.1, currentY + GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8, angle);
-          ctx.canvas.style.cursor = "default";
-        } else {
+        // if (loadingSquare && loadingSquare.x === i && loadingSquare.y === j) {
+        //   const loadingImgElement = new Image();
+        //   loadingImgElement.src = loadingImg;
+        //   const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
+          // drawRotatingImage(ctx, loadingImgElement, currentX + GRID_SIZE * 0.1, currentY + GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8, angle);
+        //   ctx.canvas.style.cursor = "default";
+        // } else {
           const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
           const drawY = currentY - (GRID_SIZE * (scale - 1)) / 2;
           const drawSize = GRID_SIZE * scale;
@@ -617,17 +617,17 @@ export default function Header({ hoveredData, handleData }: Props) {
             }
           }
           ctx.canvas.style.cursor = "pointer";
-        }
+        // }
       } else {
         ctx.canvas.style.cursor = "default";
       }
 
-      if (loadingSquare && loadingSquare.x < 10 && loadingSquare.x >= 0 && loadingSquare.y < 10 && loadingSquare.y >= 0) {
-        const loadingImgElement = new Image();
-        loadingImgElement.src = loadingImg;
-        const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
-        drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX + GRID_SIZE * 0.1, loadingSquare.y * GRID_SIZE + offsetY + GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8, angle);
-      }
+      // if (loadingSquare && loadingSquare.x < 10 && loadingSquare.x >= 0 && loadingSquare.y < 10 && loadingSquare.y >= 0) {
+      //   const loadingImgElement = new Image();
+      //   loadingImgElement.src = loadingImg;
+      //   const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
+        // drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX + GRID_SIZE * 0.1, loadingSquare.y * GRID_SIZE + offsetY + GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8, angle);
+      // }
     },
     [
       GRID_SIZE,
@@ -893,14 +893,14 @@ export default function Header({ hoveredData, handleData }: Props) {
           const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
           const newHoveredSquare = { x: gridX, y: gridY };
           setHoveredSquare(newHoveredSquare);
-          setLoadingSquare(newHoveredSquare); // 设置 loading 状态
+          // setLoadingSquare(newHoveredSquare); // 设置 loading 状态
         } else {
           const gridX = Math.floor(mouseX / GRID_SIZE);
           const gridY = Math.floor(mouseY / GRID_SIZE);
           setCoordinatesData({ x: gridX, y: gridY });
           const newHoveredSquare = { x: gridX, y: gridY };
           setHoveredSquare(newHoveredSquare);
-          setLoadingSquare(newHoveredSquare);// 设置 loading 状态
+          // setLoadingSquare(newHoveredSquare);// 设置 loading 状态
         }
 
         if (isEmpty) {
