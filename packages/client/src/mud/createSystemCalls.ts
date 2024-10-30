@@ -416,6 +416,7 @@ export function createSystemCalls(
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
         waitingTransaction = false;
       } else {
+
         if (!waitingTransaction) {
           const [popStarId, tokenBalanceId, newRankingRecordId] = opRendering(coordinates.x, coordinates.y, account);
 
@@ -432,6 +433,10 @@ export function createSystemCalls(
 
             hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
             await waitForTransaction(txData);
+          } catch{
+            waitingTransaction = false;
+            console.error(error.message);
+            return { error: error.message };
           } finally {
             if (popStarId) {
               TCMPopStar.removeOverride(popStarId);
@@ -441,6 +446,11 @@ export function createSystemCalls(
             }
             if (newRankingRecordId) {
               RankingRecord.removeOverride(newRankingRecordId);
+            }
+            if (waitingTransaction) {
+              if (!hashValpublic || (await hashValpublic).status !== "success") {
+                waitingTransaction = false;
+              }
             }
           }
         }else{
