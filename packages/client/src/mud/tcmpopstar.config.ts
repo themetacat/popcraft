@@ -84,44 +84,6 @@ export default mudConfig({
         tokenAddress: "address[]",
       }
     },
-    // ______________________ MATCH ____________________________
-    Match: {
-      keySchema: {
-        matchId: "bytes32" 
-      },
-      valueSchema: {
-        numOfPlayers: "uint256",
-        // 0: Not Created   1: Created   2: In-game   3: over
-        status: "uint256",
-        startTime: "uint256",
-        createdBy: "address",
-        playerAddress: "address[]",
-      }
-    },
-    MatchCount: {
-      keySchema: {
-        numOfPlayers: "uint256" 
-      },
-      valueSchema: {
-        numOfgames: "uint256",
-      }
-    },
-    // MatchReward: {
-    //   keySchema: {
-    //     level: "Level" 
-    //   },
-    //   valueSchema: {
-
-    //   }
-    // },
-    PlayerMatch: {
-      keySchema: {
-        playerAddr: "address" 
-      },
-      valueSchema: {
-        matchId: "bytes32",
-      }
-    }
   },
   systems: {
     PopCraftSystem: {

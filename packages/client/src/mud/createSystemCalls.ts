@@ -13,6 +13,7 @@ import {
   encodeFunctionData,
 } from "viem";
 import { createWalletClient, custom } from "viem";
+import toast from "react-hot-toast";
 
 let args_index: number = -1;
 
@@ -51,7 +52,7 @@ export function createSystemCalls(
     abi,
     clientOptions,
   }: SetupNetworkResult,
-  { TCMPopStar, TokenBalance }: ClientComponents
+  { TCMPopStar, TokenBalance, StarToScore, RankingRecord }: ClientComponents
 ) {
   const app_name: string = window.localStorage.getItem("app_name") || "paint";
   // https://pixelaw-game.vercel.app/TCMPopStarSystem.abi.json
@@ -74,7 +75,7 @@ export function createSystemCalls(
       "0xc96BedB3C0f9aB47E50b53bcC03E5D7294C97cf2"
     );
   }
-
+  let waitingTransaction: boolean = false;
   const namespace = "tcmPopStar";
   const system_name = "TcmPopStar";
   const SYSTEM_ID = resourceToHex({
@@ -413,54 +414,44 @@ export function createSystemCalls(
         ], { gas: 30000000n });
         // console.log(txData);
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
+        waitingTransaction = false;
+      } else {
+        if (!waitingTransaction) {
+          const [popStarId, tokenBalanceId, newRankingRecordId] = opRendering(coordinates.x, coordinates.y, account);
 
-      }
-      else {
+          try {
+            const txData = await worldContract.write.callFrom([
+              account,
+              resourceToHex({
+                type: "system",
+                namespace: namespace,
+                name: system_name,
+              }),
+              encodeData,
+            ]);
 
-        const popStarId = opRendering(coordinates.x, coordinates.y, account);
-        try {
-          const txData = await worldContract.write.callFrom([
-            account,
-            resourceToHex({
-              type: "system",
-              namespace: namespace,
-              name: system_name,
-            }),
-            encodeData,
-          ]);
-
-          hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
-          await waitForTransaction(txData);
-        } finally {
-          TCMPopStar.removeOverride(popStarId);
+            hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
+            await waitForTransaction(txData);
+          } finally {
+            if (popStarId) {
+              TCMPopStar.removeOverride(popStarId);
+            }
+            if (tokenBalanceId) {
+              TokenBalance.removeOverride(tokenBalanceId);
+            }
+            if (newRankingRecordId) {
+              RankingRecord.removeOverride(newRankingRecordId);
+            }
+          }
+        }else{
+          toast.success("game over, waiting transation...");
         }
-      }
 
+      }
     } catch (error) {
       // console.error("Failed to setup network:", error.message);
       return { error: error.message };
     }
-
-    // catch (error) {
-    //     if (error.message.includes("0x897f6c58")) {
-    //         toast.error("Out of stock, please buy!");
-    //     }
-    //     console.error("Failed to setup network:", error.message);
-    //     return [null, null];
-    //   }
-    //   console.log(error.message);
-
-    // if (error.message.includes("0x897f6c58")) {
-    //   toast.error("Out of stock, please buy!");
-    // } else if (error.message.includes("RPC Request failed")) {
-    //   toast.error("AN ERROR WAS REPORTED");
-    // } else if (error.message.includes("The contract function \"callFrom\" reverted with the following reason:")) {
-    //   // 不弹框
-    // } else {
-    //   console.error("Failed to setup network:", error.message);
-    //   toast.error("AN ERROR WAS REPORTED");
-    // }
-    // }
     return [tx, hashValpublic];
   };
 
@@ -518,58 +509,93 @@ export function createSystemCalls(
   };
 
   function opRendering(positionX: number, positionY: number, playerAddr: any) {
-    const popStarId = uuid();
+    let popStarId;
     let tokenBalanceId;
+    let rankingRecordId;
+    let eliminateAmount = 0;
     const playerEntity = encodeEntity({ address: "address" }, { address: playerAddr });
 
     const tcmPopStarData = getComponentValue(TCMPopStar, playerEntity);
     if (!tcmPopStarData) {
-      console.warn("game data is null");
-      return { error: "no game" };
+      console.error("game data is null");
+      return [undefined, undefined];
     }
     const newTcmPopStarData = {
       ...tcmPopStarData,
       matrixArray: [...tcmPopStarData.matrixArray as bigint[]]
     };
-    
+
     const matrixIndex = (positionX - Number(tcmPopStarData.x)) + (positionY - Number(tcmPopStarData.y)) * 10;
     const matrixArray = newTcmPopStarData.matrixArray as bigint[];
     const targetValue = matrixArray[matrixIndex];
+    if (targetValue == 0n) {
+      throw new Error("Blank area cannot be clicked");
+    }
 
-    // const popAccess: boolean =  checkPopAccess(matrixIndex, targetValue, matrixArray);
-    // if(!popAccess){
-    
-    //   matrixArray[matrixIndex] = 0n;
-    //   const finalEliminateAmount = 1;
+    const popAccess: boolean = checkPopAccess(matrixIndex, targetValue, matrixArray);
+    if (!popAccess) {
+      matrixArray[matrixIndex] = 0n;
+      eliminateAmount = 1;
 
-    //   const tokenAddr = tcmPopStarData.tokenAddressArr[Number(targetValue)-1];
-    //   const tokenBalanceEntity = encodeEntity({ playerAddress: "address", tokenAddress: "address" }, { playerAddress: playerAddr, tokenAddress: tokenAddr });
+      const tokenAddr = tcmPopStarData.tokenAddressArr[Number(targetValue) - 1];
+      const tokenBalanceEntity = encodeEntity({ playerAddress: "address", tokenAddress: "address" }, { playerAddress: playerAddr, tokenAddress: tokenAddr });
+      const tokenBalanceData = getComponentValue(TokenBalance, tokenBalanceEntity);
 
-    //   const tokenBalanceData = getComponentValue(TokenBalance, tokenBalanceEntity);
-    //   if (!tokenBalanceData) {
-    //     // 抛出错误
-    //     console.warn("token not enough");
-    //     return { error: "no game" };
-    //   }
-    //   tokenBalanceId = uuid();
-      
-    //   TokenBalance.addOverride(tokenBalanceId, {
-    //     entity: tokenBalanceEntity,
-    //     value: newTcmPopStarData,
-    //   });
-      
-    // }else{
+      if (!tokenBalanceData || tokenBalanceData.balance as bigint < 10n ** 18n) {
+        // token not enough
+        console.error("token not enough");
+        return [undefined, undefined];
+      }
+
+      const updatedBalance = tokenBalanceData.balance as bigint - 10n ** 18n;
+      tokenBalanceId = uuid();
+      const newTokenBalance = {
+        ...tokenBalanceData,
+        balance: updatedBalance
+      };
+
+      TokenBalance.addOverride(tokenBalanceId, {
+        entity: tokenBalanceEntity,
+        value: newTokenBalance,
+      });
+
+    } else {
       const [updatedMatrixArray, finalEliminateAmount] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0);
-    // }
+      eliminateAmount = finalEliminateAmount;
+    }
 
     moveMatrixArray(matrixArray);
 
-    TCMPopStar.addOverride(popStarId, {
-      entity: playerEntity,
-      value: newTcmPopStarData,
-    });
+    const allZeros = matrixArray.every((data) => data === 0n);
+    if (!allZeros) {
+      popStarId = uuid();
+      TCMPopStar.addOverride(popStarId, {
+        entity: playerEntity,
+        value: newTcmPopStarData,
+      });
+    } else {
+      waitingTransaction = true;
+      toast.success("game over, waiting transation...");
+      console.warn("game over, waiting transation...");
+    }
 
-    return popStarId;
+    const score = getStartToScore(eliminateAmount);
+    if (score > 0n) {
+      const rankingRecordData = getComponentValue(RankingRecord, playerEntity);
+      if (rankingRecordData) {
+        const newRankingRecord = {
+          ...rankingRecordData,
+          latestScores: rankingRecordData.latestScores as bigint + score
+        };
+        rankingRecordId = uuid();
+        RankingRecord.addOverride(rankingRecordId, {
+          entity: playerEntity,
+          value: newRankingRecord,
+        });
+      }
+    }
+
+    return [popStarId, tokenBalanceId, rankingRecordId];
   }
 
   function dfsPopCraft(matrixIndex: number, targetValue: bigint, matrixArray: bigint[], eliminateAmount: number): [bigint[], number] {
@@ -631,7 +657,7 @@ export function createSystemCalls(
       zeroIndexRow = 90 + i;
 
       for (let j = 10; j > 0; j--) {
-        index = i + (j - 1) * 10; 
+        index = i + (j - 1) * 10;
 
         if (matrixArray[index] !== 0n) {
           if (index !== zeroIndexRow) {
@@ -671,39 +697,70 @@ export function createSystemCalls(
 
     // 检查左侧的元素
     if (x > 0) {
-        index = matrixIndex - 1;
-        if (matrixArray[index] === targetValue) {
-            return true;
-        }
+      index = matrixIndex - 1;
+      if (matrixArray[index] === targetValue) {
+        return true;
+      }
     }
 
     // 检查右侧的元素
     if (x < 9) {
-        index = matrixIndex + 1;
-        if (matrixArray[index] === targetValue) {
-            return true;
-        }
+      index = matrixIndex + 1;
+      if (matrixArray[index] === targetValue) {
+        return true;
+      }
     }
 
     // 检查上方的元素
     if (y > 0) {
-        index = matrixIndex - 10;
-        if (matrixArray[index] === targetValue) {
-            return true;
-        }
+      index = matrixIndex - 10;
+      if (matrixArray[index] === targetValue) {
+        return true;
+      }
     }
 
     // 检查下方的元素
     if (y < 9) {
-        index = matrixIndex + 10;
-        if (matrixArray[index] === targetValue) {
-            return true;
-        }
+      index = matrixIndex + 10;
+      if (matrixArray[index] === targetValue) {
+        return true;
+      }
     }
 
     return false;
   }
 
+  function getStartToScore(eliminateAmount: number) {
+    let resultScore = 0n;
+    if (eliminateAmount > 101) {
+      return resultScore;
+    }
+    if (eliminateAmount < 5 || eliminateAmount === 101) {
+      const satrRecord = getComponentValue(
+        StarToScore,
+        encodeEntity({ num: "uint256" }, { num: BigInt(eliminateAmount) })
+      );
+      if (satrRecord) {
+        resultScore = satrRecord.score as bigint;
+      }
+    } else {
+      const satrRecord5 = getComponentValue(
+        StarToScore,
+        encodeEntity({ num: "uint256" }, { num: BigInt(5) })
+      );
+      if (satrRecord5) {
+        resultScore += satrRecord5.score as bigint;
+      }
+      const satrRecordMore = getComponentValue(
+        StarToScore,
+        encodeEntity({ num: "uint256" }, { num: BigInt(0) })
+      );
+      if (satrRecordMore) {
+        resultScore += satrRecordMore.score as bigint * BigInt(eliminateAmount - 5);
+      }
+    }
+    return resultScore;
+  }
 
   return {
     update_abi,

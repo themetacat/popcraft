@@ -64,7 +64,9 @@ export const App = () => {
             color: "#ffffff",
             borderRadius: "8px",
             zIndex: "999999999999",
-            marginTop: "50px"
+            marginTop: "10vh",
+            fontSize: "1.1vw",
+            padding: "10px 20px",
           },
         }}
       />
