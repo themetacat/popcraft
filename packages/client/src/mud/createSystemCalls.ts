@@ -433,10 +433,6 @@ export function createSystemCalls(
 
             hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
             await waitForTransaction(txData);
-          } catch{
-            waitingTransaction = false;
-            console.error(error.message);
-            return { error: error.message };
           } finally {
             if (popStarId) {
               TCMPopStar.removeOverride(popStarId);
@@ -459,6 +455,7 @@ export function createSystemCalls(
 
       }
     } catch (error) {
+      waitingTransaction = false;
       // console.error("Failed to setup network:", error.message);
       return { error: error.message };
     }
