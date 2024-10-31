@@ -775,7 +775,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           <div className={style.content}>
             <p className={style.title}>How to Play</p>
             <p className={style.actical}>
-              <span className={style.copywritingTwo}>This is a composability-based elimination game. You have 4 </span>
+              <span className={style.copywritingTwo}>This is a composability-based elimination game. You have 1 </span>
               <span className={style.copywritingTwo}> minutes to eliminate all the materials.</span>
               <span className={style.copywritingTwo}>You'll be rewarded with&nbsp;
                 <p> {rewardInfo}</p>
