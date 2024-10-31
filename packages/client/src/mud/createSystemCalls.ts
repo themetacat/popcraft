@@ -450,7 +450,7 @@ export function createSystemCalls(
             }
           }
         }else{
-          toast.success("game over, waiting transation...");
+          toast.success("Action submitted, waiting...");
         }
 
       }
@@ -582,8 +582,8 @@ export function createSystemCalls(
       });
     } else {
       waitingTransaction = true;
-      toast.success("game over, waiting transation...");
-      console.warn("game over, waiting transation...");
+      toast.success("Action submitted, waiting...");
+      console.warn("Action submitted, waiting...");
     }
 
     const score = getStartToScore(eliminateAmount);

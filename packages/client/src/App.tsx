@@ -59,15 +59,7 @@ export const App = () => {
       <Toaster
         toastOptions={{
           duration: 2000,
-          style: {
-            backgroundColor: "#000000",
-            color: "#ffffff",
-            borderRadius: "8px",
-            zIndex: "999999999999",
-            marginTop: "10vh",
-            fontSize: "1.1vw",
-            padding: "10px 20px",
-          },
+          className: style.toasterStyle
         }}
       />
     </div>
