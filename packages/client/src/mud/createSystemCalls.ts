@@ -429,7 +429,7 @@ export function createSystemCalls(
                 name: system_name,
               }),
               encodeData,
-            ]);
+            ], { gas: 15000000n });
 
             hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
             await waitForTransaction(txData);
