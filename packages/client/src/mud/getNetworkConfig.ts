@@ -38,21 +38,12 @@ import { supportedChains } from "./supportedChains";
 
 export async function getNetworkConfig() {
   const params = new URLSearchParams(window.location.search);
-  // let chainIdHex = '31338'
-  // if (window.ethereum) {
-  //   chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
-  // } else {
-  //   throw new Error("Ethereum provider not found");
-  // }
-  // const chainIdHex= await window.ethereum!.request({
-  //   method: "eth_chainId",
-  // });
-  let chainIdHex = '31338';
+  
+  let chainIdHex = '690';
   try {
     if (window.ethereum) {
       chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
     } else {
-      // chainIdHex = '31338'; 
       throw new Error("Ethereum provider not found");
     }
   } catch (error) {
@@ -78,7 +69,7 @@ export async function getNetworkConfig() {
   var chain = supportedChains[chainIndex];
   if (!chain) {
     // throw new Error(`Chain ${chainId} not found`);
-    chainId = 31338;
+    chainId = 690;
     chainIndex = supportedChains.findIndex((c) => c.id === chainId);
     chain = supportedChains[chainIndex];
   }

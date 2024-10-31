@@ -28,13 +28,11 @@ export interface ExampleConfig {
 
 // 获取链 ID 和配置 RPC URLs 的函数
 async function getChainIdAndConfig(): Promise<ExampleConfig> {
-  // const chainIdHex = await window.ethereum!.request({ method: "eth_chainId" });
-  let chainIdHex = '31338';
+  let chainIdHex = '690';
   try {
       if (window.ethereum) {
         chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
     } else {
-      // chainIdHex = '31338'; 
       throw new Error("Ethereum provider not found");
     }
   } catch (error) {
@@ -54,7 +52,7 @@ async function getChainIdAndConfig(): Promise<ExampleConfig> {
     },
   };
 
-  const rpc = rpcUrls[chainId] || rpcUrls['31338']; 
+  const rpc = rpcUrls[chainId] || rpcUrls['690']; 
 
   return {
     env: Environment.LOCAL,
