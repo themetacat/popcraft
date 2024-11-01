@@ -40,7 +40,7 @@ export const useTopUp = () => {
       setRewardInfo("150 $BUGS");
       setMIN_SESSION_WALLET_BALANCE(parseEther("0.0000003"));
       setRecipient("0x784844480280ca865ac8ef89bb554283dddff737"); // 设置 recipient 地址
-    } else if (chainId === 31338) {
+    } else if (chainId === 31338 || chainId === 31337) {
       setInputValue("10");
       setbalanceCheck('3')
       setCurrencySymbol("$BUGS")

@@ -15,7 +15,6 @@ import { overridableComponent } from "@latticexyz/recs";
 export type ClientComponents = ReturnType<typeof createClientComponents>;
 
 export function createClientComponents({ components }: SetupNetworkResult) {
-  console.log(components);
   
   return {
     ...components,

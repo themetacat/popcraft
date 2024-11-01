@@ -112,18 +112,18 @@ const redstone = defineChain({
   },
 })
 
-// export const newMudFoundry = {
-//   ...mudFoundry,
-//   blockExplorers: {
-//     default: {
-//       name: "Blockscout",
-//       url: "http://127.0.0.1:8545",
-//     },
-//   }
-// };
+export const newMudFoundry = {
+  ...mudFoundry,
+  blockExplorers: {
+    default: {
+      name: "Blockscout",
+      url: "http://127.0.0.1:8545",
+    },
+  }
+};
 
 /*
  * See https://mud.dev/tutorials/minimal/deploy#run-the-user-interface
  * for instructions on how to add networks.
  */
-export const supportedChains: MUDChain[] = [ latticeTestnet,  core_foundry, redstone];
+export const supportedChains: MUDChain[] = [ latticeTestnet,  core_foundry, redstone, newMudFoundry];

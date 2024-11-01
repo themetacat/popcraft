@@ -50,6 +50,10 @@ async function getChainIdAndConfig(): Promise<ExampleConfig> {
       local: 'https://devnet.pixelaw.world/rpc',
       mainnet: 'https://devnet.pixelaw.world/rpc',
     },
+    '31337': {
+      local: 'http://127.0.0.1:8545',
+      mainnet: 'http://127.0.0.1:8545',
+    },
   };
 
   const rpc = rpcUrls[chainId] || rpcUrls['690']; 
