@@ -5,7 +5,7 @@
 This repository contains the [Front-end](https://github.com/themetacat/popcraft.git) and [Smart Contract](https://github.com/themetacat/popcraft_contracts.git) code for [PopCraft](https://popcraft.pixelaw.xyz/).
 
 ## Demo
-
+![Uploading ezgif-4-e5a6114ebb.gif…]()
 
 ## How to Play?
 - PopCraft is a game like [PopStar!](https://play.google.com/store/apps/details?id=com.zplayworld.popstar&hl=en). 
