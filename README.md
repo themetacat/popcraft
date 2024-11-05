@@ -1,4 +1,4 @@
-# PopCraft(MUD Based)
+# PopCraft
 
 [PopCraft](https://popcraft.pixelaw.xyz/) is the most composable Fully On-chain casual Game.
 
@@ -42,4 +42,4 @@ sudo npm install -g pnpm
 `pnpm run stop`
 
 ## License
-PopCraft is open-source software [under the MIT license](https://github.com/themetacat/pixelaw_core/blob/main/LICENSE).
+PopCraft([MUD](https://mud.dev/) Based) is open-source software [under the MIT license](https://github.com/themetacat/pixelaw_core/blob/main/LICENSE).
