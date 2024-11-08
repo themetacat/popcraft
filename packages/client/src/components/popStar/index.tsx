@@ -48,7 +48,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
       <div className={style.Container}>
         <span className={style.copywritingTwo}>This is a composability-based elimi-<br />
           <span className={style.copywritingbox}>nation game. You have</span>
-          <span className={style.copywritingThree}> 90 seconds</span>&nbsp;<br />
+          <span className={style.copywritingThree}> 120 seconds</span>&nbsp;<br />
         </span>
         <span className={style.copywritingTwo}>
           {" "}
