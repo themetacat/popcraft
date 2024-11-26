@@ -34,6 +34,7 @@ const config = getDefaultConfig({
     wallets: [ metaMaskWallet],
   }],
   chains: [
+    local,
     redstone,
     metacatDev,
   ],

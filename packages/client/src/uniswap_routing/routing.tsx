@@ -37,5 +37,7 @@ export async function generateRoute(tokenAddress: string, amount: number, recipi
         TradeType.EXACT_OUTPUT,
         options
     )
+    console.log(route);
+    
     return route
 }
