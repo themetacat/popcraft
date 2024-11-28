@@ -82,5 +82,25 @@ export const imageIconData = {
     '0xF66D7aB71764feae0e15E75BAB89Bd0081a7180d': {
         src: 'image/redstone/RATS.webp',
         name: "RATS",
-    }
+    },
+    '0x5AF97fE305f3c52Da94C61aeb52Ec0d9A82D73d8': {
+        src: 'image/mintchain/CHUAN.webp',
+        name: "CHUAN",
+    },
+    '0x9f7bd1Ce3412960524e86183B8F005271C09a5E0': {
+        src: 'image/mintchain/MST.svg',
+        name: "MST",
+    },
+    '0x893D9769848288e59fb8a0e97A22d6588A825fFf': {
+        src: 'image/mintchain/RDOG.webp',
+        name: "RDOG",
+    },
+    '0x6932cD12f445CFD8E2AC9e0A8324256ce475992F': {
+        src: 'image/mintchain/PAC.webp',
+        name: "PAC",
+    },
+    '0x68e7218FCCe3F2658f03317AE08A6446bDE164a8': {
+        src: 'image/mintchain/MNGA.webp',
+        name: "MNGA",
+    },
 };

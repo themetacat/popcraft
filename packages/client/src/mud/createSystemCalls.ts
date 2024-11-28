@@ -12,10 +12,12 @@ import { encodeEntity } from "@latticexyz/store-sync/recs";
 import {
   encodeFunctionData,
 } from "viem";
-import { createWalletClient, custom } from "viem";
+import { createWalletClient, custom, parseEther } from "viem";
 import toast from "react-hot-toast";
-
 let args_index: number = -1;
+import { Payments } from "@uniswap/v3-sdk"
+import { useTopUp } from "../components/select";
+
 
 export const update_app_value = (index: number) => {
   args_index = index;
@@ -52,8 +54,9 @@ export function createSystemCalls(
     abi,
     clientOptions,
   }: SetupNetworkResult,
-  { TCMPopStar, TokenBalance, StarToScore, RankingRecord }: ClientComponents
+  { TCMPopStar, TokenBalance, StarToScore, RankingRecord }: ClientComponents,
 ) {
+ 
   const app_name: string = window.localStorage.getItem("app_name") || "paint";
   // https://pixelaw-game.vercel.app/TCMPopStarSystem.abi.json
   // const response = await fetch(worldAbiUrl); 
@@ -322,9 +325,97 @@ export function createSystemCalls(
         {
           "components": [
             {
-              "internalType": "bytes",
               "name": "call_data",
-              "type": "bytes"
+              "type": "bytes",
+              "internalType": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "token_addr",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct TokenInfo",
+              "name": "token_info",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct UniversalRouterParams[]",
+          "name": "universalRouterParams",
+          "type": "tuple[]"
+        }
+      ],
+      "name": "buyToken",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ]
+
+  const popCraftRedstoneBuyAbi = [  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "name": "call_data",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "token_addr",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct TokenInfo",
+            "name": "token_info",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct UniversalRouterParams[]",
+        "name": "universalRouterParams",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "buyToken",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  }]
+
+  const popCraftMintChainBuyAbi = [
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "name": "call_data",
+              "type": "bytes[]",
+              "internalType": "bytes[]"
             },
             {
               "internalType": "uint256",
@@ -414,6 +505,8 @@ export function createSystemCalls(
         ], { gas: 30000000n });
         // console.log(txData);
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
+        console.log(await hashValpublic);
+        
         waitingTransaction = false;
       } else {
 
@@ -431,7 +524,7 @@ export function createSystemCalls(
               encodeData,
             ], { gas: 15000000n });
 
-            hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
+            hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
             await waitForTransaction(txData);
           } finally {
             if (popStarId) {
@@ -449,7 +542,7 @@ export function createSystemCalls(
               }
             }
           }
-        }else{
+        } else {
           toast.success("Action submitted, waiting...");
         }
 
@@ -463,38 +556,19 @@ export function createSystemCalls(
   };
 
   const payFunction = async (methodParametersArray: any[]) => {
-
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
-    const [account] = await window.ethereum!.request({
-      method: "eth_requestAccounts",
-    });
-    let totalValue = BigInt(0); // 初始化总和为 0
+
     let hashValpublic;
-    const args = [];
-    for (let i = 0; i < methodParametersArray.length; i++) {
-      const params = methodParametersArray[i];
-      const value = BigInt(params.value);
-      totalValue += value; // 累加每个 value
-      const arg_single = {
-        call_data: params.calldata, // 设置 call_data 为索引 + 1
-        value: value,
-        token_info: {
-          token_addr: params.tokenAddress, // 从 params 获取 token_addr
-          amount: params.amount * 10 ** 18 // 从 params 获取 amount
-        }
-      }
-      args.push(arg_single);
-    }
+    const payArgs = await getPayArgs(methodParametersArray)
+    console.log(payArgs);
+    
     const nonce = await getAccountNonce();
-
     const encodeData = encodeFunctionData({
-      abi: popCraftAbi,
-
+      abi: payArgs.abi,
       functionName: "buyToken",
-      args: [args],
+      args: [payArgs.args],
     });
-
     try {
       const eoaWalletClient = await getEoaContractFun();
       const hash = await eoaWalletClient.writeContract({
@@ -502,18 +576,64 @@ export function createSystemCalls(
         abi: worldContract.abi,
         functionName: "call",
         args: [resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData],
-        value: totalValue,
+        value: payArgs.totalValue,
         nonce: nonce
       });
+      
       // const txData = await worldContract.write.call([resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData], { value: totalValue });
-
       hashValpublic = await publicClient.waitForTransactionReceipt({ hash: hash })
     } catch (error) {
       console.error("Failed to setup network:", error.message);
     }
-
     return hashValpublic;
   };
+
+  const getPayArgs = async (methodParametersArray: any[]) => {
+    const args = [];
+    let totalValue = BigInt(0);
+    let abi = popCraftRedstoneBuyAbi
+    const chainIdHex = await window.ethereum.request({
+        method: "eth_chainId",
+      });
+      const chainId = parseInt(chainIdHex, 16); 
+    // add new chain: change here
+    if(chainId == 185 || chainId === 31337){
+      for (let i = 0; i < methodParametersArray.length; i++) {
+        const params = methodParametersArray[i];
+        const value = BigInt(params.value) + BigInt(2000000000000000);
+        
+        totalValue += value;
+        const arg_single = {
+          call_data: [params.calldata, Payments.encodeRefundETH()], 
+          value: value,
+          token_info: {
+            token_addr: params.tokenAddress, 
+            amount: params.amount * 10 ** 18 
+          }
+        }
+        args.push(arg_single);
+      }
+      abi = popCraftMintChainBuyAbi;
+    }else{
+      for (let i = 0; i < methodParametersArray.length; i++) {
+        const params = methodParametersArray[i];
+        const value = BigInt(params.value);
+        totalValue += value;
+        const arg_single = {
+          call_data: params.calldata, 
+          value: value,
+          token_info: {
+            token_addr: params.tokenAddress, 
+            amount: params.amount * 10 ** 18 
+          }
+        }
+        args.push(arg_single);
+      }
+    }
+    
+    return {"totalValue": totalValue, "args": args, "abi": abi}
+  };
+
 
   function opRendering(positionX: number, positionY: number, playerAddr: any) {
     let popStarId;

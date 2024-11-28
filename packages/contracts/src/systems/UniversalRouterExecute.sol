@@ -26,20 +26,20 @@ contract RouterExecute is System{
     IMintSwapRouter mintSwapRouter = IMintSwapRouter(UniversalRouter);
 
     for(uint256 i; i < routerExecuteParams.length; i++){
-      // token_addr = routerExecuteParams[i].token_info.token_addr;
-      // token_amount = routerExecuteParams[i].token_info.amount;
+      token_addr = routerExecuteParams[i].token_info.token_addr;
+      token_amount = routerExecuteParams[i].token_info.amount;
 
-      // uint256 balance_last = IERC20(token_addr).balanceOf(_world());
+      uint256 balance_last = IERC20(token_addr).balanceOf(_world());
 
       // (bool success, ) = UniversalRouter.call{value: routerExecuteParams[i].value}(routerExecuteParams[i].call_data);
       // require(success, "universalRouter call failed");
-      bytes[] memory results = mintSwapRouter.multicall{value: routerExecuteParams[i].value}(routerExecuteParams[i].call_data);
+      mintSwapRouter.multicall{value: routerExecuteParams[i].value}(routerExecuteParams[i].call_data);
 
-      // uint256 balance_after = IERC20(token_addr).balanceOf(_world());
-      // require(balance_after - balance_last == token_amount, "Purchase quantity does not match");
+      uint256 balance_after = IERC20(token_addr).balanceOf(_world());
+      require(balance_after - balance_last == token_amount, "Purchase quantity does not match");
   
-      // uint256 nameSpaceBalance = ERC20TokenBalance.get(token_addr, fromNamespaceId);
-      // ERC20TokenBalance.set(token_addr, fromNamespaceId, nameSpaceBalance + token_amount);
+      uint256 nameSpaceBalance = ERC20TokenBalance.get(token_addr, fromNamespaceId);
+      ERC20TokenBalance.set(token_addr, fromNamespaceId, nameSpaceBalance + token_amount);
     }
   }
 }
