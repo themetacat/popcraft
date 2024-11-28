@@ -112,6 +112,34 @@ const redstone = defineChain({
   },
 })
 
+const mintchain = defineChain({
+  id: 185,
+  name: 'Mint Mainnet',
+  network: 'Mint Mainnet',
+  iconUrl:'https://poster-phi.vercel.app/mint_blockchain.webp',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.mintchain.io'],
+      webSocket: ['wss://rpc.mintchain.io'],
+    },
+    public: {
+      http: ['https://rpc.mintchain.io'],
+      webSocket: ['wss://rpc.mintchain.io'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Blockscout",
+      url: "https://explorer.mintchain.io",
+    },
+  },
+})
+
 export const newMudFoundry = {
   ...mudFoundry,
   blockExplorers: {
@@ -126,4 +154,4 @@ export const newMudFoundry = {
  * See https://mud.dev/tutorials/minimal/deploy#run-the-user-interface
  * for instructions on how to add networks.
  */
-export const supportedChains: MUDChain[] = [ latticeTestnet,  core_foundry, redstone, newMudFoundry];
+export const supportedChains: MUDChain[] = [ latticeTestnet, core_foundry, redstone, mintchain, newMudFoundry];
