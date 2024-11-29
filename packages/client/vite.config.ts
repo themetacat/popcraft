@@ -23,19 +23,6 @@ export default defineConfig({
   resolve: {
     alias: {
       jsbi: path.resolve(__dirname, "../../node_modules/jsbi/dist/jsbi-cjs.js"),
-      buffer: 'buffer/',
-      process: 'process/browser',
-    },
-  },
-  define: {
-    'process.env': {},
-    global: {},
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      define: {
-        global: 'globalThis',
-      },
     },
   },
   
