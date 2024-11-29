@@ -104,12 +104,12 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   // add new chain: change here
   let resultBugs;
-  if(chainId === 185){
+  if (chainId === 185) {
     resultBugs = useBalance({
       address: address,
     })
-  }else{
-     resultBugs = useBalance({
+  } else {
+    resultBugs = useBalance({
       address: address,
       token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
     })
@@ -117,19 +117,19 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   useEffect(() => {
     if (resultBugs.data?.value) {
-      if(chainId === 185){
+      if (chainId === 185) {
         setBalancover(Number(resultBugs.data?.value) / 1e18);
-      }else{
+      } else {
         setBalancover(Math.floor(Number(resultBugs.data?.value) / 1e18));
       }
     }
   }, [resultBugs.data]);
 
   const formatBalance = (balancover: number) => {
-    
-    if(chainId === 185){
+
+    if (chainId === 185) {
       return balancover.toFixed(4)
-    }else{
+    } else {
       return balancover.toLocaleString();
     }
   };
@@ -196,7 +196,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     if (isConnected && appName === "BASE/PopCraftSystem" && !hasExecutedRef.current) {
       if ((Number(balance) / 1e18) < balanceCheck) {
         // console.log(Number(balance));
-        
+
         setTopUpType(true);
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
@@ -235,7 +235,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         localStorage.setItem('playAction', 'noplay')
         localStorage.setItem('showGameOver', 'false')
         hasExecutedRef.current = true
-        
+
       }
       if (appName === "BASE/PopCraftSystem") {
         setPopStar(true);
@@ -597,46 +597,46 @@ export default function Header({ hoveredData, handleData }: Props) {
         //   const loadingImgElement = new Image();
         //   loadingImgElement.src = loadingImg;
         //   const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
-          // drawRotatingImage(ctx, loadingImgElement, currentX + GRID_SIZE * 0.1, currentY + GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8, angle);
+        // drawRotatingImage(ctx, loadingImgElement, currentX + GRID_SIZE * 0.1, currentY + GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8, angle);
         //   ctx.canvas.style.cursor = "default";
         // } else {
-          const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
-          const drawY = currentY - (GRID_SIZE * (scale - 1)) / 2;
-          const drawSize = GRID_SIZE * scale;
+        const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
+        const drawY = currentY - (GRID_SIZE * (scale - 1)) / 2;
+        const drawSize = GRID_SIZE * scale;
 
-          ctx.clearRect(drawX, drawY, drawSize, drawSize);
-          ctx.lineWidth = 0.5;
-          ctx.strokeRect(drawX, drawY, drawSize, drawSize);
-          ctx.fillRect(drawX, drawY, drawSize, drawSize);
+        ctx.clearRect(drawX, drawY, drawSize, drawSize);
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(drawX, drawY, drawSize, drawSize);
+        ctx.fillRect(drawX, drawY, drawSize, drawSize);
 
-          if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
-            const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1];
-            const src = imageIconData[tokenAddress]?.src;
+        if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
+          const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1];
+          const src = imageIconData[tokenAddress]?.src;
 
-            if (tokenAddress !== undefined && src !== undefined) {
-              if (!imageCache[src]) {
-                const img = new Image();
-                img.src = src;
-                img.onload = () => {
-                  setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
-                  // 重新绘制图像
-                  const imageWidth = drawSize * 0.8
-                  const imageHeight = drawSize * 0.8;
-                  const imageX = drawX + (drawSize - imageWidth) / 2;
-                  const imageY = drawY + (drawSize - imageHeight) / 2;
-                  ctx.drawImage(img, imageX, imageY, imageWidth, imageHeight);
-                };
-              } else {
-                // 调整图片大小
-                const imageWidth = drawSize * 0.8; // 调整图片宽度
-                const imageHeight = drawSize * 0.8; // 调整图片高度
+          if (tokenAddress !== undefined && src !== undefined) {
+            if (!imageCache[src]) {
+              const img = new Image();
+              img.src = src;
+              img.onload = () => {
+                setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
+                // 重新绘制图像
+                const imageWidth = drawSize * 0.8
+                const imageHeight = drawSize * 0.8;
                 const imageX = drawX + (drawSize - imageWidth) / 2;
                 const imageY = drawY + (drawSize - imageHeight) / 2;
-                ctx.drawImage(imageCache[src], imageX, imageY, imageWidth, imageHeight);
-              }
+                ctx.drawImage(img, imageX, imageY, imageWidth, imageHeight);
+              };
+            } else {
+              // 调整图片大小
+              const imageWidth = drawSize * 0.8; // 调整图片宽度
+              const imageHeight = drawSize * 0.8; // 调整图片高度
+              const imageX = drawX + (drawSize - imageWidth) / 2;
+              const imageY = drawY + (drawSize - imageHeight) / 2;
+              ctx.drawImage(imageCache[src], imageX, imageY, imageWidth, imageHeight);
             }
           }
-          ctx.canvas.style.cursor = "pointer";
+        }
+        ctx.canvas.style.cursor = "pointer";
         // }
       } else {
         ctx.canvas.style.cursor = "default";
@@ -646,7 +646,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       //   const loadingImgElement = new Image();
       //   loadingImgElement.src = loadingImg;
       //   const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
-        // drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX + GRID_SIZE * 0.1, loadingSquare.y * GRID_SIZE + offsetY + GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8, angle);
+      // drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX + GRID_SIZE * 0.1, loadingSquare.y * GRID_SIZE + offsetY + GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8, angle);
       // }
     },
     [
@@ -1050,27 +1050,28 @@ export default function Header({ hoveredData, handleData }: Props) {
     setLoadingpaly(true);
     try {
       //点击后立即显示得分气泡 start
-      const score = opRendering(coordinates.x, coordinates.y, address, TCMPopStar,  StarToScore);
+      if (actionData != "interact") {
+        const score = opRendering(coordinates.x, coordinates.y, address, TCMPopStar, StarToScore);
 
-      // 创建新的 div 元素，控制div显示/隐藏的方案，会有连点两次时，第二次气泡呈现受第一次影响的情况
-      const scoreBubbleDiv = document.createElement('div');
-      scoreBubbleDiv.className = 'score-popup';
-      scoreBubbleDiv.innerText = `+${Number(score)}`; // 使用获得的分数
+        // 创建新的 div 元素，控制div显示/隐藏的方案，会有连点两次时，第二次气泡呈现受第一次影响的情况
+        const scoreBubbleDiv = document.createElement('div');
+        scoreBubbleDiv.className = 'score-popup';
+        scoreBubbleDiv.innerText = `+${Number(score)}`; // 使用获得的分数
 
-      const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
-      const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
-      // scoreBubbleDiv.style.left = `${coordinates.x * GRID_SIZE + offsetX}px`; // 加上偏移量
-      // scoreBubbleDiv.style.top = `${coordinates.y * GRID_SIZE + offsetY}px`; // 加上偏移量
-      scoreBubbleDiv.style.left = `${3.2 * GRID_SIZE + offsetX}px`; // 加上偏移量
-      scoreBubbleDiv.style.top = `${5 * GRID_SIZE + offsetY}px`; // 加上偏移量
-      document.body.appendChild(scoreBubbleDiv); // 将气泡添加到文档中
+        const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+        const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+        // scoreBubbleDiv.style.left = `${coordinates.x * GRID_SIZE + offsetX}px`; // 加上偏移量
+        // scoreBubbleDiv.style.top = `${coordinates.y * GRID_SIZE + offsetY}px`; // 加上偏移量
+        scoreBubbleDiv.style.left = `${3.2 * GRID_SIZE + offsetX}px`; // 加上偏移量
+        scoreBubbleDiv.style.top = `${5 * GRID_SIZE + offsetY}px`; // 加上偏移量
+        document.body.appendChild(scoreBubbleDiv); // 将气泡添加到文档中
 
-      // 设置气泡消失的时间
-      setTimeout(() => {
+        // 设置气泡消失的时间
+        setTimeout(() => {
           document.body.removeChild(scoreBubbleDiv); // 删除气泡
-      }, 3000); // 3秒后气泡消失
-      //点击后立即显示得分气泡 end
-
+        }, 3000); // 3秒后气泡消失
+        //点击后立即显示得分气泡 end
+      }
       const interact_data = await interactTCM(
         coordinates,
         palyerAddress,
@@ -1944,16 +1945,16 @@ export default function Header({ hoveredData, handleData }: Props) {
 
       {scoreBubble.visible && (
         <div className="score-popup"
-            style={{
-              left: scoreBubble.x,
-              top: scoreBubble.y,
-            }}
+          style={{
+            left: scoreBubble.x,
+            top: scoreBubble.y,
+          }}
         >
-           +{scoreBubble.score} {/* 显示得分 */}
+          +{scoreBubble.score} {/* 显示得分 */}
         </div>
-     )}
+      )}
       <style>
-          {`
+        {`
               .score-popup {
                   position: absolute;
                   color: #00AB6B; /* 使用更亮的粉色 */
