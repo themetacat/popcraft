@@ -57,7 +57,7 @@ async function getChainIdAndConfig(): Promise<ExampleConfig> {
     },
     '185': {
       local: 'https://rpc.mintchain.io',
-      mainnet: 'wss://rpc.mintchain.io',
+      mainnet: 'https://rpc.mintchain.io',
     },
   };
 
