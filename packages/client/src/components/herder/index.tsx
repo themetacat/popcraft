@@ -1049,14 +1049,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     setLoading(true);
     setLoadingpaly(true);
     try {
-      const interact_data = await interactTCM(
-        coordinates,
-        palyerAddress,
-        selectedColor,
-        actionData,
-        other_params
-      );
-
       //点击后立即显示得分气泡 start
       const score = opRendering(coordinates.x, coordinates.y, address, TCMPopStar,  StarToScore);
 
@@ -1078,6 +1070,14 @@ export default function Header({ hoveredData, handleData }: Props) {
           document.body.removeChild(scoreBubbleDiv); // 删除气泡
       }, 3000); // 3秒后气泡消失
       //点击后立即显示得分气泡 end
+
+      const interact_data = await interactTCM(
+        coordinates,
+        palyerAddress,
+        selectedColor,
+        actionData,
+        other_params
+      );
 
       if (interact_data.error) {
         handleError(interact_data.error);
