@@ -14,12 +14,12 @@ import reduce from '../../images/substance/reduce.png'
 import add from '../../images/substance/add.png'
 import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
-import { generateRoute } from '../../uniswap_routing/routing'
+import { generateRoute, generateRouteMintChain } from '../../uniswap_routing/routing'
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useTopUp } from "../select";
-import {encodeEntity} from "@latticexyz/store-sync/recs";
-import {getComponentValue} from "@latticexyz/recs";
-import substanceImg from "../../images/substance/substance.webp"; 
+import { encodeEntity } from "@latticexyz/store-sync/recs";
+import { getComponentValue } from "@latticexyz/recs";
+import substanceImg from "../../images/substance/substance.webp";
 
 interface Props {
   coordinates: any;
@@ -70,8 +70,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loadingPrices, setLoadingPrices] = useState({});
   const [lastPrices, setLastPrices] = useState({});
-  const { rewardInfo, recipient, } = useTopUp();
-
+  const { rewardInfo, recipient, chainId } = useTopUp();
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
@@ -166,6 +165,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 TokenBalance,
                 addressToEntityIDTwo(address, item)
               );
+              // console.log(addressToEntityIDTwo(address, item));
+
               return { [item]: balance };
             } catch (error) {
               console.error(`Error fetching balance for ${item}:`, error);
@@ -222,13 +223,13 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   useEffect(() => {
     if (isConnected) {
       const interval = setInterval(() => {
-        const currentTime = new Date().toLocaleString(); 
+        const currentTime = new Date().toLocaleString();
         updateTCMPopStarData();
-      },500);
+      }, 500);
       return () => clearInterval(interval);
     }
   }, [isConnected]);
-  
+
 
   useEffect(() => {
     if (timeControl === true && gameSuccess === false) {
@@ -339,12 +340,29 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       const quantity = numberData[key] || 0;
       if (quantity > 0) {
         setLoadingPrices(prev => ({ ...prev, [key]: true }));
-        // console.log(recipient);
-        const route = await generateRoute(key, quantity, recipient);
-        const price = route.quote.toExact(); 
-        const methodParameters = route.methodParameters;
-        methodParameters['tokenAddress'] = key;
-        methodParameters['amount'] = quantity;
+
+        let routeMethodParameters: any = {};
+        let price = "0";
+
+        // add new chain: change here
+        if (chainId === 185 || chainId === 31337) {
+          const route = await generateRouteMintChain(key, quantity, recipient);
+          if (route) {
+            price = route.price; // 获取报价
+            routeMethodParameters = route.methodParameters
+          }
+        } else {
+          const route = await generateRoute(key, quantity, recipient);
+          if (route) {
+            price = route.quote.toExact();
+            routeMethodParameters = route.methodParameters;
+          }
+        }
+        const methodParameters = {
+          ...routeMethodParameters,
+          tokenAddress: key,
+          amount: quantity,
+        };
         setLoadingPrices(prev => ({ ...prev, [key]: false }));
         if (lastPrices[key]?.price !== price) {
           return { [key]: { price, methodParameters } };
@@ -380,11 +398,29 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     if (quantity > 0) {
       setLoadingPrices(prev => ({ ...prev, [key]: true }));
       try {
-        const route = await generateRoute(key, quantity, recipient);
-        const price = route.quote.toExact(); // 获取报价
-        const methodParameters = route.methodParameters;
-        methodParameters['tokenAddress'] = key;
-        methodParameters['amount'] = quantity;
+        let routeMethodParameters: any = {};
+        let price = "0";
+
+        // add new chain: change here
+        if (chainId === 185 || chainId === 31337) {
+          const route = await generateRouteMintChain(key, quantity, recipient);
+          if (route) {
+            price = route.price; // 获取报价
+            routeMethodParameters = route.methodParameters
+          }
+        } else {
+          const route = await generateRoute(key, quantity, recipient);
+          if (route) {
+            price = route.quote.toExact();
+            routeMethodParameters = route.methodParameters;
+          }
+        }
+        const methodParameters = {
+          ...routeMethodParameters,
+          tokenAddress: key,
+          amount: quantity,
+        };
+
         if (lastPrices[key]?.price !== price) {
           setPrices(prev => ({
             ...prev,

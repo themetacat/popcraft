@@ -103,6 +103,51 @@ export const WETH_TOKEN = new Token(
   'WETH',
   'Wrapped Ether'
 )
+
+export const CHUAN_TOKEN = new Token(
+  185,
+  '0x5AF97fE305f3c52Da94C61aeb52Ec0d9A82D73d8',
+  18,
+  'CHUAN',
+  'CHUAN'
+)
+export const MST_TOKEN = new Token(
+  185,
+  '0x9f7bd1Ce3412960524e86183B8F005271C09a5E0',
+  18,
+  'MST',
+  'MintSwap404NFT'
+)
+export const RDOG_TOKEN = new Token(
+  185,
+  '0x893D9769848288e59fb8a0e97A22d6588A825fFf',
+  18,
+  'RDOG',
+  'Rich.Dog'
+)
+export const PAC_TOKEN = new Token(
+  185,
+  '0x6932cD12f445CFD8E2AC9e0A8324256ce475992F',
+  18,
+  'PAC',
+  'Pacman'
+)
+export const MNGA_TOKEN = new Token(
+  185,
+  '0x68e7218FCCe3F2658f03317AE08A6446bDE164a8',
+  18,
+  'MNGA',
+  'MNGA'
+)
+
+export const MINTCAHIN_WETH_TOKEN = new Token(
+  185,
+  '0x4200000000000000000000000000000000000006',
+  18,
+  'WETH',
+  'Wrapped Ether'
+)
+
 type TokenMap = {
   [key: string]: Token;
 }
@@ -118,6 +163,12 @@ export const TOKEN_MAP : TokenMap = {
   "0xdCc7Bd0964B467554C9b64d3eD610Dff12AF794e" : SAND_TOKEN,
   "0x54b31D72a658A5145704E8fC2cAf5f87855cc1Cd" : YEAST_TOKEN,
   "0xC750a84ECE60aFE3CBf4154958d18036D3f15786" : UREA_TOKEN,
+  "0x5af97fe305f3c52da94c61aeb52ec0d9a82d73d8" : CHUAN_TOKEN,
+  "0x9f7bd1ce3412960524e86183b8f005271c09a5e0" : MST_TOKEN,
+  "0x893d9769848288e59fb8a0e97a22d6588a825fff" : RDOG_TOKEN,
+  "0x6932cd12f445cfd8e2ac9e0a8324256ce475992f" : PAC_TOKEN,
+  "0x68e7218fcce3f2658f03317ae08a6446bde164a8" : MNGA_TOKEN,
+  "0x4200000000000000000000000000000000000006" : MINTCAHIN_WETH_TOKEN
 }
 
 // ABI's
