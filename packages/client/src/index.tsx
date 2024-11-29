@@ -19,12 +19,16 @@ import {supportedChains} from "./mud/supportedChains";
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import 'buffer'
+
 let chainIndex = supportedChains.findIndex((c) => c.id === 690);
 const redstone = supportedChains[chainIndex];
 chainIndex = supportedChains.findIndex((c) => c.id === 31338);
 const metacatDev = supportedChains[chainIndex];
 chainIndex = supportedChains.findIndex((c) => c.id === 31337);
 const local = supportedChains[chainIndex];
+chainIndex = supportedChains.findIndex((c) => c.id === 185);
+const mintchain = supportedChains[chainIndex];
 
 const config = getDefaultConfig({
   appName: 'PixeLAW',
@@ -34,9 +38,10 @@ const config = getDefaultConfig({
     wallets: [ metaMaskWallet],
   }],
   chains: [
-    local,
+    mintchain,
     redstone,
     metacatDev,
+    local,
   ],
   ssr: true,
 });

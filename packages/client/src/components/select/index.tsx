@@ -64,13 +64,13 @@ export const useTopUp = () => {
       setRewardInfo("150 $BUGS");
       setMIN_SESSION_WALLET_BALANCE(parseEther("0.03"));
       setRecipient("0xdfa57287c291e763a9452738b67ac56179ab5f69"); // 设置 recipient 地址
-    }else if (chainId === 185 || chainId === 31337) {
+    } else if (chainId === 185 || chainId === 31337) {
       setInputValue("0.0006");
-      setbalanceCheck('0.00002')
-      setCurrencySymbol("$BUGS")
-      setRewardInfo("150 $BUGS");
-      setMIN_SESSION_WALLET_BALANCE(parseEther("0.000003"));
-      setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
+      setCurrencySymbol("ETH")
+      setbalanceCheck('0.00003')
+      setRewardInfo("300 MP");
+      setMIN_SESSION_WALLET_BALANCE(parseEther("0.0000006"));
+      setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c"); // 设置 recipient 地址
     }
   }, [chainId]);
 

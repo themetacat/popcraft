@@ -502,7 +502,7 @@ export function createSystemCalls(
             name: system_name,
           }),
           encodeData,
-        ], { gas: 30000000n });
+        ], { gas: 29599000n });
         // console.log(txData);
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
         console.log(await hashValpublic);
@@ -522,7 +522,7 @@ export function createSystemCalls(
                 name: system_name,
               }),
               encodeData,
-            ], { gas: 15000000n });
+            ], { gas: 3000000n });
 
             hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
             await waitForTransaction(txData);
@@ -600,7 +600,7 @@ export function createSystemCalls(
     if(chainId == 185 || chainId === 31337){
       for (let i = 0; i < methodParametersArray.length; i++) {
         const params = methodParametersArray[i];
-        const value = BigInt(params.value) + BigInt(2000000000000000);
+        const value = BigInt(params.value);
         
         totalValue += value;
         const arg_single = {
