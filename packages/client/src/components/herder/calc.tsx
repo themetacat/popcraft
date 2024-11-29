@@ -17,7 +17,8 @@ export function opRendering(positionX: number, positionY: number, playerAddr: an
     };
 
     const matrixIndex = (positionX - Number(tcmPopStarData.x)) + (positionY - Number(tcmPopStarData.y)) * 10;
-    const matrixArray = newTcmPopStarData.matrixArray as bigint[];
+    const matrixArray = newTcmPopStarData.matrixArray as bigint[];    
+    
     const targetValue = matrixArray[matrixIndex];
     if (targetValue == 0n) {
       throw new Error("Blank area cannot be clicked");
