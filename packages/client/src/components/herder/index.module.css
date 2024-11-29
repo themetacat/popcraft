@@ -198,6 +198,7 @@ canvas {
   background-color: #2b8e9d;
   white-space: nowrap;
   /* 防止内容换行 */
+  cursor: pointer;
 }
 
 canvas {
@@ -387,11 +388,19 @@ canvas {
 
 .btnConnectbox {
   border: none;
-  background: none;
+  background: #437e94; /* 设置按钮背景颜色 */
   color: #fff;
   font-size: 2.3rem;
   font-weight: 700;
   margin-left: 5rem;
+  cursor: pointer; /* 添加鼠标悬停时变为小手的样式 */
+  border-radius: 20px; /* 添加圆角 */
+  padding: 10px 20px; /* 添加内边距 */
+  transition: background 0.3s; /* 添加过渡效果 */
+}
+
+.btnConnectbox:hover {
+  background: #5a9db8; /* 悬停时的背景颜色 */
 }
 
 .boldAddress {

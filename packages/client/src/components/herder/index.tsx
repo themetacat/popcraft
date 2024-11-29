@@ -25,13 +25,16 @@ import RankingListimg from '../../images/RankingList/trophy.png'
 import RankingList from '../RankingList'
 import { useTopUp } from "../select";
 import Arrow from "../../images/Arrow.png"
-import duigou from '../../images/duigou.png'
+import { opRendering } from "./calc";
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
   handleData: (data: { x: number; y: number }) => void;
 }
 export default function Header({ hoveredData, handleData }: Props) {
+  // 得分气泡状态管理
+  const [scoreBubble, setScoreBubble] = useState<{ visible: boolean; x: number; y: number; score: number }>({ visible: false, x: 0, y: 0, score: 0 });
+
   const {
     components: {
       App,
@@ -40,6 +43,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       Instruction,
       TCMPopStar,
       UserDelegationControl,
+      StarToScore,
     },
     network: { playerEntity, publicClient, palyerAddress },
     systemCalls: { interact, interactTCM, registerDelegation },
@@ -95,23 +99,39 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showRankingList, setShowRankingList] = useState(false);
   const [balancover, setBalancover] = useState(0);
-  const { balanceCheck, currencySymbol } = useTopUp();
+  const { balanceCheck, currencySymbol, chainId } = useTopUp();
   const [isOpen, setIsOpen] = useState(false);
 
-  const resultBugs = useBalance({
-    address: address,
-    token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
-  })
-  
+  // add new chain: change here
+  let resultBugs;
+  if(chainId === 185){
+    resultBugs = useBalance({
+      address: address,
+    })
+  }else{
+     resultBugs = useBalance({
+      address: address,
+      token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
+    })
+  }
 
   useEffect(() => {
     if (resultBugs.data?.value) {
-      setBalancover(Math.floor(Number(resultBugs.data?.value) / 1e18));
+      if(chainId === 185){
+        setBalancover(Number(resultBugs.data?.value) / 1e18);
+      }else{
+        setBalancover(Math.floor(Number(resultBugs.data?.value) / 1e18));
+      }
     }
   }, [resultBugs.data]);
 
-  const formatBalance = (balancover: any) => {
-    return balancover.toLocaleString();
+  const formatBalance = (balancover: number) => {
+    
+    if(chainId === 185){
+      return balancover.toFixed(4)
+    }else{
+      return balancover.toLocaleString();
+    }
   };
 
   // 将 CANVAS_WIDTH 和 CANVAS_HEIGHT 保存到 state 中
@@ -981,7 +1001,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
   };
 
-
   const interactHandle = (
     coordinates: any,
     palyerAddress: any,
@@ -1030,6 +1049,28 @@ export default function Header({ hoveredData, handleData }: Props) {
     setLoading(true);
     setLoadingpaly(true);
     try {
+      //点击后立即显示得分气泡 start
+      const score = opRendering(coordinates.x, coordinates.y, address, TCMPopStar,  StarToScore);
+
+      // 创建新的 div 元素，控制div显示/隐藏的方案，会有连点两次时，第二次气泡呈现受第一次影响的情况
+      const scoreBubbleDiv = document.createElement('div');
+      scoreBubbleDiv.className = 'score-popup';
+      scoreBubbleDiv.innerText = `+${Number(score)}`; // 使用获得的分数
+
+      const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+      const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+      // scoreBubbleDiv.style.left = `${coordinates.x * GRID_SIZE + offsetX}px`; // 加上偏移量
+      // scoreBubbleDiv.style.top = `${coordinates.y * GRID_SIZE + offsetY}px`; // 加上偏移量
+      scoreBubbleDiv.style.left = `${3.2 * GRID_SIZE + offsetX}px`; // 加上偏移量
+      scoreBubbleDiv.style.top = `${5 * GRID_SIZE + offsetY}px`; // 加上偏移量
+      document.body.appendChild(scoreBubbleDiv); // 将气泡添加到文档中
+
+      // 设置气泡消失的时间
+      setTimeout(() => {
+          document.body.removeChild(scoreBubbleDiv); // 删除气泡
+      }, 3000); // 3秒后气泡消失
+      //点击后立即显示得分气泡 end
+
       const interact_data = await interactTCM(
         coordinates,
         palyerAddress,
@@ -1072,8 +1113,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       setLoadingSquare(null); // 清除 loading 状态
     }
   };
-
-
 
   //判断时间倒计时
   const handleEoaContractData = (data: any) => {
@@ -1902,6 +1941,69 @@ export default function Header({ hoveredData, handleData }: Props) {
           </div>
         </div>
       )}
+
+      {scoreBubble.visible && (
+        <div className="score-popup"
+            style={{
+              left: scoreBubble.x,
+              top: scoreBubble.y,
+            }}
+        >
+           +{scoreBubble.score} {/* 显示得分 */}
+        </div>
+     )}
+      <style>
+          {`
+              .score-popup {
+                  position: absolute;
+                  color: #00AB6B; /* 使用更亮的粉色 */
+                  font-size: 1.5vw; /* 使用视口宽度的百分比进行适配 */
+                  // font-weight: bold; /* 加粗字体 */
+                  font-family: 'Simplicity', sans-serif; /* 设置字体为 Simplicity */
+                  padding: 10px 15px; /* 内边距 */
+                  /* 去掉背景颜色 */
+                  box-shadow: none; /* 去掉阴影效果 */
+                  animation: moveUp 3s forwards;
+                  pointer-events: none;
+                  text-align: center; /* 文字居中 */
+              }
+
+              @media (max-width: 600px) {
+                  .score-popup {
+                      font-size: 4vw; /* 小屏幕上的字体大小 */
+                  }
+              }
+
+              @media (min-width: 601px) and (max-width: 1200px) {
+                  .score-popup {
+                      font-size: 3vw; /* 中等屏幕上的字体大小 */
+                  }
+              }
+
+              @media (min-width: 1200px) {
+                  .score-popup {
+                      font-size: 2vw; /* 大屏幕上的字体大小 */
+                  }
+              }
+
+              @media (min-width: 1600px) {
+                  .score-popup {
+                      font-size: 1.5vw; /* 更大屏幕上的字体大小 */
+                  }
+              }
+
+              @keyframes moveUp {
+                  0% {
+                      transform: translateY(0);
+                      opacity: 1;
+                  }
+                  100% {
+                      transform: translateY(-320px);
+                      opacity: 0.1;
+                  }
+              }
+          `}
+      </style>
     </>
   );
 }

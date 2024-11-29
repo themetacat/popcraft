@@ -127,6 +127,8 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
         indexerUrl = "https://popcraft-indexer.pixelaw.world/";
       }else if(networkConfig.chain.id === 31338){
         indexerUrl = "https://indexerdev.pixelaw.world/";
+      }else if(networkConfig.chain.id === 185){
+        indexerUrl = "https://indexermint.pixelaw.world/";
       }
       // else if(networkConfig.chain.id === 17069){
       //   indexerUrl = "https://indexertest.pixelaw.world/";

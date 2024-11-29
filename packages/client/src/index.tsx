@@ -19,12 +19,16 @@ import {supportedChains} from "./mud/supportedChains";
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import 'buffer'
+
 let chainIndex = supportedChains.findIndex((c) => c.id === 690);
 const redstone = supportedChains[chainIndex];
 chainIndex = supportedChains.findIndex((c) => c.id === 31338);
 const metacatDev = supportedChains[chainIndex];
 chainIndex = supportedChains.findIndex((c) => c.id === 31337);
 const local = supportedChains[chainIndex];
+chainIndex = supportedChains.findIndex((c) => c.id === 185);
+const mintchain = supportedChains[chainIndex];
 
 const config = getDefaultConfig({
   appName: 'PixeLAW',
@@ -34,8 +38,10 @@ const config = getDefaultConfig({
     wallets: [ metaMaskWallet],
   }],
   chains: [
+    mintchain,
     redstone,
     metacatDev,
+    // local,
   ],
   ssr: true,
 });
@@ -80,7 +86,10 @@ setup().then(async (result) => {
   // }
   
   // 如果是生产环境，动态加载 Google Analytics
-  if (await result.network.publicClient.getChainId() == 690) {
+  const allowedChainIds = [690, 185];
+  const currentChainId = await result.network.publicClient.getChainId();
+  
+  if (allowedChainIds.includes(currentChainId)) {
     // 动态加载 Google Analytics 脚本
     const script = document.createElement('script');
     script.async = true;

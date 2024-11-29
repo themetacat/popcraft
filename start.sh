@@ -5,7 +5,7 @@ set -e
 echo -e "Check if anvil is running, if not will try to start, since all subsequent processes rely on it."
 if [ $(lsof -i:8545 | grep anvil -c) -eq 0 ]
 then
-    nohup anvil > ./anvil.log 2>&1 &
+    nohup anvil --fork-url https://rpc.mintchain.io --chain-id 31337 > ./anvil.log 2>&1 &
     echo -e "anvil started successfully!"
 fi
 
