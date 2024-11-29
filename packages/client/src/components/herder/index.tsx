@@ -99,22 +99,39 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showRankingList, setShowRankingList] = useState(false);
   const [balancover, setBalancover] = useState(0);
-  const { balanceCheck, currencySymbol } = useTopUp();
+  const { balanceCheck, currencySymbol, chainId } = useTopUp();
   const [isOpen, setIsOpen] = useState(false);
 
-  const resultBugs = useBalance({
-    address: address,
-    token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
-  })
+  // add new chain: change here
+  let resultBugs;
+  if(chainId === 185){
+    resultBugs = useBalance({
+      address: address,
+    })
+  }else{
+     resultBugs = useBalance({
+      address: address,
+      token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
+    })
+  }
 
   useEffect(() => {
     if (resultBugs.data?.value) {
-      setBalancover(Math.floor(Number(resultBugs.data?.value) / 1e18));
+      if(chainId === 185){
+        setBalancover(Number(resultBugs.data?.value) / 1e18);
+      }else{
+        setBalancover(Math.floor(Number(resultBugs.data?.value) / 1e18));
+      }
     }
   }, [resultBugs.data]);
 
-  const formatBalance = (balancover: any) => {
-    return balancover.toLocaleString();
+  const formatBalance = (balancover: number) => {
+    
+    if(chainId === 185){
+      return balancover.toFixed(4)
+    }else{
+      return balancover.toLocaleString();
+    }
   };
 
   // 将 CANVAS_WIDTH 和 CANVAS_HEIGHT 保存到 state 中
@@ -123,7 +140,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     height: document.documentElement.clientHeight,
   });
   const [loadingSquare, setLoadingSquare] = useState<{ x: number; y: number } | null>(null);
-  const overTime = 1222; //控制顶部时间
+  const overTime = 122; //控制顶部时间
 
   useEffect(() => {
     // 默认设置localStorage中的值为popCraft相关的值

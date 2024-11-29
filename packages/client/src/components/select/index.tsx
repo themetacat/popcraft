@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { parseEther } from "viem";
 import { generateRoute, generateRouteMintChain } from '../../uniswap_routing/routing'
+import FrameIcon from "../../images/Frame 29Icon.png";
 
 export const useTopUp = () => {
   const [chainId, setChainId] = useState(null);
@@ -11,6 +12,8 @@ export const useTopUp = () => {
   const [recipient, setRecipient] = useState(""); // 设置 recipient 地址
   const [currencySymbol , setCurrencySymbol] = useState("")
   const [eoaWallet , seteoaWallet] = useState("")
+  const [bridgeUrl , setBridgeUrl] = useState("")
+  const [chainIcon , setChianIcon] = useState("")
 
   const getChainId = async () => {
     try {
@@ -57,6 +60,8 @@ export const useTopUp = () => {
       setRewardInfo("150 $BUGS");
       setMIN_SESSION_WALLET_BALANCE(parseEther("0.0000003"));
       setRecipient("0x784844480280ca865ac8ef89bb554283dddff737"); // 设置 recipient 地址
+      setBridgeUrl("")
+      setChianIcon(FrameIcon);
     } else if (chainId === 31338) {
       setInputValue("10");
       setbalanceCheck('3')
@@ -64,13 +69,17 @@ export const useTopUp = () => {
       setRewardInfo("150 $BUGS");
       setMIN_SESSION_WALLET_BALANCE(parseEther("0.03"));
       setRecipient("0xdfa57287c291e763a9452738b67ac56179ab5f69"); // 设置 recipient 地址
+      setBridgeUrl("")
+      setChianIcon(FrameIcon);
     } else if (chainId === 185 || chainId === 31337) {
-      setInputValue("0.0006");
+      setInputValue("0.001");
       setCurrencySymbol("ETH")
-      setbalanceCheck('0.00003')
+      setbalanceCheck('0.0001')
       setRewardInfo("300 MP");
-      setMIN_SESSION_WALLET_BALANCE(parseEther("0.0000006"));
+      setMIN_SESSION_WALLET_BALANCE(parseEther("0.000002"));
       setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c"); // 设置 recipient 地址
+      setBridgeUrl("https://www.mintchain.io/bridge")
+      setChianIcon("https://poster-phi.vercel.app/mint_blockchain.webp");
     }
   }, [chainId]);
 
@@ -84,6 +93,8 @@ export const useTopUp = () => {
     setInputValue,
     chainId,
     eoaWallet,
+    bridgeUrl,
+    chainIcon
   };
 };
 

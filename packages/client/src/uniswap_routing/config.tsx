@@ -28,7 +28,8 @@ export interface ExampleConfig {
 
 // 获取链 ID 和配置 RPC URLs 的函数
 async function getChainIdAndConfig(): Promise<ExampleConfig> {
-  let chainIdHex = '690';
+  // default Chain: change here
+  let chainIdHex = '185';
   try {
       if (window.ethereum) {
         chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
@@ -53,6 +54,10 @@ async function getChainIdAndConfig(): Promise<ExampleConfig> {
     '31337': {
       local: 'http://127.0.0.1:8545',
       mainnet: 'http://127.0.0.1:8545',
+    },
+    '185': {
+      local: 'https://rpc.mintchain.io',
+      mainnet: 'wss://rpc.mintchain.io',
     },
   };
 

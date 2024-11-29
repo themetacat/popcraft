@@ -60,7 +60,7 @@ export default function TopUp({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
-  const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE } = useTopUp();
+  const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE, bridgeUrl, chainIcon } = useTopUp();
 
   async function withDraw() {
     const balance_eth = balance / 1e18;
@@ -201,7 +201,9 @@ export default function TopUp({
 
   const bridgeHandle = () => {
     setIsPlayButtonClicked(true); // 设置按钮点击状态
-    if (mainContent === "MAINNET") {
+    if(bridgeUrl != ""){
+      window.open(bridgeUrl);
+    }else if(mainContent === "MAINNET") {
       window.open("https://redstone.xyz/deposit");
     } else {
       window.open("https://garnetchain.com/deposit");
@@ -298,7 +300,7 @@ export default function TopUp({
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <div style={{ display: "flex" }} className={style.btnPart}>
-                      <img src={FrameIcon} alt="" className={style.imgICon} />
+                      <img src={chainIcon} alt="" className={style.imgICon} />
                       <button
                         onClick={(event) => {
                           openChainModal();
@@ -357,7 +359,7 @@ export default function TopUp({
 
                 <div className={style.partTwo}>
                   <div style={{ display: "flex", gap: "4px" }}>
-                    <img src={FrameIcon} alt="" className={style.imgIConbox} />
+                    <img src={chainIcon} alt="" className={style.imgIConbox} />
                     <div className={style.addcon}>
                       <input
                         type="text"
@@ -451,7 +453,7 @@ export default function TopUp({
                       height: "34px",
                       width: "400px",
                     }}>
-                    <img src={FrameIcon} alt="" className={style.svgIcon} />
+                    <img src={chainIcon} alt="" className={style.svgIcon} />
                     <input
                       name="value"
                       placeholder="Amount (ETH)"

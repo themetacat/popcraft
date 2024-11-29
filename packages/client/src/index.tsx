@@ -41,7 +41,7 @@ const config = getDefaultConfig({
     mintchain,
     redstone,
     metacatDev,
-    local,
+    // local,
   ],
   ssr: true,
 });
@@ -86,7 +86,10 @@ setup().then(async (result) => {
   // }
   
   // 如果是生产环境，动态加载 Google Analytics
-  if (await result.network.publicClient.getChainId() == 690) {
+  const allowedChainIds = [690, 185];
+  const currentChainId = await result.network.publicClient.getChainId();
+  
+  if (allowedChainIds.includes(currentChainId)) {
     // 动态加载 Google Analytics 脚本
     const script = document.createElement('script');
     script.async = true;

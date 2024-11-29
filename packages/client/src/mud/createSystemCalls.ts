@@ -503,9 +503,7 @@ export function createSystemCalls(
           }),
           encodeData,
         ], { gas: 29599000n });
-        // console.log(txData);
         hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
-        console.log(await hashValpublic);
         
         waitingTransaction = false;
       } else {
@@ -561,7 +559,6 @@ export function createSystemCalls(
 
     let hashValpublic;
     const payArgs = await getPayArgs(methodParametersArray)
-    console.log(payArgs);
     
     const nonce = await getAccountNonce();
     const encodeData = encodeFunctionData({

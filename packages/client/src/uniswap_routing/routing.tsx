@@ -53,7 +53,6 @@ export async function generateRouteMintChain(tokenAddress: string, amount: numbe
     const bestRoute = data.data.bestRoutes.route;
     
     const pools = bestRoute.map((pool: any) => {
-        console.log(pool);
         
         return new Pool(
             TOKEN_MAP[pool.token0Info.address],
@@ -95,7 +94,6 @@ export async function generateRouteMintChain(tokenAddress: string, amount: numbe
         methodParameters: methodParameters,
         price: inputAmount/1e18,
       };
-      console.log(res);
       
     return res
 }
