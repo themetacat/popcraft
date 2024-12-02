@@ -66,7 +66,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
             </span>
             <span className={style.copywritingTwoyo}>
             {" "}
-            for completing the game.
+            or Points for completing the game.
             <br />
           </span>
           </span>
