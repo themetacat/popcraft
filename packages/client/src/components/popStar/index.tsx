@@ -61,12 +61,12 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
               {rewardInfo ? (
                 rewardInfo
               ) : (
-                <span className={style.defaultTokens}> ERC-20 Tokens <br /></span>
+                <span className={style.defaultTokens}> ERC-20 Tokens or Points<br /></span>
               )}
             </span>
             <span className={style.copywritingTwoyo}>
             {" "}
-            or Points for completing the game.
+            for completing the game.
             <br />
           </span>
           </span>
