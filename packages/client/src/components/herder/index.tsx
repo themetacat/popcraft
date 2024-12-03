@@ -104,21 +104,12 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   // add new chain: change here
   let resultBugs;
-<<<<<<< HEAD
   if(chainId === 185){
     resultBugs = useBalance({
       address: address,
     })
   }else{
      resultBugs = useBalance({
-=======
-  if (chainId === 185) {
-    resultBugs = useBalance({
-      address: address,
-    })
-  } else {
-    resultBugs = useBalance({
->>>>>>> main
       address: address,
       token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
     })
@@ -126,32 +117,19 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   useEffect(() => {
     if (resultBugs.data?.value) {
-<<<<<<< HEAD
-      if(chainId === 185){
-        setBalancover(Number(resultBugs.data?.value) / 1e18);
-      }else{
-=======
       if (chainId === 185) {
         setBalancover(Number(resultBugs.data?.value) / 1e18);
       } else {
->>>>>>> main
         setBalancover(Math.floor(Number(resultBugs.data?.value) / 1e18));
       }
     }
   }, [resultBugs.data]);
 
   const formatBalance = (balancover: number) => {
-<<<<<<< HEAD
-    
-    if(chainId === 185){
-      return balancover.toFixed(4)
-    }else{
-=======
 
     if (chainId === 185) {
       return balancover.toFixed(4)
     } else {
->>>>>>> main
       return balancover.toLocaleString();
     }
   };
@@ -1967,18 +1945,6 @@ export default function Header({ hoveredData, handleData }: Props) {
 
       {scoreBubble.visible && (
         <div className="score-popup"
-<<<<<<< HEAD
-            style={{
-              left: scoreBubble.x,
-              top: scoreBubble.y,
-            }}
-        >
-           +{scoreBubble.score} {/* 显示得分 */}
-        </div>
-     )}
-      <style>
-          {`
-=======
           style={{
             left: scoreBubble.x,
             top: scoreBubble.y,
@@ -1989,7 +1955,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       )}
       <style>
         {`
->>>>>>> main
               .score-popup {
                   position: absolute;
                   color: #00AB6B; /* 使用更亮的粉色 */
