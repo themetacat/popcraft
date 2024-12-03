@@ -623,3 +623,22 @@ canvas {
 .RankingListimgNotConnected img:hover {
   transform: scale(1.1);
 }
+
+.BGMButton { /* 喇叭按钮样式 */
+  width: 4rem; /* 设置宽度 */
+  height: 4rem; /* 设置高度 */
+  border: none; /* 移除边框 */
+  background-color: transparent; /* 背景透明 */
+  cursor: pointer; /* 鼠标悬停时显示为手型 */
+  display: flex; /* 使用 flex 布局 */
+  align-items: center; /* 垂直居中对齐 */
+  justify-content: center; /* 水平居中对齐 */
+  padding: 0; /* 移除内边距 */
+  box-shadow: none; /* 移除阴影 */
+  transition: opacity 0.3s ease; /* 添加过渡效果 */
+}
+
+.BGMButton img {
+  width: 100%; /* 图标宽度自适应 */
+  height: 100%; /* 图标高度自适应 */
+}
