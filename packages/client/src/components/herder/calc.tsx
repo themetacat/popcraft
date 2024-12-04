@@ -1,7 +1,7 @@
 import { getComponentValue } from "@latticexyz/recs";
 import { encodeEntity } from "@latticexyz/store-sync/recs";
 
-export function opRendering(positionX: number, positionY: number, playerAddr: any, TCMPopStar: any, StarToScore: any) {
+export function opRendering(positionX: number, positionY: number, playerAddr: any, TCMPopStar: any, StarToScore: any, TokenBalance: any) {
     let eliminateAmount = 0;
 
     const playerEntity = encodeEntity({ address: "address" }, { address: playerAddr });
@@ -27,6 +27,13 @@ export function opRendering(positionX: number, positionY: number, playerAddr: an
     const popAccess: boolean = checkPopAccess(matrixIndex, targetValue, matrixArray);
     if (!popAccess) {
       eliminateAmount = 1;
+      const tokenAddr = tcmPopStarData.tokenAddressArr[Number(targetValue) - 1];
+      const tokenBalanceEntity = encodeEntity({ playerAddress: "address", tokenAddress: "address" }, { playerAddress: playerAddr, tokenAddress: tokenAddr });
+      const tokenBalanceData = getComponentValue(TokenBalance, tokenBalanceEntity);
+
+      if (!tokenBalanceData || tokenBalanceData.balance as bigint < 10n ** 18n) {
+        return 0;
+      }
     } else {
       const [updatedMatrixArray, finalEliminateAmount] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0);
       eliminateAmount = finalEliminateAmount;
