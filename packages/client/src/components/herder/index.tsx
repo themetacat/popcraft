@@ -27,6 +27,8 @@ import { useTopUp } from "../select";
 import Arrow from "../../images/Arrow.png"
 import { opRendering } from "./calc";
 import { addressToEntityID } from "../rightPart";
+import BGMOn from "../../images/BGMOn.webp";
+import BGMOff from "../../images/BGMOff.webp";
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -35,6 +37,13 @@ interface Props {
 export default function Header({ hoveredData, handleData }: Props) {
   // 得分气泡状态管理
   const [scoreBubble, setScoreBubble] = useState<{ visible: boolean; x: number; y: number; score: number }>({ visible: false, x: 0, y: 0, score: 0 });
+
+  // 添加状态来控制背景音乐播放，默认背景音乐开启
+  const [musicEnabled, setMusicEnabled] = useState(() => {
+    const storedMusicEnabled = localStorage.getItem('musicEnabled');
+    return storedMusicEnabled !== null ? storedMusicEnabled === 'true' : true; // 默认值为 true
+  });
+  const [hasPlayedMusic, setHasPlayedMusic] = useState(false); // 新增状态来跟踪音乐是否已播放
 
   const {
     components: {
@@ -262,29 +271,61 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
   }, [isConnected, balance, hasExecutedRef.current]);
 
-  //音乐播放
+  // 在组件挂载时检查 localStorage 中的音乐状态
   useEffect(() => {
-    const handleMouseMove = () => {
-      if (audioRef.current) {
-        audioRef.current.currentTime = 0; // 重置音频播放位置
-        const playPromise = audioRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise.then(_ => {
-            window.removeEventListener('mousemove', handleMouseMove); // 移除事件监听器
-          }).catch(error => {
-          });
-        }
+    const storedMusicEnabled = localStorage.getItem('musicEnabled');
+    if (storedMusicEnabled !== null) {
+      setMusicEnabled(storedMusicEnabled === 'true'); // 从 localStorage 读取值
+    }
+  }, []);
+
+  // 音乐播放控制
+  useEffect(() => {
+    if (musicEnabled && audioRef.current) {
+      audioRef.current.play().catch(error => {
+        // 处理播放错误
+      });
+    } else if (audioRef.current) {
+      audioRef.current.pause(); // 暂停音乐
+    }
+    // 将音乐状态存储到 localStorage
+    localStorage.setItem('musicEnabled', musicEnabled.toString());
+  }, [musicEnabled]); // 依赖于 musicEnabled 状态
+
+  // 鼠标移动事件处理
+  const handleMouseMove = () => {
+    if (musicEnabled && !hasPlayedMusic && audioRef.current) {
+      audioRef.current.currentTime = 0; // 重置音频播放位置
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          setHasPlayedMusic(true); // 设置为已播放
+          window.removeEventListener('mousemove', handleMouseMove); // 移除事件监听器
+        }).catch(error => {
+          // 处理播放错误
+        });
       }
-    };
+    }
+  };
+
+  useEffect(() => {
     window.addEventListener('mousemove', handleMouseMove); // 在用户移动鼠标时播放音乐
     return () => {
       window.removeEventListener('mousemove', handleMouseMove); // 清除事件监听器
     };
-  }, []);
+  }, []); // 只在组件挂载时添加事件监听器
+
+  const toggleMusic = () => {
+    setMusicEnabled(prev => {
+      const newState = !prev; // 切换音乐播放状态
+      localStorage.setItem('musicEnabled', newState.toString()); // 更新 localStorage
+      return newState;
+    });
+  };
 
   const handleEnded = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
+    if (audioRef.current && musicEnabled) { // 仅在音乐开启时循环播放
+      audioRef.current.currentTime = 0; // 重置音频播放位置
       audioRef.current.play(); // 循环播放
     }
   };
@@ -1821,6 +1862,9 @@ export default function Header({ hoveredData, handleData }: Props) {
                           )}
                         </div>
                         {" "}
+                        <button onClick={toggleMusic} className={style.BGMButton}>
+                          <img src={musicEnabled ? BGMOn : BGMOff} alt={musicEnabled ? 'pause' : 'play'} />
+                        </button>
                       </div>
                     );
                   })()}
