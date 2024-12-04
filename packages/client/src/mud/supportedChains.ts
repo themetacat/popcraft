@@ -154,4 +154,4 @@ export const newMudFoundry = {
  * See https://mud.dev/tutorials/minimal/deploy#run-the-user-interface
  * for instructions on how to add networks.
  */
-export const supportedChains: MUDChain[] = [ latticeTestnet, core_foundry, redstone, mintchain, newMudFoundry];
+export const supportedChains: MUDChain[] = [ latticeTestnet, core_foundry, redstone, mintchain];
