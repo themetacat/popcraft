@@ -21,14 +21,16 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import 'buffer'
 
-let chainIndex = supportedChains.findIndex((c) => c.id === 690);
-const redstone = supportedChains[chainIndex];
-chainIndex = supportedChains.findIndex((c) => c.id === 31338);
-const metacatDev = supportedChains[chainIndex];
-chainIndex = supportedChains.findIndex((c) => c.id === 31337);
-const local = supportedChains[chainIndex];
-chainIndex = supportedChains.findIndex((c) => c.id === 185);
-const mintchain = supportedChains[chainIndex];
+const getChain = (id) => supportedChains.find((c) => c.id === id) || null;
+
+const redstone = getChain(690);
+const metacatDev = getChain(31338);
+const mintchain = getChain(185);
+// const local = getChain(31337);
+
+if (!redstone || !metacatDev || !mintchain) {
+    console.error("Some chains are not defined in supportedChains!");
+}
 
 const config = getDefaultConfig({
   appName: 'PixeLAW',
