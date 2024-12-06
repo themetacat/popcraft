@@ -123,22 +123,25 @@ export default function Header({ hoveredData, handleData }: Props) {
     useBalance({
       address: address,
     });
-    const gameRecordData = getComponentValue(GameRecord, addressToEntityID(address));
-    if (gameRecordData) {
-      const allTimes = Number(gameRecordData.times as string);
-      const successTime = Number(gameRecordData.successTimes as string);
-  
-      if (isNaN(allTimes) || isNaN(successTime)) {
-        resultBugs = { 'data': 0 }; 
-      } else {
-        resultBugs = {
-          'data': successTime * 500 + (allTimes - successTime) * 100
-        };
-      }
-    } else {
+    if (!address) {
       resultBugs = { 'data': 0 }; 
+    } else {
+      const gameRecordData = getComponentValue(GameRecord, addressToEntityID(address));
+      if (gameRecordData) {
+        const allTimes = Number(gameRecordData.times as string);
+        const successTime = Number(gameRecordData.successTimes as string);
+    
+        if (isNaN(allTimes) || isNaN(successTime)) {
+          resultBugs = { 'data': 0 }; 
+        } else {
+          resultBugs = {
+            'data': successTime * 500 + (allTimes - successTime) * 100
+          };
+        }
+      } else {
+        resultBugs = { 'data': 0 }; 
+      }
     }
-  
   } else {
     resultBugs = useBalance({
       address: address,
