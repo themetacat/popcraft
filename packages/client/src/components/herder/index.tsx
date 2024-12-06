@@ -34,6 +34,11 @@ interface Props {
   hoveredData: { x: number; y: number } | null;
   handleData: (data: { x: number; y: number }) => void;
 }
+
+let sendCount = 0;
+let receiveCount = 0;
+
+localStorage.setItem('isShowWaitingMaskLayer', 'false')
 export default function Header({ hoveredData, handleData }: Props) {
   // 得分气泡状态管理
   const [scoreBubble, setScoreBubble] = useState<{ visible: boolean; x: number; y: number; score: number }>({ visible: false, x: 0, y: 0, score: 0 });
@@ -1098,6 +1103,27 @@ export default function Header({ hoveredData, handleData }: Props) {
     });
   };
 
+  /**
+   * 判断数组中是否只剩一个非零元素或所有非零元素相同且相邻
+   * @param {BigInt[]} matrixArray - 要检查的数组
+   * @returns {boolean} - 是否满足条件
+   */
+  const checkSingleOrAdjacentSame = (matrixArray: BigInt[]) => {
+    // 统计不为零的元素
+    const nonZeroElements = matrixArray.filter(data => data !== 0n);
+
+    // 判断是否只剩一个非零元素
+    const isSingleNonZero = nonZeroElements.length === 1;
+
+    // 判断是否只剩一组相同的非零元素
+    const hasAdjacentSame = nonZeroElements.length > 1 && nonZeroElements.every((data, _, array) => {
+      return data === array[0]; // 检查所有非零元素是否相同
+    });
+
+    // 最终判断
+    return isSingleNonZero || hasAdjacentSame;
+  };
+
   const interactHandleTCM = async (
     coordinates: any,
     palyerAddress: any,
@@ -1132,6 +1158,8 @@ export default function Header({ hoveredData, handleData }: Props) {
           //点击后立即显示得分气泡 end
         }
       }
+      actionData == "pop" && (sendCount += 1);
+
       const interact_data = await interactTCM(
         coordinates,
         palyerAddress,
@@ -1141,6 +1169,8 @@ export default function Header({ hoveredData, handleData }: Props) {
       );
 
       if (interact_data.error) {
+        actionData == "pop" && (sendCount -= 1)
+
         handleError(interact_data.error);
         setLoadingSquare(null); // 清除 loading 状态
         return;
@@ -1150,6 +1180,12 @@ export default function Header({ hoveredData, handleData }: Props) {
       if (interact_data[1]) {
         const receipt = await interact_data[1];
         if (receipt.status === "success") {
+          //新开始一局游戏，清零计数器
+          if (actionData == "interact") {
+            sendCount = 0
+            receiveCount = 0
+          }
+          actionData == "pop" && (receiveCount += 1);
           setLoading(false);
           setLoadingpaly(false);
           setTimeControl(true);
@@ -1160,14 +1196,21 @@ export default function Header({ hoveredData, handleData }: Props) {
             // localStorage.setItem("showGameOver", "false");
           }
         } else {
+          actionData == "pop" && (sendCount -= 1);
           handleError(receipt.error);
           onHandleLoading();
           setLoadingSquare(null); // 清除 loading 状态
         }
       } else {
-        handleError("No receipt returned");
+        // 点击消除的交易处理失败，交易计数器减一
+        actionData == "pop" && (sendCount -= 1);
 
+        handleError("No receipt returned");
         setLoadingSquare(null); // 清除 loading 状态
+      }
+
+      if (sendCount <= receiveCount) {
+        localStorage.setItem('isShowWaitingMaskLayer', 'false')
       }
     } catch (error) {
       handleError(error.message);
@@ -1680,6 +1723,48 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   return (
     <>
+      {/* 最后一个/一组棋盘元素被点击后，交易未处理完成时的蒙层 */}
+      {localStorage.getItem('isShowWaitingMaskLayer') === 'true' && (
+        <div className={style.waitingOverlay}>
+          <div className={style.waitingOverlayText}>
+            <div className={style.progressBar}>
+              <div
+                className={style.progressFill}
+                style={{
+                  width: sendCount > 0 ? `${((receiveCount / sendCount) * 100).toFixed(2)}%` : '0%',
+                }}
+              ></div>
+              <div
+                className={style.diamondIcon}
+                style={{
+                  left: sendCount > 0 ? `calc(${((receiveCount / sendCount) * 100).toFixed(2)}% - 3vw)` : '0%',
+                }}
+              ></div>
+              <span
+                className={style.progressText}
+                style={{
+                  left: `${Math.min(
+                    Math.max(
+                      sendCount > 0 ? (receiveCount / sendCount) * 100 : 0,
+                      0
+                    ),
+                    100
+                  )}%`,
+                  transform: `translate(-50%, -50%)`, // 确保文字居中
+                }}
+              >
+                {sendCount > 0 ? Math.floor((receiveCount / sendCount) * 100) : 0}%
+              </span>
+
+            </div>
+            <br />
+            This is a fully on-chain game,
+            <br />
+            Please wait while transactions are processed.
+          </div>
+        </div>
+      )}
+
       <div className={style.container}>
         <img className={style.containerImg} src={popcraftLogo} alt="PopCraft Logo" />
         <div className={style.content}>

@@ -548,7 +548,7 @@ export function createSystemCalls(
             }
           }
         } else {
-          toast.success("Action submitted, waiting...");
+          // toast.success("Action submitted, waiting...");
         }
 
       }
@@ -705,7 +705,8 @@ export function createSystemCalls(
       });
     } else {
       waitingTransaction = true;
-      toast.success("Action submitted, waiting...");
+      localStorage.setItem('isShowWaitingMaskLayer', 'true')
+      // toast.success("Action submitted, waiting...");
       console.warn("Action submitted, waiting...");
     }
 
