@@ -812,7 +812,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             <p className={style.title}>How to Play</p>
             <p className={style.actical}>
               <span className={style.copywritingTwo}>This is a composability-based elimination game. You have 120 </span>
-              <span className={style.copywritingTwo}> seconds to eliminate all the materials.</span>
+              <span className={style.copywritingTwo}> seconds to eliminate all the pieces.</span>
               {rewardDescInfo? (
                 <span className={style.copywritingTwo}>You'll&nbsp;
                 {rewardDescInfo}
@@ -825,15 +825,15 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               </span>
               )}
               <span className={style.copywritingTwobox}>
-                On the game board,any two or more adjacent identical mater-ials
-                can be clicked to eliminate them. Isolated materials require a elimination tool
+                On the game board,any two or more adjacent identical pieces
+                can be clicked to eliminate them. Isolated pieces require a elimination tool
                 to remove.
               </span>
               <span className={style.copyBox}>Click the 'BUY' button in the top right corner of the game <br />
               </span>
-              <span className={style.copyBoxto}>screen topurchase elimination tools that will help you remove isolated materials.</span>
+              <span className={style.copyBoxto}>screen to purchase elimination tools that will help you remove isolated pieces.</span>
               <br />
-              <span className={style.copywithing}>FeedbackWe also need your feedback:</span>
+              <span className={style.copywithing}>We also need your feedback:</span>
               <br />
               <a className={style.hrefbox} href="https://forms.gle/LSwhJUL5XZZmhLYJ9" target="_blank" rel="noopener noreferrer">
                 https://forms.gle/LSwhJUL5XZZmhLYJ9
