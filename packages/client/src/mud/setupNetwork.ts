@@ -200,8 +200,12 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
               {
                 tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "Token" }),
               },
+              {
+                tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "GameFailedRecord" }),
+              },
             ],
           }).then(({ components, latestBlock$, storedBlockLogs$, waitForTransaction }) => {
+            console.log(components);
             
             /*
              * If there is a faucet, request (test) ETH if you have
