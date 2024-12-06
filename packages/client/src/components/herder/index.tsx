@@ -57,7 +57,8 @@ export default function Header({ hoveredData, handleData }: Props) {
       TCMPopStar,
       StarToScore,
       TokenBalance,
-      GameRecord
+      GameRecord,
+      GameFailedRecord
     },
     network: { playerEntity, publicClient, palyerAddress },
     systemCalls: { interact, interactTCM, registerDelegation },
@@ -123,25 +124,38 @@ export default function Header({ hoveredData, handleData }: Props) {
     useBalance({
       address: address,
     });
-    if (!address) {
-      resultBugs = { 'data': 0 }; 
-    } else {
-      const gameRecordData = getComponentValue(GameRecord, addressToEntityID(address));
-      if (gameRecordData) {
-        const allTimes = Number(gameRecordData.times as string);
-        const successTime = Number(gameRecordData.successTimes as string);
     
-        if (isNaN(allTimes) || isNaN(successTime)) {
-          resultBugs = { 'data': 0 }; 
+    if (!address) {
+      resultBugs = { 'data': 0 };
+    } else {
+      const entityAddress = addressToEntityID(address)
+      const gameRecordData = getComponentValue(GameRecord, entityAddress);
+      const failedRecord =  getComponentValue(GameFailedRecord, entityAddress)
+      // console.log(failedRecord);
+      
+      if (gameRecordData) {
+        const successTime = Number(gameRecordData.successTimes as string);
+
+        if (isNaN(successTime)) {
+          resultBugs = { 'data': 0 };
         } else {
           resultBugs = {
-            'data': successTime * 500 + (allTimes - successTime) * 100
+            'data': successTime * 500
           };
         }
       } else {
-        resultBugs = { 'data': 0 }; 
+        resultBugs = { 'data': 0 };
+      }
+
+      if(failedRecord){
+        const failedTimes = Number(failedRecord.times as string);
+        if (!isNaN(failedTimes)) {
+          resultBugs = { 'data': resultBugs.data + failedTimes*100 };
+        } 
       }
     }
+
+
   } else {
     resultBugs = useBalance({
       address: address,
