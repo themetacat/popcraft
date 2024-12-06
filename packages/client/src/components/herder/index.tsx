@@ -26,6 +26,7 @@ import RankingList from '../RankingList'
 import { useTopUp } from "../select";
 import Arrow from "../../images/Arrow.png"
 import { opRendering } from "./calc";
+import { addressToEntityID } from "../rightPart";
 import BGMOn from "../../images/BGMOn.webp";
 import BGMOff from "../../images/BGMOff.webp";
 
@@ -53,11 +54,10 @@ export default function Header({ hoveredData, handleData }: Props) {
     components: {
       App,
       Pixel,
-      AppName,
-      Instruction,
       TCMPopStar,
-      UserDelegationControl,
       StarToScore,
+      TokenBalance,
+      GameRecord
     },
     network: { playerEntity, publicClient, palyerAddress },
     systemCalls: { interact, interactTCM, registerDelegation },
@@ -118,31 +118,49 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   // add new chain: change here
   let resultBugs;
-  if (chainId === 185) {
-    resultBugs = useBalance({
+
+  if (chainId === 185 || chainId === 31337) {
+    useBalance({
       address: address,
-    })
+    });
+    const gameRecordData = getComponentValue(GameRecord, addressToEntityID(address));
+    if (gameRecordData) {
+      const allTimes = Number(gameRecordData.times as string);
+      const successTime = Number(gameRecordData.successTimes as string);
+  
+      if (isNaN(allTimes) || isNaN(successTime)) {
+        resultBugs = { 'data': 0 }; 
+      } else {
+        resultBugs = {
+          'data': successTime * 500 + (allTimes - successTime) * 100
+        };
+      }
+    } else {
+      resultBugs = { 'data': 0 }; 
+    }
+  
   } else {
     resultBugs = useBalance({
       address: address,
       token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
-    })
+    });
   }
+  
 
   useEffect(() => {
-    if (resultBugs.data?.value) {
-      if (chainId === 185) {
-        setBalancover(Number(resultBugs.data?.value) / 1e18);
-      } else {
+    if (chainId === 185 || chainId === 31337) {
+      setBalancover(Number(resultBugs.data));
+    }else{
+      if (resultBugs.data?.value) {
         setBalancover(Math.floor(Number(resultBugs.data?.value) / 1e18));
       }
     }
   }, [resultBugs.data]);
 
   const formatBalance = (balancover: number) => {
-
-    if (chainId === 185) {
-      return balancover.toFixed(4)
+    
+    if (chainId === 185 || chainId === 31337) {
+      return balancover
     } else {
       return balancover.toLocaleString();
     }
@@ -1118,26 +1136,27 @@ export default function Header({ hoveredData, handleData }: Props) {
     try {
       //点击后立即显示得分气泡 start
       if (actionData != "interact") {
-        const score = opRendering(coordinates.x, coordinates.y, address, TCMPopStar, StarToScore);
+        const score = opRendering(coordinates.x, coordinates.y, address, TCMPopStar, StarToScore, TokenBalance);
+        if (score != 0) {
+          // 创建新的 div 元素，控制div显示/隐藏的方案，会有连点两次时，第二次气泡呈现受第一次影响的情况
+          const scoreBubbleDiv = document.createElement('div');
+          scoreBubbleDiv.className = 'score-popup';
+          scoreBubbleDiv.innerText = `+${Number(score)}`; // 使用获得的分数
 
-        // 创建新的 div 元素，控制div显示/隐藏的方案，会有连点两次时，第二次气泡呈现受第一次影响的情况
-        const scoreBubbleDiv = document.createElement('div');
-        scoreBubbleDiv.className = 'score-popup';
-        scoreBubbleDiv.innerText = `+${Number(score)}`; // 使用获得的分数
+          const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+          const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+          // scoreBubbleDiv.style.left = `${coordinates.x * GRID_SIZE + offsetX}px`; // 加上偏移量
+          // scoreBubbleDiv.style.top = `${coordinates.y * GRID_SIZE + offsetY}px`; // 加上偏移量
+          scoreBubbleDiv.style.left = `${3.2 * GRID_SIZE + offsetX}px`; // 加上偏移量
+          scoreBubbleDiv.style.top = `${5 * GRID_SIZE + offsetY}px`; // 加上偏移量
+          document.body.appendChild(scoreBubbleDiv); // 将气泡添加到文档中
 
-        const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
-        const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
-        // scoreBubbleDiv.style.left = `${coordinates.x * GRID_SIZE + offsetX}px`; // 加上偏移量
-        // scoreBubbleDiv.style.top = `${coordinates.y * GRID_SIZE + offsetY}px`; // 加上偏移量
-        scoreBubbleDiv.style.left = `${3.2 * GRID_SIZE + offsetX}px`; // 加上偏移量
-        scoreBubbleDiv.style.top = `${5 * GRID_SIZE + offsetY}px`; // 加上偏移量
-        document.body.appendChild(scoreBubbleDiv); // 将气泡添加到文档中
-
-        // 设置气泡消失的时间
-        setTimeout(() => {
-          document.body.removeChild(scoreBubbleDiv); // 删除气泡
-        }, 3000); // 3秒后气泡消失
-        //点击后立即显示得分气泡 end
+          // 设置气泡消失的时间
+          setTimeout(() => {
+            document.body.removeChild(scoreBubbleDiv); // 删除气泡
+          }, 3000); // 3秒后气泡消失
+          //点击后立即显示得分气泡 end
+        }
       }
       actionData == "pop" && (sendCount += 1);
 

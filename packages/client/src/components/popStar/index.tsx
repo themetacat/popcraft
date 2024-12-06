@@ -4,7 +4,7 @@ import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import loadingImg from "../../images/welcome_pay_play_loading.webp";
 import { useTopUp } from "../select";
-import backgroundImage from "../../images/welcome/welcome.webp"; 
+import backgroundImage from "../../images/welcome/welcome.webp";
 
 interface Props {
   setPopStar: any;
@@ -19,13 +19,13 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
   const playAction = localStorage.getItem("playAction");
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const { rewardInfo } = useTopUp();
+  const { rewardInfo, rewardDescInfo } = useTopUp();
 
   const { isConnected } = useAccount();
 
   const handleConnectClick = () => {
     if (isConnected) {
-      if (playAction === 'play') {        
+      if (playAction === 'play') {
         setPopStar(true)
         playFun();
         setPlayButtonClicked(true);
@@ -56,7 +56,16 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
         </span>
         <br />
         <div className={style.copywritingTwobox}>
-          <span className={style.copywritingTwoyo}>You'll be rewarded with&nbsp;
+          {rewardDescInfo ? (<span className={style.copywritingTwoyo}>You'll&nbsp;
+            <span className={style.copywritingThree}>
+              {rewardDescInfo}
+            </span>
+            <span className={style.copywritingTwoyo}>
+              {" "}
+              for completing the game.
+              <br />
+            </span>
+          </span>) : (<span className={style.copywritingTwoyo}>You'll be rewarded with&nbsp;
             <span className={style.copywritingThree}>
               {rewardInfo ? (
                 rewardInfo
@@ -65,12 +74,12 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
               )}
             </span>
             <span className={style.copywritingTwoyo}>
-            {" "}
-            for completing the game.
-            <br />
-          </span>
-          </span>
-        
+              {" "}
+              for completing the game.
+              <br />
+            </span>
+          </span>)}
+
         </div>
       </div>
       <ConnectButton.Custom>

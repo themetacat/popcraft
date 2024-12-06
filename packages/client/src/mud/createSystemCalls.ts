@@ -464,7 +464,6 @@ export function createSystemCalls(
     const namespace = window.localStorage.getItem("namespace") as string;
 
     let allArgs = [];
-
     const args = {
       for_player: addressData,
       for_app: app_name,
@@ -494,18 +493,23 @@ export function createSystemCalls(
       });
 
       if (action === 'interact') {
-        const txData = await worldContract.write.callFrom([
-          account,
-          resourceToHex({
-            type: "system",
-            namespace: namespace,
-            name: system_name,
-          }),
-          encodeData,
-        ], { gas: 29599000n });
-        hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
-        
-        waitingTransaction = false;
+        try {
+          const txData = await worldContract.write.callFrom([
+            account,
+            resourceToHex({
+              type: "system",
+              namespace: namespace,
+              name: system_name,
+            }),
+            encodeData,
+          ], { gas: 29599000n });
+          hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
+          
+          waitingTransaction = false;
+        } catch (error) {
+          return { error: error.message };
+        }
+   
       } else {
 
         if (!waitingTransaction) {
@@ -524,6 +528,9 @@ export function createSystemCalls(
 
             hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
             await waitForTransaction(txData);
+          }catch (error) {
+            waitingTransaction = false;
+            return { error: error.message };
           } finally {
             if (popStarId) {
               TCMPopStar.removeOverride(popStarId);
@@ -547,7 +554,6 @@ export function createSystemCalls(
       }
     } catch (error) {
       waitingTransaction = false;
-      // console.error("Failed to setup network:", error.message);
       return { error: error.message };
     }
     return [tx, hashValpublic];
@@ -667,8 +673,8 @@ export function createSystemCalls(
 
       if (!tokenBalanceData || tokenBalanceData.balance as bigint < 10n ** 18n) {
         // token not enough
-        console.error("token not enough");
-        return [undefined, undefined];
+        throw { message: "0x897f6c58" };
+        // return [undefined, undefined];
       }
 
       const updatedBalance = tokenBalanceData.balance as bigint - 10n ** 18n;
