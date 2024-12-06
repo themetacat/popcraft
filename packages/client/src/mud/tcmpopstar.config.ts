@@ -2,9 +2,6 @@ import { mudConfig } from "@latticexyz/world/register";
 
 export default mudConfig({
   namespace: "popCraft",
-  enums:{
-    Level: ["Easy", "Intermediate", "Hard"]
-  },
   tables: {
     TCMPopStar: {
       keySchema:{
@@ -84,14 +81,36 @@ export default mudConfig({
         tokenAddress: "address[]",
       }
     },
+    OverTime: {
+      keySchema: {
+        level: "uint256" 
+      },
+      valueSchema: {
+        time: "uint256",
+      }
+    },
+    GameRecordEvent: {
+      keySchema: {
+        id: "bytes32"
+      },
+      valueSchema: {
+        owner: "address",
+        gameStatus: "uint256"
+      },
+      offchainOnly: true
+    },
+    GameFailedRecord: {
+      keySchema: {
+        owner: "address"
+      },
+      valueSchema: {
+        times: "uint256"
+      }
+    }
   },
   systems: {
     PopCraftSystem: {
       name: "PopCraftSystem",
-      openAccess: false
-    },
-    MatchSystem: {
-      name: "MatchSystem",
       openAccess: false
     },
   }
