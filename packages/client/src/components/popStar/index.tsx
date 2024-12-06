@@ -52,7 +52,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
         </span>
         <span className={style.copywritingTwo}>
           {" "}
-          to eliminate all the materials.{" "}
+          to eliminate all the pieces.{" "}
         </span>
         <br />
         <div className={style.copywritingTwobox}>
