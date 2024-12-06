@@ -464,7 +464,7 @@ canvas {
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
-  src: url("/fonts/BRLNSR.ttf");
+  src: url("/fonts/BRLNSR.TTF");
 }
 
 @font-face {
@@ -641,4 +641,82 @@ canvas {
 .BGMButton img {
   width: 100%; /* 图标宽度自适应 */
   height: 100%; /* 图标高度自适应 */
+}
+
+.waitingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.waitingOverlayText {
+  width: 80vw; /* Set width to 80% of the viewport width */
+  max-width: 2052px; /* Maximum width */
+  height: auto; /* Allow height to adjust automatically */
+  font-family: "AdobeHeitiStd-Regular2";
+  src: url("/fonts/Langyuanti.ttf");
+  font-weight: 400; /* Font weight */
+  font-size: 2vw; /* Responsive font size */
+  color: #FFFFFF; /* Text color */
+  line-height: 1.5; /* Line height for better spacing */
+  text-align: center; /* Center the text */
+  background: none; /* Background for the text */
+  border-radius: 10px; /* Rounded corners */
+  padding: 20px; /* Add some padding */
+  box-sizing: border-box; /* Include padding in width/height calculations */
+}
+
+.progressBar {
+  position: relative;
+  width: 40vw;
+  height: 4vw;
+  background: #0f82b0;
+  border-radius: 2vw; /* 圆角 */
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  overflow: visible; /* 确保溢出内容可见 */
+  box-shadow: 0 0 1vw 0.5vw rgba(0, 255, 255, 0.5); /* 添加渐变的阴影效果 */
+}
+
+.progressFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0; /* 宽度通过 inline style 动态设置 */
+  background: #CBFFFD;
+  background-size: 100% 100%; /* 确保背景图始终填满进度条的高度和宽度 */
+  transition: width 0.1s ease;
+  border-radius: 2vw 0 0 2vw; /* 左上和左下为圆角，右边保持直角 */
+}
+
+.diamondIcon {
+  position: absolute;
+  width: 7vw;
+  height: 7vw;
+  top: 60%; /* 垂直方向居中 */
+  transform: translateY(-50%); /* 修正竖直方向的偏移，确保居中 */
+  background-image: url('../../images/Diamond.webp');
+  background-repeat: no-repeat;
+  background-size: contain;
+  transition: left 0.1s ease;
+}
+
+.progressText {
+  position: absolute;
+  top: 40%; /* 垂直居中 */
+  transform: translateX(-50%) translateY(-50%);
+  font-size: 1.6vw;
+  font-weight: bold;
+  color: #0f82b0;
+  transition: left 0.1s ease; /* 平滑的动画效果 */
+  white-space: nowrap; /* 防止数字换行 */
 }

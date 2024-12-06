@@ -520,7 +520,7 @@ export function createSystemCalls(
                 name: system_name,
               }),
               encodeData,
-            ], { gas: 3000000n });
+            ], { gas: 15000000n });
 
             hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
             await waitForTransaction(txData);
@@ -541,7 +541,7 @@ export function createSystemCalls(
             }
           }
         } else {
-          toast.success("Action submitted, waiting...");
+          // toast.success("Action submitted, waiting...");
         }
 
       }
@@ -699,7 +699,8 @@ export function createSystemCalls(
       });
     } else {
       waitingTransaction = true;
-      toast.success("Action submitted, waiting...");
+      localStorage.setItem('isShowWaitingMaskLayer', 'true')
+      // toast.success("Action submitted, waiting...");
       console.warn("Action submitted, waiting...");
     }
 
