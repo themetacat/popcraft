@@ -195,10 +195,6 @@
   height: 8.75rem;
   box-sizing: border-box;
 }
-@font-face {
-  font-family: "Alibaba-PuHuiTi-Medium";
-  src: url("/fonts/Alibaba-PuHuiTi-Light.otf");
-}
 .iconFont {
   display: flex;
   justify-content: center;
