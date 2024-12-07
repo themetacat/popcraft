@@ -469,7 +469,7 @@ canvas {
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular2";
-  src: url("/fonts/Langyuanti.ttf");
+  src: url("/fonts/Langyuanti.woff2");
 }
 
 .downBoxItemContent {
@@ -661,7 +661,7 @@ canvas {
   max-width: 2052px; /* Maximum width */
   height: auto; /* Allow height to adjust automatically */
   font-family: "AdobeHeitiStd-Regular2";
-  src: url("/fonts/Langyuanti.ttf");
+  src: url("/fonts/Langyuanti.woff2");
   font-weight: 400; /* Font weight */
   font-size: 2vw; /* Responsive font size */
   color: #FFFFFF; /* Text color */
