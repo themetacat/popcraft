@@ -150,7 +150,7 @@
 }
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
-  src: url("/fonts/BRLNSR.TTF");
+  src: url("/fonts/BRLNSR.woff2");
 }
 .titleOne1 {
   width: 20rem;
@@ -376,7 +376,7 @@
 }
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
-  src: url("/fonts/BRLNSR.TTF");
+  src: url("/fonts/BRLNSR.woff2");
 }
 .pqad {
   gap: 0px;
