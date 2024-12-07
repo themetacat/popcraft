@@ -888,7 +888,7 @@ p {
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular2";
-  src: url("/fonts/Langyuanti.wott2");
+  src: url("/fonts/Langyuanti.woff2");
 }
 
 .fontNum {
@@ -1018,7 +1018,7 @@ p {
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular4";
-  src: url("/fonts/Langyuanti.wott2");
+  src: url("/fonts/Langyuanti.woff2");
 }
 
 .failto {
