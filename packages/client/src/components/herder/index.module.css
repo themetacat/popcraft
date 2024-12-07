@@ -464,7 +464,7 @@ canvas {
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
-  src: url("/fonts/BRLNSR.TTF");
+  src: url("/fonts/BRLNSR.woff2");
 }
 
 @font-face {
