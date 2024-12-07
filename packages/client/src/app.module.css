@@ -33,7 +33,7 @@
 
 @font-face {
   font-family: 'SansationLight';
-  src: url('/fonts/SansationLight.ttf') format('truetype');
+  src: url('/fonts/SansationLight.woff2') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
