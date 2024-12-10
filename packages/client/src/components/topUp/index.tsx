@@ -435,14 +435,14 @@ export default function TopUp({
                     />
                   </div>
                   <p className={style.prilf}>
-                    Save the private key as soon as Fossible
+                    Save the private key as soon as possible
                   </p>
                 </div>
               </div>
               <div className={style.partFour}>
                 <p className={style.partFourFont}>
                   Every onchain interaction uses gas. Top up your
-                  gasbalancewith funds from any chain.
+                  gas balance with funds from any chain.
                 </p>
                 <div className={style.partImo}>
                   <div
@@ -531,9 +531,8 @@ export default function TopUp({
               The session wallet is a private key stored in your
               browser's local storage. It allows you to play games without
               needing to confirm transactions, but it is less secure. Only deposit very
-              small amounts of ETH into this wallet; we recommend no more than 0.0003 ETH
-              at a time. This amount lets you complete up to 1000 transactions in PopCraft.
-
+              small amounts of ETH into this wallet.
+              The default deposit supports a reasonable number of transactions based on fees.
             </div>
           </div>
         </div>
