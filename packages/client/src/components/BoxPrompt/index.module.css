@@ -38,11 +38,11 @@
 }
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
-  src: url("/fonts/BRLNSR.TTF");
+  src: url("/fonts/BRLNSR.woff2");
 }
 @font-face {
   font-family: "Simplicity";
-  src: url("/fonts/Simplicity.ttf");
+  src: url("/fonts/Simplicity.woff2");
 }
 .firstPart {
   width: 35rem;
@@ -195,10 +195,6 @@
   height: 8.75rem;
   box-sizing: border-box;
 }
-@font-face {
-  font-family: "Alibaba-PuHuiTi-Medium";
-  src: url("/fonts/Alibaba-PuHuiTi-Light.otf");
-}
 .iconFont {
   display: flex;
   justify-content: center;
@@ -231,11 +227,11 @@
 }
 @font-face {
   font-family: "Alibaba-PuHuiTi-TIMESBD";
-  src: url("/fonts/TIMESBD.TTF");
+  src: url("/fonts/TIMESBD.woff2");
 }
 @font-face {
   font-family: "Simplicity";
-  src: url("/fonts/Simplicity.ttf");
+  src: url("/fonts/Simplicity.woff2");
 }
 .buyBtn {
   width: 9.375rem;
@@ -263,7 +259,7 @@
 }
 @font-face {
   font-family: "Alibaba-PuHuiTi";
-  src: url("/fonts/Alibaba-PuHuiTi-Bold.otf");
+  src: url("/fonts/Alibaba-PuHuiTi-Bold.woff2");
 }
 .warningIcon {
   background-color: transparent;
@@ -370,7 +366,7 @@
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular6";
-  src: url("/fonts/BRLNSR.TTF");
+  src: url("/fonts/BRLNSR.woff2");
 }
 
 .contentCon {
@@ -492,7 +488,7 @@
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
-  src: url("/fonts/BRLNSR.TTF");
+  src: url("/fonts/BRLNSR.woff2");
 }
 
 .content {
@@ -808,7 +804,7 @@ p {
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
-  src: url("/fonts/BRLNSR.TTF");
+  src: url("/fonts/BRLNSR.woff2");
 }
 
 .dataIcon {
@@ -892,7 +888,7 @@ p {
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular2";
-  src: url("/fonts/Langyuanti.ttf");
+  src: url("/fonts/Langyuanti.woff2");
 }
 
 .fontNum {
@@ -1022,7 +1018,7 @@ p {
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular4";
-  src: url("/fonts/Langyuanti.ttf");
+  src: url("/fonts/Langyuanti.woff2");
 }
 
 .failto {

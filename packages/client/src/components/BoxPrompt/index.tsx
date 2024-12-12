@@ -931,7 +931,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       ) : null}
 
       <div className={style.buttonBox}>
-        <a href="https://x.com/metacat007" target="_blank" rel="noopener noreferrer">
+        <a href="https://x.com/popcraftonchain" target="_blank" rel="noopener noreferrer">
           <img src={xLogo} className={xLogo} />
         </a>
         <a href="https://t.me/+R8NfZkneQYZkYWE1" target="_blank" rel="noopener noreferrer">
