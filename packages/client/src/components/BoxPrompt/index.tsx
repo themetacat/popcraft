@@ -28,8 +28,10 @@ interface Props {
   handleEoaContractData: any;
   setPopStar: any;
   showTopElements: any;
+  interactTaskToExecute: any,
+  checkInteractTask: any
 }
-export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, showTopElements }: Props) {
+export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, showTopElements, interactTaskToExecute, checkInteractTask }: Props) {
   const {
     components: {
       TCMPopStar,
@@ -232,40 +234,39 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
 
   useEffect(() => {
-    if (timeControl === true && gameSuccess === false) {
-      if (datan !== null) {
-        const currentTime = Math.floor(Date.now() / 1000);
-        const timeElapsed = currentTime - datan;
-        const newTimeLeft = overTime - timeElapsed;
-        setTimeLeft(newTimeLeft > 0 ? newTimeLeft : 0);
-        if (localStorage.getItem('showGameOver') === 'false') {
+    if (timeControl && gameSuccess === false) {
+      
+      if (timeLeft > 0) {
+        if(localStorage.getItem('showGameOver') != 'false'){
+          localStorage.setItem('showGameOver', 'false')
+        }
+        const timer = setTimeout(() => {
+          setTimeLeft(timeLeft - 1);
+          
+          if(localStorage.getItem('showGameOver') === 'false'){
+            if (timeLeft <= 1 && !interactTaskToExecute) {
+              localStorage.setItem('showGameOver', 'true')
+            }
+          setLoading(false)
+          }
+        }, 1000);
+      } 
+    } 
+    if(gameSuccess === true){
+      setTimeLeft(0)
+    }
+  }, [timeLeft, timeControl, gameSuccess, interactTaskToExecute]);
+
+  useEffect(() => {
+    
+    if(checkInteractTask){
+      if(timeControl && timeLeft <= 0 && gameSuccess === false && !interactTaskToExecute){
+        if(localStorage.getItem('showGameOver') != 'true'){
           localStorage.setItem('showGameOver', 'true')
         }
       }
-    } else {
-      setTimeLeft(0)
     }
-  }, [datan, timeControl, first, gameSuccess]);
-
-  useEffect(() => {
-    if (timeControl && gameSuccess === false) {
-      if (timeLeft > 0) {
-        const timer = setTimeout(() => {
-          setTimeLeft(timeLeft - 1);
-          if (localStorage.getItem('showGameOver') === 'false') {
-            if (timeLeft <= 1) {
-              localStorage.setItem('showGameOver', 'true')
-            }
-            setLoading(false)
-          }
-        }, 1000);
-      } else {
-        setLoading(false)
-      }
-    } else {
-      setTimeLeft(0)
-    }
-  }, [timeLeft, timeControl, gameSuccess]);
+  }, [timeLeft, timeControl, gameSuccess, interactTaskToExecute, checkInteractTask])
 
   useEffect(() => {
     const allZero = Object.values(numberData).every(num => num === 0);
@@ -518,12 +519,12 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
   useEffect(() => {
     localStorage.setItem('showGameOver', 'false');
-    const showGameOver = localStorage.getItem('showGameOver');
-    if (showGameOver === 'true') {
-      setGameSuccess(true);
-    } else {
+    // const showGameOver = localStorage.getItem('showGameOver');
+    // if (showGameOver === 'true') {
+    //   setGameSuccess(true);
+    // } else {
       setGameSuccess(false);
-    }
+    // }
   }, []);
 
   const formatAmount = (amount: any) => {

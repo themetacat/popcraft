@@ -25,10 +25,11 @@ import RankingListimg from '../../images/RankingList/trophy.png'
 import RankingList from '../RankingList'
 import { useTopUp } from "../select";
 import Arrow from "../../images/Arrow.png"
-import { opRendering } from "./calc";
+import { opRenderingCalc } from "./calc";
 import { addressToEntityID } from "../rightPart";
 import BGMOn from "../../images/BGMOn.webp";
 import BGMOff from "../../images/BGMOff.webp";
+import { error } from "@latticexyz/common/src/debug";
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -61,7 +62,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       GameFailedRecord
     },
     network: { playerEntity, publicClient, palyerAddress },
-    systemCalls: { interact, interactTCM, registerDelegation },
+    systemCalls: { interact, interactTCM, registerDelegation, opRendering, rmOverride },
   } = useMUD();
 
   const { isConnected, address } = useAccount();
@@ -167,7 +168,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   useEffect(() => {
     if (chainId === 185 || chainId === 31337) {
       setBalancover(Number(resultBugs.data));
-    }else{
+    } else {
       if (resultBugs.data?.value) {
         setBalancover(Math.floor(Number(resultBugs.data?.value) / 1e18));
       }
@@ -175,7 +176,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   }, [resultBugs.data]);
 
   const formatBalance = (balancover: number) => {
-    
+
     if (chainId === 185 || chainId === 31337) {
       return balancover
     } else {
@@ -1141,99 +1142,191 @@ export default function Header({ hoveredData, handleData }: Props) {
     return isSingleNonZero || hasAdjacentSame;
   };
 
+  const interactTaskQueue = useRef<((execute: boolean) => Promise<void>)[]>([]);
+  const isInteractProcessingQueue = useRef(false);
+  const canInteractTaskExecute = useRef(true);
+  const [interactTaskToExecute, setInteractTaskToExecute] = useState(false);
+  const [checkInteractTask, setCheckInteractTask] = useState(false);
+  
+  const interactProcessQueue = async () => {
+    if (isInteractProcessingQueue.current) return;
+    isInteractProcessingQueue.current = true;
+    setInteractTaskToExecute(true)
+    while (interactTaskQueue.current.length > 0) {
+      // setInteractTaskToExecute(true)
+      const tasksToExecute = interactTaskQueue.current.splice(0, 4);
+      try {
+        await Promise.all(tasksToExecute.map((task) => task(canInteractTaskExecute.current)));
+      } catch (error) {
+        isInteractProcessingQueue.current = false;
+        canInteractTaskExecute.current = false
+        console.error("task error:", error);
+        setInteractTaskToExecute(false);
+      }
+      
+      if (sendCount <= receiveCount) {
+        localStorage.setItem('isShowWaitingMaskLayer', 'false')
+      }
+    }
+    setInteractTaskToExecute(false);
+    canInteractTaskExecute.current = true
+    isInteractProcessingQueue.current = false;
+  };
+ 
   const interactHandleTCM = async (
     coordinates: any,
-    palyerAddress: any,
+    playerAddress: any,
     selectedColor: any,
     actionData: any,
     other_params: any
   ) => {
     setLoading(true);
     setLoadingpaly(true);
+    let throwError = false;
     try {
       //点击后立即显示得分气泡 start
-      if (actionData != "interact") {
-        const score = opRendering(coordinates.x, coordinates.y, address, TCMPopStar, StarToScore, TokenBalance);
-        if (score != 0) {
-          // 创建新的 div 元素，控制div显示/隐藏的方案，会有连点两次时，第二次气泡呈现受第一次影响的情况
-          const scoreBubbleDiv = document.createElement('div');
-          scoreBubbleDiv.className = 'score-popup';
-          scoreBubbleDiv.innerText = `+${Number(score)}`; // 使用获得的分数
-
-          const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
-          const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
-          // scoreBubbleDiv.style.left = `${coordinates.x * GRID_SIZE + offsetX}px`; // 加上偏移量
-          // scoreBubbleDiv.style.top = `${coordinates.y * GRID_SIZE + offsetY}px`; // 加上偏移量
-          scoreBubbleDiv.style.left = `${3.2 * GRID_SIZE + offsetX}px`; // 加上偏移量
-          scoreBubbleDiv.style.top = `${5 * GRID_SIZE + offsetY}px`; // 加上偏移量
-          document.body.appendChild(scoreBubbleDiv); // 将气泡添加到文档中
-
-          // 设置气泡消失的时间
-          setTimeout(() => {
-            document.body.removeChild(scoreBubbleDiv); // 删除气泡
-          }, 3000); // 3秒后气泡消失
-          //点击后立即显示得分气泡 end
+      let popStarId: any, tokenBalanceId: any, newRankingRecordId: any, score: any;
+      if (actionData == "pop") {
+        if (localStorage.getItem("isShowWaitingMaskLayer") === "true") {
+          return;
         }
-      }
-      actionData == "pop" && (sendCount += 1);
-
-      const interact_data = await interactTCM(
-        coordinates,
-        palyerAddress,
-        selectedColor,
-        actionData,
-        other_params
-      );
-
-      if (interact_data.error) {
-        actionData == "pop" && (sendCount -= 1)
-
-        handleError(interact_data.error);
-        setLoadingSquare(null); // 清除 loading 状态
-        return;
+        // const score = opRenderingCalc(coordinates.x, coordinates.y, address, TCMPopStar, StarToScore, TokenBalance);
+        [popStarId, tokenBalanceId, newRankingRecordId, score] = opRendering(coordinates.x, coordinates.y, address)
+       
+        if (Number(score) != 0) {
+          addScoreBubble(Number(score));
+        }
+        sendCount += 1;
       }
 
-      const receipt = await interact_data.hashValpublic;
-      if (interact_data[1]) {
-        const receipt = await interact_data[1];
-        if (receipt.status === "success") {
-          //新开始一局游戏，清零计数器
-          if (actionData == "interact") {
-            sendCount = 0
-            receiveCount = 0
-          }
-          actionData == "pop" && (receiveCount += 1);
-          setLoading(false);
-          setLoadingpaly(false);
-          setTimeControl(true);
+        interactTaskQueue.current.push(async (execute: boolean) => {
+        let interact_data;
+       
+        if (actionData == "pop") {
+          setCheckInteractTask(true)
+          
+          interact_data = await interactTCM(
+            coordinates,
+            playerAddress,
+            selectedColor,
+            actionData,
+            other_params,
+            popStarId,
+            tokenBalanceId,
+            newRankingRecordId,
+            execute
+          );
+        } else {
+          interact_data = await interactTCM(
+            coordinates,
+            playerAddress,
+            selectedColor,
+            actionData,
+            other_params,
+            null,
+            null,
+            null,
+            true
+          );
+          // setCheckInteractTask(false)
+
+        }
+        
+        if (interact_data && interact_data.error) {
+          
+          actionData == "pop" && (sendCount -= 1)
+          isgameOverSet(interact_data.error)
+          handleError(interact_data.error);
           setLoadingSquare(null); // 清除 loading 状态
-          onHandleLoading();
-          localStorage.setItem('playAction', 'gameContinue');
-          if (actionData === "interact") {
-            // localStorage.setItem("showGameOver", "false");
+          throwError = true;
+          // return;
+        }else if (interact_data[1]) {
+          const receipt = await interact_data[1];
+
+          if (receipt.status === "success") {
+            //新开始一局游戏，清零计数器
+            if (actionData === "interact") {
+              sendCount = 0
+              receiveCount = 0
+              // localStorage.setItem('showGameOver', 'false');
+              setCheckInteractTask(false)
+            }else if(actionData === "pop"){
+              receiveCount += 1
+            }
+            setLoading(false);
+            setLoadingpaly(false);
+            setTimeControl(true);
+            setLoadingSquare(null); // 清除 loading 状态
+            onHandleLoading();
+            localStorage.setItem('playAction', 'gameContinue');
+          } else {
+            actionData == "pop" && (receiveCount += 1);
+            // actionData == "pop" && (sendCount -= 1);
+            handleError(receipt.error);
+            onHandleLoading();
+            setLoadingSquare(null); // 清除 loading 状态
+            throwError = true;
           }
         } else {
+          // 点击消除的交易处理失败，交易计数器减一
           actionData == "pop" && (sendCount -= 1);
-          handleError(receipt.error);
-          onHandleLoading();
+          handleError("No receipt returned");
           setLoadingSquare(null); // 清除 loading 状态
+          throwError = true;
         }
-      } else {
-        // 点击消除的交易处理失败，交易计数器减一
-        actionData == "pop" && (sendCount -= 1);
-
-        handleError("No receipt returned");
-        setLoadingSquare(null); // 清除 loading 状态
-      }
-
-      if (sendCount <= receiveCount) {
-        localStorage.setItem('isShowWaitingMaskLayer', 'false')
-      }
+        
+        if (sendCount <= receiveCount) {
+          localStorage.setItem('isShowWaitingMaskLayer', 'false')
+        }
+        if(throwError){
+          // isInteractProcessingQueue.current = false;
+          // canInteractTaskExecute.current = false
+          // setInteractTaskToExecute(false);
+          throw new Error("tx failded");
+        }
+      })
     } catch (error) {
       handleError(error.message);
       setLoadingSquare(null); // 清除 loading 状态
     }
+    interactProcessQueue()
   };
+  
+  const isgameOverSet = async (
+    errMessage: any,
+  ) => {
+  
+    const gameOverError = 'Game Over';
+    try {
+ 
+      if (errMessage.message.includes(gameOverError)) {
+        // receiveCount = sendCount
+        canInteractTaskExecute.current = false
+        localStorage.setItem('showGameOver', 'true')
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+  const addScoreBubble = (score: any) => {
+    const scoreBubbleDiv = document.createElement('div');
+    scoreBubbleDiv.className = 'score-popup';
+    scoreBubbleDiv.innerText = `+${Number(score)}`; // 使用获得的分数
+
+    const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+    const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+    // scoreBubbleDiv.style.left = `${coordinates.x * GRID_SIZE + offsetX}px`; // 加上偏移量
+    // scoreBubbleDiv.style.top = `${coordinates.y * GRID_SIZE + offsetY}px`; // 加上偏移量
+    scoreBubbleDiv.style.left = `${3.2 * GRID_SIZE + offsetX}px`; // 加上偏移量
+    scoreBubbleDiv.style.top = `${5 * GRID_SIZE + offsetY}px`; // 加上偏移量
+    document.body.appendChild(scoreBubbleDiv); // 将气泡添加到文档中
+
+    // 设置气泡消失的时间
+    setTimeout(() => {
+      document.body.removeChild(scoreBubbleDiv); // 删除气泡
+    }, 3000); // 3秒后气泡消失
+  }
 
   //判断时间倒计时
   const handleEoaContractData = (data: any) => {
@@ -1557,31 +1650,35 @@ export default function Header({ hoveredData, handleData }: Props) {
     setPanningFromChild(newPanningValue);
   };
 
-  const handleError = (errorMessage) => {
+  const handleError = (errorMessage: any) => {
     setLoading(false);
     setLoadingpaly(false);
     onHandleLoading();
-
-    if (!errorMessage) {
-      console.error("Error message is undefined or null");
-      return;
+    try {
+      if (!errorMessage) {
+        console.error("Error message is undefined or null");
+        return;
+      }
+      if (errorMessage.includes("0x897f6c58")) {
+        setShowSuccessModal(true);
+        setTimeout(() => {
+          setShowSuccessModal(false);
+        }, 1000);
+      }
+      // else if (errorMessage.includes("Execution reverted with reason: RPC Request failed.") && errorMessage.includes("eth_estimateGas")
+      //  && errorMessage.includes("Details: execution reverted")) {
+      //   setShowNewPopUp(true);
+      // } 
+      else if (errorMessage.includes("The contract function \"callFrom\" reverted with the following reason:")) {
+        // 不弹框
+      }
+      else {
+        console.error("Unhandled error:", errorMessage);
+      }
+    } catch (error) {
+      console.log(error);
     }
-    if (errorMessage.includes("0x897f6c58")) {
-      setShowSuccessModal(true);
-      setTimeout(() => {
-        setShowSuccessModal(false);
-      }, 1000);
-    }
-    // else if (errorMessage.includes("Execution reverted with reason: RPC Request failed.") && errorMessage.includes("eth_estimateGas")
-    //  && errorMessage.includes("Details: execution reverted")) {
-    //   setShowNewPopUp(true);
-    // } 
-    else if (errorMessage.includes("The contract function \"callFrom\" reverted with the following reason:")) {
-      // 不弹框
-    }
-    else {
-      console.error("Unhandled error:", errorMessage);
-    }
+    
   };
 
   const onHandleExe = () => {
@@ -2075,6 +2172,8 @@ export default function Header({ hoveredData, handleData }: Props) {
           playFun={playFun}
           handleEoaContractData={handleEoaContractData}
           setPopStar={setPopStar}
+          interactTaskToExecute={interactTaskToExecute}
+          checkInteractTask={checkInteractTask}
         />
       ) : null}
 

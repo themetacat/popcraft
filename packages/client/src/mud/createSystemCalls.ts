@@ -451,14 +451,24 @@ export function createSystemCalls(
       "type": "function"
     }
   ]
+  let firstGameOver = true;
   const interactTCM = async (
     coordinates: any,
     addressData: any,
     selectedColor: any,
     action: string,
-    other_params: any
+    other_params: any,
+    popStarId: any,
+    tokenBalanceId: any,
+    newRankingRecordId: any,
+    isExecute: any
   ) => {
+    let tx, hashValpublic;
 
+    if(!isExecute){
+      rmOverride(popStarId, tokenBalanceId, newRankingRecordId);
+      return [tx, hashValpublic]
+    }
     const app_name = window.localStorage.getItem("app_name") || "paint";
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
@@ -480,7 +490,6 @@ export function createSystemCalls(
       allArgs = other_params;
     }
 
-    let tx, hashValpublic;
     try {
       const [account] = await window.ethereum!.request({
         method: "eth_requestAccounts",
@@ -504,17 +513,14 @@ export function createSystemCalls(
             encodeData,
           ], { gas: 29599000n });
           hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
-          
-          waitingTransaction = false;
+          firstGameOver = true
+          // waitingTransaction = false;
         } catch (error) {
           return { error: error.message };
         }
    
       } else {
-
-        if (!waitingTransaction) {
-          const [popStarId, tokenBalanceId, newRankingRecordId] = opRendering(coordinates.x, coordinates.y, account);
-
+          
           try {
             const txData = await worldContract.write.callFrom([
               account,
@@ -525,31 +531,40 @@ export function createSystemCalls(
               }),
               encodeData,
             ], { gas: 15000000n });
-
+            
+            tx = txData;
             hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
+
+            if(hashValpublic.status === "reverted" && firstGameOver){
+              firstGameOver = false;
+              const { simulateContractRequest } = await publicClient.simulateContract({
+                account: palyerAddress,
+                address: worldContract.address,
+                abi: worldContract.abi,
+                functionName: 'callFrom',
+                args: [
+                  account,
+                  resourceToHex({
+                    type: "system",
+                    namespace: namespace,
+                    name: system_name,
+                  }),
+                  encodeData,
+                ], 
+              })
+            }
+            // console.log(hashValpublic);
+            // unwatch()
             await waitForTransaction(txData);
-          }catch (error) {
-            waitingTransaction = false;
-            return { error: error.message };
+          }catch (error: any) {
+            // waitingTransaction = false;
+          
+            return { error: error };
           } finally {
-            if (popStarId) {
-              TCMPopStar.removeOverride(popStarId);
-            }
-            if (tokenBalanceId) {
-              TokenBalance.removeOverride(tokenBalanceId);
-            }
-            if (newRankingRecordId) {
-              RankingRecord.removeOverride(newRankingRecordId);
-            }
-            if (waitingTransaction) {
-              if (!hashValpublic || (await hashValpublic).status !== "success") {
-                waitingTransaction = false;
-              }
-            }
+            rmOverride(popStarId, tokenBalanceId, newRankingRecordId)
+           
           }
-        } else {
-          // toast.success("Action submitted, waiting...");
-        }
+  
 
       }
     } catch (error) {
@@ -559,6 +574,18 @@ export function createSystemCalls(
     return [tx, hashValpublic];
   };
 
+  function rmOverride(popStarId: any, tokenBalanceId: any, newRankingRecordId: any){
+    if (popStarId) {
+      TCMPopStar.removeOverride(popStarId);
+    }
+    if (tokenBalanceId) {
+      TokenBalance.removeOverride(tokenBalanceId);
+    }
+    if (newRankingRecordId) {
+      RankingRecord.removeOverride(newRankingRecordId);
+    }
+  }
+  
   const payFunction = async (methodParametersArray: any[]) => {
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
@@ -583,7 +610,7 @@ export function createSystemCalls(
         nonce: nonce
       });
       
-      // const txData = await worldContract.write.call([resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData], { value: totalValue });
+      // const hash = await worldContract.write.call([resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData], { value: payArgs.totalValue });
       hashValpublic = await publicClient.waitForTransactionReceipt({ hash: hash })
     } catch (error) {
       console.error("Failed to setup network:", error.message);
@@ -643,6 +670,10 @@ export function createSystemCalls(
     let tokenBalanceId;
     let rankingRecordId;
     let eliminateAmount = 0;
+    if(!playerAddr){
+      throw new Error("Address undefind");
+    }
+    
     const playerEntity = encodeEntity({ address: "address" }, { address: playerAddr });
 
     const tcmPopStarData = getComponentValue(TCMPopStar, playerEntity);
@@ -726,7 +757,7 @@ export function createSystemCalls(
       }
     }
 
-    return [popStarId, tokenBalanceId, rankingRecordId];
+    return [popStarId, tokenBalanceId, rankingRecordId, score];
   }
 
   function dfsPopCraft(matrixIndex: number, targetValue: bigint, matrixArray: bigint[], eliminateAmount: number): [bigint[], number] {
@@ -899,5 +930,7 @@ export function createSystemCalls(
     interactTCM,
     payFunction,
     registerDelegation,
+    opRendering,
+    rmOverride
   };
 }
