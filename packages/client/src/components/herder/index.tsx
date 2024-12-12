@@ -42,7 +42,8 @@ let receiveCount = 0;
 localStorage.setItem('isShowWaitingMaskLayer', 'false')
 export default function Header({ hoveredData, handleData }: Props) {
   // 得分气泡状态管理
-  const [scoreBubble, setScoreBubble] = useState<{ visible: boolean; x: number; y: number; score: number }>({ visible: false, x: 0, y: 0, score: 0 });
+  const [scoreBubble, setScore
+    Bubble] = useState<{ visible: boolean; x: number; y: number; score: number }>({ visible: false, x: 0, y: 0, score: 0 });
 
   // 添加状态来控制背景音乐播放，默认背景音乐开启
   const [musicEnabled, setMusicEnabled] = useState(() => {
@@ -120,7 +121,6 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   // add new chain: change here
   let resultBugs;
-<<<<<<< HEAD
 
   if (chainId === 185 || chainId === 31337) {
     useBalance({
@@ -160,14 +160,6 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   } else {
     resultBugs = useBalance({
-=======
-  if(chainId === 185){
-    resultBugs = useBalance({
-      address: address,
-    })
-  }else{
-     resultBugs = useBalance({
->>>>>>> dc924e2b0d37179f150e2bcdc0c8a1d1f3932bd1
       address: address,
       token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
     });
