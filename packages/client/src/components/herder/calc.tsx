@@ -1,7 +1,7 @@
 import { getComponentValue } from "@latticexyz/recs";
 import { encodeEntity } from "@latticexyz/store-sync/recs";
 
-export function opRendering(positionX: number, positionY: number, playerAddr: any, TCMPopStar: any, StarToScore: any, TokenBalance: any) {
+export function opRenderingCalc(positionX: number, positionY: number, playerAddr: any, TCMPopStar: any, StarToScore: any, TokenBalance: any) {
     let eliminateAmount = 0;
 
     const playerEntity = encodeEntity({ address: "address" }, { address: playerAddr });
