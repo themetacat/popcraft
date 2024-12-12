@@ -42,8 +42,7 @@ let receiveCount = 0;
 localStorage.setItem('isShowWaitingMaskLayer', 'false')
 export default function Header({ hoveredData, handleData }: Props) {
   // 得分气泡状态管理
-  const [scoreBubble, setScore
-    Bubble] = useState<{ visible: boolean; x: number; y: number; score: number }>({ visible: false, x: 0, y: 0, score: 0 });
+  const [scoreBubble, setScoreBubble] = useState<{ visible: boolean; x: number; y: number; score: number }>({ visible: false, x: 0, y: 0, score: 0 });
 
   // 添加状态来控制背景音乐播放，默认背景音乐开启
   const [musicEnabled, setMusicEnabled] = useState(() => {
