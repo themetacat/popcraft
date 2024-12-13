@@ -1193,7 +1193,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     setLoading(true);
     setLoadingpaly(true);
     let throwError = false;
-    // try {
+    try {
       //点击后立即显示得分气泡 start
       let popStarId: any, tokenBalanceId: any, newRankingRecordId: any, score: any;
       if (actionData == "pop") {
@@ -1303,10 +1303,10 @@ export default function Header({ hoveredData, handleData }: Props) {
           throw new Error("tx failded");
         }
       })
-    // } catch (error) {
-    //   handleError(error.message);
-    //   setLoadingSquare(null); // 清除 loading 状态
-    // }
+    } catch (error) {
+      handleError(error.message);
+      setLoadingSquare(null); // 清除 loading 状态
+    }
     interactProcessQueue()
   };
   
