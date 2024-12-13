@@ -560,7 +560,7 @@ export function createSystemCalls(
             }
             // console.log(hashValpublic);
             // unwatch()
-            // await waitForTransaction(txData);
+            await waitForTransaction(txData);
           }catch (error: any) {
             // waitingTransaction = false;
             return { error: error.message };
