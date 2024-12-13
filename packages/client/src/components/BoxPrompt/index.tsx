@@ -820,7 +820,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               {rewardDescInfo? (
                 <span className={style.copywritingTwo}>You'll&nbsp;
                 {rewardDescInfo}
-                &nbsp; for completing the game.
+                &nbsp; in your first 3 games every day.
               </span>
               ): (
                 <span className={style.copywritingTwo}>You'll be rewarded with&nbsp;

@@ -62,7 +62,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
             </span>
             <span className={style.copywritingTwoyo}>
               {" "}
-              for completing the game.
+              in your first 3 games every day.
               <br />
             </span>
           </span>) : (<span className={style.copywritingTwoyo}>You'll be rewarded with&nbsp;
