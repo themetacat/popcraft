@@ -461,13 +461,18 @@ export function createSystemCalls(
     popStarId: any,
     tokenBalanceId: any,
     newRankingRecordId: any,
-    isExecute: any
+    isExecute: any,
+    account: any,
+    nonce: any
   ) => {
     let tx, hashValpublic;
 
     if(!isExecute){
       rmOverride(popStarId, tokenBalanceId, newRankingRecordId);
       return [tx, hashValpublic]
+    }
+    if(!account){
+      return { error: "Not connected" }
     }
     const app_name = window.localStorage.getItem("app_name") || "paint";
     const system_name = window.localStorage.getItem("system_name") as string;
@@ -491,9 +496,6 @@ export function createSystemCalls(
     }
 
     try {
-      const [account] = await window.ethereum!.request({
-        method: "eth_requestAccounts",
-      });
 
       const encodeData = encodeFunctionData({
         abi: popCraftAbi,
@@ -511,8 +513,10 @@ export function createSystemCalls(
               name: system_name,
             }),
             encodeData,
-          ], { gas: 29599000n });
-          hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
+          ], { gas: 29599000n, nonce });
+          // hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
+          hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }),7000);
+          // console.log(hashValpublic);
           firstGameOver = true
           // waitingTransaction = false;
         } catch (error) {
@@ -530,11 +534,12 @@ export function createSystemCalls(
                 name: system_name,
               }),
               encodeData,
-            ], { gas: 15000000n });
-            
+            ], { gas: 15000000n, nonce });
+            // const txStatus = await publicClient.getTransaction({ hash: txData });
             tx = txData;
-            hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
-
+           hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }),7000);
+           
+            // hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
             if(hashValpublic.status === "reverted" && firstGameOver){
               firstGameOver = false;
               const { simulateContractRequest } = await publicClient.simulateContract({
@@ -555,17 +560,15 @@ export function createSystemCalls(
             }
             // console.log(hashValpublic);
             // unwatch()
-            await waitForTransaction(txData);
+            // await waitForTransaction(txData);
           }catch (error: any) {
             // waitingTransaction = false;
-          
-            return { error: error };
+            return { error: error.message };
           } finally {
             rmOverride(popStarId, tokenBalanceId, newRankingRecordId)
            
           }
   
-
       }
     } catch (error) {
       waitingTransaction = false;
@@ -573,6 +576,24 @@ export function createSystemCalls(
     }
     return [tx, hashValpublic];
   };
+
+  function withTimeout(taskPromise: any, timeoutMs: number) {
+    return new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+            reject(new Error("Transaction timeout"));
+        }, timeoutMs);
+
+        taskPromise
+            .then((results: any) => {
+                clearTimeout(timeout);
+                resolve(results);
+            })
+            .catch((error: any) => {
+                clearTimeout(timeout);
+                reject(error.message);
+            });
+    });
+  }
 
   function rmOverride(popStarId: any, tokenBalanceId: any, newRankingRecordId: any){
     if (popStarId) {

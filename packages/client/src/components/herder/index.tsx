@@ -1142,7 +1142,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     return isSingleNonZero || hasAdjacentSame;
   };
 
-  const interactTaskQueue = useRef<((execute: boolean) => Promise<void>)[]>([]);
+  const interactTaskQueue = useRef<((execute: boolean, account: any, nonce:any) => Promise<void>)[]>([]);
   const isInteractProcessingQueue = useRef(false);
   const canInteractTaskExecute = useRef(true);
   const [interactTaskToExecute, setInteractTaskToExecute] = useState(false);
@@ -1152,11 +1152,21 @@ export default function Header({ hoveredData, handleData }: Props) {
     if (isInteractProcessingQueue.current) return;
     isInteractProcessingQueue.current = true;
     setInteractTaskToExecute(true)
+     
     while (interactTaskQueue.current.length > 0) {
+      const nonce = await publicClient.getTransactionCount({ address: palyerAddress })
+
       // setInteractTaskToExecute(true)
+      // console.log("current: ", interactTaskQueue.current.length);
       const tasksToExecute = interactTaskQueue.current.splice(0, 4);
+      // console.log("execute: ", tasksToExecute.length);
       try {
-        await Promise.all(tasksToExecute.map((task) => task(canInteractTaskExecute.current)));
+        await Promise.all(
+          tasksToExecute.map((task, index) => {
+            const currentNonce = nonce + index;
+            return task(canInteractTaskExecute.current, address, currentNonce);
+          })
+        );
       } catch (error) {
         isInteractProcessingQueue.current = false;
         canInteractTaskExecute.current = false
@@ -1183,7 +1193,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     setLoading(true);
     setLoadingpaly(true);
     let throwError = false;
-    try {
+    // try {
       //点击后立即显示得分气泡 start
       let popStarId: any, tokenBalanceId: any, newRankingRecordId: any, score: any;
       if (actionData == "pop") {
@@ -1199,9 +1209,9 @@ export default function Header({ hoveredData, handleData }: Props) {
         sendCount += 1;
       }
 
-        interactTaskQueue.current.push(async (execute: boolean) => {
+        interactTaskQueue.current.push(async (execute: boolean, account: any, nonce: any) => {
         let interact_data;
-       
+       try {
         if (actionData == "pop") {
           setCheckInteractTask(true)
           
@@ -1214,7 +1224,9 @@ export default function Header({ hoveredData, handleData }: Props) {
             popStarId,
             tokenBalanceId,
             newRankingRecordId,
-            execute
+            execute,
+            account,
+            nonce
           );
         } else {
           interact_data = await interactTCM(
@@ -1226,11 +1238,17 @@ export default function Header({ hoveredData, handleData }: Props) {
             null,
             null,
             null,
-            true
+            true,
+            account,
+            nonce
           );
           // setCheckInteractTask(false)
-
         }
+       } catch (error) {
+        actionData == "pop" && (sendCount -= 1)
+        setLoadingSquare(null);
+        // console.log(error);
+       }
         
         if (interact_data && interact_data.error) {
           
@@ -1285,10 +1303,10 @@ export default function Header({ hoveredData, handleData }: Props) {
           throw new Error("tx failded");
         }
       })
-    } catch (error) {
-      handleError(error.message);
-      setLoadingSquare(null); // 清除 loading 状态
-    }
+    // } catch (error) {
+    //   handleError(error.message);
+    //   setLoadingSquare(null); // 清除 loading 状态
+    // }
     interactProcessQueue()
   };
   
@@ -1299,7 +1317,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     const gameOverError = 'Game Over';
     try {
  
-      if (errMessage.message.includes(gameOverError)) {
+      if (errMessage.includes(gameOverError)) {
         // receiveCount = sendCount
         canInteractTaskExecute.current = false
         localStorage.setItem('showGameOver', 'true')
@@ -1671,8 +1689,9 @@ export default function Header({ hoveredData, handleData }: Props) {
       // } 
       else if (errorMessage.includes("The contract function \"callFrom\" reverted with the following reason:")) {
         // 不弹框
-      }
-      else {
+      }else if(errorMessage.includes("Insufficient funds for gas * price + value")){
+        setShowNewPopUp(true);
+      }else {
         console.error("Unhandled error:", errorMessage);
       }
     } catch (error) {
@@ -2185,7 +2204,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         </div>
       )}
 
-      {showNewPopUp && (
+      {showNewPopUp && localStorage.getItem("isShowWaitingMaskLayer") ==="false" && (
         <div className={style.overlaybox}>
           <div className={style.popup}>
             <div className={style.contentbox}>
