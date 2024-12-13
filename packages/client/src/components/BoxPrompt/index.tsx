@@ -578,7 +578,14 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             </div>
             <div className={style.twoPart} >
               <p>{rewardInfo}</p>
-              <p>REWARDS</p>
+              <p className={style.tooltip}>
+                REWARDS
+                {rewardDescInfo && (
+                  <span className={style.tooltipText}>
+                    You'll get 100 MP for winning and 50 MP for losing in your first 3 games every day(UTC).
+                  </span>
+                )}
+              </p>
             </div>
             <div className={style.threePart}>
               <p className={style.balance}>
@@ -820,7 +827,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               {rewardDescInfo? (
                 <span className={style.copywritingTwo}>You'll&nbsp;
                 {rewardDescInfo}
-                &nbsp; for completing the game.
+                &nbsp; in your first 3 games every day.
               </span>
               ): (
                 <span className={style.copywritingTwo}>You'll be rewarded with&nbsp;

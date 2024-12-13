@@ -76,8 +76,8 @@ export const useTopUp = () => {
       setInputValue("0.008"); //0.0003 * 3 * 30 = 0.027
       setCurrencySymbol("MP")
       setbalanceCheck('0.0001')
-      setRewardInfo("500 MP");
-      setRewardDescInfo("get 100 MP for joining and 500 MP")
+      setRewardInfo("100 MP");
+      setRewardDescInfo("get 100 MP for winning and 50 MP for losing")
       setMIN_SESSION_WALLET_BALANCE(parseEther("0.000002"));
       setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c"); // 设置 recipient 地址
       setBridgeUrl("https://www.mintchain.io/bridge")

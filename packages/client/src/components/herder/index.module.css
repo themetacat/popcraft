@@ -703,7 +703,7 @@ canvas {
   width: 7vw;
   height: 7vw;
   top: 60%; /* 垂直方向居中 */
-  transform: translateY(-50%); /* 修正竖直方向的偏移，确保居中 */
+  transform: translateX(-9%) translateY(-50%); /* 修正竖直方向的偏移，确保居中 */
   background-image: url('../../images/Diamond.webp');
   background-repeat: no-repeat;
   background-size: contain;
@@ -712,7 +712,7 @@ canvas {
 
 .progressText {
   position: absolute;
-  top: 40%; /* 垂直居中 */
+  top: 30%; /* 垂直居中 */
   transform: translateX(-50%) translateY(-50%);
   font-size: 1.6vw;
   font-weight: bold;
