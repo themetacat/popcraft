@@ -113,6 +113,7 @@
   background-position: center;
   background-repeat: no-repeat;
   display: grid;
+  cursor: pointer;
 }
 .twoPart p:nth-child(1) {
   display: flex;
@@ -138,6 +139,41 @@
   justify-content: center;
   margin-top: -0.1rem;
   font-family: "Simplicity";
+}
+
+/* 在 index.module.css 中添加以下样式 */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltipText {
+  left: 50%; /* 保持在父元素的中心 */
+  bottom: 50%; /* 垂直居中 */
+  margin-left: -30rem; /* 水平居中 */
+  transform: translate(-26%, 20%); /* 向左移动气泡，同时保持垂直居中 */
+  visibility: hidden;
+  width: 40.625rem; /* 13.75rem * 1.5 = 20.625rem */
+  background-color: rgba(92, 193, 143, 0.8); /* 更柔和的颜色 */
+  color: #fff;
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 添加阴影 */
+  font-size: 1.9rem;
+  font-family: "Simplicity";
+  padding: 0.5rem 1rem; /* 调整内边距 */
+  position: absolute;
+  z-index: 1;
+  bottom: 10%; /* 调整气泡位置，设置为按钮的顶部 */
+  left: 50%;
+  margin-left: -10.3125rem; /* 使气泡居中, 20.625rem / 2 = 10.3125rem */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltipText {
+  visibility: visible;
+  opacity: 1;
 }
 
 .threePart {
