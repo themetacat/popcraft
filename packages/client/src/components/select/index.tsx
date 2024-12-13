@@ -73,7 +73,7 @@ export const useTopUp = () => {
       setBridgeUrl("")
       setChianIcon(FrameIcon);
     } else if (chainId === 185 || chainId === 31337) {
-      setInputValue("0.001");
+      setInputValue("0.008"); //0.0003 * 3 * 30 = 0.027
       setCurrencySymbol("MP")
       setbalanceCheck('0.0001')
       setRewardInfo("500 MP");
