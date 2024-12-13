@@ -244,7 +244,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           setTimeLeft(timeLeft - 1);
           
           if(localStorage.getItem('showGameOver') === 'false'){
-            if (timeLeft <= 1 && !interactTaskToExecute) {
+            if (timeLeft <= 1 && !interactTaskToExecute && localStorage.getItem("isShowWaitingMaskLayer") === "false") {
               localStorage.setItem('showGameOver', 'true')
             }
           setLoading(false)
@@ -258,9 +258,12 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   }, [timeLeft, timeControl, gameSuccess, interactTaskToExecute]);
 
   useEffect(() => {
-    
-    if(checkInteractTask){
-      if(timeControl && timeLeft <= 0 && gameSuccess === false && !interactTaskToExecute){
+    if(checkInteractTask && timeLeft <= 0){
+      if(interactTaskToExecute && localStorage.getItem("showGameOver") === "false"){
+        localStorage.setItem('isShowWaitingMaskLayer', 'true')
+      }
+      
+      if(timeControl && gameSuccess === false && !interactTaskToExecute){
         if(localStorage.getItem('showGameOver') != 'true'){
           localStorage.setItem('showGameOver', 'true')
         }

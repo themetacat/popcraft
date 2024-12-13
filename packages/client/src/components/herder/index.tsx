@@ -1160,7 +1160,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       } catch (error) {
         isInteractProcessingQueue.current = false;
         canInteractTaskExecute.current = false
-        console.error("task error:", error);
+        // console.error("task error:", error);
         setInteractTaskToExecute(false);
       }
       
