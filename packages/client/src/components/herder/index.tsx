@@ -119,61 +119,49 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   // add new chain: change here
-  let resultBugs;
-
-  if (chainId === 185 || chainId === 31337) {
-    useBalance({
-      address: address,
-    });
-    
-    if (!address) {
-      resultBugs = { 'data': 0 };
-    } else {
-      const entityAddress = addressToEntityID(address)
-      const gameRecordData = getComponentValue(GameRecord, entityAddress);
-      const failedRecord =  getComponentValue(GameFailedRecord, entityAddress)
-      // console.log(failedRecord);
-      
-      if (gameRecordData) {
-        const successTime = Number(gameRecordData.successTimes as string);
-
-        if (isNaN(successTime)) {
-          resultBugs = { 'data': 0 };
-        } else {
-          resultBugs = {
-            'data': successTime * 500
-          };
-        }
-      } else {
-        resultBugs = { 'data': 0 };
-      }
-
-      if(failedRecord){
-        const failedTimes = Number(failedRecord.times as string);
-        if (!isNaN(failedTimes)) {
-          resultBugs = { 'data': resultBugs.data + failedTimes*100 };
-        } 
-      }
-    }
-
-
-  } else {
-    resultBugs = useBalance({
-      address: address,
-      token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
-    });
-  }
-  
+  const resultBugs = useBalance({
+    address: address,
+    token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
+  });
 
   useEffect(() => {
-    if (chainId === 185 || chainId === 31337) {
-      setBalancover(Number(resultBugs.data));
-    } else {
-      if (resultBugs.data?.value) {
-        setBalancover(Math.floor(Number(resultBugs.data?.value) / 1e18));
+    if (chainId === 690 || chainId === 31338) {
+      if (resultBugs.data && resultBugs.data.value) {
+        setBalancover(Math.floor(Number(resultBugs.data.value) / 1e18));
       }
     }
-  }, [resultBugs.data]);
+  }, [resultBugs.data, chainId]);
+
+
+  const setMpBalance = async (userAddress: any) => {
+    if (!userAddress) {
+      return
+    }
+    const response = await fetch('https://mpapi.mintchain.io/api/popcraft/mp?wallet_address=' + userAddress);
+    const data = await response.json();
+    console.log(data);
+
+    if (data && data.data) {
+      setBalancover(Number(data.data));
+    } else {
+      setBalancover(0);
+    }
+  };
+
+  useEffect(() => {
+    if (!address) return;
+    if (chainId === 185 || chainId === 31337) {
+      setMpBalance(address);
+      const intervalId = setInterval(() => {
+        setMpBalance(address);
+      }, 5000);
+
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+
+  }, [address, chainId]);
 
   const formatBalance = (balancover: number) => {
 
@@ -1142,17 +1130,17 @@ export default function Header({ hoveredData, handleData }: Props) {
     return isSingleNonZero || hasAdjacentSame;
   };
 
-  const interactTaskQueue = useRef<((execute: boolean, account: any, nonce:any) => Promise<void>)[]>([]);
+  const interactTaskQueue = useRef<((execute: boolean, account: any, nonce: any) => Promise<void>)[]>([]);
   const isInteractProcessingQueue = useRef(false);
   const canInteractTaskExecute = useRef(true);
   const [interactTaskToExecute, setInteractTaskToExecute] = useState(false);
   const [checkInteractTask, setCheckInteractTask] = useState(false);
-  
+
   const interactProcessQueue = async () => {
     if (isInteractProcessingQueue.current) return;
     isInteractProcessingQueue.current = true;
     setInteractTaskToExecute(true)
-     
+
     while (interactTaskQueue.current.length > 0) {
       const nonce = await publicClient.getTransactionCount({ address: palyerAddress })
 
@@ -1173,7 +1161,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         // console.error("task error:", error);
         setInteractTaskToExecute(false);
       }
-      
+
       if (sendCount <= receiveCount) {
         localStorage.setItem('isShowWaitingMaskLayer', 'false')
       }
@@ -1182,7 +1170,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     canInteractTaskExecute.current = true
     isInteractProcessingQueue.current = false;
   };
- 
+
   const interactHandleTCM = async (
     coordinates: any,
     playerAddress: any,
@@ -1202,63 +1190,63 @@ export default function Header({ hoveredData, handleData }: Props) {
         }
         // const score = opRenderingCalc(coordinates.x, coordinates.y, address, TCMPopStar, StarToScore, TokenBalance);
         [popStarId, tokenBalanceId, newRankingRecordId, score] = opRendering(coordinates.x, coordinates.y, address)
-       
+
         if (Number(score) != 0) {
           addScoreBubble(Number(score));
         }
         sendCount += 1;
       }
 
-        interactTaskQueue.current.push(async (execute: boolean, account: any, nonce: any) => {
+      interactTaskQueue.current.push(async (execute: boolean, account: any, nonce: any) => {
         let interact_data;
-       try {
-        if (actionData == "pop") {
-          setCheckInteractTask(true)
-          
-          interact_data = await interactTCM(
-            coordinates,
-            playerAddress,
-            selectedColor,
-            actionData,
-            other_params,
-            popStarId,
-            tokenBalanceId,
-            newRankingRecordId,
-            execute,
-            account,
-            nonce
-          );
-        } else {
-          interact_data = await interactTCM(
-            coordinates,
-            playerAddress,
-            selectedColor,
-            actionData,
-            other_params,
-            null,
-            null,
-            null,
-            true,
-            account,
-            nonce
-          );
-          // setCheckInteractTask(false)
+        try {
+          if (actionData == "pop") {
+            setCheckInteractTask(true)
+
+            interact_data = await interactTCM(
+              coordinates,
+              playerAddress,
+              selectedColor,
+              actionData,
+              other_params,
+              popStarId,
+              tokenBalanceId,
+              newRankingRecordId,
+              execute,
+              account,
+              nonce
+            );
+          } else {
+            interact_data = await interactTCM(
+              coordinates,
+              playerAddress,
+              selectedColor,
+              actionData,
+              other_params,
+              null,
+              null,
+              null,
+              true,
+              account,
+              nonce
+            );
+            // setCheckInteractTask(false)
+          }
+        } catch (error) {
+          actionData == "pop" && (sendCount -= 1)
+          setLoadingSquare(null);
+          // console.log(error);
         }
-       } catch (error) {
-        actionData == "pop" && (sendCount -= 1)
-        setLoadingSquare(null);
-        // console.log(error);
-       }
-        
+
         if (interact_data && interact_data.error) {
-          
+
           actionData == "pop" && (sendCount -= 1)
           isgameOverSet(interact_data.error)
           handleError(interact_data.error);
           setLoadingSquare(null); // 清除 loading 状态
           throwError = true;
           // return;
-        }else if (interact_data[1]) {
+        } else if (interact_data[1]) {
           const receipt = await interact_data[1];
 
           if (receipt.status === "success") {
@@ -1268,7 +1256,7 @@ export default function Header({ hoveredData, handleData }: Props) {
               receiveCount = 0
               // localStorage.setItem('showGameOver', 'false');
               setCheckInteractTask(false)
-            }else if(actionData === "pop"){
+            } else if (actionData === "pop") {
               receiveCount += 1
             }
             setLoading(false);
@@ -1292,11 +1280,11 @@ export default function Header({ hoveredData, handleData }: Props) {
           setLoadingSquare(null); // 清除 loading 状态
           throwError = true;
         }
-        
+
         if (sendCount <= receiveCount) {
           localStorage.setItem('isShowWaitingMaskLayer', 'false')
         }
-        if(throwError){
+        if (throwError) {
           // isInteractProcessingQueue.current = false;
           // canInteractTaskExecute.current = false
           // setInteractTaskToExecute(false);
@@ -1309,14 +1297,14 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
     interactProcessQueue()
   };
-  
+
   const isgameOverSet = async (
     errMessage: any,
   ) => {
-  
+
     const gameOverError = 'Game Over';
     try {
- 
+
       if (errMessage.includes(gameOverError)) {
         // receiveCount = sendCount
         canInteractTaskExecute.current = false
@@ -1326,7 +1314,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       console.error(error);
     }
   }
-  
+
   const addScoreBubble = (score: any) => {
     const scoreBubbleDiv = document.createElement('div');
     scoreBubbleDiv.className = 'score-popup';
@@ -1689,15 +1677,15 @@ export default function Header({ hoveredData, handleData }: Props) {
       // } 
       else if (errorMessage.includes("The contract function \"callFrom\" reverted with the following reason:")) {
         // 不弹框
-      }else if(errorMessage.includes("Insufficient funds for gas * price + value")){
+      } else if (errorMessage.includes("Insufficient funds for gas * price + value")) {
         setShowNewPopUp(true);
-      }else {
+      } else {
         console.error("Unhandled error:", errorMessage);
       }
     } catch (error) {
       console.log(error);
     }
-    
+
   };
 
   const onHandleExe = () => {
@@ -2204,7 +2192,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         </div>
       )}
 
-      {showNewPopUp && localStorage.getItem("isShowWaitingMaskLayer") ==="false" && (
+      {showNewPopUp && localStorage.getItem("isShowWaitingMaskLayer") === "false" && (
         <div className={style.overlaybox}>
           <div className={style.popup}>
             <div className={style.contentbox}>
