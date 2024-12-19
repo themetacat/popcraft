@@ -628,7 +628,8 @@ export function createSystemCalls(
         functionName: "call",
         args: [resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData],
         value: payArgs.totalValue,
-        nonce: nonce
+        nonce: nonce,
+        gas: 8000000n
       });
       
       // const hash = await worldContract.write.call([resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData], { value: payArgs.totalValue });
