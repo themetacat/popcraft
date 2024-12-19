@@ -139,7 +139,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
     const response = await fetch('https://mpapi.mintchain.io/api/popcraft/mp?wallet_address=' + userAddress);
     const data = await response.json();
-    console.log(data);
 
     if (data && data.data) {
       setBalancover(Number(data.data));
@@ -1146,7 +1145,7 @@ export default function Header({ hoveredData, handleData }: Props) {
 
       // setInteractTaskToExecute(true)
       // console.log("current: ", interactTaskQueue.current.length);
-      const tasksToExecute = interactTaskQueue.current.splice(0, 4);
+      const tasksToExecute = interactTaskQueue.current.splice(0, 5);
       // console.log("execute: ", tasksToExecute.length);
       try {
         await Promise.all(
