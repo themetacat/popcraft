@@ -47,7 +47,7 @@ export async function generateRouteMintChain(tokenAddress: string, amount: numbe
     const tokenOut = TOKEN_MAP[lowerCaseTokenAddress];
     const outputAmount = amount * 10 ** tokenOut.decimals
 
-    const response = await fetch('https://api.mintswap.finance/api/v2/quote/best-route?tokenIn=0x4200000000000000000000000000000000000006&tokenOut=' + lowerCaseTokenAddress + '&amount=' + outputAmount + '&tradeType=output');
+    const response = await fetch('https://api.mintswap.finance/api/v2/quote/best-route?tokenIn=0x4200000000000000000000000000000000000006&tokenOut=' + lowerCaseTokenAddress + '&amount=' + BigInt(outputAmount) + '&tradeType=output');
     const data = await response.json();
 
     const bestRoute = data.data.bestRoutes.route;
