@@ -56,13 +56,9 @@ export default function Header({ hoveredData, handleData }: Props) {
       App,
       Pixel,
       TCMPopStar,
-      StarToScore,
-      TokenBalance,
-      GameRecord,
-      GameFailedRecord
     },
-    network: { playerEntity, publicClient, palyerAddress },
-    systemCalls: { interact, interactTCM, registerDelegation, opRendering, rmOverride },
+    network: { publicClient, palyerAddress },
+    systemCalls: { interact, interactTCM, registerDelegation, opRendering },
   } = useMUD();
 
   const { isConnected, address } = useAccount();
@@ -95,7 +91,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [popStar, setPopStar] = useState(false);
   const [pageClick, setPageClick] = useState(false);
   const [GRID_SIZE, setGRID_SIZE] = useState(32);
-  const entities = useEntityQuery([Has(Pixel)]);
+  // const entities = useEntityQuery([Has(Pixel)]);
   const entities_app = useEntityQuery([Has(App)]);
   const [mainContent, setMainContent] = useState("MAINNET");
   const [TCMPopStarData, setTCMPopStarData] = useState(null);
@@ -428,26 +424,26 @@ export default function Header({ hoveredData, handleData }: Props) {
     setIsLongPress(false);
   };
 
-  const entityData: { coordinates: { x: number; y: number }; value: any }[] =
-    [];
-  if (entities.length !== 0) {
-    entities.forEach((entity) => {
-      const coordinates = decodeEntity({ x: "uint32", y: "uint32" }, entity);
-      const value = getComponentValueStrict(Pixel, entity);
-      if (value.text === "_none") {
-        value.text = "";
-      }
-      if (value.color === "0") {
-        value.color = "#2f1643";
-      }
-      entityData.push({ coordinates, value });
-    });
-  }
-  const getEntityAtCoordinates = (x: number, y: number) => {
-    return entityData.find(
-      (entity) => entity.coordinates.x === x && entity.coordinates.y === y
-    );
-  };
+  // const entityData: { coordinates: { x: number; y: number }; value: any }[] =
+  //   [];
+  // if (entities.length !== 0) {
+  //   entities.forEach((entity) => {
+  //     const coordinates = decodeEntity({ x: "uint32", y: "uint32" }, entity);
+  //     const value = getComponentValueStrict(Pixel, entity);
+  //     if (value.text === "_none") {
+  //       value.text = "";
+  //     }
+  //     if (value.color === "0") {
+  //       value.color = "#2f1643";
+  //     }
+  //     entityData.push({ coordinates, value });
+  //   });
+  // }
+  // const getEntityAtCoordinates = (x: number, y: number) => {
+  //   return entityData.find(
+  //     (entity) => entity.coordinates.x === x && entity.coordinates.y === y
+  //   );
+  // };
 
   const appName = localStorage.getItem("manifest") as any;
   const parts = appName?.split("/") as any;
@@ -724,7 +720,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       numberData,
       TCMPopStarData,
       CANVAS_WIDTH,
-      getEntityAtCoordinates,
+      // getEntityAtCoordinates,
       CANVAS_HEIGHT,
       selectedColor,
       scrollOffset,
@@ -809,58 +805,58 @@ export default function Header({ hoveredData, handleData }: Props) {
           ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
           ctx.fillStyle = "#2f1643";
           ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-          const entity = getEntityAtCoordinates(i, j) as any;
-          if (entity) {
-            if (entity.value.owner !== undefined && tcmTokenAddrDict[entity.value.owner] === undefined) {
-              const TCMPopStarDataFun = getComponentValue(
-                TCMPopStar,
-                // addressToEntityID(entity.value.owner)
-              );
-              if (TCMPopStarDataFun?.tokenAddressArr !== undefined) {
-                tcmTokenAddrDict[entity.value.owner] = TCMPopStarDataFun?.tokenAddressArr
-              }
-            }
-            //渲染背景
-            if (entity.value.app !== "PopCraft") {
-              ctx.fillStyle = entity.value.color;
-              ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-            }
-            // entity.value.app === "PopCraft"
-            if (entity.value.app === "PopCraft" && entity.value.owner !== undefined && tcmTokenAddrDict[entity.value.owner] !== undefined) {
+          // const entity = getEntityAtCoordinates(i, j) as any;
+          // if (entity) {
+          //   if (entity.value.owner !== undefined && tcmTokenAddrDict[entity.value.owner] === undefined) {
+          //     const TCMPopStarDataFun = getComponentValue(
+          //       TCMPopStar,
+          //       // addressToEntityID(entity.value.owner)
+          //     );
+          //     if (TCMPopStarDataFun?.tokenAddressArr !== undefined) {
+          //       tcmTokenAddrDict[entity.value.owner] = TCMPopStarDataFun?.tokenAddressArr
+          //     }
+          //   }
+          //   //渲染背景
+          //   if (entity.value.app !== "PopCraft") {
+          //     ctx.fillStyle = entity.value.color;
+          //     ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
+          //   }
+          //   // entity.value.app === "PopCraft"
+          //   if (entity.value.app === "PopCraft" && entity.value.owner !== undefined && tcmTokenAddrDict[entity.value.owner] !== undefined) {
 
-              if (Number(entity?.value?.text) > 0) {
-                const img = new Image();
-                img.src =
-                  imageIconData[
-                    tcmTokenAddrDict[entity?.value.owner][Number(entity?.value?.text) - 1]
-                  ]?.src;
-                if (img.src !== undefined) {
-                  ctx.drawImage(img, currentX, currentY, GRID_SIZE, GRID_SIZE);
-                }
-              } else {
-                ctx.fillStyle = entity.value.color;
-                ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-              }
-            }
-            if (entity.value.text && entity.value.app !== "PopCraft") {
-              ctx.fillStyle = "#000";
-              ctx.textAlign = "center";
-              ctx.textBaseline = "middle";
-              if (
-                entity.value.text &&
-                /^U\+[0-9A-Fa-f]{4,}$/.test(entity.value.text)
-              ) {
-                pix_text = String.fromCodePoint(
-                  parseInt(entity.value.text.substring(2), 16)
-                );
-              } else {
-                pix_text = entity.value.text;
-              }
-              const textX = currentX + GRID_SIZE / 2;
-              const textY = currentY + GRID_SIZE / 2;
-              ctx.fillText(pix_text, textX, textY);
-            }
-          }
+          //     if (Number(entity?.value?.text) > 0) {
+          //       const img = new Image();
+          //       img.src =
+          //         imageIconData[
+          //           tcmTokenAddrDict[entity?.value.owner][Number(entity?.value?.text) - 1]
+          //         ]?.src;
+          //       if (img.src !== undefined) {
+          //         ctx.drawImage(img, currentX, currentY, GRID_SIZE, GRID_SIZE);
+          //       }
+          //     } else {
+          //       ctx.fillStyle = entity.value.color;
+          //       ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
+          //     }
+          //   }
+          //   if (entity.value.text && entity.value.app !== "PopCraft") {
+          //     ctx.fillStyle = "#000";
+          //     ctx.textAlign = "center";
+          //     ctx.textBaseline = "middle";
+          //     if (
+          //       entity.value.text &&
+          //       /^U\+[0-9A-Fa-f]{4,}$/.test(entity.value.text)
+          //     ) {
+          //       pix_text = String.fromCodePoint(
+          //         parseInt(entity.value.text.substring(2), 16)
+          //       );
+          //     } else {
+          //       pix_text = entity.value.text;
+          //     }
+          //     const textX = currentX + GRID_SIZE / 2;
+          //     const textY = currentY + GRID_SIZE / 2;
+          //     ctx.fillText(pix_text, textX, textY);
+          //   }
+          // }
         }
       }
 
@@ -886,7 +882,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       numberData,
       TCMPopStarData,
       CANVAS_WIDTH,
-      getEntityAtCoordinates,
+      // getEntityAtCoordinates,
       CANVAS_HEIGHT,
       selectedColor,
       scrollOffset,
@@ -1741,24 +1737,26 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (canvas && entityData.length > 0) {
+    // if (canvas && entityData.length > 0) {
+      if (canvas) {
       const ctx = canvas.getContext("2d");
-      if (ctx && appName !== "BASE/PopCraftSystem") {
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        drawGrid(ctx, hoveredSquare, false);
-      } else {
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        drawGrid2(ctx, hoveredSquare, true);
-
-      }
+    //   if (ctx && appName !== "BASE/PopCraftSystem") {
+    //     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    //     drawGrid(ctx, hoveredSquare, false);
+    //   } else {
+    if(ctx){
+      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      drawGrid2(ctx, hoveredSquare, true);
     }
+      }
+    // }
   }, [
     appName,
     drawGrid,
     drawGrid2,
     CANVAS_WIDTH,
     CANVAS_HEIGHT,
-    entityData.length,
+    // entityData.length,
     hoveredSquare,
     mouseX,
     mouseY,
