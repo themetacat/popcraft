@@ -2045,6 +2045,10 @@ export default function Header({ hoveredData, handleData }: Props) {
                             {account.displayBalance
                               ? ` (${formatBalance(balancover)}  ${currencySymbol})`
                               : ""}
+                              <img
+                                src={Arrow}
+                                className={`${style.arrow} ${isOpen ? style.arrowRotated : ''}`}
+                               />
                           </button>
 
                           {addressModel && (
