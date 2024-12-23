@@ -368,11 +368,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           amount: quantity,
         };
         setLoadingPrices(prev => ({ ...prev, [key]: false }));
-        if (lastPrices[key]?.price !== price) {
+        // if (lastPrices[key]?.price !== price) {
           return { [key]: { price, methodParameters } };
-        } else {
-          return { [key]: { price: lastPrices[key]?.price, methodParameters: lastPrices[key]?.methodParameters } };
-        }
+        // } else {
+        //   return { [key]: { price: lastPrices[key]?.price, methodParameters: lastPrices[key]?.methodParameters } };
+        // }
       } else {
         return { [key]: { price: 0, methodParameters: {} } };
       }
@@ -380,11 +380,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     const prices = await Promise.all(pricePromises);
     const priceObject = prices.reduce((acc, curr) => ({ ...acc, ...curr }), {});
     const total = Object.values(priceObject).reduce((sum, { price }) => sum + Number(price), 0);
-    setLastPrices(priceObject);
+    // setLastPrices(priceObject);
     setPrices(priceObject);
     setTotalPrice(total);
     return priceObject;
-  }, [numberData, lastPrices, recipient]);
+  }, [numberData, recipient]);
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -425,22 +425,24 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           amount: quantity,
         };
 
-        if (lastPrices[key]?.price !== price) {
+        // if (lastPrices[key]?.price !== price) {
           setPrices(prev => ({
             ...prev,
             [key]: { price, methodParameters }
           }));
+          
           setLoadingPrices(prev => ({ ...prev, [key]: false }));
           updateTotalPrice();
-        } else {
-          setLoadingPrices(prev => ({ ...prev, [key]: false }));
-        }
+        // } else {
+        //   setLoadingPrices(prev => ({ ...prev, [key]: false }));
+        // }
+        
       } catch (error) {
         console.error(`Error fetching price for ${key}:`, error);
         setLoadingPrices(prev => ({ ...prev, [key]: false }));
       }
     }
-  }, [lastPrices, recipient]);
+  }, [recipient]);
 
   useEffect(() => {
     const initialData = {};
