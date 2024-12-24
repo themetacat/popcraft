@@ -769,6 +769,7 @@ export function createSystemCalls(
       if (rankingRecordData) {
         const newRankingRecord = {
           ...rankingRecordData,
+          totalScore: rankingRecordData.totalScore as bigint + score,
           latestScores: rankingRecordData.latestScores as bigint + score
         };
         rankingRecordId = uuid();
