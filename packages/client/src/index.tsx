@@ -9,6 +9,9 @@ import './polyfills';
 import {
   rainbowWallet,
   metaMaskWallet,
+  okxWallet,
+  coinbaseWallet,
+  trustWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { getDefaultConfig, RainbowKitProvider, lightTheme } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
@@ -37,7 +40,7 @@ const config = getDefaultConfig({
   projectId: 'YOUR_PROJECT_ID',
   wallets: [{
     groupName: 'Recommended',
-    wallets: [ metaMaskWallet],
+    wallets: [metaMaskWallet, coinbaseWallet, okxWallet, trustWallet],
   }],
   chains: [
     mintchain,
