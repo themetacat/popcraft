@@ -720,3 +720,43 @@ canvas {
   transition: left 0.1s ease; /* 平滑的动画效果 */
   white-space: nowrap; /* 防止数字换行 */
 }
+
+.bottomLeftText {
+  bottom: 1%;
+  left: 11%;
+  position: absolute;
+  margin: 0 auto;
+  transform: translate(-50%, -50%);
+  text-align: left;
+  text-transform: uppercase;
+  /* color: #26737d; */
+  color: #00AB6B;
+  font-size: calc(0.35vw + 0.35vh + 0.35em);
+  border: none;
+  letter-spacing: 0.0625rem; 
+  /* text-shadow: */
+  /* -0.125rem -0.125rem 0 rgba(255, 255, 255, 0.7), 
+  0.125rem -0.125rem 0 rgb(255, 255, 255), 
+  -0.125rem 0.125rem 0 rgba(255, 255, 255, 0.7),
+  0.125rem 0.125rem 0 rgba(255, 255, 255, 0.7), 
+  0 0 0.3125rem rgba(163, 229, 181, 0.9),
+  0 0 0.625rem rgba(104, 183, 127, 0.8),
+  0 0 0.9375rem rgba(185, 244, 201, 0.6); */
+  font-family: "AdobeHeitiStd-Regular";
+}
+
+/* @font-face {
+  font-family: "Simplicity";
+  src: url("/fonts/Simplicity.woff2");
+} */
+
+@font-face {
+  font-family: "AdobeHeitiStd-Regular";
+  src: url("/fonts/BRLNSR.woff2");
+  font-display: block;
+}
+
+.bottomLeftText p {
+  margin-bottom: 0.8rem; 
+  letter-spacing: 0.2rem;
+}

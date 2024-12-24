@@ -30,6 +30,7 @@ import { addressToEntityID } from "../rightPart";
 import BGMOn from "../../images/BGMOn.webp";
 import BGMOff from "../../images/BGMOff.webp";
 import { error } from "@latticexyz/common/src/debug";
+import BotInfo from "./botInfo"
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -1883,6 +1884,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         </div>
       )}
 
+
       <div className={style.container}>
         <img className={style.containerImg} src={popcraftLogo} alt="PopCraft Logo" />
         <div className={style.content}>
@@ -2273,6 +2275,7 @@ export default function Header({ hoveredData, handleData }: Props) {
               }
           `}
       </style>
+      <BotInfo/>
     </>
   );
 }
