@@ -22,6 +22,7 @@
   padding: 24px;
   display: flex;
   gap: 15px;
+  z-index: 9999; /* 确保媒体链接始终在页面显示 */
 }
 .buttonBox img {
   max-width: 30px;
