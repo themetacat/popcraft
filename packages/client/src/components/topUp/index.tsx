@@ -4,6 +4,7 @@ import trunOff from "../../images/turnOffBtntopup.webp"
 import toast, { Toaster } from "react-hot-toast";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import warningImg from "../../images/warning.png";
+import warningImgBlack from "../../images/warningBlack.png";
 import FrameIcon from "../../images/Frame 29Icon.png";
 import UnioncopyBtn from "../../images/UnioncopyBtn.png";
 import openEye from "../../images/openEye.png";
@@ -349,7 +350,7 @@ export default function TopUp({
                     <span className={style.titleOne}>SESSION WALLET</span>
                   </p>
                   <img
-                    src={warningImg}
+                    src={warningImgBlack}
                     alt="Warning"
                     className={style.warningImg}
                     onMouseEnter={() => setWarningModel(true)}
@@ -408,7 +409,7 @@ export default function TopUp({
 
                 <div className={style.prvkey}>
                   <p className={style.pqad}>PRIVATE KEY</p>
-                  <div style={{ display: "flex", gap: "4px" }}>
+                  <div style={{ display: "flex", gap: "4px", marginTop: "-0.4rem" }}>
                     <input
                       type={showPassword === true ? "text" : "password"}
                       value={privateKey}
@@ -434,15 +435,24 @@ export default function TopUp({
                       }}
                     />
                   </div>
+                 
                   <p className={style.prilf}>
-                    Save the private key as soon as possible
+                  <img
+                    src={warningImgBlack}
+                    alt="Warning"
+                    className={style.warningImg2}
+                  />
+                  &nbsp;&nbsp;Save the private key as soon as possible.
+                  <br />
+                  &nbsp;Avoid clearing the cache during the game, or your 
+                  <br />
+                  &nbsp;session wallet may reset !!!
                   </p>
                 </div>
               </div>
               <div className={style.partFour}>
                 <p className={style.partFourFont}>
-                  Every onchain interaction uses gas. Top up your
-                  gas balance with funds from any chain.
+                  Every onchain interaction uses gas. Top up any amount to your session wallet.
                 </p>
                 <div className={style.partImo}>
                   <div
