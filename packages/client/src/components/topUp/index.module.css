@@ -169,12 +169,13 @@
 }
 .prilf {
   font-family: Silkscreen;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 400;
   letter-spacing: 0.1em;
   text-align: left;
   color: #e38666;
-  text-transform: uppercase;
+  margin-top: -1rem;
+  /* text-transform: uppercase; */
   font-family: "AdobeHeitiStd-Regular"
 }
 .onePart {
@@ -309,12 +310,12 @@
 }
 .partContent {
   width: 55rem;
-  height: 25rem;
+  height: 29rem;
   opacity: 0px;
   margin: 0 auto;
   background-color: #fff2c8;
   border-radius: 1rem;
-  margin-top: -13rem;
+  margin-top: -12.6rem;
 }
 .inputCon {
   background: none;
@@ -333,14 +334,25 @@
   align-items: center;
 }
 .warningImg {
-  width: 2.2rem;
-  height: 2rem;
+  width: 3.5rem;
+  height: 3rem;
   margin-left: 0.8rem;
   margin-top: 1.3rem;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
 .warningImg:hover {
+  transform: scale(1.2);
+}
+.warningImg2 {
+  width: 3rem;
+  height: 2.5rem;
+  margin-left: 0.8rem;
+  /* margin-top: -1rem; */
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.warningImg2:hover {
   transform: scale(1.2);
 }
 .imgUnioncopyBtn {
@@ -385,6 +397,7 @@
   font-size: 1.8rem;
   font-weight: 400;
   letter-spacing: 0.1em;
+  margin-top: 0.6rem;
   text-align: left;
   color: #999999;
   font-family: "AdobeHeitiStd-Regular";
@@ -457,13 +470,13 @@
   }
 }
 .partFourFont {
-  font-size: 2rem;
+  font-size: 2.3rem;
   font-weight: 400;
   line-height: 3.3rem;
   opacity: 0px;
   display: grid;
   color: #000000;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   font-family: "AdobeHeitiStd-Regular";
   margin-left: 1rem;
   margin-top: -4rem;
