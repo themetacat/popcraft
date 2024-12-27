@@ -1,4 +1,5 @@
 import style from "./index.module.css";
+import howToPlayStyle from "./howToPlay.module.css"
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import loadingIcon from "../../images/welcome_pay_play_loading.webp";
 import trunOff from "../../images/turnOffBtn.webp";
@@ -20,6 +21,7 @@ import { useTopUp } from "../select";
 import { encodeEntity } from "@latticexyz/store-sync/recs";
 import { getComponentValue } from "@latticexyz/recs";
 import substanceImg from "../../images/substance/substance.webp";
+import HowToPlay from "./HowToPlay";
 
 interface Props {
   coordinates: any;
@@ -29,9 +31,10 @@ interface Props {
   setPopStar: any;
   showTopElements: any;
   interactTaskToExecute: any,
-  checkInteractTask: any
+  checkInteractTask: any,
+  popStar: boolean
 }
-export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, showTopElements, interactTaskToExecute, checkInteractTask }: Props) {
+export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, showTopElements, interactTaskToExecute, checkInteractTask, popStar }: Props) {
   const {
     components: {
       TCMPopStar,
@@ -73,6 +76,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [loadingPrices, setLoadingPrices] = useState({});
   const [lastPrices, setLastPrices] = useState({});
   const { rewardInfo, rewardDescInfo, recipient, chainId } = useTopUp();
+  const [ showHowToPlay, setShowHowToPlay ] = useState(false);
+
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
@@ -941,6 +946,25 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           </div>
         </div>
       ) : null}
+
+    <div className={howToPlayStyle.threePart}>
+      <button
+      className={`${howToPlayStyle.btnHtp} ${popStar === true && (!isConnected || localStorage.getItem('playAction') !== 'gameContinue') ? '': howToPlayStyle.alt}`}
+        // className={howToPlayStyle.btnHtp}
+        onClick={async () => {
+          setShowHowToPlay(true);
+        }}
+      >
+        <span>HOW TO PLAY</span>
+      </button>
+    </div>
+
+      {showHowToPlay && (
+        <div className={style.overlay}>
+          <HowToPlay setShowHowToPlay={setShowHowToPlay}
+          />
+        </div>
+      )}
 
       <div className={style.buttonBox}>
         <a href="https://x.com/popcraftonchain" target="_blank" rel="noopener noreferrer">
