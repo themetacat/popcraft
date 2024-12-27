@@ -2184,6 +2184,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           setPopStar={setPopStar}
           interactTaskToExecute={interactTaskToExecute}
           checkInteractTask={checkInteractTask}
+          popStar={popStar}
         />
       ) : null}
 
