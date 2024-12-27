@@ -21,12 +21,12 @@
   /* height: 64px; */
   padding: 4rem;
   display: flex;
-  gap: 15px;
+  gap: 1.6rem;
   z-index: 9999; /* 确保媒体链接始终在页面显示 */
 }
 .buttonBox img {
-  max-width: 30px;
-  max-height: 30px;
+  max-width: 4rem;
+  max-height: 4rem;
   cursor: pointer;
 }
 .container2 {
