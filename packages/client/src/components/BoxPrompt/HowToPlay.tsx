@@ -55,7 +55,7 @@ export default function HowToPlay({setShowHowToPlay}: Props) {
                         </div>
                         <div className={howToPlayStyle.part2LeftdataRow}>
                             <img src={leaderboard2} alt="" className={howToPlayStyle.icon} />
-                            <span>2nd 3000 MP</span>
+                            <span>2nd: 3000 MP</span>
                         </div>
                         <div className={howToPlayStyle.part2LeftdataRow}>
                             <img src={leaderboard3} alt="" className={howToPlayStyle.icon} />
