@@ -17,6 +17,9 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import toast from "react-hot-toast";
 import success from '../../images/substance/successto.png'
 import failto from '../../images/substance/failto.png'
+import { encodeEntity } from "@latticexyz/store-sync/recs";
+import { Hex } from "viem";
+import { useAccount } from 'wagmi';
 
 
 interface PriceDetails {
@@ -31,7 +34,8 @@ interface Props {
 export default function TopBuy({ setShowTopBuy }: Props) {
     const {
         components: {
-            Token
+            Token,
+            TokenBalance
         },
         network: { palyerAddress },
         systemCalls: { payFunction, },
@@ -48,6 +52,8 @@ export default function TopBuy({ setShowTopBuy }: Props) {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
+    const { address } = useAccount();
+    const [tokenBalance, setTokenBalance] = useState<{ [key: string]: string }>({});
 
     useEffect(() => {
         // const token = getComponentValue(Token, numToEntityID(0));
@@ -89,6 +95,35 @@ export default function TopBuy({ setShowTopBuy }: Props) {
         }
         
       }, [numberData, chainId, recipient]);
+
+    useEffect(() => {
+        if(address){
+            allTokenAddr.forEach((tokenAddress) => {
+                const balance = getComponentValue(
+                    TokenBalance,
+                    addressToEntityIDTwo(address, tokenAddress as Hex)
+                  );
+                  if(balance){
+                    setTokenBalance((prevBalance) => ({
+                        ...prevBalance,
+                        [tokenAddress]: (balance.balance as bigint / BigInt(10 ** 18)).toString(),
+                      }));
+                  }else{
+                    setTokenBalance((prevBalance) => ({
+                        ...prevBalance,
+                        [tokenAddress]: "0",
+                      }));
+                  }
+            })
+        }
+    }, [allTokenAddr, address, showSuccessModal])
+
+
+    const addressToEntityIDTwo = (address: Hex, addressTwo: Hex) =>
+        encodeEntity(
+          { address: "address", addressTwo: "address" },
+          { address, addressTwo }
+        );
 
     const formatAmount = (amount: any) => {
         return parseFloat(amount).toFixed(8);
@@ -332,12 +367,13 @@ export default function TopBuy({ setShowTopBuy }: Props) {
             <div className={topBuyStyle.buyBoxContent}>
                 {Object.entries(buyData).map(([key, { src, name }]) => (
                     <div key={key} className={style.firstBuy}>
-                        <img src={src} alt={name} className={style.itemImage} />
-                        <div className={style.itemNameto}>
+                        <img src={src} alt={name} className={topBuyStyle.itemImage} />
+                        <div className={topBuyStyle.iconFont} > {tokenBalance[key]}</div>
+                        <div className={style.itemNameto} style={{marginLeft: "5px"}}>
                             <div className={style.itemName}>
                                 <span className={style.itemNameText}>{name}</span>
                             </div>
-                            <div className={style.dataIcon}>
+                            <div className={style.dataIcon} style={{marginLeft: "5px"}}>
                                 <button
                                     onClick={() => {
                                         downHandleNumber(key);
