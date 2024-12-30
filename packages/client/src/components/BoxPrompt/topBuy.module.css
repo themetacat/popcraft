@@ -22,3 +22,27 @@
 /* .buyBoxContent::-webkit-scrollbar-track{
   background: transparent; 
 } */
+
+.iconFont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    color: #ffffff;
+    background-color: #ffb739;
+    width: 22px;
+    height: 22px;
+    gap: 10px;
+    font-family: "Alibaba-PuHuiTi-TIMESBD";
+    font-size: 15px;
+    margin-left: -25px;
+    margin-top: 48px;
+}
+
+.itemImage {
+    width: 69px;
+    height: 65px;
+    margin-right: 0px;
+    flex-shrink: 0;
+    margin-left: 8px;
+}
