@@ -666,6 +666,7 @@ p {
   position: absolute;
   left: 425px;
   top: 12px;
+  cursor: pointer;
 }
 
 .buyBoxContent {
