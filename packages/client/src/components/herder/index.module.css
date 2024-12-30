@@ -201,6 +201,22 @@ canvas {
   cursor: pointer;
 }
 
+.buyButton {
+  height: 5rem;
+  width: 13rem;
+  position: relative;
+  display: flex;
+  border-radius: 30rem;
+  align-items: center;
+  justify-content: center;
+  background-color: #2b8e9d;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 2.3rem;
+  font-weight: bold;
+  letter-spacing: 0.15rem;
+}
+
 canvas {
   border: none;
   z-index: 1 !important;
@@ -621,6 +637,35 @@ canvas {
 }
 
 .RankingListimgNotConnected img:hover {
+  transform: scale(1.1);
+}
+
+.TopBuyImg {
+  display: flex;
+  margin-left: 5rem;
+}
+
+.TopBuyImg img {
+  width: 6rem;
+  height: 6rem;
+  transition: transform 0.3s ease;
+}
+
+.TopBuyImg img:hover {
+  transform: scale(1.1);
+}
+
+.TopBuyImgNotConnected {
+  margin-left: 35rem;
+}
+
+.TopBuyImgNotConnected img {
+  width: 6rem;
+  height: 6rem;
+  transition: transform 0.3s ease;
+}
+
+.TopBuyImgNotConnected img:hover {
   transform: scale(1.1);
 }
 

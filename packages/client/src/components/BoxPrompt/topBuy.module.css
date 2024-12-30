@@ -1,0 +1,24 @@
+.buyBoxContent {
+  margin-top: 30px;
+  height: 411px;
+  overflow-y: auto;
+  width: 394px;
+  margin-left: 8px;
+}
+
+.buyBoxContent::-webkit-scrollbar {
+  width: 7px;
+}
+
+.buyBoxContent::-webkit-scrollbar-thumb {
+  background-color: #93dfea;
+  border-radius: 10px;
+}
+
+.buyBoxContent::-webkit-scrollbar-thumb:hover {
+  cursor: pointer;
+}
+
+/* .buyBoxContent::-webkit-scrollbar-track{
+  background: transparent; 
+} */

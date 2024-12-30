@@ -31,6 +31,7 @@ import BGMOn from "../../images/BGMOn.webp";
 import BGMOff from "../../images/BGMOff.webp";
 import { error } from "@latticexyz/common/src/debug";
 import BotInfo from "./botInfo"
+import TopBuy from "../BoxPrompt/TopBuy"
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -111,6 +112,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [showNewPopUp, setShowNewPopUp] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showRankingList, setShowRankingList] = useState(false);
+  const [showTopBuy, setShowTopBuy] = useState(false);
   const [balancover, setBalancover] = useState(0);
   const { balanceCheck, currencySymbol, chainId } = useTopUp();
   const [isOpen, setIsOpen] = useState(false);
@@ -1831,6 +1833,11 @@ export default function Header({ hoveredData, handleData }: Props) {
   const rankTransports = () => {
     setShowRankingList(true)
   }
+
+  const topBuyTransports = () => {
+    setShowTopBuy(true)
+  }
+  
   // const toggleDropdown = () => {
   //   setIsOpen(!isOpen);
   // };
@@ -1921,7 +1928,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           >
             <img src={RankingListimg} alt="" />
           </div>
-
+          
           <ConnectButton.Custom>
             {({
               account,
@@ -1979,6 +1986,15 @@ export default function Header({ hoveredData, handleData }: Props) {
                     return (
                       // <div>
                       <div className={style.chainbox}>
+                        <div
+                          className={style.buyButton}
+                          onClick={() => topBuyTransports()}
+                          style={{
+                            cursor: "pointer",
+                          }}
+                        >
+                          BUY
+                        </div>
                         {/* <div className={style.chain}>
                             <button
                               onClick={(event) => {
@@ -2195,6 +2211,14 @@ export default function Header({ hoveredData, handleData }: Props) {
           />
         </div>
       )}
+      
+      {showTopBuy && isConnected ? (
+        <div className={style.overlay}>
+          <TopBuy
+          setShowTopBuy={setShowTopBuy}
+          />
+        </div>
+      ) : null}
 
       {showNewPopUp && localStorage.getItem("isShowWaitingMaskLayer") === "false" && (
         <div className={style.overlaybox}>
