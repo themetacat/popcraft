@@ -72,6 +72,39 @@ canvas {
   left: 1.5rem;
 }
 
+.gasPriceContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 7rem;
+  font-size: clamp(1.125rem, 1.875vw + 0.75rem, 2.25rem);
+  color: #fff;
+  position: fixed;
+  top: 2rem;
+  left: 27rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  margin: 0 1rem;
+}
+
+.gasPriceContainer span {
+  margin-left: 0.5rem;
+  color: #edf74c;
+}
+
+.gasPriceContainer a {
+  text-decoration: none;
+  color: #edf74c;
+}
+
+.gasPriceContainer a:hover {
+  text-decoration: underline;
+}
+
+.gasPricePlaceHolder {
+  font-weight: bold;
+}
+
 .addr {
   display: flex;
   align-items: center;
@@ -228,7 +261,7 @@ canvas {
 }
 
 .content {
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   width: 47.8125rem;
@@ -244,7 +277,6 @@ canvas {
   background-position: center;
   background-repeat: no-repeat;
   font-size: 3rem;
-  display: flex;
 }
 
 .spanData {
