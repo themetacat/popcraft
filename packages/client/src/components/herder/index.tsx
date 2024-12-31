@@ -1923,6 +1923,7 @@ export default function Header({ hoveredData, handleData }: Props) {
                   <span className={style.gasPricePlaceHolder}>{gasPrice || " "}</span> Gwei
                 </a>
             </span>
+            <span className={style.tooltip}>Gaming costs less at ~5 Gwei.</span>
         </div>
         <div className={style.content}>
           <button
