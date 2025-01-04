@@ -218,3 +218,7 @@
     scrollbar-width: thin;
     scrollbar-color: #fff1c8 #d3724c; 
 }
+
+.noLinkStyle {
+    color: inherit; /* 继承父元素的颜色 */
+}

@@ -28,6 +28,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
         components: {
             RankingRecord, GameRecord, DayToScore, StarToScore,
         },
+        network: { publicClient },
     } = useMUD();
     const { address, isConnected } = useAccount();
 
@@ -194,7 +195,11 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                             <span className={style.youSpan}>(You)</span>
                                         )}
                                     </td>
-                                    <td>{formatAddress(item.entity)}</td>
+                                    <td>
+                                        <a className={style.noLinkStyle} href={`https://${publicClient.chain.id === 185 ? 'explorer.mintchain.io' : publicClient.chain.id === 690 ? 'explorer.redstone.xyz' : 'etherscan.io'}/address/${item.entity}`} target="_blank">
+                                            {formatAddress(item.entity)}
+                                        </a>
+                                    </td>
                                     <td>{item.totalScore}</td>
                                     <td>{item.bestScore}</td>
                                     <td>{formatTime(item.shortestTime)}</td>
