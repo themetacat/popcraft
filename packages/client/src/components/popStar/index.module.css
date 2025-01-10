@@ -18,7 +18,6 @@ p {
 .title {
   width: 52.5rem;
   height: 3.75rem;
-  font-weight: 700;
   font-size: 3rem;
   line-height: 10rem;
   color: #ffffff;
@@ -29,6 +28,7 @@ p {
   justify-content: center;
   margin-top: 7.2rem;
   margin-left: 8rem;
+  font-family: "MyriadPro";
 }
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
