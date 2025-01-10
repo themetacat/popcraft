@@ -1991,15 +1991,13 @@ export default function Header({ hoveredData, handleData }: Props) {
                     return (
                       // <div>
                       <div className={style.chainbox}>
-                        <div
-                          className={style.buyButton}
+                        <button className={style.buyButton}
                           onClick={() => topBuyTransports()}
                           style={{
                             cursor: "pointer",
-                          }}
-                        >
-                          BUY
-                        </div>
+                          }}>
+                            BUY
+                        </button>
                         {/* <div className={style.chain}>
                             <button
                               onClick={(event) => {
