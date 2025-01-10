@@ -474,7 +474,7 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
                                             }
                                         </button>
                                     </div>
-                                    {currentLevel === 1 && (
+                                    {/* {currentLevel === 1 && (
                                         <div className={plantsStyle.progressContainer}>
                                             <div
                                                 className={plantsStyle.progressBar}
@@ -496,7 +496,7 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
                                                     )
                                                 }</button>
                                         </div>
-                                    )}
+                                    )} */}
                                 </div>
                             </div>
 
