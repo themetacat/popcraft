@@ -136,8 +136,6 @@ export default function LightAnimation() {
         animate();
 
         const generationTimeout = setTimeout(() => {
-            console.log(1);
-            
             isGenerating = false;
         }, 1500);
 

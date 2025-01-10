@@ -82,6 +82,7 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
         const nonce = await publicClient.getTransactionCount({ address: palyerAddress })
         
         if (currentLevel === 0 || isCollectSeed) {
+            setIsBloom(false);
             callPlants = await collectSeed(address, nonce);
         } else {
             callPlants = await grow(address, nonce);
@@ -89,9 +90,6 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
 
         if (currentLevel === 4) {
             setIsBloom(true);
-            // setTimeout(() => {
-            //     setIsBloom(false);
-            // }, 10000);
         }
 
         if (callPlants && callPlants.error) {
@@ -112,16 +110,29 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
             setTotalPlantsAmount(Number(totalPlants.totalAmount));
         }
 
+        // const plantsLevelInfo = getComponentValue(
+        //     PlantsLevel,
+        //     twoNumToEntityID(1, 1)
+        // );
+        // if (plantsLevelInfo) {
+        //     setNeedScore(Number(plantsLevelInfo.score));
+        //     setLevelIntervalTime(Number(plantsLevelInfo.intervalTime));
+        // }
+        updateCurrentLevelInfo();
+        setIsBloom(false);
+    }, [address])
+
+    const updateCurrentLevelInfo = (plantsId: number = 1, level: number = 1) => {
+        plantsId = plantsId ? plantsId : 1;
         const plantsLevelInfo = getComponentValue(
             PlantsLevel,
-            twoNumToEntityID(1, 1)
+            twoNumToEntityID(plantsId, level)
         );
         if (plantsLevelInfo) {
             setNeedScore(Number(plantsLevelInfo.score));
             setLevelIntervalTime(Number(plantsLevelInfo.intervalTime));
         }
-        setIsBloom(false);
-    }, [address])
+    }
 
     const getPlantingRecords = (totalPlantsAmount: number) => {
         if (address) {
@@ -245,7 +256,7 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
                 if (changeTimes > 3) {
                     changeTimes = 3;
                 }
-                setChangeScore(20 + changeTimes * 10);
+                setChangeScore(20 + changeTimes * 10);  //!!!!!
             } else if (currentLevel === 2) {
                 setCurrentLevelName("Sprout");
                 setButtonText("Grow Leaves")
@@ -258,6 +269,8 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
             }
             setGrowTime(Number(currentPlants.growTime));
             const plantsId = Number(currentPlants.plantsId);
+            updateCurrentLevelInfo(plantsId, currentLevel + 1);
+
             if (plantsId) {
                 const plantsInfo = getComponentValue(
                     Plants,
@@ -267,18 +280,14 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
                     setPlantsTotalLevel(Number(plantsInfo.plantLevel))
                     setCurrentPlantName(plantsInfo.plantName as string);
                 }
-                const plantsLevelInfo = getComponentValue(
-                    PlantsLevel,
-                    twoNumToEntityID(plantsId, currentLevel + 1)
-                );
-                if (plantsLevelInfo) {
-                    setNeedScore(Number(plantsLevelInfo.score));
-                    setLevelIntervalTime(Number(plantsLevelInfo.intervalTime));
-                }
-            }else{
-                setNeedScore(10) //!!!!
-                // setCurrentPlantName('');
-                setLevelIntervalTime(0);
+                // const plantsLevelInfo = getComponentValue(
+                //     PlantsLevel,
+                //     twoNumToEntityID(plantsId, currentLevel + 1)
+                // );
+                // if (plantsLevelInfo) {
+                //     setNeedScore(Number(plantsLevelInfo.score));
+                //     setLevelIntervalTime(Number(plantsLevelInfo.intervalTime));
+                // }
             }
         } else {
             setCurrentLevelName("Seed");
@@ -536,7 +545,6 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
                     <div className={plantsStyle.btnTips}>1</div>
                 )}
             </div>
-            {/* <button className={plantsStyle.myPlantsBtn} onClick={() => myPlantsTransports(!showMyPlants)}>My Plants</button> */}
         </div>
     );
 }
