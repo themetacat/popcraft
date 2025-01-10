@@ -343,7 +343,7 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
             } else if (errMessage.includes("Transaction timeout")) {
                 toastError = "Transaction timeout!";
             } else if (errMessage.includes("replacement transaction underpriced")) {
-                toastError = "Action too frequent. Please try again later.";
+                toastError = "Action too frequent. Please try again later!";
             } else if (errMessage.includes("The total cost (gas * gas fee + value) of executing this transaction exceeds the balance of the account")) {
                 setShowNewPopUp(true)
             } else if(errMessage.includes("Error: World_ResourceNotFound(bytes32 resourceId, string resourceIdString)")){
