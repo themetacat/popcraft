@@ -127,7 +127,6 @@ export default function Header({ hoveredData, handleData }: Props) {
         try {
             const response = await fetch("https://api.etherscan.io/v2/api?chainid=1&module=gastracker&action=gasoracle&apikey=TU1ZBXINBCDZ3SAXXIKH73V26ZHA7J8UE8");
             const data = await response.json();
-            console.log(data)
             if (data.result) {
                 const priceInGwei = parseFloat(data.result.ProposeGasPrice); // Convert from Wei to Gwei
                 setGasPrice(priceInGwei.toFixed(1)); // Set gas price with 1 decimal places
