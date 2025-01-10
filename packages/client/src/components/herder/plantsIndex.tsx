@@ -62,7 +62,7 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
     const [floweringPlants, setFloweringPlants] = useState<PlantingRecord[]>([]);
     const [levelIntervalTime, setLevelIntervalTime] = useState(0);
     const [growTime, setGrowTime] = useState(0);
-    const [changeScore, setChangeScore] = useState(1000);
+    const [changeScore, setChangeScore] = useState(2000);
     const [remainingTime, setRemainingTime] = useState(-1);
     const [loadingGrow, setLoadingGrow] = useState(false);
     const [loadingChange, setLoadingChange] = useState(false);
@@ -256,7 +256,7 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
                 if (changeTimes > 3) {
                     changeTimes = 3;
                 }
-                setChangeScore(20 + changeTimes * 10);  //!!!!!
+                setChangeScore(2000 + changeTimes * 1000);
             } else if (currentLevel === 2) {
                 setCurrentLevelName("Sprout");
                 setButtonText("Grow Leaves")

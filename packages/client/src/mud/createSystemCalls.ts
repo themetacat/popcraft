@@ -975,7 +975,7 @@ export function createSystemCalls(
           encodeData,
         ], { gas: 5000000n, nonce });
         hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
-        // await waitForTransaction(txData);
+        await waitForTransaction(txData);
         if(hashValpublic.status === "reverted"){
           firstGameOver = false;
           const { simulateContractRequest } = await publicClient.simulateContract({
@@ -1014,7 +1014,7 @@ export function createSystemCalls(
         ], { gas: 5000000n, nonce });
 
         hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
-        // await waitForTransaction(txData);
+        await waitForTransaction(txData);
         if(hashValpublic.status === "reverted"){
           firstGameOver = false;
           const { simulateContractRequest } = await publicClient.simulateContract({
