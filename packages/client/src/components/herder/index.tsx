@@ -120,6 +120,29 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [botInfoTaskTips, setBotInfoTaskTips] = useState(false);
 
+  const [gasPrice, setGasPrice] = useState<string>("");
+
+  useEffect(() => {
+    const fetchGasPrice = async () => {
+        try {
+            const response = await fetch("https://api.etherscan.io/v2/api?chainid=1&module=gastracker&action=gasoracle&apikey=TU1ZBXINBCDZ3SAXXIKH73V26ZHA7J8UE8");
+            const data = await response.json();
+            console.log(data)
+            if (data.result) {
+                const priceInGwei = parseFloat(data.result.ProposeGasPrice); // Convert from Wei to Gwei
+                setGasPrice(priceInGwei.toFixed(1)); // Set gas price with 1 decimal places
+            }
+        } catch (error) {
+            console.error("Error fetching gas price:", error);
+        }
+    };
+
+    fetchGasPrice(); // Initial fetch
+    const intervalId = setInterval(fetchGasPrice, 60000); // Fetch every minute
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []); // Empty dependency array to run once on mount
+
   // add new chain: change here
   const resultBugs = useBalance({
     address: address,
@@ -1896,9 +1919,17 @@ export default function Header({ hoveredData, handleData }: Props) {
         </div>
       )}
 
-
       <div className={style.container}>
         <img className={style.containerImg} src={popcraftLogo} alt="PopCraft Logo" />
+        <div className={style.gasPriceContainer}>
+          L1 Gas:
+            <span id="spanGasTooltip">
+                <a href="https://etherscan.io/gastracker" target="_blank" rel="noopener noreferrer">
+                  <span className={style.gasPricePlaceHolder}>{gasPrice || " "}</span> Gwei
+                </a>
+            </span>
+            <span className={style.tooltip}>Gaming costs less at ~5 Gwei.</span>
+        </div>
         <div className={style.content}>
           <button
             className={numberData === 25 ? style.btnBoxY : style.btnBox}

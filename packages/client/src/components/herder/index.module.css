@@ -72,6 +72,66 @@ canvas {
   left: 1.5rem;
 }
 
+.gasPriceContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 7rem;
+  font-size: clamp(1.125rem, 1.875vw + 0.75rem, 2.25rem);
+  color: #fff;
+  position: fixed;
+  top: 2rem;
+  left: 27rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  margin: 0 1rem;
+}
+
+.gasPriceContainer span {
+  margin-left: 0.5rem;
+  color: #edf74c;
+}
+
+.gasPriceContainer a {
+  text-decoration: none;
+  color: #edf74c;
+}
+
+.gasPriceContainer a:hover {
+  text-decoration: underline;
+}
+
+.gasPricePlaceHolder {
+  font-weight: bold;
+}
+
+.tooltip {
+  visibility: hidden; /* Initially hidden */
+  width: auto; /* 使宽度自适应内容 */
+  padding: 10px 15px; /* 添加左右内边距以增加背景长度 */
+  background-color: #467e92; /* Background color */
+  color: #fff !important; /* Text color */
+  text-align: center; /* Center text */
+  border-radius: 5px; /* Rounded corners */
+  position: absolute; /* Position absolute */
+  z-index: 1; /* Ensure it appears above other elements */
+  top: 70%; /* Position directly below the element */
+  left: -2%; /* Center horizontally */
+  margin-top: 5px; /* Add a small gap above the tooltip */
+  opacity: 0; /* Initially transparent */
+  transition: opacity 0.3s; /* Fade effect */
+  display: inline-block; /* 使 tooltip 成为块级元素 */
+  vertical-align: middle; /* 垂直对齐 */
+  margin-left: 5px; /* 可选：添加左边距以分隔文本 */
+  transform: translateY(5px); /* 向下移动 5px */
+  white-space: nowrap; /* 防止文本换行 */
+}
+
+.gasPriceContainer:hover .tooltip {
+  visibility: visible; /* Show tooltip on hover */
+  opacity: 1; /* Fade in */
+}
+
 .addr {
   display: flex;
   align-items: center;
@@ -230,7 +290,7 @@ canvas {
 }
 
 .content {
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   width: 47.8125rem;
@@ -246,7 +306,6 @@ canvas {
   background-position: center;
   background-repeat: no-repeat;
   font-size: 3rem;
-  display: flex;
 }
 
 .spanData {
