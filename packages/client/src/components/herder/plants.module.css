@@ -1,0 +1,531 @@
+.myPlantsBtn {
+    bottom: 9.6%;
+    left: 14%;
+    width: 17rem;
+    height: 6.8rem;
+    position: fixed;
+    background-position: center;
+    /* border: none; */
+    z-index: 9999999;
+    background-image: url("../../images/Plants/MyPlantsButton.webp");
+    background-size: contain;
+    background-repeat: no-repeat;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: "Simplicity";
+}
+
+.myPlantsBtn button {
+    width: 90%;
+    height: 90%;
+    background-color: transparent;
+    font-size: 0.7vw;
+    border: none;
+    font-family: "Simplicity";
+    color: #ffffff;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    transition: font-size 0.3s ease;
+    text-shadow: 1px 1px 3px rgba(26, 26, 26, 0.46), -1px -1px 3px rgba(26, 26, 26, 0.46);
+}
+
+.btnTips {
+    position: fixed;
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-top: -5rem;
+    margin-right: -12rem;
+    border-radius: 50%;
+    color: rgba(29, 128, 69, 1);
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, rgba(75, 230, 207, 1), rgba(212, 248, 174, 1));
+    animation: btnTipsScaleIn 0.1s ease-out forwards;
+}
+
+@keyframes btnTipsScaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+.myPlantsBtn button:hover {
+    font-size: 0.73vw;
+    text-shadow:
+        -1px -1px 0 rgba(56, 56, 56, 0.7),
+        1px -1px 0 rgba(71, 71, 71, 0.7),
+        -1px 1px 0 rgba(59, 59, 59, 0.7),
+        1px 1px 0 rgba(69, 69, 69, 0.7);
+}
+
+.myPlants {
+    position: fixed;
+    left: 7rem;
+    bottom: 12%;
+    width: 45rem;
+    background-image: url("../../images/Plants/bgOut.webp");
+    background-size: 100% 90%;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    z-index: 999999;
+    transform: scale(0);
+    animation: scaleIn 0.1s ease-out forwards;
+    padding-bottom: 2.3%;
+}
+
+.myPlantsClosed {
+    animation: scaleOut 0.1s ease-in forwards;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes scaleOut {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+@font-face {
+    font-family: "MyriadPro";
+    src: url("/fonts/MYRIADPRO-BOLD.OTF");
+    font-display: block;
+}
+
+.myPlantsTitle {
+    margin-top: 5.5rem;
+    padding: 2rem 0;
+    text-transform: uppercase;
+    font-size: 3rem;
+    color: #ffffff;
+    /* font-weight: 900; */
+    text-shadow: -2px 2px 3px rgba(0, 0, 0, 0.71);
+    letter-spacing: 0.18rem;
+    font-family: "MyriadPro";
+}
+
+.cornerImage {
+    position: absolute;
+    background-image: url("../../images/Plants/closeBg.webp");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    top: 3rem;
+    right: 0.1rem;
+    width: 4.5rem;
+    height: 4.5rem;
+    z-index: 99999;
+    cursor: pointer;
+}
+
+.cornerImage img {
+    margin-top: 1.1rem;
+    margin-left: 0.3rem;
+    width: 2.2rem;
+    height: 2.2rem;
+}
+
+.myPlantsInBg {
+    width: 35.1rem;
+    max-height: 63.6rem;
+    padding-bottom: 3rem;
+    margin-left: 5rem;
+    margin-top: -2.5rem;
+    background-image: url("../../images/Plants/bgIn.webp");
+    background-size: 100% 90%;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.myPlantsInBgPlants {
+    position: relative;
+    max-height: 50rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 38rem;
+    /* transform: translateX(2.1rem); */
+    margin-right: -2rem;
+}
+
+.myPlantsInBgPlants::-webkit-scrollbar {
+    width: 5px;
+}
+
+.myPlantsInBgPlants::-webkit-scrollbar-thumb {
+    background-color: rgba(241, 255, 221, 1);
+    border-radius: 6px;
+    margin-left: 5px;
+}
+
+.myPlantsInBgPlants::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+}
+
+.myPlantsInBgPlants::-webkit-scrollbar-track {
+    background: rgba(59, 159, 116, 1);
+    border-radius: 6px;
+    background: transparent;
+}
+
+.myPlantsInTitle {
+    margin-top: 5rem;
+    width: 100%;
+    padding: 1rem 0;
+    text-transform: uppercase;
+    font-size: 2.5rem;
+    position: relative;
+    color: rgba(12, 118, 87, 1);
+    font-family: "AdobeHeitiStd-Regular";
+    letter-spacing: 0.08rem;
+}
+
+.Seed {
+    width: 35.1rem;
+    height: 27.5rem;
+    font-size: 0.85vw;
+    position: relative;
+    justify-content: center;
+    text-align: center;
+    font-family: "AdobeHeitiStd-Regular";
+}
+
+.SeedImg {
+    width: 13rem;
+    height: 13rem;
+}
+
+.SeedName {
+    margin-top: 0.2rem;
+    text-transform: uppercase;
+}
+
+.divSeedContainer {
+    height: 11rem;
+    width: 87%;
+    display: flex;
+    margin: auto;
+    margin-top: 0.2rem;
+}
+
+.progressContainer {
+    width: 47%;
+    height: 1rem;
+    background-color: rgba(28, 53, 70, 1);
+    margin: auto;
+    margin-top: 1rem;
+    border-radius: 5px;
+    position: relative;
+}
+
+.progressBar {
+    height: 111.4%;
+    transform: translateY(-0.05rem);
+    background: linear-gradient(90deg, #5bd9a4, #a3f69d);
+    border-radius: 5px;
+    position: relative;
+    box-shadow:
+        inset 0 -2px 4px rgba(145, 118, 118, 0.2),
+        0 2px 4px rgba(149, 112, 112, 0.2),
+        inset -2px 0 4px rgba(0, 0, 0, 0.1),
+        inset 2px 0 4px rgba(0, 0, 0, 0.1),
+        inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    animation: progressBarAnimation 0.1s linear forwards;
+}
+
+@keyframes progressBarAnimation {
+    0% {
+        width: 0%;
+    }
+}
+
+.progressBar::before {
+    content: '';
+    position: absolute;
+    top: 28%;
+    left: 3%;
+    right: 3%;
+    height: 45%;
+    background: rgba(234, 232, 232, 0.1);
+    border-radius: 1rem;
+    pointer-events: none;
+}
+
+.progressBar::after {
+    content: '';
+    position: absolute;
+    right: 0.2rem;
+    top: 0.21rem;
+    width: 0.7rem;
+    height: 0.1rem;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 90% 90% 60% 60%;
+    transform: rotate(10deg);
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+}
+
+.progressBarText {
+    margin-top: 0.6rem;
+    font-family: "AdobeHeitiStd-Regular";
+    letter-spacing: 0.1rem;
+}
+
+.claimBtn {
+    width: 14rem;
+    height: 5rem;
+    background-position: center;
+    border: none;
+    margin-top: 0.6rem;
+    background-image: url("../../images/Plants/claimBtn.webp");
+    background-size: 100% 90%;
+    background-repeat: no-repeat;
+    white-space: nowrap;
+    background-color: transparent;
+    font-size: 0.55vw;
+    text-align: center;
+    font-family: "Simplicity";
+    color: rgba(255, 255, 255, 1);
+    cursor: pointer;
+    text-shadow: 1px 1px 3px rgba(26, 26, 26, 0.46), -1px -1px 3px rgba(26, 26, 26, 0.46);
+    transition: font-size 0.3s ease;
+}
+
+.claimBtnActive {
+    background-image: url("../../images/Plants/claimBtn.webp");
+}
+
+.claimBtnProhibit {
+    cursor: not-allowed;
+    background-image: url("../../images/Plants/claimProhibitBtn.webp");
+}
+
+.claimBtn:hover {
+    font-size: 0.58vw;
+}
+
+
+.PlantsList {
+    display: flex;
+    flex-wrap: wrap;
+    /* width: 110%; */
+    width: 35.1rem;
+    margin-top: 1.51rem;
+    font-size: 0.7vw;
+    font-family: "AdobeHeitiStd-Regular";
+    letter-spacing: 0.1rem;
+    position: relative;
+}
+
+.PlantsItem {
+    margin-top: 1rem;
+    width: 50%;
+    height: 20rem;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+
+.PlantsItem img {
+    width: 12rem;
+    height: 12rem;
+}
+
+.PlantsItem div {
+    margin-top: 0.7rem;
+}
+
+.PlantsItem span {
+    display: inline-block;
+    margin-top: 0.7rem;
+    font-size: 0.79vw;
+}
+
+.commonCls {
+    animation: spin 5s linear infinite;
+    -webkit-transform: rotate(3600deg);
+    transform: rotate(3600deg);
+    -webkit-transition: -webkit-transform 5s linear;
+    transition: transform 5s linear;
+    height: 60%;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.bloomBg {
+    background-image: url('../../images/background.webp');
+    background-size: 100% 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000;
+}
+
+.closeBloomBtn {
+    position: absolute;
+    top: 16rem;
+    right: 8rem;
+    width: 5rem;
+    height: 3rem;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    outline: none;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s ease-in-out;
+}
+
+.closeBloomBtn::before,
+.closeBloomBtn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3.5rem;
+    height: 0.5rem;
+    background-color: rgb(238, 226, 226);
+    border-radius: 1rem;
+    transition: transform 0.1s ease-in-out;
+}
+
+.closeBloomBtn::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.closeBloomBtn::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.closeBloomBtn:hover {
+    transform: scale(1.1);
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.starContainer {
+    /* top: 28rem; */
+    /* width: 23%;
+    height: 33%; */
+    margin-top: -30rem;
+    width: 55rem;
+    height: 42rem;
+    position: fixed;
+    z-index: 10;
+    /* overflow: hidden; */
+}
+
+.star {
+    position: absolute;
+    background-color: #F7F7F7;
+    border-radius: 50%;
+    opacity: 0;
+    animation: twinkle ease-in-out infinite;
+
+    box-shadow: 0 0 10px rgba(255, 223, 0, 0.8), 0 0 20px rgba(255, 223, 0, 0.6);
+
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+.animatedDiv {
+    width: 0;
+    height: 0;
+    animation: expand 4s forwards;
+}
+
+@keyframes expand {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+
+    50% {
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+
+    100% {
+        width: 80rem;
+        height: 80rem;
+        opacity: 1;
+    }
+}
+
+.lightPoint {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff, rgba(255, 255, 255, 0.1));
+}

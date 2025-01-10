@@ -31,7 +31,9 @@ import BGMOn from "../../images/BGMOn.webp";
 import BGMOff from "../../images/BGMOff.webp";
 import { error } from "@latticexyz/common/src/debug";
 import BotInfo from "./botInfo"
+import Plants from "./plantsIndex"
 import TopBuy from "../BoxPrompt/TopBuy"
+import toast from "react-hot-toast";
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -116,6 +118,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [balancover, setBalancover] = useState(0);
   const { balanceCheck, currencySymbol, chainId } = useTopUp();
   const [isOpen, setIsOpen] = useState(false);
+  const [botInfoTaskTips, setBotInfoTaskTips] = useState(false);
 
   const [gasPrice, setGasPrice] = useState<string>("");
 
@@ -124,7 +127,6 @@ export default function Header({ hoveredData, handleData }: Props) {
         try {
             const response = await fetch("https://api.etherscan.io/v2/api?chainid=1&module=gastracker&action=gasoracle&apikey=TU1ZBXINBCDZ3SAXXIKH73V26ZHA7J8UE8");
             const data = await response.json();
-            console.log(data)
             if (data.result) {
                 const priceInGwei = parseFloat(data.result.ProposeGasPrice); // Convert from Wei to Gwei
                 setGasPrice(priceInGwei.toFixed(1)); // Set gas price with 1 decimal places
@@ -1700,7 +1702,9 @@ export default function Header({ hoveredData, handleData }: Props) {
         // 不弹框
       } else if (errorMessage.includes("Insufficient funds for gas * price + value")) {
         setShowNewPopUp(true);
-      } else {
+      }else if (errorMessage.includes("replacement transaction underpriced")) {
+          toast.error("Action too frequent. Please try again later.");
+      }else {
         console.error("Unhandled error:", errorMessage);
       }
     } catch (error) {
@@ -2017,15 +2021,13 @@ export default function Header({ hoveredData, handleData }: Props) {
                     return (
                       // <div>
                       <div className={style.chainbox}>
-                        <div
-                          className={style.buyButton}
+                        <button className={style.buyButton}
                           onClick={() => topBuyTransports()}
                           style={{
                             cursor: "pointer",
-                          }}
-                        >
-                          BUY
-                        </div>
+                          }}>
+                            BUY
+                        </button>
                         {/* <div className={style.chain}>
                             <button
                               onClick={(event) => {
@@ -2335,7 +2337,20 @@ export default function Header({ hoveredData, handleData }: Props) {
               }
           `}
       </style>
-      <BotInfo/>
+      <BotInfo
+        sendCount={sendCount}
+        receiveCount={receiveCount}
+        botInfoTaskTips={botInfoTaskTips}
+      />
+      {(isConnected && address) && (
+        <Plants 
+          sendCount={sendCount}
+          receiveCount={receiveCount}
+          setBotInfoTaskTips={setBotInfoTaskTips}
+          setShowNewPopUp={setShowNewPopUp}
+        />
+      )}
+      
     </>
   );
 }

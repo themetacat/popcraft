@@ -50,7 +50,14 @@ export function coorToEntityID(x: number, y: number) {
 }
 export const addressToEntityID = (address: Hex) =>
   encodeEntity({ address: "address" }, { address });
-  export const numToEntityID = (num: number) =>
+
+export const numAddressToEntityID = (num: number, address: Hex) =>
+  encodeEntity({ num: "uint256", address: "address" }, { num: BigInt(num), address });
+
+export const twoNumToEntityID = (num1: number, num2: number) =>
+  encodeEntity({ num1: "uint256", num2: "uint256" }, { num1: BigInt(num1), num2: BigInt(num2) });
+
+export const numToEntityID = (num: number) =>
   encodeEntity({ num: "uint256" }, { num: BigInt(num) });
 
 export default function RightPart({

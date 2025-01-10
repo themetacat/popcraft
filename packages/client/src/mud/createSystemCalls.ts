@@ -17,13 +17,17 @@ import toast from "react-hot-toast";
 let args_index: number = -1;
 import { Payments } from "@uniswap/v3-sdk"
 import { useTopUp } from "../components/select";
-
+import PlantsSystemAbi from "./PlantsSystem.abi.json";
 
 export const update_app_value = (index: number) => {
   args_index = index;
 };
 
 export let abi_json = {};
+
+export type PlantsResponse = {
+  error?: string;
+} | any;
 
 export function createSystemCalls(
   /*
@@ -947,6 +951,90 @@ export function createSystemCalls(
     return resultScore;
   }
 
+  const plantsResourceHex = resourceToHex({
+    type: "system",
+    namespace: "popCraft",
+    name: "PlantsSystem",
+  })
+
+  const collectSeed = async (
+    account: any,
+    nonce: number
+  ): Promise<PlantsResponse> => {
+      let hashValpublic: any;
+      const encodeData = encodeFunctionData({
+        abi: PlantsSystemAbi,
+        functionName: "collectSeed",
+        args: [],
+      });
+      try {
+     
+        const txData = await worldContract.write.callFrom([
+          account,
+          plantsResourceHex,
+          encodeData,
+        ], { gas: 5000000n, nonce });
+        hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
+        await waitForTransaction(txData);
+        if(hashValpublic.status === "reverted"){
+          firstGameOver = false;
+          const { simulateContractRequest } = await publicClient.simulateContract({
+            account: palyerAddress,
+            address: worldContract.address,
+            abi: worldContract.abi,
+            functionName: 'callFrom',
+            args: [
+              account,
+              plantsResourceHex,
+              encodeData,
+            ], 
+          })
+        }
+      } catch (error) {
+        return { error: error.message };
+      }
+      return hashValpublic;
+  };
+
+  const grow = async (
+    account: any,
+    nonce: number
+  ): Promise<PlantsResponse> => {
+      let hashValpublic: any;
+      const encodeData = encodeFunctionData({
+        abi: PlantsSystemAbi,
+        functionName: "grow",
+        args: [],
+      });
+      try {
+        const txData = await worldContract.write.callFrom([
+          account,
+          plantsResourceHex,
+          encodeData,
+        ], { gas: 5000000n, nonce });
+
+        hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
+        await waitForTransaction(txData);
+        if(hashValpublic.status === "reverted"){
+          firstGameOver = false;
+          const { simulateContractRequest } = await publicClient.simulateContract({
+            account: palyerAddress,
+            address: worldContract.address,
+            abi: worldContract.abi,
+            functionName: 'callFrom',
+            args: [
+              account,
+              plantsResourceHex,
+              encodeData,
+            ], 
+          })
+        }
+      } catch (error) {
+        return { error: error.message };
+      }
+      return hashValpublic;
+  };
+
   return {
     update_abi,
     interact,
@@ -954,6 +1042,8 @@ export function createSystemCalls(
     payFunction,
     registerDelegation,
     opRendering,
-    rmOverride
+    rmOverride,
+    collectSeed,
+    grow
   };
 }

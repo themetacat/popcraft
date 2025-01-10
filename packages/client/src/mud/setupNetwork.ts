@@ -201,9 +201,23 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
               {
                 tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "GameFailedRecord" }),
               },
+              {
+                tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "Plants" }),
+              },
+              {
+                tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "PlantsLevel" }),
+              },
+              {
+                tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "PlayerPlantingRecord" }),
+              },
+              {
+                tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "CurrentPlayerPlants" }),
+              },
+              {
+                tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "TotalPlants" }),
+              },
             ],
           }).then(({ components, latestBlock$, storedBlockLogs$, waitForTransaction }) => {
-            
             /*
              * If there is a faucet, request (test) ETH if you have
              * less than 1 ETH. Repeat every 20 seconds to ensure you don't
