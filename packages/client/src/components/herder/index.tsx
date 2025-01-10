@@ -33,6 +33,7 @@ import { error } from "@latticexyz/common/src/debug";
 import BotInfo from "./botInfo"
 import Plants from "./plantsIndex"
 import TopBuy from "../BoxPrompt/TopBuy"
+import toast from "react-hot-toast";
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -1679,7 +1680,9 @@ export default function Header({ hoveredData, handleData }: Props) {
         // 不弹框
       } else if (errorMessage.includes("Insufficient funds for gas * price + value")) {
         setShowNewPopUp(true);
-      } else {
+      }else if (errorMessage.includes("replacement transaction underpriced")) {
+          toast.error("Action too frequent. Please try again later.");
+      }else {
         console.error("Unhandled error:", errorMessage);
       }
     } catch (error) {
