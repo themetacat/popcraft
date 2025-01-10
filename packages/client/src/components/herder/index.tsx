@@ -31,6 +31,7 @@ import BGMOn from "../../images/BGMOn.webp";
 import BGMOff from "../../images/BGMOff.webp";
 import { error } from "@latticexyz/common/src/debug";
 import BotInfo from "./botInfo"
+import Plants from "./plantsIndex"
 import TopBuy from "../BoxPrompt/TopBuy"
 
 interface Props {
@@ -116,6 +117,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [balancover, setBalancover] = useState(0);
   const { balanceCheck, currencySymbol, chainId } = useTopUp();
   const [isOpen, setIsOpen] = useState(false);
+  const [botInfoTaskTips, setBotInfoTaskTips] = useState(false);
 
   // add new chain: change here
   const resultBugs = useBalance({
@@ -2304,7 +2306,20 @@ export default function Header({ hoveredData, handleData }: Props) {
               }
           `}
       </style>
-      <BotInfo/>
+      <BotInfo
+        sendCount={sendCount}
+        receiveCount={receiveCount}
+        botInfoTaskTips={botInfoTaskTips}
+      />
+      {(isConnected && address) && (
+        <Plants 
+          sendCount={sendCount}
+          receiveCount={receiveCount}
+          setBotInfoTaskTips={setBotInfoTaskTips}
+          setShowNewPopUp={setShowNewPopUp}
+        />
+      )}
+      
     </>
   );
 }

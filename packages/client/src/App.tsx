@@ -61,6 +61,9 @@ export const App = () => {
           duration: 2000,
           className: style.toasterStyle
         }}
+        containerStyle={{
+          zIndex: 99999999, 
+      }}
       />
     </div>
   );

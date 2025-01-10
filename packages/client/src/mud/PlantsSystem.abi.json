@@ -1,0 +1,14 @@
+[{
+    "type": "function",
+    "name": "collectSeed",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "grow",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+}]

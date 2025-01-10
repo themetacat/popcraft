@@ -7,7 +7,13 @@ import { useEntityQuery } from "@latticexyz/react";
 import { Has, getComponentValue } from "@latticexyz/recs";
 import { decodeEntity, } from "@latticexyz/store-sync/recs";
 
-export default function BotInfo() {
+interface Props {
+    sendCount: number,
+    receiveCount: number,
+    botInfoTaskTips: boolean
+}
+
+export default function BotInfo({ sendCount, receiveCount, botInfoTaskTips }: Props) {
     const {
         network: { palyerAddress },
         components: {
@@ -61,6 +67,7 @@ export default function BotInfo() {
 
     return (
         <div className={style.bottomLeftText}>
+            <p className={`${botInfoTaskTips ? style.flashText : ""}`}>Queue: {receiveCount > sendCount ? sendCount : receiveCount}/{sendCount}</p>
             <p>Rank: {userRank}</p>
             <p>Total Score: {totalScore}</p>
             <p>Session Wallet Balance: {sessionWalletBalance != "0" ? parseFloat(Number(sessionWalletBalance).toFixed(8)) : 0} ETH</p>

@@ -106,6 +106,57 @@ export default mudConfig({
       valueSchema: {
         times: "uint256"
       }
+    },
+    //    ------------- Plants ---------------
+    // add Plants, update TotalPlants
+    Plants: {
+      keySchema: {
+        id: "uint256"
+      },
+      valueSchema: {
+        plantLevel: "uint256",
+        plantName: "string",
+      }
+    },
+    TotalPlants: {
+      keySchema: {
+        id: "uint256"
+      },
+      valueSchema: {
+        totalAmount: "uint256"
+      }
+    },
+    PlantsLevel: {
+      keySchema: {
+        id: "uint256",
+        level: "uint256"
+      },
+      valueSchema: {
+        score: "uint256",
+        intervalTime: "uint256"
+      }
+    },
+    PlayerPlantingRecord: {
+      keySchema: {
+        plantsId: "uint256",
+        owner: "address",
+      },
+      valueSchema: {
+        scores: "uint256",
+        // Flowering plants
+        plantsAmount: "uint256"
+      }
+    },
+    CurrentPlayerPlants: {
+      keySchema: {
+        owner: "address",
+      },
+      valueSchema: {
+        plantsId: "uint256",
+        level: "uint256",
+        growTime: "uint256",
+        changeTimes: "uint256"
+      }
     }
   },
   systems: {
