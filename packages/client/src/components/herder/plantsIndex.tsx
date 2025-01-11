@@ -426,7 +426,7 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
                     <h1 className={plantsStyle.myPlantsTitle}>My Plants</h1>
                     <div className={plantsStyle.myPlantsInBg}>
                         <div className={plantsStyle.myPlantsInTitle}>
-                            <div>Score: {totalScoreConsumed}/{totalScore}</div>
+                            <div>Score: {totalScore - totalScoreConsumed}/{totalScore}</div>
                         </div>
                         <div className={plantsStyle.myPlantsInBgPlants}>
                             <div className={plantsStyle.Seed}>
