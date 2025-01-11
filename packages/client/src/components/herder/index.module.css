@@ -89,12 +89,12 @@ canvas {
 
 .gasPriceContainer span {
   margin-left: 0.5rem;
-  color: #edf74c;
+  color: #ffe65a;
 }
 
 .gasPriceContainer a {
   text-decoration: none;
-  color: #edf74c;
+  color: #ffe65a;
 }
 
 .gasPriceContainer a:hover {
