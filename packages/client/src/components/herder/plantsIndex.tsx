@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import plantsStyle from './plants.module.css';
 import { useMUD } from "../../MUDContext";
 import { useAccount } from 'wagmi';
@@ -67,7 +67,7 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
     const [loadingGrow, setLoadingGrow] = useState(false);
     const [loadingChange, setLoadingChange] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
-    const [isBloom, setIsBloom] = useState(false);
+    const [growLevel, setGrowLevel] = useState(-1);
 
     const callPlantsSystem = async (value: number = 0) => {
         if (checkTaskInProcess()) {
@@ -77,21 +77,18 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
         const isCollectSeed = value === 1;
         setLoadingChange(isCollectSeed);
         setLoadingGrow(!isCollectSeed);
-
+        setGrowLevel(-1);
         let callPlants: PlantsResponse;
         const nonce = await publicClient.getTransactionCount({ address: palyerAddress })
-        
+
         if (currentLevel === 0 || isCollectSeed) {
-            setIsBloom(false);
             callPlants = await collectSeed(address, nonce);
+            setGrowLevel(0);
         } else {
             callPlants = await grow(address, nonce);
         }
 
-        if (currentLevel === 4) {
-            setIsBloom(true);
-        }
-
+        setGrowLevel(currentLevel);
         if (callPlants && callPlants.error) {
             console.error(callPlants.error);
             handleError(callPlants.error)
@@ -119,7 +116,7 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
         //     setLevelIntervalTime(Number(plantsLevelInfo.intervalTime));
         // }
         updateCurrentLevelInfo();
-        setIsBloom(false);
+        setGrowLevel(-1);
     }, [address])
 
     const updateCurrentLevelInfo = (plantsId: number = 1, level: number = 1) => {
@@ -183,7 +180,7 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
     };
 
     const transportBloomAnimation = () => {
-        setIsBloom(false);
+        setGrowLevel(-1);
     };
 
     const plantingRecord = address ? getComponentValue(
@@ -241,10 +238,8 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
     ) : undefined;
 
     useEffect(() => {
-        
         if (currentPlants) {
             const currentLevel = Number(currentPlants.level)
-            
             setCurrentLevel(currentLevel)
             if (currentLevel === 0) {
                 setCurrentLevelName("Seed");
@@ -346,7 +341,7 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
                 toastError = "Action too frequent. Please try again later!";
             } else if (errMessage.includes("The total cost (gas * gas fee + value) of executing this transaction exceeds the balance of the account")) {
                 setShowNewPopUp(true)
-            } else if(errMessage.includes("Error: World_ResourceNotFound(bytes32 resourceId, string resourceIdString)")){
+            } else if (errMessage.includes("Error: World_ResourceNotFound(bytes32 resourceId, string resourceIdString)")) {
                 // Error: World_ResourceNotFound(bytes32 resourceId, string resourceIdString)
                 toastError = "Unknow Error";
             } else {
@@ -402,18 +397,40 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
     // };
 
     useEffect(() => {
-        if (isBloom && currentPlantName) {
+        if (growLevel === 4 && currentPlantName) {
             setStars([]);
             const timeoutId = setTimeout(() => {
                 const initialStars = Array.from({ length: 50 }, generateStar);
                 setStars(initialStars);
             }, 3700);
-            return () => clearTimeout(timeoutId); 
-         
+            return () => clearTimeout(timeoutId);
         } else {
             setStars([]);
         }
-    }, [isBloom, currentPlantName]);
+    }, [growLevel, currentPlantName]);
+
+
+    const plantSrc = useMemo(() => {
+        if (growLevel === 0) {
+            return `/image/plants/${currentPlantName}/Seed.webp`;
+        } else if (growLevel > 0 && growLevel < 4) {
+            return `/image/plants/${currentPlantName}/${currentLevelName.replace(/\s+/g, '')}.webp`;
+        } else if (growLevel === 4) {
+            return `/image/plants/${currentPlantName}/Bloom.webp`;
+        }
+        return '';
+    }, [growLevel, currentPlantName, currentLevelName, currentLevel]);
+
+    const plantClassName = useMemo(() => {
+        if (growLevel === 0) {
+            return `${plantsStyle.animatedDiv} ${plantsStyle.animatedDivGrowLevel0}`;
+        } else if (growLevel > 0 && growLevel < 4) {
+            return `${plantsStyle.animatedDiv} ${plantsStyle.animatedDivGrowLevel1}`;
+        } else if (growLevel === 4) {
+            return `${plantsStyle.animatedDiv} ${plantsStyle.animatedDivGrowLevel4}`;
+        }
+        return plantsStyle.animatedDiv;
+    }, [growLevel]);
 
     return (
         <div>
@@ -513,7 +530,7 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
                     </div>
                 </div>
             )}
-            {(isBloom && currentPlantName) && (
+            {(growLevel >= 0 && currentPlantName) && (
                 <div className={plantsStyle.bloomBg}>
                     <div className={plantsStyle.overlay}>
                         <div className={plantsStyle.starContainer}>
@@ -533,12 +550,18 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
                         </div>
 
                         <button className={plantsStyle.closeBloomBtn} onClick={() => transportBloomAnimation()}></button>
-                        <img src={`/image/plants/${currentPlantName}/Bloom.webp`} className={plantsStyle.animatedDiv} />
-                        <LightAnimation />
+                        {plantSrc && (
+                            <img
+                                src={plantSrc}
+                                className={plantClassName}
+                                alt="Plant"
+                            />
+                        )}
+                        {growLevel === 4 && <LightAnimation />}
                     </div>
                 </div>
             )}
-            
+
             <div className={plantsStyle.myPlantsBtn} onClick={() => myPlantsTransports(!showMyPlants)}>
                 <button> My Plants</button>
                 {(!showMyPlants && ((currentLevel === 1 && availableChangeScores >= changeScore) || (remainingTime === 0 && availableScores >= needScore))) && (
