@@ -81,7 +81,7 @@
     background-repeat: no-repeat;
     background-position: center;
     text-align: center;
-    z-index: 999999;
+    z-index: 1000001;
     transform: scale(0);
     animation: scaleIn 0.1s ease-out forwards;
     padding-bottom: 2.3%;
@@ -402,7 +402,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100000;
+    z-index: 1000000;
 }
 
 .closeBloomBtn {
