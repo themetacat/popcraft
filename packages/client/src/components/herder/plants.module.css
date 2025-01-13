@@ -501,10 +501,87 @@
 .animatedDiv {
     width: 0;
     height: 0;
-    animation: expand 4s forwards;
+    transform-origin: center;
+}
+
+.animatedDivGrowLevel0 {
+    width: 40rem;
+    height: 40rem;
+    opacity: 1;
+    animation: jump 3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animatedDivGrowLevel1 {
+    animation: expand 1s forwards, shake 1s ease-in-out 1s 2;
+}
+
+.animatedDivGrowLevel4 {
+    animation: expandBloom 4s forwards;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(5deg);
+    }
+    50% {
+        transform: rotate(-5deg);
+    }
+    75% {
+        transform: rotate(3deg);
+    }
+}
+
+@keyframes jump {
+    0% {
+        transform: translateY(-50rem);
+    }
+    10% {
+        transform: translateY(10rem);
+    }
+    20% {
+        transform: translateY(-35rem);
+    }
+    30% {
+        transform: translateY(10rem);
+    }
+    40% {
+        transform: translateY(-25rem);
+    }
+    52% {
+        transform: translateY(5rem);
+    }
+    65% {
+        transform: translateY(-15rem);
+    }
+    80% {
+        transform: translateY(2rem);
+    }
+    90% {
+        transform: translateY(-1rem);
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
 
 @keyframes expand {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+
+    100% {
+        width: 80rem;
+        height: 80rem;
+        opacity: 1;
+    }
+}
+
+@keyframes expandBloom {
     0% {
         width: 0;
         height: 0;
