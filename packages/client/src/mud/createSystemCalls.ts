@@ -518,9 +518,9 @@ export function createSystemCalls(
             }),
             encodeData,
           ], { gas: 29599000n, nonce });
-          // hashValpublic = publicClient.waitForTransactionReceipt({ hash: txData });
-          hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }),7000);
-          // console.log(hashValpublic);
+          hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
+          // hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }),7000);
+          await waitForTransaction(txData);
           firstGameOver = true
           // waitingTransaction = false;
         } catch (error) {
@@ -541,7 +541,7 @@ export function createSystemCalls(
             ], { gas: 15000000n, nonce });
             // const txStatus = await publicClient.getTransaction({ hash: txData });
             tx = txData;
-           hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }),7000);
+           hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }),13000);
            
             // hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
             if(hashValpublic.status === "reverted" && firstGameOver){
