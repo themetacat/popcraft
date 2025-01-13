@@ -133,7 +133,8 @@ export default mudConfig({
       },
       valueSchema: {
         score: "uint256",
-        intervalTime: "uint256"
+        intervalTime: "uint256",
+        name: "string"
       }
     },
     PlayerPlantingRecord: {
