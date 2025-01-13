@@ -162,9 +162,9 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
             indexerUrl: indexerUrl,
             tables: resolveConfig(tcmpopstarConfig).tables,
             filters: [
-              {
-                tableId: resourceToHex({ type: "table", namespace: "", name: "Pixel" }),
-              },
+              // {
+              //   tableId: resourceToHex({ type: "table", namespace: "", name: "Pixel" }),
+              // },
               {
                 tableId: resourceToHex({ type: "table", namespace: "", name: "App" }),
               },
