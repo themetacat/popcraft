@@ -195,17 +195,17 @@ export default function RightPart({
   }
 
   const coor_entity = coorToEntityID(coordinates.x, coordinates.y);
-  const pixel_value = getComponentValue(Pixel, coor_entity) as any;
+  // const pixel_value = getComponentValue(Pixel, coor_entity) as any;
   let app_name, truncatedOwner;
 
-  if (pixel_value) {
-    app_name = pixel_value.app;
-    const owner = pixel_value.owner;
-    onHandleOwner(owner)
-    truncatedOwner = `${owner?.substring(0, 6)}...${owner.substring(
-      owner.length - 4
-    )}`;
-  }
+  // if (pixel_value) {
+  //   app_name = pixel_value.app;
+  //   const owner = pixel_value.owner;
+  //   onHandleOwner(owner)
+  //   truncatedOwner = `${owner?.substring(0, 6)}...${owner.substring(
+  //     owner.length - 4
+  //   )}`;
+  // }
 
   return (
     <div

@@ -96,6 +96,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [pageClick, setPageClick] = useState(false);
   const [GRID_SIZE, setGRID_SIZE] = useState(32);
   // const entities = useEntityQuery([Has(Pixel)]);
+  const tcmPopStarEntities = useEntityQuery([Has(TCMPopStar)]);
   const entities_app = useEntityQuery([Has(App)]);
   const [mainContent, setMainContent] = useState("MAINNET");
   const [TCMPopStarData, setTCMPopStarData] = useState(null);
@@ -476,38 +477,44 @@ export default function Header({ hoveredData, handleData }: Props) {
   const appName = localStorage.getItem("manifest") as any;
   const parts = appName?.split("/") as any;
 
-  const findEmptyRegion = () => {
-    const gridSize = GRID_SIZE;
-    const checkSize = 10;
-    const isEmpty = (x, y) => {
-      const encodeEntityNum = coorToEntityID(x, y);
-      const value = getComponentValue(Pixel, encodeEntityNum);
-      return value === undefined;
-    };
-    let px = 0,
-      x = 0,
-      y = 0;
-    while (true) {
-      let res = isEmpty(x, y);
+  // const findEmptyRegion = () => {
+  //   const gridSize = GRID_SIZE;
+  //   const checkSize = 10;
+  //   const isEmpty = (x, y) => {
+  //     const encodeEntityNum = coorToEntityID(x, y);
+  //     const value = getComponentValue(Pixel, encodeEntityNum);
+  //     return value === undefined;
+  //   };
+  //   let px = 0,
+  //     x = 0,
+  //     y = 0;
+  //   while (true) {
+  //     let res = isEmpty(x, y);
 
-      if (res) {
-        if (x - px >= 9) {
-          if (y === 9) {
-            break;
-          }
-          y++;
-          x = px;
-        } else {
-          x++;
-        }
-      } else {
-        px = x + 1;
-        x = px;
-        y = 0;
-      }
-    }
+  //     if (res) {
+  //       if (x - px >= 9) {
+  //         if (y === 9) {
+  //           break;
+  //         }
+  //         y++;
+  //         x = px;
+  //       } else {
+  //         x++;
+  //       }
+  //     } else {
+  //       px = x + 1;
+  //       x = px;
+  //       y = 0;
+  //     }
+  //   }
+  //   return px;
+  // };
+  
+  const findEmptyRegion = () => {
+    const px = tcmPopStarEntities.length * 10;
     return px;
   };
+
   const drawRotatingImage = (ctx: any, img: any, x: any, y: any, width: any, height: any, angle: any) => {
     ctx.save();
     ctx.translate(x + width / 2, y + height / 2);
@@ -921,13 +928,15 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [timeControl, setTimeControl] = useState(false);
   const downTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [isLongPress, setIsLongPress] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [lastDragEndX, setLastDragEndX] = useState(0);
+  // const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  // const [lastDragEndX, setLastDragEndX] = useState(0);
   const [fingerNum, setFingerNum] = useState(0);
-  const coor_entity = coorToEntityID(coordinates.x, coordinates.y);
-  const pixel_value = getComponentValue(Pixel, coor_entity) as any;
-  const action =
-    pixel_value && pixel_value.action ? pixel_value.action : "interact";
+  // const coor_entity = coorToEntityID(coordinates.x, coordinates.y);
+  // const pixel_value = getComponentValue(Pixel, coor_entity) as any;
+  // const action =
+  //   pixel_value && pixel_value.action ? pixel_value.action : "interact";
+  const action = "interact";
+  
   const ClickThreshold = 150;
 
 
