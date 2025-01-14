@@ -564,7 +564,8 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
 
             <div className={plantsStyle.myPlantsBtn} onClick={() => myPlantsTransports(!showMyPlants)}>
                 <button> My Plants</button>
-                {(!showMyPlants && ((currentLevel === 1 && availableChangeScores >= changeScore) || (remainingTime === 0 && availableScores >= needScore))) && (
+                {/* {(!showMyPlants && ((currentLevel === 1 && availableChangeScores >= changeScore) || (remainingTime === 0 && availableScores >= needScore))) && ( */}
+                {(!showMyPlants && (remainingTime === 0 && availableScores >= needScore)) && (
                     <div className={plantsStyle.btnTips}>1</div>
                 )}
             </div>
