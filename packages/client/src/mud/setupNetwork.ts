@@ -216,6 +216,9 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
               {
                 tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "TotalPlants" }),
               },
+              {
+                tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "PriTokenPrice" }),
+              },
             ],
           }).then(({ components, latestBlock$, storedBlockLogs$, waitForTransaction }) => {
             /*
