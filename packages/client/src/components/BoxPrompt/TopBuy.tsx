@@ -2,7 +2,7 @@ import style from "./index.module.css";
 import topBuyStyle from "./topBuy.module.css";
 import { useMUD } from "../../MUDContext";
 import { getComponentValue } from "@latticexyz/recs";
-import { numToEntityID } from "../rightPart"
+import { numToEntityID, addressToEntityID } from "../rightPart"
 import { imageIconData } from "../imageIconData";
 import React, { useState, useEffect } from "react";
 import loadingIcon from "../../images/welcome_pay_play_loading.webp";
@@ -35,7 +35,8 @@ export default function TopBuy({ setShowTopBuy }: Props) {
     const {
         components: {
             Token,
-            TokenBalance
+            TokenBalance,
+            PriTokenPrice
         },
         network: { palyerAddress },
         systemCalls: { payFunction, },
@@ -46,7 +47,7 @@ export default function TopBuy({ setShowTopBuy }: Props) {
     const [numberData, setNumberData] = useState<{ [key: string]: number }>({});
     const [loadingPrices, setLoadingPrices] = useState<{ [key: string]: boolean }>({});
     const [prices, setPrices] = useState<Record<string, PriceDetails>>({});
-    const { recipient, chainId, tokenAddress } = useTopUp();
+    const { recipient, chainId, tokenAddress, priTokenAddress } = useTopUp();
     const [totalPrice, setTotalPrice] = useState(0);
     const [cresa, setcresa] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -87,42 +88,68 @@ export default function TopBuy({ setShowTopBuy }: Props) {
 
     useEffect(() => {
         // add new chain: change here
-        if((chainId === 185 || chainId === 31337) && recipient){
+        if ((chainId === 185 || chainId === 31337) && recipient) {
             const interval = setInterval(async () => {
                 await fetchPrices(numberData);
-              }, 15000);
-              return () => clearInterval(interval);
+            }, 15000);
+            return () => clearInterval(interval);
         }
-        
-      }, [numberData, chainId, recipient]);
+
+    }, [numberData, chainId, recipient]);
 
     useEffect(() => {
-        if(address){
+        if (address) {
             allTokenAddr.forEach((tokenAddress) => {
                 const balance = getComponentValue(
                     TokenBalance,
                     addressToEntityIDTwo(address, tokenAddress as Hex)
-                  );
-                  if(balance){
+                );
+                if (balance) {
                     setTokenBalance((prevBalance) => ({
                         ...prevBalance,
                         [tokenAddress]: (balance.balance as bigint / BigInt(10 ** 18)).toString(),
-                      }));
-                  }else{
+                    }));
+                } else {
                     setTokenBalance((prevBalance) => ({
                         ...prevBalance,
                         [tokenAddress]: "0",
-                      }));
-                  }
+                    }));
+                }
             })
         }
     }, [allTokenAddr, address, showSuccessModal])
 
+    const getPriTokenPrice = (address: any, quantity = 1) => {
+        const price = address ? getComponentValue(
+            PriTokenPrice,
+            addressToEntityID(address)
+        ) : 0;
+        let res = {};
+        if (price === undefined) {
+            res = {
+                price: 0,
+                methodParameters: {
+                    calldata: "",
+                    value: "0"
+                }
+            }
+        } else {
+            const value = Number(price.price) * quantity
+            res = {
+                price: value / 1e18,
+                methodParameters: {
+                    calldata: "",
+                    value: value.toString()
+                }
+            }
+        }
+        return res;
+    }
 
     const addressToEntityIDTwo = (address: Hex, addressTwo: Hex) =>
         encodeEntity(
-          { address: "address", addressTwo: "address" },
-          { address, addressTwo }
+            { address: "address", addressTwo: "address" },
+            { address, addressTwo }
         );
 
     const formatAmount = (amount: any) => {
@@ -172,7 +199,7 @@ export default function TopBuy({ setShowTopBuy }: Props) {
     const handleNumberChange = (key: any, value: string) => {
         const numericValue = value.replace(/[^0-9]/g, '');
         const amount = Number(numericValue)
-        
+
         setNumberData(prev => ({
             ...prev,
             [key]: amount
@@ -191,25 +218,30 @@ export default function TopBuy({ setShowTopBuy }: Props) {
     };
 
     const fetchPrices = async (getPriceData: any) => {
-        
+
         const pricePromises = Object.keys(getPriceData).map(async (key) => {
-            
+
             // const quantity = numberData[key] || 0;
             const quantity = getPriceData[key] || 0;
 
             if (quantity > 0) {
                 setLoadingPrices(prev => ({ ...prev, [key]: true }));
-                
+
                 let routeMethodParameters: any = {};
                 let price: number | string = "0";
 
                 // add new chain: change here
                 if (chainId === 185 || chainId === 31337) {
-                    const route = await generateRouteMintChain(key, quantity, recipient);
-                    
-                    if (route) {
-                        price = route.price; // 获取报价
-                        routeMethodParameters = route.methodParameters
+                    if (priTokenAddress.includes(key)) {
+                        const route = getPriTokenPrice(key, quantity)
+                        price = route.price;
+                        routeMethodParameters = route.methodParameters;
+                    } else {
+                        const route = await generateRouteMintChain(key, quantity, recipient);
+                        if (route) {
+                            price = route.price; // 获取报价
+                            routeMethodParameters = route.methodParameters
+                        }
                     }
                 } else {
                     const route = await generateRoute(key, quantity, recipient);
@@ -218,6 +250,8 @@ export default function TopBuy({ setShowTopBuy }: Props) {
                         routeMethodParameters = route.methodParameters;
                     }
                 }
+
+
                 const methodParameters = {
                     ...routeMethodParameters,
                     tokenAddress: key,
@@ -234,7 +268,7 @@ export default function TopBuy({ setShowTopBuy }: Props) {
             }
         });
         const prices = await Promise.all(pricePromises);
-        
+
         const priceObject = prices.reduce<{ [key: string]: { price: string | number; methodParameters: any } }>((acc, curr) => {
             return { ...acc, ...curr };
         }, {});
@@ -246,7 +280,7 @@ export default function TopBuy({ setShowTopBuy }: Props) {
     };
 
     const fetchPriceForSingleItem = async (key: string, quantity: number) => {
-        
+
         if (quantity > 0) {
             try {
                 let routeMethodParameters: any = {};
@@ -254,10 +288,16 @@ export default function TopBuy({ setShowTopBuy }: Props) {
 
                 // add new chain: change here
                 if (chainId === 185 || chainId === 31337) {
-                    const route = await generateRouteMintChain(key, quantity, recipient);
-                    if (route) {
-                        price = route.price; // 获取报价
+                    if (priTokenAddress.includes(key)) {
+                        const route = getPriTokenPrice(key, quantity)
+                        price = route.price;
                         routeMethodParameters = route.methodParameters
+                    } else {
+                        const route = await generateRouteMintChain(key, quantity, recipient);
+                        if (route) {
+                            price = route.price; // 获取报价
+                            routeMethodParameters = route.methodParameters
+                        }
                     }
                 } else {
                     const route = await generateRoute(key, quantity, recipient);
@@ -276,7 +316,7 @@ export default function TopBuy({ setShowTopBuy }: Props) {
                     ...prev,
                     [key]: { price, methodParameters }
                 }));
-                
+
                 setLoadingPrices(prev => ({ ...prev, [key]: false }));
 
             } catch (error) {
@@ -294,7 +334,7 @@ export default function TopBuy({ setShowTopBuy }: Props) {
 
         setTotalPrice(total);
     };
-    
+
     useEffect(() => {
         updateTotalPrice();
     }, [prices])
@@ -319,7 +359,6 @@ export default function TopBuy({ setShowTopBuy }: Props) {
             return;
         }
         const methodParametersArray = itemsToPay.map(item => prices[item.key]?.methodParameters);
-        
         const payFunctionTwo = payFunction(
             methodParametersArray
         );
@@ -369,11 +408,11 @@ export default function TopBuy({ setShowTopBuy }: Props) {
                     <div key={key} className={style.firstBuy}>
                         <img src={src} alt={name} className={topBuyStyle.itemImage} />
                         <div className={topBuyStyle.iconFont} > {tokenBalance[key]}</div>
-                        <div className={style.itemNameto} style={{marginLeft: "5px"}}>
+                        <div className={style.itemNameto} style={{ marginLeft: "5px" }}>
                             <div className={style.itemName}>
                                 <span className={style.itemNameText}>{name}</span>
                             </div>
-                            <div className={style.dataIcon} style={{marginLeft: "5px"}}>
+                            <div className={style.dataIcon} style={{ marginLeft: "5px" }}>
                                 <button
                                     onClick={() => {
                                         downHandleNumber(key);

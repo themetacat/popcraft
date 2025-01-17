@@ -41,6 +41,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       TokenBalance,
       UserDelegationControl,
       RankingRecord,
+      PriTokenPrice
     },
     network: { palyerAddress },
     systemCalls: { interact, payFunction, registerDelegation },
@@ -75,7 +76,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loadingPrices, setLoadingPrices] = useState({});
   const [lastPrices, setLastPrices] = useState({});
-  const { rewardInfo, rewardDescInfo, recipient, chainId } = useTopUp();
+  const { rewardInfo, rewardDescInfo, recipient, chainId, priTokenAddress } = useTopUp();
   const [ showHowToPlay, setShowHowToPlay ] = useState(false);
 
   const resultBugs = useBalance({
@@ -355,10 +356,16 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
         // add new chain: change here
         if (chainId === 185 || chainId === 31337) {
-          const route = await generateRouteMintChain(key, quantity, recipient);
-          if (route) {
-            price = route.price; // 获取报价
+          if (priTokenAddress.includes(key)) {
+            const route = getPriTokenPrice(key, quantity)
+            price = route.price;
             routeMethodParameters = route.methodParameters
+          } else{
+            const route = await generateRouteMintChain(key, quantity, recipient);
+            if (route) {
+              price = route.price; // 获取报价
+              routeMethodParameters = route.methodParameters
+            }
           }
         } else {
           const route = await generateRoute(key, quantity, recipient);
@@ -391,6 +398,33 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     return priceObject;
   }, [numberData, recipient]);
 
+  const getPriTokenPrice = (address: any, quantity = 1) => {
+    const price = address ? getComponentValue(
+        PriTokenPrice,
+        addressToEntityID(address)
+    ) : 0;
+    let res = {};
+    if (price === undefined) {
+        res = {
+            price: 0,
+            methodParameters: {
+                calldata: "",
+                value: "0"
+            }
+        }
+    } else {
+        const value = Number(price.price) * quantity
+        res = {
+            price: value / 1e18,
+            methodParameters: {
+                calldata: "",
+                value: value.toString()
+            }
+        }
+    }
+    return res;
+}
+
   useEffect(() => {
     const interval = setInterval(async () => {
       const matchedData = getMatchedData(
@@ -412,10 +446,16 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
         // add new chain: change here
         if (chainId === 185 || chainId === 31337) {
-          const route = await generateRouteMintChain(key, quantity, recipient);
-          if (route) {
-            price = route.price; // 获取报价
-            routeMethodParameters = route.methodParameters
+          if (priTokenAddress.includes(key)) {
+            const route = getPriTokenPrice(key, quantity)
+            price = route.price;
+            routeMethodParameters = route.methodParameters;
+          } else {
+            const route = await generateRouteMintChain(key, quantity, recipient);
+            if (route) {
+              price = route.price;
+              routeMethodParameters = route.methodParameters
+            }
           }
         } else {
           const route = await generateRoute(key, quantity, recipient);

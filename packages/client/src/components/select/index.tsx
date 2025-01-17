@@ -16,7 +16,7 @@ export const useTopUp = () => {
   const [bridgeUrl , setBridgeUrl] = useState("")
   const [chainIcon , setChianIcon] = useState("")
   const [tokenAddress, setTokenAddress] = useState<string[]>([]);
-
+  const [priTokenAddress, setPriTokenAddress] = useState<string[]>([]);
 
   const getChainId = async () => {
     try {
@@ -113,6 +113,13 @@ export const useTopUp = () => {
         "0x893D9769848288e59fb8a0e97A22d6588A825fFf",
         "0x6932cD12f445CFD8E2AC9e0A8324256ce475992F",
         "0x68e7218FCCe3F2658f03317AE08A6446bDE164a8",
+        "0x0000000000000000000000000000000000000001",
+        "0x0000000000000000000000000000000000000002",
+      ])
+      // change router constant
+      setPriTokenAddress([
+        "0x0000000000000000000000000000000000000001",
+        "0x0000000000000000000000000000000000000002",
       ])
     }
   }, [chainId]);
@@ -130,7 +137,8 @@ export const useTopUp = () => {
     eoaWallet,
     bridgeUrl,
     chainIcon,
-    tokenAddress
+    tokenAddress,
+    priTokenAddress
   };
 };
 

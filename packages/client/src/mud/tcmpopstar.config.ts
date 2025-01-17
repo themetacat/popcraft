@@ -44,7 +44,6 @@ export default mudConfig({
         unissuedRewards: "uint256"
       }
     },
-    // ______________________ SCORE ____________________________
     StarToScore: {
       keySchema: {
         amount: "uint256" 
@@ -72,13 +71,20 @@ export default mudConfig({
         shortestTime: "uint256"
       }
     },
-    // ______________________ TOKEN ____________________________
     Token: {
       keySchema: {
         index: "uint256" 
       },
       valueSchema: {
         tokenAddress: "address[]",
+      }
+    },
+    PriTokenPrice: {
+      keySchema: {
+        addr: "address",
+      },
+      valueSchema: {
+        price: "uint256",
       }
     },
     OverTime: {

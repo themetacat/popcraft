@@ -103,4 +103,12 @@ export const imageIconData = {
         src: 'image/mintchain/MNGA.webp',
         name: "MNGA",
     },
+    '0x0000000000000000000000000000000000000001': {
+        src: 'image/private/PEEP.webp',
+        name: "PEEP",
+    },
+    '0x0000000000000000000000000000000000000002': {
+        src: 'image/private/MEOW.webp',
+        name: "MEOW",
+    },
 };
