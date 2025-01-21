@@ -26,6 +26,35 @@ export default function HowToPlay({setShowHowToPlay}: Props) {
                   <span className={howToPlayStyle.copywritingTwo}>3. Click "BUY" to purchase tools.</span>
                   <span className={howToPlayStyle.copywritingTwo}>4. If a tool is available, click a single element to eliminate it; the tool's inventory decreases by one. No tool = no elimination.</span>
                 </p>
+                <div className={howToPlayStyle.eventExpiration}>
+                  <span>
+                    The event has ended.
+                    <br />
+                    But the game is still available to play.
+                    <br />
+                    To stay updated on new reward events.
+                    <br />
+                    Join our
+                    <a 
+                      href="https://t.me/+R8NfZkneQYZkYWE1" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      style={{ margin: '0 5px' }}
+                    >
+                      Telegram
+                    </a> 
+                    and follow us on
+                    <a 
+                      href="https://x.com/popcraftonchain" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      style={{ margin: '0 5px' }}
+                    >
+                      X(Twitter)
+                    </a>
+                  </span>
+                </div>
+
                 <div className={howToPlayStyle.part2}>
                     {/* <div className={howToPlayStyle.part2Left}> */}
                         <div>
