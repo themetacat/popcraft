@@ -171,3 +171,24 @@
 .btnHtp.alt {
     background-image: url("../../images/HowToPlay/howToPlayIn.webp");
 }
+
+.eventExpiration {
+    position: fixed;
+    background-color: rgba(249, 174, 104, 0.9);
+    border-radius: 15px;
+    width: 530px;
+    height: 180px;
+    margin-top: 260px;
+    margin-left: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: #000000;
+    /* font-family: "AdobeHeitiStd-Regular"; */
+    padding-left: 20px;
+    padding-right: 20px;
+    line-height: 1.7;
+    font-family: "MyriadPro";
+}
+

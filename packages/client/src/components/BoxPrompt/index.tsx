@@ -77,7 +77,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [loadingPrices, setLoadingPrices] = useState({});
   const [lastPrices, setLastPrices] = useState({});
   const { rewardInfo, rewardDescInfo, recipient, chainId, priTokenAddress } = useTopUp();
-  const [ showHowToPlay, setShowHowToPlay ] = useState(false);
+  const [ showHowToPlay, setShowHowToPlay ] = useState(true);
 
   const resultBugs = useBalance({
     address: address,
@@ -871,7 +871,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             <p className={style.actical}>
               <span className={style.copywritingTwo}>This is a composability-based elimination game. You have 120 </span>
               <span className={style.copywritingTwo}> seconds to eliminate all the pieces.</span>
-              {rewardDescInfo? (
+              {/* {rewardDescInfo? (
                 <span className={style.copywritingTwo}>You'll&nbsp;
                 {rewardDescInfo}
                 &nbsp; in your first 3 games every day.
@@ -881,7 +881,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 <p> {rewardInfo}</p>
                 &nbsp; for completing the game.
               </span>
-              )}
+              )} */}
               <span className={style.copywritingTwobox}>
                 On the game board,any two or more adjacent identical pieces
                 can be clicked to eliminate them. Isolated pieces require a elimination tool
@@ -946,7 +946,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           >
             <div className={style.contentCon}>
               <p>Congrats!</p>
-              <p>+{rewardInfo}!</p>
+              {rewardInfo ? <p>+{rewardInfo}!</p> : <p></p>}
               <button
                 onClick={handlePlayAgaintow}
                 disabled={loadingPlayAgain}

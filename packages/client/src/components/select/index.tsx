@@ -8,7 +8,7 @@ export const useTopUp = () => {
   const [inputValue, setInputValue] = useState("");
   const [MIN_SESSION_WALLET_BALANCE, setMIN_SESSION_WALLET_BALANCE] = useState(parseEther(""));
   const [balanceCheck, setbalanceCheck] = useState("");
-  const [rewardInfo, setRewardInfo] = useState("");
+  const [rewardInfo, setRewardInfo] = useState<number | string>(0);
   const [rewardDescInfo, setRewardDescInfo] = useState("");
   const [recipient, setRecipient] = useState(""); // 设置 recipient 地址
   const [currencySymbol , setCurrencySymbol] = useState("")
@@ -101,8 +101,9 @@ export const useTopUp = () => {
       setInputValue("0.002"); //0.0003 * 3 * 30 = 0.027
       setCurrencySymbol("MP")
       setbalanceCheck('0.0001')
-      setRewardInfo("100 MP");
-      setRewardDescInfo("get 100 MP for winning and 50 MP for losing")
+      // setRewardInfo("0 MP");
+      setRewardInfo(0);
+      // setRewardDescInfo("get 100 MP for winning and 50 MP for losing")
       setMIN_SESSION_WALLET_BALANCE(parseEther("0.000002"));
       setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c"); // 设置 recipient 地址
       setBridgeUrl("https://www.mintchain.io/bridge")
