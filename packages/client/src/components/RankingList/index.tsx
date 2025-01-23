@@ -12,12 +12,7 @@ import { useEntityQuery } from "@latticexyz/react";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 
 interface Props {
-    setPopStar: any;
-    playFun: any;
-    playFuntop: any;
-    onTopUpClick: any; // 添加回调函数
     loadingplay: any;
-    setTopUpType: any;
     dayScoresDict: { [key: number]: number; };
     starScoresDict: { [key: number]: number; }; // 添加 starScoresDict
     setShowRankingList: any;
@@ -50,10 +45,10 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
     ) : undefined;
 
 
-    const gameRecord = address ? getComponentValue(
-        GameRecord,
-        addressToEntityID(address)
-    ) : undefined;
+    // const gameRecord = address ? getComponentValue(
+    //     GameRecord,
+    //     addressToEntityID(address)
+    // ) : undefined;
 
     const dayScoresDict: { [key: number]: number; } = {};
     for (let i = 0; i <= 7; i++) {
@@ -132,18 +127,6 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
             break;
         }
     }
-
-    // 模拟30条数据
-    const mockData = Array.from({ length: 30 }, (_, index) => ({
-        entity: `0x${index.toString(16).padStart(40, '0')}`,
-        totalScore: 1000 - index * 10,
-        bestScore: 500 - index * 5,
-        shortestTime: 100 + index,
-        totalGames: 10 + index,
-        wins: 5 + index,
-        losses: 5,
-        winRate: 50,
-    }));
 
     return (
         <div>

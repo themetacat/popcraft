@@ -60,7 +60,7 @@ export function createSystemCalls(
   }: SetupNetworkResult,
   { TCMPopStar, TokenBalance, StarToScore, RankingRecord }: ClientComponents,
 ) {
- 
+
   const app_name: string = window.localStorage.getItem("app_name") || "paint";
   // https://pixelaw-game.vercel.app/TCMPopStarSystem.abi.json
   // const response = await fetch(worldAbiUrl); 
@@ -368,7 +368,7 @@ export function createSystemCalls(
     }
   ]
 
-  const popCraftRedstoneBuyAbi = [  {
+  const popCraftRedstoneBuyAbi = [{
     "inputs": [
       {
         "components": [
@@ -471,11 +471,11 @@ export function createSystemCalls(
   ) => {
     let tx, hashValpublic;
 
-    if(!isExecute){
+    if (!isExecute) {
       rmOverride(popStarId, tokenBalanceId, newRankingRecordId);
       return [tx, hashValpublic]
     }
-    if(!account){
+    if (!account) {
       return { error: "Not connected" }
     }
     const app_name = window.localStorage.getItem("app_name") || "paint";
@@ -583,23 +583,23 @@ export function createSystemCalls(
 
   function withTimeout(taskPromise: any, timeoutMs: number) {
     return new Promise((resolve, reject) => {
-        const timeout = setTimeout(() => {
-            reject(new Error("Transaction timeout"));
-        }, timeoutMs);
+      const timeout = setTimeout(() => {
+        reject(new Error("Transaction timeout"));
+      }, timeoutMs);
 
-        taskPromise
-            .then((results: any) => {
-                clearTimeout(timeout);
-                resolve(results);
-            })
-            .catch((error: any) => {
-                clearTimeout(timeout);
-                reject(error.message);
-            });
+      taskPromise
+        .then((results: any) => {
+          clearTimeout(timeout);
+          resolve(results);
+        })
+        .catch((error: any) => {
+          clearTimeout(timeout);
+          reject(error.message);
+        });
     });
   }
 
-  function rmOverride(popStarId: any, tokenBalanceId: any, newRankingRecordId: any){
+  function rmOverride(popStarId: any, tokenBalanceId: any, newRankingRecordId: any) {
     if (popStarId) {
       TCMPopStar.removeOverride(popStarId);
     }
@@ -610,14 +610,14 @@ export function createSystemCalls(
       RankingRecord.removeOverride(newRankingRecordId);
     }
   }
-  
+
   const payFunction = async (methodParametersArray: any[]) => {
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
 
     let hashValpublic;
     const payArgs = await getPayArgs(methodParametersArray)
-    
+
     const nonce = await getAccountNonce();
     const encodeData = encodeFunctionData({
       abi: payArgs.abi,
@@ -635,9 +635,24 @@ export function createSystemCalls(
         nonce: nonce,
         gas: 8000000n
       });
-      
+
       // const hash = await worldContract.write.call([resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData], { value: payArgs.totalValue });
       hashValpublic = await publicClient.waitForTransactionReceipt({ hash: hash })
+      // try {
+      //   const result = await publicClient.simulateContract({
+      //     address: worldContract.address,
+      //     abi: worldContract.abi,
+      //     functionName: "call",
+      //     args: [resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData],
+      //     value: payArgs.totalValue,
+      //     nonce,
+      //     gas: 8000000n,
+      //   });
+      //   console.log(result);
+      // } catch (error) {
+      //   console.log(error);
+      // }
+
     } catch (error) {
       console.error("Failed to setup network:", error.message);
     }
@@ -649,45 +664,44 @@ export function createSystemCalls(
     let totalValue = BigInt(0);
     let abi = popCraftRedstoneBuyAbi
     const chainIdHex = await window.ethereum.request({
-        method: "eth_chainId",
-      });
-      const chainId = parseInt(chainIdHex, 16); 
+      method: "eth_chainId",
+    });
+    const chainId = parseInt(chainIdHex, 16);
     // add new chain: change here
     if(chainId == 185 || chainId === 31337){
       for (let i = 0; i < methodParametersArray.length; i++) {
         const params = methodParametersArray[i];
         const value = BigInt(params.value);
-        
         totalValue += value;
         const arg_single = {
-          call_data: [params.calldata, Payments.encodeRefundETH()], 
+          call_data: [params.calldata, Payments.encodeRefundETH()],
           value: value,
           token_info: {
-            token_addr: params.tokenAddress, 
-            amount: params.amount * 10 ** 18 
+            token_addr: params.tokenAddress,
+            amount: params.amount * 10 ** 18
           }
         }
         args.push(arg_single);
       }
       abi = popCraftMintChainBuyAbi;
-    }else{
+    } else {
       for (let i = 0; i < methodParametersArray.length; i++) {
         const params = methodParametersArray[i];
         const value = BigInt(params.value);
         totalValue += value;
         const arg_single = {
-          call_data: params.calldata, 
+          call_data: params.calldata,
           value: value,
           token_info: {
-            token_addr: params.tokenAddress, 
-            amount: params.amount * 10 ** 18 
+            token_addr: params.tokenAddress,
+            amount: params.amount * 10 ** 18
           }
         }
         args.push(arg_single);
       }
     }
-    
-    return {"totalValue": totalValue, "args": args, "abi": abi}
+
+    return { "totalValue": totalValue, "args": args, "abi": abi }
   };
 
 
@@ -696,10 +710,10 @@ export function createSystemCalls(
     let tokenBalanceId;
     let rankingRecordId;
     let eliminateAmount = 0;
-    if(!playerAddr){
+    if (!playerAddr) {
       throw new Error("Address undefind");
     }
-    
+
     const playerEntity = encodeEntity({ address: "address" }, { address: playerAddr });
 
     const tcmPopStarData = getComponentValue(TCMPopStar, playerEntity);

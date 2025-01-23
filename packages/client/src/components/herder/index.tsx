@@ -125,16 +125,16 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   useEffect(() => {
     const fetchGasPrice = async () => {
-        try {
-            const response = await fetch("https://api.etherscan.io/v2/api?chainid=1&module=gastracker&action=gasoracle&apikey=TU1ZBXINBCDZ3SAXXIKH73V26ZHA7J8UE8");
-            const data = await response.json();
-            if (data.result) {
-                const priceInGwei = parseFloat(data.result.ProposeGasPrice); // Convert from Wei to Gwei
-                setGasPrice(priceInGwei.toFixed(1)); // Set gas price with 1 decimal places
-            }
-        } catch (error) {
-            console.error("Error fetching gas price:", error);
+      try {
+        const response = await fetch("https://api.etherscan.io/v2/api?chainid=1&module=gastracker&action=gasoracle&apikey=TU1ZBXINBCDZ3SAXXIKH73V26ZHA7J8UE8");
+        const data = await response.json();
+        if (data.result) {
+          const priceInGwei = parseFloat(data.result.ProposeGasPrice); // Convert from Wei to Gwei
+          setGasPrice(priceInGwei.toFixed(1)); // Set gas price with 1 decimal places
         }
+      } catch (error) {
+        console.error("Error fetching gas price:", error);
+      }
     };
 
     fetchGasPrice(); // Initial fetch
@@ -936,7 +936,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   // const action =
   //   pixel_value && pixel_value.action ? pixel_value.action : "interact";
   const action = "interact";
-  
+
   const ClickThreshold = 150;
 
 
@@ -1711,9 +1711,9 @@ export default function Header({ hoveredData, handleData }: Props) {
         // 不弹框
       } else if (errorMessage.includes("Insufficient funds for gas * price + value")) {
         setShowNewPopUp(true);
-      }else if (errorMessage.includes("replacement transaction underpriced")) {
-          toast.error("Action too frequent. Please try again later.");
-      }else {
+      } else if (errorMessage.includes("replacement transaction underpriced")) {
+        toast.error("Action too frequent. Please try again later.");
+      } else {
         console.error("Unhandled error:", errorMessage);
       }
     } catch (error) {
@@ -1777,17 +1777,17 @@ export default function Header({ hoveredData, handleData }: Props) {
   useEffect(() => {
     const canvas = canvasRef.current;
     // if (canvas && entityData.length > 0) {
-      if (canvas) {
+    if (canvas) {
       const ctx = canvas.getContext("2d");
-    //   if (ctx && appName !== "BASE/PopCraftSystem") {
-    //     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    //     drawGrid(ctx, hoveredSquare, false);
-    //   } else {
-    if(ctx){
-      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      drawGrid2(ctx, hoveredSquare, true);
-    }
+      //   if (ctx && appName !== "BASE/PopCraftSystem") {
+      //     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      //     drawGrid(ctx, hoveredSquare, false);
+      //   } else {
+      if (ctx) {
+        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        drawGrid2(ctx, hoveredSquare, true);
       }
+    }
     // }
   }, [
     appName,
@@ -1873,7 +1873,7 @@ export default function Header({ hoveredData, handleData }: Props) {
   const topBuyTransports = () => {
     setShowTopBuy(true)
   }
-  
+
   // const toggleDropdown = () => {
   //   setIsOpen(!isOpen);
   // };
@@ -1931,12 +1931,12 @@ export default function Header({ hoveredData, handleData }: Props) {
         <img className={style.containerImg} src={popcraftLogo} alt="PopCraft Logo" />
         <div className={style.gasPriceContainer}>
           L1 Gas:
-            <span id="spanGasTooltip">
-                <a href="https://etherscan.io/gastracker" target="_blank" rel="noopener noreferrer">
-                  <span className={style.gasPricePlaceHolder}>{gasPrice || " "}</span> Gwei
-                </a>
-            </span>
-            <span className={style.tooltip}>Gaming costs less at ~5 Gwei.</span>
+          <span id="spanGasTooltip">
+            <a href="https://etherscan.io/gastracker" target="_blank" rel="noopener noreferrer">
+              <span className={style.gasPricePlaceHolder}>{gasPrice || " "}</span> Gwei
+            </a>
+          </span>
+          <span className={style.tooltip}>Gaming costs less at ~5 Gwei.</span>
         </div>
         <div className={style.content}>
           <button
@@ -1972,7 +1972,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           >
             <img src={RankingListimg} alt="" />
           </div>
-          
+
           <ConnectButton.Custom>
             {({
               account,
@@ -2035,7 +2035,7 @@ export default function Header({ hoveredData, handleData }: Props) {
                           style={{
                             cursor: "pointer",
                           }}>
-                            BUY
+                          BUY
                         </button>
                         {/* <div className={style.chain}>
                             <button
@@ -2105,10 +2105,10 @@ export default function Header({ hoveredData, handleData }: Props) {
                             {account.displayBalance
                               ? ` (${formatBalance(balancover)}  ${currencySymbol})`
                               : ""}
-                              <img
-                                src={Arrow}
-                                className={`${style.arrow} ${isOpen ? style.arrowRotated : ''}`}
-                               />
+                            <img
+                              src={Arrow}
+                              className={`${style.arrow} ${isOpen ? style.arrowRotated : ''}`}
+                            />
                           </button>
 
                           {addressModel && (
@@ -2253,11 +2253,11 @@ export default function Header({ hoveredData, handleData }: Props) {
           />
         </div>
       )}
-      
+
       {showTopBuy && isConnected ? (
         <div className={style.overlay}>
           <TopBuy
-          setShowTopBuy={setShowTopBuy}
+            setShowTopBuy={setShowTopBuy}
           />
         </div>
       ) : null}
