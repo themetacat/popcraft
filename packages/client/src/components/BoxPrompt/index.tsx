@@ -77,7 +77,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [loadingPrices, setLoadingPrices] = useState({});
   const [lastPrices, setLastPrices] = useState({});
   const { rewardInfo, rewardDescInfo, recipient, chainId, priTokenAddress } = useTopUp();
-  const [ showHowToPlay, setShowHowToPlay ] = useState(false);
+  const [ showHowToPlay, setShowHowToPlay ] = useState(true);
 
   const resultBugs = useBalance({
     address: address,
