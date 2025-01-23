@@ -41,7 +41,8 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       TokenBalance,
       UserDelegationControl,
       RankingRecord,
-      PriTokenPrice
+      PriTokenPrice,
+      GameRecord
     },
     network: { palyerAddress },
     systemCalls: { interact, payFunction, registerDelegation },
@@ -77,7 +78,19 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [loadingPrices, setLoadingPrices] = useState({});
   const [lastPrices, setLastPrices] = useState({});
   const { rewardInfo, rewardDescInfo, recipient, chainId, priTokenAddress } = useTopUp();
-  const [ showHowToPlay, setShowHowToPlay ] = useState(true);
+  const [ showHowToPlay, setShowHowToPlay ] = useState(false);
+
+  useEffect(() => {
+    const rankRecord = address ? getComponentValue(
+      GameRecord,
+      addressToEntityID(address)
+    ) : undefined;
+    if(!rankRecord || rankRecord.successTimes === 0n){
+      setShowHowToPlay(true);
+    } else {
+      setShowHowToPlay(false);
+    }
+  }, [address])
 
   const resultBugs = useBalance({
     address: address,
