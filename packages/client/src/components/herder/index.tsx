@@ -1882,6 +1882,58 @@ export default function Header({ hoveredData, handleData }: Props) {
   //   { name: "MetaCat Devnet", iconUrl: "https://poster-phi.vercel.app/MetaCat_Logo_Circle.png" },
   //   { name: "Redstone", iconUrl: "https://redstone.xyz/icons/redstone.svg" },
   // ];
+  const handleBotInfoTaskTips = () => {
+    setBotInfoTaskTips(true);
+    setTimeout(() => {
+      setBotInfoTaskTips(false);
+    }, 5000);
+  };
+
+  const checkTaskInProcess = (
+  ) => {
+    if (sendCount > receiveCount) {
+      toast.error('Wait for the Queue to clear! Queue:' + receiveCount + '/' + sendCount);
+      handleBotInfoTaskTips();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const handleErrorAll = (
+    errMessage: any,
+  ) => {
+    let toastError: string = "";
+    try {
+      if (!errMessage) {
+        toastError = "Unknow Error";
+      } else if (errMessage.includes("The growth time is too short")) {
+        toastError = "Plants need time to grow!";
+      } else if (errMessage.includes("Insufficient score")) {
+        toastError = "Your score is insufficient!";
+      } else if (errMessage.includes("Level parameter not set")) {
+        toastError = "Plant parameters not set!";
+      } else if (errMessage.includes("Transaction timeout")) {
+        toastError = "Transaction timeout!";
+      } else if (errMessage.includes("replacement transaction underpriced")) {
+        toastError = "Action too frequent. Please try again later!";
+      } else if (errMessage.includes("The total cost (gas * gas fee + value) of executing this transaction exceeds the balance of the account")) {
+        setShowNewPopUp(true)
+      } else if (errMessage.includes("Already obtained")) {
+        toastError = "Already obtained!";
+      } else if (errMessage.includes("Error: World_ResourceNotFound(bytes32 resourceId, string resourceIdString)")) {
+        // Error: World_ResourceNotFound(bytes32 resourceId, string resourceIdString)
+        toastError = "Unknow Error";
+      } else {
+        toastError = "Unknow Error";
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    if (toastError != "") {
+      toast.error(toastError);
+    }
+  }
 
   return (
     <>
@@ -2352,11 +2404,9 @@ export default function Header({ hoveredData, handleData }: Props) {
         botInfoTaskTips={botInfoTaskTips}
       />
       {(isConnected && address) && (
-        <Plants 
-          sendCount={sendCount}
-          receiveCount={receiveCount}
-          setBotInfoTaskTips={setBotInfoTaskTips}
-          setShowNewPopUp={setShowNewPopUp}
+        <Plants
+          checkTaskInProcess={checkTaskInProcess}
+          handleErrorAll={handleErrorAll}
         />
       )}
       
