@@ -192,3 +192,31 @@
     font-family: "MyriadPro";
 }
 
+.carouselImage {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    object-fit: contain;
+    border-radius: 3%;
+}
+
+.cornerImage {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    bottom: 5%;
+    left: 50%;
+    width: 4.5rem;
+    height: 4.5rem;
+    z-index: 99999;
+    cursor: pointer;
+}
+
+.cornerImage img {
+    margin-left: 0.3rem;
+    position: absolute;
+    bottom: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+}
