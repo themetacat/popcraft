@@ -215,7 +215,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       return () => {
         clearInterval(intervalId);
       };
-    } else if(chainId === 8333 || chainId === 2818) {
+    } else if(chainId === 8333 || chainId === 2818 || chainId === 31337) {
       setGPBalance(address);
       const intervalId = setInterval(() => {
         setGPBalance(address);

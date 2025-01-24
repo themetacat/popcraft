@@ -72,6 +72,8 @@ export default function TopUp({
       const hash = await walletClient.sendTransaction({
         to: address,
         value: value,
+        maxFeePerGas: maxFeePerGas,
+        maxPriorityFeePerGas: maxPriorityFeePerGas
       });
       setwithDrawHashVal(hash);
     } else {
@@ -84,7 +86,7 @@ export default function TopUp({
   }
 
   const {
-    network: { walletClient, publicClient },
+    network: { walletClient, publicClient, maxFeePerGas, maxPriorityFeePerGas },
   } = useMUD();
   const { address, isConnected } = useAccount();
   // const MIN_SESSION_WALLET_BALANCE = parseEther("0.03");
@@ -233,7 +235,7 @@ export default function TopUp({
     const value = inputValue;
     try {
       const nonce = await publicClient.getTransactionCount({ address: address });
-      const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue), nonce, maxFeePerGas: parseGwei('0.002') });
+      const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue), nonce, maxFeePerGas: maxFeePerGas, maxPriorityFeePerGas: maxPriorityFeePerGas });
       const result = await publicClient.waitForTransactionReceipt({ hash: result_hash });
       if (result.status === "success") {
         onTopUpSuccess();
