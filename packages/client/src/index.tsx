@@ -29,7 +29,9 @@ const getChain = (id) => supportedChains.find((c) => c.id === id) || null;
 const redstone = getChain(690);
 const metacatDev = getChain(31338);
 const mintchain = getChain(185);
-// const local = getChain(31337);
+const morph = getChain(2818);
+const b3 = getChain(8333);
+const local = getChain(31337);
 
 if (!redstone || !metacatDev || !mintchain) {
     console.error("Some chains are not defined in supportedChains!");
@@ -46,6 +48,8 @@ const config = getDefaultConfig({
     mintchain,
     redstone,
     metacatDev,
+    morph,
+    b3,
     // local,
   ],
   ssr: true,

@@ -155,5 +155,5 @@ export default function LightAnimation() {
     }, []);
 
     return <canvas ref={canvasRef} style={{ position: "fixed", top: 0, left: 0 }} />;
-};
+}
 

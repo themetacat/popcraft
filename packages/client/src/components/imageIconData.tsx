@@ -111,4 +111,40 @@ export const imageIconData = {
         src: 'image/private/MEOW.webp',
         name: "MEOW",
     },
+    '0x0000000000000000000000000000000000000003': {
+        src: 'image/private/SPIK.webp',
+        name: "SPIK",
+    },
+    '0x0000000000000000000000000000000000000004': {
+        src: 'image/private/RIBT.webp',
+        name: "RIBT",
+    },
+    '0x0000000000000000000000000000000000000005': {
+        src: 'image/private/POMA.webp',
+        name: "POMA",
+    },
+    '0x0000000000000000000000000000000000000006': {
+        src: 'image/private/MIYA.webp',
+        name: "MIYA",
+    },
+    '0x0000000000000000000000000000000000000007': {
+        src: 'image/private/KUMA.webp',
+        name: "KUMA",
+    },
+    '0x0000000000000000000000000000000000000008': {
+        src: 'image/private/IGLO.webp',
+        name: "IGLO",
+    },
+    '0x0000000000000000000000000000000000000009': {
+        src: 'image/private/HOOT.webp',
+        name: "HOOT",
+    },
+    '0x0000000000000000000000000000000000000010': {
+        src: 'image/private/FLX.webp',
+        name: "FLX",
+    },
+    '0x0000000000000000000000000000000000000011': {
+        src: 'image/private/CLUK.webp',
+        name: "CLUK",
+    },
 };

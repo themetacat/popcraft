@@ -140,6 +140,62 @@ const mintchain = defineChain({
   },
 })
 
+const morph = defineChain({
+  id: 2818,
+  name: 'Morph',
+  network: 'morph',
+  iconUrl:'https://poster-phi.vercel.app/Morphl2_Logo_Circle.webp',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.morphl2.io'],
+      webSocket: ['wss://rpc.morphl2.io:8443'],
+    },
+    public: {
+      http: ['https://rpc.morphl2.io'],
+      webSocket: ['wss://rpc.morphl2.io:8443'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Morph",
+      url: "https://explorer.morphl2.io",
+    },
+  },
+})
+
+const b3 = defineChain({
+  id: 8333,
+  name: 'B3',
+  network: 'b3',
+  iconUrl:'https://cdn.b3.fun/b3_logo.svg',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://mainnet-rpc.b3.fun/http'],
+      webSocket: ['wss://mainnet-rpc.b3.fun/ws'],
+    },
+    public: {
+      http: ['https://mainnet-rpc.b3.fun/http'],
+      webSocket: ['wss://mainnet-rpc.b3.fun/ws'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "B3",
+      url: "https://explorer.b3.fun/",
+    },
+  },
+})
+
 export const newMudFoundry = {
   ...mudFoundry,
   blockExplorers: {
@@ -154,4 +210,4 @@ export const newMudFoundry = {
  * See https://mud.dev/tutorials/minimal/deploy#run-the-user-interface
  * for instructions on how to add networks.
  */
-export const supportedChains: MUDChain[] = [ latticeTestnet, core_foundry, redstone, mintchain];
+export const supportedChains: MUDChain[] = [ latticeTestnet, core_foundry, redstone, mintchain, morph, b3, newMudFoundry];

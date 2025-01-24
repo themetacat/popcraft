@@ -1,4 +1,8 @@
 import { mudConfig } from "@latticexyz/world/register";
+import { getNetworkConfig } from "./getNetworkConfig";
+
+const networkConfigPromise = await getNetworkConfig();
+const chainId = networkConfigPromise.chainId;
 
 export default mudConfig({
   namespace: "popCraft",
@@ -41,7 +45,13 @@ export default mudConfig({
       valueSchema:{
         times: "uint256",
         successTimes: "uint256",
-        unissuedRewards: "uint256"
+        unissuedRewards: "uint256",
+        // add new chain: change here
+        ...(chainId === 31337 || chainId === 2818 || chainId === 8333
+          ? {
+              totalPoints: "uint256",
+            }
+          : {}),
       }
     },
     StarToScore: {
@@ -164,7 +174,15 @@ export default mudConfig({
         growTime: "uint256",
         changeTimes: "uint256"
       }
-    }
+    },
+    UserBenefitsToken: {
+      keySchema: {
+        user: "address"
+      },
+      valueSchema: {
+        send: "bool"
+      }
+    },
   },
   systems: {
     PopCraftSystem: {

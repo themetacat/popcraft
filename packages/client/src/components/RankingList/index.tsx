@@ -10,14 +10,10 @@ import { addressToEntityID, numToEntityID } from "../rightPart";
 import { useAccount } from 'wagmi';
 import { useEntityQuery } from "@latticexyz/react";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
+import { useTopUp } from "../select";
 
 interface Props {
-    setPopStar: any;
-    playFun: any;
-    playFuntop: any;
-    onTopUpClick: any; // 添加回调函数
     loadingplay: any;
-    setTopUpType: any;
     dayScoresDict: { [key: number]: number; };
     starScoresDict: { [key: number]: number; }; // 添加 starScoresDict
     setShowRankingList: any;
@@ -31,6 +27,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
         network: { publicClient },
     } = useMUD();
     const { address, isConnected } = useAccount();
+    const { chainId } = useTopUp();
 
     //格式化地址，只显示前4位和后4位
     const formatAddress = (address) => {
@@ -50,10 +47,10 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
     ) : undefined;
 
 
-    const gameRecord = address ? getComponentValue(
-        GameRecord,
-        addressToEntityID(address)
-    ) : undefined;
+    // const gameRecord = address ? getComponentValue(
+    //     GameRecord,
+    //     addressToEntityID(address)
+    // ) : undefined;
 
     const dayScoresDict: { [key: number]: number; } = {};
     for (let i = 0; i <= 7; i++) {
@@ -97,20 +94,29 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                 const losses = totalGames - wins;
                 const winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
                 const address = decodeEntity({ address: "address" }, entity);
-
+                const totalPoints = Number(gameRecord.totalPoints);
+                let sortValue;
+                // add new chain: change here
+                if (chainId === 185 || chainId == 690 || chainId == 31338) {
+                    sortValue = Number(value.totalScore)
+                } else {
+                    sortValue = totalPoints
+                }
                 return {
                     entity: address.address,
                     totalScore: Number(value.totalScore),
                     bestScore: Number(value.highestScore),
+                    totalPoints: totalPoints,
                     shortestTime: Number(value.shortestTime),
                     totalGames,
                     wins,
                     losses,
                     winRate,
+                    sortValue
                 };
             }
         })
-        .sort((a, b) => b.totalScore - a.totalScore);
+        .sort((a, b) => b.sortValue - a.sortValue);
 
     const gameRecordSelf = address ? getComponentValue(
         GameRecord,
@@ -122,7 +128,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
     const wins = gameRecordSelf ? Number(gameRecordSelf.successTimes) : 0;
     const losses = totalGames - wins;
     const winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
-
+    const totalPoints = gameRecordSelf ? Number(gameRecordSelf.totalPoints) : 0;
 
     // 找到当前用户的排名
     let userRank = null;
@@ -132,18 +138,6 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
             break;
         }
     }
-
-    // 模拟30条数据
-    const mockData = Array.from({ length: 30 }, (_, index) => ({
-        entity: `0x${index.toString(16).padStart(40, '0')}`,
-        totalScore: 1000 - index * 10,
-        bestScore: 500 - index * 5,
-        shortestTime: 100 + index,
-        totalGames: 10 + index,
-        wins: 5 + index,
-        losses: 5,
-        winRate: 50,
-    }));
 
     return (
         <div>
@@ -165,8 +159,19 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                             <tr>
                                 <th>Rank</th>
                                 <th>Address</th>
-                                <th>Total Score</th>
-                                <th>Best Score</th>
+
+                                {/* add new chain: change here */}
+                                {(chainId === 31338 || chainId === 185 || chainId === 690) ? (
+                                    <>
+                                        <th>Total Score</th>
+                                        <th>Best Score</th>
+                                    </>
+                                ) : (
+                                    <>
+                                        <th>Total Points</th>
+                                        <th>Total Score</th>
+                                    </>
+                                )}
                                 <th>Fastest Time</th>
                                 <th>Wins/Losses</th>
                                 <th>Win Rate</th>
@@ -196,12 +201,25 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                         )}
                                     </td>
                                     <td>
-                                        <a className={style.noLinkStyle} href={`https://${publicClient.chain.id === 185 ? 'explorer.mintchain.io' : publicClient.chain.id === 690 ? 'explorer.redstone.xyz' : 'etherscan.io'}/address/${item.entity}`} target="_blank">
+                                        {/* add new chain: change here */}
+                                        <a className={style.noLinkStyle} href={`https://${publicClient.chain.id === 185 ? 'explorer.mintchain.io' : publicClient.chain.id === 690 ? 'explorer.redstone.xyz' : publicClient.chain.id === 2818 ? 'explorer.morphl2.io' : publicClient.chain.id === 8333 ? 'explorer.b3.fun' : 'etherscan.io'}/address/${item.entity}`} target="_blank">
                                             {formatAddress(item.entity)}
                                         </a>
                                     </td>
-                                    <td>{item.totalScore}</td>
-                                    <td>{item.bestScore}</td>
+
+                                    {/* add new chain: change here */}
+                                    {(chainId === 31338 || chainId === 690 || chainId === 185) ?
+                                        <>
+                                            <td>{item.totalScore}</td>
+                                            <td>{item.bestScore}</td>
+                                        </>
+                                        :
+                                        <>
+                                            <td>{item?.totalPoints}</td>
+                                            <td>{item.totalScore}</td>
+                                        </>
+                                    }
+
                                     <td>{formatTime(item.shortestTime)}</td>
                                     <td>{item.wins}/{item.losses}</td>
                                     <td>{item.winRate}%</td>
@@ -219,8 +237,19 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                     <span>{formatAddress(address)}</span>
                                 </div>
                                 <div className={style.scoreBox}>
-                                    <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
-                                    <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
+
+                                    {/* add new chain: change here */}
+                                    {(chainId === 31338 || chainId === 185 || chainId === 690) ?
+                                        <>
+                                            <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
+                                            <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
+                                        </>
+                                        :
+                                        <>
+                                            <span className={style.scoreItem}>{totalPoints ? totalPoints : 0}</span>
+                                            <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
+                                        </>
+                                    }
                                     <span className={style.scoreItem}>{rankRecord ? formatTime(Number(rankRecord.shortestTime)) : '00:00'}</span>
                                     <span className={style.scoreItem}>{wins}/{losses}</span>
                                     <span className={style.scoreItem}>{winRate}%</span>

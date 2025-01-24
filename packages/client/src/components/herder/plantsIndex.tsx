@@ -19,10 +19,8 @@ interface PlantingRecord {
 }
 
 interface Props {
-    sendCount: number,
-    receiveCount: number
-    setBotInfoTaskTips: any
-    setShowNewPopUp: any
+    checkTaskInProcess: any
+    handleErrorAll: any
 }
 
 interface Star {
@@ -33,7 +31,7 @@ interface Star {
     duration: number;
 }
 
-export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, setShowNewPopUp }: Props) {
+export default function Plants({ checkTaskInProcess, handleErrorAll }: Props) {
     const {
         network: { palyerAddress, publicClient },
         components: {
@@ -91,7 +89,7 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
         setGrowLevel(currentLevel);
         if (callPlants && callPlants.error) {
             console.error(callPlants.error);
-            handleError(callPlants.error)
+            handleErrorAll(callPlants.error)
         }
 
         setLoadingChange(false);
@@ -322,58 +320,6 @@ export default function Plants({ sendCount, receiveCount, setBotInfoTaskTips, se
         const seconds = Math.floor(totalSeconds % 60);
 
         return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    };
-
-    const handleError = (
-        errMessage: any,
-    ) => {
-        let toastError: string = "";
-        try {
-            if (errMessage.includes("The growth time is too short")) {
-                toastError = "Plants need time to grow!";
-            } else if (errMessage.includes("Insufficient score")) {
-                toastError = "Your score is insufficient!";
-            } else if (errMessage.includes("Level parameter not set")) {
-                toastError = "Plant parameters not set!";
-            } else if (errMessage.includes("Transaction timeout")) {
-                toastError = "Transaction timeout!";
-            } else if (errMessage.includes("replacement transaction underpriced")) {
-                toastError = "Action too frequent. Please try again later!";
-            } else if (errMessage.includes("The total cost (gas * gas fee + value) of executing this transaction exceeds the balance of the account")) {
-                setShowNewPopUp(true)
-            } else if (errMessage.includes("Error: World_ResourceNotFound(bytes32 resourceId, string resourceIdString)")) {
-                // Error: World_ResourceNotFound(bytes32 resourceId, string resourceIdString)
-                toastError = "Unknow Error";
-            } else {
-                toastError = "Unknow Error";
-            }
-        } catch (error) {
-            console.error(error);
-        }
-        if (toastError != "") {
-            toast.error(toastError);
-        }
-    }
-
-    const checkTaskInProcess = (
-    ) => {
-        if (sendCount > receiveCount) {
-            toast.error('Wait for the Queue to clear! Queue:' + receiveCount + '/' + sendCount);
-            handleBotInfoTaskTips();
-            return true;
-        } else {
-            // toast.error('Wait for the Queue to clear! Queue:' + receiveCount + '/' + sendCount);
-            // handleBotInfoTaskTips();
-            // return true;
-            return false;
-        }
-    }
-
-    const handleBotInfoTaskTips = () => {
-        setBotInfoTaskTips(true);
-        setTimeout(() => {
-            setBotInfoTaskTips(false);
-        }, 5000);
     };
 
     const [stars, setStars] = useState<Star[]>([]);
