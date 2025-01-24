@@ -61,7 +61,6 @@ export default function HowToPlay({ setShowHowToPlay }: Props) {
               className={`${howToPlayStyle.navNumber} ${index === currentIndex ? howToPlayStyle.active : ''}`}
               onClick={() => setCurrentIndex(index)}
             >
-              {index + 1}
             </span>
           ))}
         </div>
