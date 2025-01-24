@@ -6,6 +6,7 @@ import { useBalance } from 'wagmi';
 import { useEntityQuery } from "@latticexyz/react";
 import { Has, getComponentValue } from "@latticexyz/recs";
 import { decodeEntity, } from "@latticexyz/store-sync/recs";
+import { useTopUp } from "../select";
 
 interface Props {
     sendCount: number,
@@ -17,16 +18,18 @@ export default function BotInfo({ sendCount, receiveCount, botInfoTaskTips }: Pr
     const {
         network: { palyerAddress },
         components: {
-            RankingRecord
+            RankingRecord,
+            GameRecord
         },
     } = useMUD();
     const { address, isConnected } = useAccount();
     const [sessionWalletBalance, setSessionWalletBalance] = useState("0");
     const rankingRecordEntities = useEntityQuery([Has(RankingRecord)]);
+    const { chainId } = useTopUp();
 
     const SWB = useBalance({
         address: palyerAddress,
-        query:{
+        query: {
             refetchInterval: 2000
         }
     });
@@ -36,17 +39,31 @@ export default function BotInfo({ sendCount, receiveCount, botInfoTaskTips }: Pr
             const value = getComponentValue(RankingRecord, entity);
             const playerAddress = decodeEntity({ address: "address" }, entity);
             if (value) {
+                const gameRecord = getComponentValue(
+                    GameRecord,
+                    entity,
+                );
+                const totalPoints = gameRecord ? Number(gameRecord.totalPoints) : 0;
+                let sortValue = 0;
+                // add new chain: change here
+                if (chainId === 690 || chainId == 31338 || chainId == 185) {
+                    sortValue = Number(value.totalScore)
+                } else {
+                    sortValue = totalPoints
+                }
                 return {
                     entity: playerAddress.address,
                     totalScore: Number(value.totalScore),
+                    sortValue: sortValue
                 };
             }
             return {
                 address: playerAddress.address,
                 totalScore: 0,
+                sortValue: 0
             };
         })
-        .sort((a, b) => b.totalScore - a.totalScore);
+        .sort((a, b) => b.sortValue - a.sortValue);
 
     let userRank = 0;
     let totalScore = 0

@@ -90,7 +90,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     } else {
       setShowHowToPlay(false);
     }
-  }, [address])
+  }, [])
 
   const resultBugs = useBalance({
     address: address,
@@ -368,7 +368,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         let price = "0";
 
         // add new chain: change here
-        if (chainId === 185 || chainId === 31337) {
+        if (chainId === 185) {
           if (priTokenAddress.includes(key)) {
             const route = getPriTokenPrice(key, quantity)
             price = route.price;
@@ -380,11 +380,17 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               routeMethodParameters = route.methodParameters
             }
           }
-        } else {
+        } else if(chainId === 31338 || chainId === 690){
           const route = await generateRoute(key, quantity, recipient);
           if (route) {
             price = route.quote.toExact();
             routeMethodParameters = route.methodParameters;
+          }
+        } else {
+          if (priTokenAddress.includes(key)) {
+            const route = getPriTokenPrice(key, quantity)
+            price = route.price;
+            routeMethodParameters = route.methodParameters
           }
         }
         const methodParameters = {
@@ -458,7 +464,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         let price = "0";
 
         // add new chain: change here
-        if (chainId === 185 || chainId === 31337) {
+        if (chainId === 185) {
           if (priTokenAddress.includes(key)) {
             const route = getPriTokenPrice(key, quantity)
             price = route.price;
@@ -470,12 +476,18 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               routeMethodParameters = route.methodParameters
             }
           }
-        } else {
+        } else if(chainId === 690 || chainId === 31338){
           const route = await generateRoute(key, quantity, recipient);
           if (route) {
             price = route.quote.toExact();
             routeMethodParameters = route.methodParameters;
           }
+        } else {
+          if (priTokenAddress.includes(key)) {
+            const route = getPriTokenPrice(key, quantity)
+            price = route.price;
+            routeMethodParameters = route.methodParameters;
+          } 
         }
         const methodParameters = {
           ...routeMethodParameters,

@@ -4,8 +4,7 @@
  * This line imports the functions we need from it.
  */
 
-import { pad, createPublicClient, fallback, webSocket, http, createWalletClient, Hex, parseEther, ClientConfig, createTestClient } from "viem";
-      
+import { pad, createPublicClient, fallback, webSocket, http, createWalletClient, Hex, parseEther, ClientConfig, createTestClient, parseGwei } from "viem";
 import { createFaucetService } from "@latticexyz/services/faucet";
 import { encodeEntity, syncToRecs } from "@latticexyz/store-sync/recs";
 import { getNetworkConfig } from "./getNetworkConfig";
@@ -42,7 +41,9 @@ export type SetupNetworkResult = {
   write$: any;
   write_sub: any;
   abi: any;
-  clientOptions:any
+  clientOptions: any;
+  maxFeePerGas: any;
+  maxPriorityFeePerGas: any
 };
 export async function setupNetwork(): Promise<SetupNetworkResult> {
   return new Promise<SetupNetworkResult>((resolve, reject) => {
@@ -52,7 +53,7 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
       const passedValue = localStorage.getItem("manifest") as any;
       // 使用模板字符串拼接字符串
       const fullPath = `https://pixelaw-game.vercel.app/${passedValue?.replace("BASE/", "")}`;
-     
+
       /*
        * Create a viem public (read only) client
        * (https://viem.sh/docs/clients/public.html)
@@ -118,15 +119,26 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
       }else{
         worldAbiUrl="https://pixelaw-game.vercel.app/Snake.abi.json"
       }
-
+      // add new chain: change here
       let indexerUrl = ""
-      
+      let maxFeePerGas = parseGwei('0.000106')
+      let maxPriorityFeePerGas = parseGwei('0.0001')
       if (networkConfig.chain.id === 690) {
         indexerUrl = "https://popcraft-indexer.pixelaw.world/";
       }else if(networkConfig.chain.id === 31338){
         indexerUrl = "https://indexerdev.pixelaw.world/";
       }else if(networkConfig.chain.id === 185){
         indexerUrl = "https://indexermint.pixelaw.world/";
+        maxFeePerGas = parseGwei('0.00104')
+        maxPriorityFeePerGas = parseGwei('0.001')
+      }else if(networkConfig.chain.id === 2818){
+        indexerUrl = "https://indexermorph.pixelaw.world/";
+        maxFeePerGas = parseGwei('0.0021')
+        maxPriorityFeePerGas = parseGwei('0.001')
+      }else if(networkConfig.chain.id === 8333){
+        indexerUrl = "https://indexerb3.pixelaw.world/";
+        maxFeePerGas = parseGwei('0.00105')
+        maxPriorityFeePerGas = parseGwei('0.0005')
       }
       // else if(networkConfig.chain.id === 17069){
       //   indexerUrl = "https://indexertest.pixelaw.world/";
@@ -219,6 +231,9 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
               {
                 tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "PriTokenPrice" }),
               },
+              {
+                tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "UserBenefitsToken" }),
+              },
             ],
           }).then(({ components, latestBlock$, storedBlockLogs$, waitForTransaction }) => {
             /*
@@ -296,7 +311,9 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
               write$: write$.asObservable().pipe(share()),
               write_sub: write$,
               abi: abi,
-              clientOptions
+              clientOptions,
+              maxFeePerGas,
+              maxPriorityFeePerGas
             });
           
           }).catch(reject);

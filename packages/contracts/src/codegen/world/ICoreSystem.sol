@@ -50,10 +50,4 @@ interface ICoreSystem {
     address toAddress,
     uint256 amount
   ) external;
-
-  function setTokenBalanceForNamespace(
-    address[] memory tokenAddressArr,
-    uint256[] memory tokenAddressBalance,
-    ResourceId fromNamespaceId
-  ) external;
 }

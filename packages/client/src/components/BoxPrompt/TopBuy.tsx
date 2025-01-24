@@ -231,7 +231,7 @@ export default function TopBuy({ setShowTopBuy }: Props) {
                 let price: number | string = "0";
 
                 // add new chain: change here
-                if (chainId === 185 || chainId === 31337) {
+                if (chainId === 185) {
                     if (priTokenAddress.includes(key)) {
                         const route = getPriTokenPrice(key, quantity)
                         price = route.price;
@@ -243,10 +243,16 @@ export default function TopBuy({ setShowTopBuy }: Props) {
                             routeMethodParameters = route.methodParameters
                         }
                     }
-                } else {
+                }else if(chainId === 690 || chainId === 31338){
                     const route = await generateRoute(key, quantity, recipient);
                     if (route) {
                         price = route.quote.toExact();
+                        routeMethodParameters = route.methodParameters;
+                    }
+                } else {
+                    if (priTokenAddress.includes(key)) {
+                        const route = getPriTokenPrice(key, quantity)
+                        price = route.price;
                         routeMethodParameters = route.methodParameters;
                     }
                 }
@@ -287,7 +293,7 @@ export default function TopBuy({ setShowTopBuy }: Props) {
                 let price: number | string = "0";
 
                 // add new chain: change here
-                if (chainId === 185 || chainId === 31337) {
+                if (chainId === 185) {
                     if (priTokenAddress.includes(key)) {
                         const route = getPriTokenPrice(key, quantity)
                         price = route.price;
@@ -299,10 +305,16 @@ export default function TopBuy({ setShowTopBuy }: Props) {
                             routeMethodParameters = route.methodParameters
                         }
                     }
-                } else {
+                } else if(chainId === 690 || chainId === 31338){
                     const route = await generateRoute(key, quantity, recipient);
                     if (route) {
                         price = route.quote.toExact();
+                        routeMethodParameters = route.methodParameters;
+                    }
+                } else {
+                    if (priTokenAddress.includes(key)) {
+                        const route = getPriTokenPrice(key, quantity)
+                        price = route.price;
                         routeMethodParameters = route.methodParameters;
                     }
                 }

@@ -12,7 +12,7 @@ import { encodeEntity } from "@latticexyz/store-sync/recs";
 import {
   encodeFunctionData,
 } from "viem";
-import { createWalletClient, custom, parseEther } from "viem";
+import { createWalletClient, custom, parseEther, parseGwei } from "viem";
 import toast from "react-hot-toast";
 let args_index: number = -1;
 import { Payments } from "@uniswap/v3-sdk"
@@ -26,6 +26,10 @@ export const update_app_value = (index: number) => {
 export let abi_json = {};
 
 export type PlantsResponse = {
+  error?: string;
+} | any;
+
+export type CallResponse = {
   error?: string;
 } | any;
 
@@ -57,6 +61,8 @@ export function createSystemCalls(
     walletClient,
     abi,
     clientOptions,
+    maxFeePerGas,
+    maxPriorityFeePerGas
   }: SetupNetworkResult,
   { TCMPopStar, TokenBalance, StarToScore, RankingRecord }: ClientComponents,
 ) {
@@ -139,7 +145,9 @@ export function createSystemCalls(
         abi: worldContract.abi,
         functionName: "registerDelegation",
         args: [palyerAddress, SYSTEMBOUND_DELEGATION, callData],
-        nonce: nonce
+        nonce: nonce,
+        maxFeePerGas: maxFeePerGas,
+        maxPriorityFeePerGas: maxPriorityFeePerGas
       });
       hashValpublic = publicClient.waitForTransactionReceipt({ hash: hash });
 
@@ -365,7 +373,14 @@ export function createSystemCalls(
       "outputs": [],
       "stateMutability": "payable",
       "type": "function"
-    }
+    },
+    {
+      "type": "function",
+      "name": "getUserBenefitsToken",
+      "inputs": [],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
   ]
 
   const popCraftRedstoneBuyAbi = [{
@@ -517,7 +532,11 @@ export function createSystemCalls(
               name: system_name,
             }),
             encodeData,
-          ], { gas: 29599000n, nonce });
+          ], {
+            gas: 29599000n,
+            nonce, maxFeePerGas: maxFeePerGas,
+            maxPriorityFeePerGas: maxPriorityFeePerGas
+          });
           hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
           // hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }),7000);
           await waitForTransaction(txData);
@@ -526,53 +545,58 @@ export function createSystemCalls(
         } catch (error) {
           return { error: error.message };
         }
-   
+
       } else {
-          
-          try {
-            const txData = await worldContract.write.callFrom([
-              account,
-              resourceToHex({
-                type: "system",
-                namespace: namespace,
-                name: system_name,
-              }),
-              encodeData,
-            ], { gas: 15000000n, nonce });
-            // const txStatus = await publicClient.getTransaction({ hash: txData });
-            tx = txData;
-           hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }),13000);
-           
-            // hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
-            if(hashValpublic.status === "reverted" && firstGameOver){
-              firstGameOver = false;
-              const { simulateContractRequest } = await publicClient.simulateContract({
-                account: palyerAddress,
-                address: worldContract.address,
-                abi: worldContract.abi,
-                functionName: 'callFrom',
-                args: [
-                  account,
-                  resourceToHex({
-                    type: "system",
-                    namespace: namespace,
-                    name: system_name,
-                  }),
-                  encodeData,
-                ], 
-              })
-            }
-            // console.log(hashValpublic);
-            // unwatch()
-            await waitForTransaction(txData);
-          }catch (error: any) {
-            // waitingTransaction = false;
-            return { error: error.message };
-          } finally {
-            rmOverride(popStarId, tokenBalanceId, newRankingRecordId)
-           
+
+        try {
+          const txData = await worldContract.write.callFrom([
+            account,
+            resourceToHex({
+              type: "system",
+              namespace: namespace,
+              name: system_name,
+            }),
+            encodeData,
+          ], {
+            gas: 15000000n,
+            nonce,
+            maxFeePerGas: maxFeePerGas,
+            maxPriorityFeePerGas: maxPriorityFeePerGas
+          });
+          // const txStatus = await publicClient.getTransaction({ hash: txData });
+          tx = txData;
+          hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 13000);
+
+          // hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
+          if (hashValpublic.status === "reverted" && firstGameOver) {
+            firstGameOver = false;
+            const { simulateContractRequest } = await publicClient.simulateContract({
+              account: palyerAddress,
+              address: worldContract.address,
+              abi: worldContract.abi,
+              functionName: 'callFrom',
+              args: [
+                account,
+                resourceToHex({
+                  type: "system",
+                  namespace: namespace,
+                  name: system_name,
+                }),
+                encodeData,
+              ],
+            })
           }
-  
+          // console.log(hashValpublic);
+          // unwatch()
+          await waitForTransaction(txData);
+        } catch (error: any) {
+          // waitingTransaction = false;
+          return { error: error.message };
+        } finally {
+          rmOverride(popStarId, tokenBalanceId, newRankingRecordId)
+
+        }
+
       }
     } catch (error) {
       waitingTransaction = false;
@@ -633,7 +657,9 @@ export function createSystemCalls(
         args: [resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData],
         value: payArgs.totalValue,
         nonce: nonce,
-        gas: 8000000n
+        gas: 8000000n,
+        maxFeePerGas: maxFeePerGas,
+        maxPriorityFeePerGas: maxPriorityFeePerGas
       });
 
       // const hash = await worldContract.write.call([resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData], { value: payArgs.totalValue });
@@ -668,7 +694,22 @@ export function createSystemCalls(
     });
     const chainId = parseInt(chainIdHex, 16);
     // add new chain: change here
-    if(chainId == 185 || chainId === 31337){
+    if (chainId == 690 || chainId == 31338) {
+      for (let i = 0; i < methodParametersArray.length; i++) {
+        const params = methodParametersArray[i];
+        const value = BigInt(params.value);
+        totalValue += value;
+        const arg_single = {
+          call_data: params.calldata,
+          value: value,
+          token_info: {
+            token_addr: params.tokenAddress,
+            amount: params.amount * 10 ** 18
+          }
+        }
+        args.push(arg_single);
+      }
+    } else {
       for (let i = 0; i < methodParametersArray.length; i++) {
         const params = methodParametersArray[i];
         const value = BigInt(params.value);
@@ -684,21 +725,6 @@ export function createSystemCalls(
         args.push(arg_single);
       }
       abi = popCraftMintChainBuyAbi;
-    } else {
-      for (let i = 0; i < methodParametersArray.length; i++) {
-        const params = methodParametersArray[i];
-        const value = BigInt(params.value);
-        totalValue += value;
-        const arg_single = {
-          call_data: params.calldata,
-          value: value,
-          token_info: {
-            token_addr: params.tokenAddress,
-            amount: params.amount * 10 ** 18
-          }
-        }
-        args.push(arg_single);
-      }
     }
 
     return { "totalValue": totalValue, "args": args, "abi": abi }
@@ -971,82 +997,141 @@ export function createSystemCalls(
     name: "PlantsSystem",
   })
 
+  const popcraftResourceHex = resourceToHex({
+    type: "system",
+    namespace: "popCraft",
+    name: "PopCraftSystem",
+  })
+
   const collectSeed = async (
     account: any,
     nonce: number
   ): Promise<PlantsResponse> => {
-      let hashValpublic: any;
-      const encodeData = encodeFunctionData({
-        abi: PlantsSystemAbi,
-        functionName: "collectSeed",
-        args: [],
+    let hashValpublic: any;
+    const encodeData = encodeFunctionData({
+      abi: PlantsSystemAbi,
+      functionName: "collectSeed",
+      args: [],
+    });
+    try {
+
+      const txData = await worldContract.write.callFrom([
+        account,
+        plantsResourceHex,
+        encodeData,
+      ], {
+        gas: 5000000n,
+        nonce,
+        maxFeePerGas: maxFeePerGas,
+        maxPriorityFeePerGas: maxPriorityFeePerGas
       });
-      try {
-     
-        const txData = await worldContract.write.callFrom([
-          account,
-          plantsResourceHex,
-          encodeData,
-        ], { gas: 5000000n, nonce });
-        hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
-        await waitForTransaction(txData);
-        if(hashValpublic.status === "reverted"){
-          firstGameOver = false;
-          const { simulateContractRequest } = await publicClient.simulateContract({
-            account: palyerAddress,
-            address: worldContract.address,
-            abi: worldContract.abi,
-            functionName: 'callFrom',
-            args: [
-              account,
-              plantsResourceHex,
-              encodeData,
-            ], 
-          })
-        }
-      } catch (error) {
-        return { error: error.message };
+      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
+      await waitForTransaction(txData);
+      if (hashValpublic.status === "reverted") {
+        firstGameOver = false;
+        const { simulateContractRequest } = await publicClient.simulateContract({
+          account: palyerAddress,
+          address: worldContract.address,
+          abi: worldContract.abi,
+          functionName: 'callFrom',
+          args: [
+            account,
+            plantsResourceHex,
+            encodeData,
+          ],
+        })
       }
-      return hashValpublic;
+    } catch (error) {
+      return { error: error.message };
+    }
+    return hashValpublic;
   };
 
   const grow = async (
     account: any,
     nonce: number
   ): Promise<PlantsResponse> => {
-      let hashValpublic: any;
-      const encodeData = encodeFunctionData({
-        abi: PlantsSystemAbi,
-        functionName: "grow",
-        args: [],
+    let hashValpublic: any;
+    const encodeData = encodeFunctionData({
+      abi: PlantsSystemAbi,
+      functionName: "grow",
+      args: [],
+    });
+    try {
+      const txData = await worldContract.write.callFrom([
+        account,
+        plantsResourceHex,
+        encodeData,
+      ], {
+        gas: 5000000n,
+        nonce,
+        maxFeePerGas: maxFeePerGas,
+        maxPriorityFeePerGas: maxPriorityFeePerGas
       });
-      try {
-        const txData = await worldContract.write.callFrom([
-          account,
-          plantsResourceHex,
-          encodeData,
-        ], { gas: 5000000n, nonce });
 
-        hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
-        await waitForTransaction(txData);
-        if(hashValpublic.status === "reverted"){
-          firstGameOver = false;
-          const { simulateContractRequest } = await publicClient.simulateContract({
-            account: palyerAddress,
-            address: worldContract.address,
-            abi: worldContract.abi,
-            functionName: 'callFrom',
-            args: [
-              account,
-              plantsResourceHex,
-              encodeData,
-            ], 
-          })
-        }
-      } catch (error) {
-        return { error: error.message };
+      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
+      await waitForTransaction(txData);
+      if (hashValpublic.status === "reverted") {
+        firstGameOver = false;
+        const { simulateContractRequest } = await publicClient.simulateContract({
+          account: palyerAddress,
+          address: worldContract.address,
+          abi: worldContract.abi,
+          functionName: 'callFrom',
+          args: [
+            account,
+            plantsResourceHex,
+            encodeData,
+          ],
+        })
       }
-      return hashValpublic;
+    } catch (error) {
+      return { error: error.message };
+    }
+    return hashValpublic;
+  };
+
+  const getBenefitsToken = async (
+    account: any,
+    nonce: number
+  ): Promise<CallResponse> => {
+    let hashValpublic: any;
+    const encodeData = encodeFunctionData({
+      abi: popCraftAbi,
+      functionName: "getUserBenefitsToken",
+      args: [],
+    });
+    try {
+      const txData = await worldContract.write.callFrom([
+        account,
+        popcraftResourceHex,
+        encodeData,
+      ], {
+        gas: 5000000n,
+        nonce,
+        maxFeePerGas: maxFeePerGas,
+        maxPriorityFeePerGas: maxPriorityFeePerGas
+      });
+      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
+      await waitForTransaction(txData);
+      if (hashValpublic.status === "reverted") {
+        firstGameOver = false;
+        const { simulateContractRequest } = await publicClient.simulateContract({
+          account: palyerAddress,
+          address: worldContract.address,
+          abi: worldContract.abi,
+          functionName: 'callFrom',
+          args: [
+            account,
+            popcraftResourceHex,
+            encodeData,
+          ],
+        })
+      }
+    } catch (error) {
+      return { error: error.message };
+    }
+    return hashValpublic;
   };
 
   return {
@@ -1058,6 +1143,7 @@ export function createSystemCalls(
     opRendering,
     rmOverride,
     collectSeed,
-    grow
+    grow,
+    getBenefitsToken
   };
 }

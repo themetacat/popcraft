@@ -240,14 +240,14 @@ contract CoreSystem is System, IWorldErrors, RouterExecute {
     if (!success) revert TransferError();
   }
 
-  function setTokenBalanceForNamespace(address[] memory tokenAddressArr, uint256[] memory tokenAddressBalance, ResourceId fromNamespaceId) public {
-    AccessControl.requireOwner(WorldResourceIdLib.encodeNamespace(""), _msgSender());
+  // function setTokenBalanceForNamespace(address[] memory tokenAddressArr, uint256[] memory tokenAddressBalance, ResourceId fromNamespaceId) public {
+  //   AccessControl.requireOwner(WorldResourceIdLib.encodeNamespace(""), _msgSender());
  
-    require(tokenAddressArr.length == tokenAddressBalance.length, "Different lengths");
-    for(uint256 i; i < tokenAddressArr.length; i++){
-      uint256 world_balance = IERC20(tokenAddressArr[i]).balanceOf(_world());
-      if (tokenAddressBalance[i] > world_balance) revert World_InsufficientBalance(world_balance, tokenAddressBalance[i]);
-      ERC20TokenBalance.set(tokenAddressArr[i], fromNamespaceId, tokenAddressBalance[i]);
-    }
-  }
+  //   require(tokenAddressArr.length == tokenAddressBalance.length, "Different lengths");
+  //   for(uint256 i; i < tokenAddressArr.length; i++){
+  //     uint256 world_balance = IERC20(tokenAddressArr[i]).balanceOf(_world());
+  //     if (tokenAddressBalance[i] > world_balance) revert World_InsufficientBalance(world_balance, tokenAddressBalance[i]);
+  //     ERC20TokenBalance.set(tokenAddressArr[i], fromNamespaceId, tokenAddressBalance[i]);
+  //   }
+  // }
 }

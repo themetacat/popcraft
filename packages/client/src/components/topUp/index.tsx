@@ -11,7 +11,7 @@ import openEye from "../../images/openEye.png";
 import turnOffEye from "../../images/turnOffEye.png";
 import { useMUD } from "../../MUDContext";
 import { getNetworkConfig } from "../../mud/getNetworkConfig";
-import { type Hex, parseEther } from "viem";
+import { type Hex, parseEther, parseGwei } from "viem";
 import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
 import LoadingImg from "../../images/loadingto.webp"
@@ -233,7 +233,7 @@ export default function TopUp({
     const value = inputValue;
     try {
       const nonce = await publicClient.getTransactionCount({ address: address });
-      const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue), nonce });
+      const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue), nonce, maxFeePerGas: parseGwei('0.002') });
       const result = await publicClient.waitForTransactionReceipt({ hash: result_hash });
       if (result.status === "success") {
         onTopUpSuccess();
@@ -327,7 +327,7 @@ export default function TopUp({
                           <p>
                             {balanceResultEOA.data?.value
                               ? ` ${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)}`
-                              : " 0ETH"}&nbsp;&nbsp;&nbsp;&nbsp;ETH
+                              : "0"}&nbsp;&nbsp;&nbsp;&nbsp;ETH
                           </p>
                         </div>
                       </button>

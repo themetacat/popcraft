@@ -1,7 +1,7 @@
 import style from "./index.module.css";
 import React, { useState, useEffect, useRef, useCallback, useLayoutEffect } from "react";
 import { Has, getComponentValueStrict, getComponentValue, AnyComponentValue, } from "@latticexyz/recs";
-import { formatUnits, decodeErrorResult } from "viem";
+import { formatUnits, decodeErrorResult, parseEther } from "viem";
 import { imageIconData } from "../imageIconData";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { useMUD } from "../../MUDContext";
@@ -34,6 +34,7 @@ import BotInfo from "./botInfo"
 import Plants from "./plantsIndex"
 import TopBuy from "../BoxPrompt/TopBuy"
 import toast from "react-hot-toast";
+import NewUserBenefitsToken from "./NewUserBenefitsToken"
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -60,6 +61,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       App,
       Pixel,
       TCMPopStar,
+      GameRecord
     },
     network: { publicClient, palyerAddress },
     systemCalls: { interact, interactTCM, registerDelegation, opRendering },
@@ -175,14 +177,57 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
   };
 
+  const setETHBalance = async (userAddress: any) => {
+    if (!userAddress) {
+      return
+    }
+    const balance = await publicClient.getBalance({ address: address });
+    if (balance > parseEther("0")) {
+      setBalancover(Math.floor(Number(balance) / 1e18));
+    } else {
+      setBalancover(0);
+    }
+  };
+
+  const setGPBalance = async (userAddress: any) => {
+    
+    if (!userAddress) {
+      return
+    }
+    const gameRecord = getComponentValue(GameRecord, addressToEntityID(userAddress));
+    
+    if (gameRecord && Number(gameRecord.totalPoints) > 0) {
+      setBalancover(Number(gameRecord.totalPoints));
+    } else {
+      setBalancover(0);
+    }
+  };
+
   useEffect(() => {
     if (!address) return;
-    if (chainId === 185 || chainId === 31337) {
+    
+    if (chainId === 185) {
       setMpBalance(address);
       const intervalId = setInterval(() => {
         setMpBalance(address);
       }, 5000);
 
+      return () => {
+        clearInterval(intervalId);
+      };
+    } else if(chainId === 8333 || chainId === 2818) {
+      setGPBalance(address);
+      const intervalId = setInterval(() => {
+        setGPBalance(address);
+      }, 3000);
+      return () => {
+        clearInterval(intervalId);
+      };
+    } else {
+      setETHBalance(address);
+      const intervalId = setInterval(() => {
+        setETHBalance(address);
+      }, 10000);
       return () => {
         clearInterval(intervalId);
       };
@@ -2412,7 +2457,15 @@ export default function Header({ hoveredData, handleData }: Props) {
           handleErrorAll={handleErrorAll}
         />
       )}
-      
+
+      {/* add new chain: chain here */}
+      {(chainId === 31337 || chainId === 2818 || chainId === 8333) && (
+        <NewUserBenefitsToken
+          checkTaskInProcess={checkTaskInProcess}
+          handleErrorAll={handleErrorAll}
+        />
+      )}
+
     </>
   );
 }
