@@ -534,14 +534,15 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 720px;
-  height: 580px;
-  background-image: url("../../images/welcome/saypage.webp");
+  width: 143.75rem;
+  height: 121.875rem;
   background-size: 100% 100%;
   background-position: center;
   display: grid;
   gap: 24px;
   border: none;
+  align-items: center;
+  justify-content: center;
 }
 
 .title {

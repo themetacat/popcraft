@@ -686,14 +686,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               >
                 BUY
               </button>
-              <button
-                className={style.warningIcon}
-                onClick={() => {
-                  setWarnBox(!warnBox);
-                }}
-              >
-                ?
-              </button>
             </div>
           </div>
         </div>
