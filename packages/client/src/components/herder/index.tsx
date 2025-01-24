@@ -34,7 +34,7 @@ import BotInfo from "./botInfo"
 import Plants from "./plantsIndex"
 import TopBuy from "../BoxPrompt/TopBuy"
 import toast from "react-hot-toast";
-import NewUserBenefitsToken from "./NewUserBenefitsToken"
+import NewUserBenefitsToken from "./newUserBenefitsToken"
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
