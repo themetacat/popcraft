@@ -10,6 +10,8 @@ import RewardsMorph from '../../images/HowToPlay/RewardsMorph.webp';
 import RewardsB3 from '../../images/HowToPlay/RewardsB3.webp';
 import MyPlantsGuide from '../../images/HowToPlay/MyPlantsGuide.webp';
 import close from "../../images/Plants/close.webp";
+import ArrowLeft from "../../images/HowToPlay/CarouselArrowLeft.png";
+import ArrowRight from "../../images/HowToPlay/CarouselArrowRight.png";
 import { useTopUp } from "../select";
 
 interface Props {
@@ -45,14 +47,14 @@ export default function HowToPlay({ setShowHowToPlay }: Props) {
     <div className={style.overlayBuy}>
       <div className={style.content}>
         <div className={howToPlayStyle.leftArrow} onClick={() => { switchPage(currentIndex - 1) }}>
-          &lt;
+          <img src={ArrowLeft} />
         </div>
         <div className={howToPlayStyle.cornerImage} onClick={() => { setShowHowToPlay(false) }}>
           <img src={close} />
         </div>
         <img src={images[currentIndex]} alt={`Guide ${currentIndex + 1}`} className={howToPlayStyle.carouselImage} />
         <div className={howToPlayStyle.rightArrow} onClick={() => { switchPage(currentIndex + 1) }}>
-          &gt;
+          <img src={ArrowRight} />
         </div>
         <div className={howToPlayStyle.navigation}>
           {images.map((_, index) => (
