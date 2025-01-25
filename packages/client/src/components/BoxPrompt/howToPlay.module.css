@@ -240,8 +240,13 @@
     user-select: none;
 }
 
-.leftArrow:hover {
-    color: #3a3a38;
+.leftArrow img{
+    width: 4rem;
+    height: 4rem;
+}
+
+.leftArrow:hover img {
+    content: url("../../images/HowToPlay/CarouselArrowLeftHover.png");
 }
 
 .rightArrow {
@@ -263,8 +268,13 @@
     user-select: none;
 }
 
-.rightArrow:hover {
-    color: #3a3a38;
+.rightArrow img{
+    width: 4rem;
+    height: 4rem;
+}
+
+.rightArrow:hover img {
+    content: url("../../images/HowToPlay/CarouselArrowRightHover.png");
 }
 
 .navigation {
