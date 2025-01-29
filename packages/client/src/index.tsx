@@ -95,7 +95,7 @@ setup().then(async (result) => {
   // }
   
   // 如果是生产环境，动态加载 Google Analytics
-  const allowedChainIds = [690, 185];
+  const allowedChainIds = [690, 185, 2818, 8333];
   const currentChainId = await result.network.publicClient.getChainId();
   
   if (allowedChainIds.includes(currentChainId)) {
