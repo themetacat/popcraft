@@ -8,16 +8,7 @@ import style from "./app.module.css";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { useSwitchChain } from "wagmi";
 import { useLocation } from "react-router-dom";
-import { useTopUp } from "./components/select"
-
-// add new chain: change here
-const networkConfig: Record<string, number> = {
-  b3: 8333,
-  morph: 2818,
-  mint: 185,
-  redstone: 690,
-  metacat: 31338
-};
+import { useTopUp, networkConfig } from "./components/select"
 
 export const App = () => {
   const {
@@ -79,6 +70,8 @@ export const App = () => {
             console.error("Switch chain failed:", error);
           }
         }
+      }else if(networkName){
+        window.history.replaceState(null, "", `/`);
       }
     };
     switchNetwork();
