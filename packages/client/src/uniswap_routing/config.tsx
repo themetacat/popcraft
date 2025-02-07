@@ -29,7 +29,7 @@ export interface ExampleConfig {
 // 获取链 ID 和配置 RPC URLs 的函数
 async function getChainIdAndConfig(): Promise<ExampleConfig> {
   // default Chain: change here
-  let chainIdHex = '185';
+  let chainIdHex = '2818';
   try {
       if (window.ethereum) {
         chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
@@ -41,7 +41,7 @@ async function getChainIdAndConfig(): Promise<ExampleConfig> {
   }
 
   const chainId = parseInt(chainIdHex, 16);
-
+  // add new chain: change here
   const rpcUrls: Record<string, { local: string; mainnet: string }> = {
     '690': {  // Redstone Chain
       local: 'https://rpc.redstonechain.com',
