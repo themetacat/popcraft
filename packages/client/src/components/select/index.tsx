@@ -2,6 +2,25 @@ import { useState, useEffect } from "react";
 import { parseEther } from "viem";
 import { generateRoute, generateRouteMintChain } from '../../uniswap_routing/routing'
 import FrameIcon from "../../images/Frame 29Icon.png";
+import { useLocation } from "react-router-dom";
+import { } from "../../App";
+
+// add new chain: change here
+export const networkConfig: Record<string, number> = {
+  b3: 8333,
+  morph: 2818,
+  mint: 185,
+  redstone: 690,
+  metacat: 31338
+};
+
+const chainIdToNetwork: Record<number, string> = Object.fromEntries(
+  Object.entries(networkConfig).map(([name, id]) => [id, name])
+);
+
+export const getNetworkName = (chainId: number): string | undefined => {
+  return chainIdToNetwork[chainId];
+};
 
 export const useTopUp = () => {
   const [chainId, setChainId] = useState(null);
@@ -11,19 +30,20 @@ export const useTopUp = () => {
   const [rewardInfo, setRewardInfo] = useState<number | string>(0);
   const [rewardDescInfo, setRewardDescInfo] = useState("");
   const [recipient, setRecipient] = useState(""); // 设置 recipient 地址
-  const [currencySymbol , setCurrencySymbol] = useState("")
-  const [eoaWallet , seteoaWallet] = useState("")
-  const [bridgeUrl , setBridgeUrl] = useState("")
-  const [chainIcon , setChianIcon] = useState("")
+  const [currencySymbol, setCurrencySymbol] = useState("")
+  const [eoaWallet, seteoaWallet] = useState("")
+  const [bridgeUrl, setBridgeUrl] = useState("")
+  const [chainIcon, setChianIcon] = useState("")
   const [tokenAddress, setTokenAddress] = useState<string[]>([]);
   const [priTokenAddress, setPriTokenAddress] = useState<string[]>([]);
+  const location = useLocation();
 
   const getChainId = async () => {
     try {
       const chainIdHex = await window.ethereum.request({
         method: "eth_chainId",
       });
-      const chainId = parseInt(chainIdHex, 16); 
+      const chainId = parseInt(chainIdHex, 16);
       setChainId(chainId);
     } catch (error) {
       console.error("Error fetching chainId:", error);
@@ -46,11 +66,26 @@ export const useTopUp = () => {
     getChainId();
     // getEoaWallet();
     if (window.ethereum) {
-      window.ethereum.on('chainChanged', (chainId) => {
-        console.log(chainId);
-          window.location.reload();
+      window.ethereum.on('chainChanged', (chainIdHex) => {
+        const chainId = parseInt(chainIdHex, 16);
+
+        const pathSegments = location.pathname.split("/").filter(Boolean);
+        const oldNetworkName = pathSegments[0] ?? "";
+        const networkName = getNetworkName(chainId);
+
+        if (networkName) {
+          if (oldNetworkName in networkConfig) {
+            const newPath = `/${networkName}${pathSegments.length > 1 ? "/" + pathSegments.slice(1).join("/") : ""}`;
+            window.history.replaceState(null, "", newPath);
+          } else if (!oldNetworkName) {
+            window.history.replaceState(null, "", `/${networkName}`);
+          }
+        } else {
+          window.history.replaceState(null, "", "/");
+        }
+        window.location.reload();
       });
-  }
+    }
   }, []);
 
   // add new chain: change here
@@ -153,7 +188,7 @@ export const useTopUp = () => {
         "0x0000000000000000000000000000000000000010",
         "0x0000000000000000000000000000000000000011",
       ])
-    }else if (chainId === 8333) {
+    } else if (chainId === 8333) {
       setInputValue("0.002");
       setCurrencySymbol("GP")
       setbalanceCheck('0.0001')
