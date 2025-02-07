@@ -40,7 +40,7 @@ export async function getNetworkConfig() {
   const params = new URLSearchParams(window.location.search);
 
   // default Chain: change here
-  let chainIdHex = '185';
+  let chainIdHex = '2818';
   try {
     if (window.ethereum) {
       chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
@@ -71,7 +71,7 @@ export async function getNetworkConfig() {
   if (!chain) {
     // default Chain: change here
     // throw new Error(`Chain ${chainId} not found`);
-    chainId = 185;
+    chainId = 2818;
     chainIndex = supportedChains.findIndex((c) => c.id === chainId);
     chain = supportedChains[chainIndex];
   }

@@ -95,6 +95,9 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const resultBugs = useBalance({
     address: address,
     token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
+    query: {
+      refetchInterval: 10000
+    }
   })
   useEffect(() => {
     if (resultBugs.data?.value) {

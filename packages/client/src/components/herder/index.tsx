@@ -2459,7 +2459,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       )}
 
       {/* add new chain: chain here */}
-      {(chainId === 31337 || chainId === 2818 || chainId === 8333) && (
+      {(chainId === 31337 || chainId === 2818 || chainId === 8333) && address && (
         <NewUserBenefitsToken
           checkTaskInProcess={checkTaskInProcess}
           handleErrorAll={handleErrorAll}

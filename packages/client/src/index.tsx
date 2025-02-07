@@ -15,10 +15,10 @@ import {
 } from '@rainbow-me/rainbowkit/wallets';
 import { getDefaultConfig, RainbowKitProvider, lightTheme } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
-
+import { http } from 'viem';
 import merge from 'lodash.merge';
-
-import {supportedChains} from "./mud/supportedChains";
+import { BrowserRouter } from "react-router-dom";
+import { supportedChains } from "./mud/supportedChains";
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -33,8 +33,8 @@ const morph = getChain(2818);
 const b3 = getChain(8333);
 const local = getChain(31337);
 
-if (!redstone || !metacatDev || !mintchain) {
-    console.error("Some chains are not defined in supportedChains!");
+if (!redstone || !metacatDev || !mintchain || !morph || !b3) {
+  console.error("Some chains are not defined in supportedChains!");
 }
 
 const config = getDefaultConfig({
@@ -45,10 +45,10 @@ const config = getDefaultConfig({
     wallets: [metaMaskWallet, coinbaseWallet, okxWallet, trustWallet],
   }],
   chains: [
+    morph,
     mintchain,
     redstone,
     metacatDev,
-    morph,
     b3,
     // local,
   ],
@@ -65,13 +65,15 @@ const queryClient = new QueryClient();
 // 初始化 manifest
 setup().then(async (result) => {
   root.render(
-      <React.StrictMode>
+    <React.StrictMode>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider theme={lightTheme()}>
-          <MUDProvider value={result}>
-          <App />
-        </MUDProvider>
+          <RainbowKitProvider theme={lightTheme()}>
+            <MUDProvider value={result}>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </MUDProvider>
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
@@ -93,11 +95,11 @@ setup().then(async (result) => {
   //     recsWorld: result.network.world,
   //   });
   // }
-  
+
   // 如果是生产环境，动态加载 Google Analytics
   const allowedChainIds = [690, 185, 2818, 8333];
   const currentChainId = await result.network.publicClient.getChainId();
-  
+
   if (allowedChainIds.includes(currentChainId)) {
     // 动态加载 Google Analytics 脚本
     const script = document.createElement('script');
