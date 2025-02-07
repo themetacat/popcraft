@@ -78,8 +78,8 @@
 }
 
 .boxStyle img {
-    width: 15.25rem;
-    height: 15.25rem;
+    width: 17.25rem;
+    height: 15.35rem;
     object-fit: cover;
     transition: transform 0.2s ease;
 }
