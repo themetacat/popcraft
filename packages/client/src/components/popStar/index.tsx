@@ -4,7 +4,6 @@ import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import loadingImg from "../../images/welcome_pay_play_loading.webp";
 import { useTopUp } from "../select";
-import backgroundImage from "../../images/welcome/welcome.webp";
 
 interface Props {
   setPopStar: any;
@@ -19,7 +18,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
   const playAction = localStorage.getItem("playAction");
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const { rewardInfo, rewardDescInfo } = useTopUp();
+  const { rewardInfo, rewardDescInfo, chainId } = useTopUp();
 
   const { isConnected } = useAccount();
 
@@ -41,11 +40,10 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
   };
 
   return (
-    // <div className={style.content}>
-    <div className={style.content} style={{ backgroundImage: `url(${backgroundImage})` }}>
+    <div className={`${style.content} ${chainId === 2818 ? style.contentMorph : ''}`}>
 
-      <p className={style.title}>WELCOME TO POPCRAFT!</p>
-      <div className={style.Container}>
+      <p className={`${style.title} ${chainId === 2818 ? style.titleMorph : ''}`}>WELCOME TO POPCRAFT!</p>
+      <div className={`${style.Container} ${chainId === 2818 ? style.ContainerMorph : ''}`}>
         <span className={style.copywritingTwo}>This is a composability-based elimi-<br />
           <span className={style.copywritingbox}>nation game. You have</span>
           <span className={style.copywritingThree}> 120 seconds</span>&nbsp;<br />
@@ -56,7 +54,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
         </span>
         <br />
         <div className={style.copywritingTwobox}>
-          {rewardDescInfo ? (<span className={style.copywritingTwoyo}>You'll&nbsp;
+          {(rewardDescInfo && chainId === 185) ? (<span className={style.copywritingTwoyo}>You'll&nbsp;
             <span className={style.copywritingThree}>
               {rewardDescInfo}
             </span>
@@ -67,7 +65,9 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
             </span>
           </span>) : (<span className={style.copywritingTwoyo}>You'll be rewarded with&nbsp;
             <span className={style.copywritingThree}>
-              {rewardInfo ? (
+              {rewardDescInfo ? (
+                rewardDescInfo
+              ) : rewardInfo ? (
                 rewardInfo
               ) : (
                 <span className={style.defaultTokens}> Tokens or Points<br /></span>

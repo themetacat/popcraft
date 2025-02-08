@@ -6,11 +6,17 @@
   width: 68.75rem;
   height: 56.25rem;
   border: none;
-  /* background-image: url("../../images/welcome/welcome.webp"); */
+  background-image: url("../../images/welcome/welcome.webp");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   display: grid;
+}
+
+.contentMorph {
+  width: 70.75rem;
+  height: 64rem;
+  background-size: 100% 100% !important;
 }
 p {
   margin: 0;
@@ -30,13 +36,17 @@ p {
   margin-left: 8rem;
   font-family: "MyriadPro";
 }
+
+.titleMorph {
+  margin-top: 8.5rem;
+}
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
   src: url("/fonts/BRLNSR.woff2");
   font-display: block;
 }
 .Container {
-  width: 56.25rem;
+  width: 52.25rem;
   height: 25.625rem;
   display: block;
   justify-content: center;
@@ -47,6 +57,12 @@ p {
   font-size: 2.5rem;
   font-family: "AdobeHeitiStd-Regular";
 }
+
+.ContainerMorph{
+  margin-top: -6.5rem;
+  margin-left: 10rem;
+}
+
 .copywritingThree {
   font-weight: 600;
   font-size: 2.5rem;

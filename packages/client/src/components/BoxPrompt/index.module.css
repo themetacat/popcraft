@@ -114,7 +114,7 @@
   background-position: center;
   background-repeat: no-repeat;
   display: grid;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 .twoPart p:nth-child(1) {
   display: flex;

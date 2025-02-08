@@ -655,11 +655,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               <p>{rewardInfo}</p>
               <p className={style.tooltip}>
                 REWARDS
-                {rewardDescInfo && (
+                {/* {rewardDescInfo && (
                   <span className={style.tooltipText}>
                     You'll get 100 MP for winning and 50 MP for losing in your first 3 games every day(UTC).
                   </span>
-                )}
+                )} */}
               </p>
             </div>
             <div className={style.threePart}>
