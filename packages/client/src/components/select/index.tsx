@@ -162,6 +162,7 @@ export const useTopUp = () => {
       setCurrencySymbol("GP")
       setbalanceCheck('0.0001')
       setRewardInfo("100 GP");
+      setRewardDescInfo("Morph Points based on Gas usage and unlock more leaderboard rewards");
       setMIN_SESSION_WALLET_BALANCE(parseEther("0.000002"));
       setRecipient("0x784844480280ca865ac8ef89bb554283dddff737");
       setBridgeUrl("https://bridge.morphl2.io/")
