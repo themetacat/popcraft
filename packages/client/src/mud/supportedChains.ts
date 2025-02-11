@@ -196,6 +196,34 @@ const b3 = defineChain({
   },
 })
 
+const base = defineChain({
+  id: 8453,
+  name: 'Base',
+  network: 'base',
+  iconUrl:'https://www.base.org/document/favicon-32x32.png',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.ankr.com/base'],
+      webSocket: ['wss://mainnet.base.org'],
+    },
+    public: {
+      http: ['https://rpc.ankr.com/base'],
+      webSocket: ['wss://mainnet.base.org'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Base",
+      url: "https://basescan.org/",
+    },
+  },
+})
+
 export const newMudFoundry = {
   ...mudFoundry,
   blockExplorers: {
@@ -210,4 +238,4 @@ export const newMudFoundry = {
  * See https://mud.dev/tutorials/minimal/deploy#run-the-user-interface
  * for instructions on how to add networks.
  */
-export const supportedChains: MUDChain[] = [ latticeTestnet, core_foundry, redstone, mintchain, morph, b3, newMudFoundry];
+export const supportedChains: MUDChain[] = [ latticeTestnet, core_foundry, redstone, mintchain, morph, b3, newMudFoundry, base];
