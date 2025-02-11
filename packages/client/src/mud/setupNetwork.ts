@@ -121,9 +121,11 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
       }
       // add new chain: change here
       let indexerUrl = ""
-      let maxFeePerGas = parseGwei('0.000106')
-      let maxPriorityFeePerGas = parseGwei('0.0001')
+      let maxFeePerGas = parseGwei('0')
+      let maxPriorityFeePerGas = parseGwei('0')
       if (networkConfig.chain.id === 690) {
+        maxFeePerGas = parseGwei('0.000106')
+        maxPriorityFeePerGas = parseGwei('0.0001')
         indexerUrl = "https://popcraft-indexer.pixelaw.world/";
       }else if(networkConfig.chain.id === 31338){
         indexerUrl = "https://indexerdev.pixelaw.world/";
@@ -139,6 +141,9 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
         indexerUrl = "https://indexerb3.pixelaw.world/";
         maxFeePerGas = parseGwei('0.00105')
         maxPriorityFeePerGas = parseGwei('0.0005')
+      }else if(networkConfig.chain.id === 8453){
+        indexerUrl = "https://indexerbase.pixelaw.world/";
+        maxPriorityFeePerGas = parseGwei('0.0001')
       }
       // else if(networkConfig.chain.id === 17069){
       //   indexerUrl = "https://indexertest.pixelaw.world/";

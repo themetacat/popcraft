@@ -11,7 +11,8 @@ export const networkConfig: Record<string, number> = {
   morph: 2818,
   mint: 185,
   redstone: 690,
-  metacat: 31338
+  metacat: 31338,
+  base: 8453
 };
 
 const chainIdToNetwork: Record<number, string> = Object.fromEntries(
@@ -157,16 +158,12 @@ export const useTopUp = () => {
         "0x0000000000000000000000000000000000000001",
         "0x0000000000000000000000000000000000000002",
       ])
-    } else if (chainId === 2818 || chainId === 31337) {
+    }else{
       setInputValue("0.002");
       setCurrencySymbol("GP")
       setbalanceCheck('0.0001')
       setRewardInfo("100 GP");
-      setRewardDescInfo("Morph Points based on Gas usage and unlock more leaderboard rewards");
       setMIN_SESSION_WALLET_BALANCE(parseEther("0.000002"));
-      setRecipient("0x784844480280ca865ac8ef89bb554283dddff737");
-      setBridgeUrl("https://bridge.morphl2.io/")
-      setChianIcon("https://poster-phi.vercel.app/Morphl2_Logo_Circle.webp");
       setTokenAddress([
         "0x0000000000000000000000000000000000000003",
         '0x0000000000000000000000000000000000000004',
@@ -189,37 +186,20 @@ export const useTopUp = () => {
         "0x0000000000000000000000000000000000000010",
         "0x0000000000000000000000000000000000000011",
       ])
-    } else if (chainId === 8333) {
-      setInputValue("0.002");
-      setCurrencySymbol("GP")
-      setbalanceCheck('0.0001')
-      setRewardInfo("100 GP");
-      setMIN_SESSION_WALLET_BALANCE(parseEther("0.000002"));
-      setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
-      setBridgeUrl("https://docs.b3.fun/bridge")
-      setChianIcon("https://cdn.b3.fun/b3_logo.svg");
-      setTokenAddress([
-        "0x0000000000000000000000000000000000000003",
-        '0x0000000000000000000000000000000000000004',
-        "0x0000000000000000000000000000000000000005",
-        "0x0000000000000000000000000000000000000006",
-        "0x0000000000000000000000000000000000000007",
-        "0x0000000000000000000000000000000000000008",
-        "0x0000000000000000000000000000000000000009",
-        "0x0000000000000000000000000000000000000010",
-        "0x0000000000000000000000000000000000000011",
-      ])
-      setPriTokenAddress([
-        "0x0000000000000000000000000000000000000003",
-        '0x0000000000000000000000000000000000000004',
-        "0x0000000000000000000000000000000000000005",
-        "0x0000000000000000000000000000000000000006",
-        "0x0000000000000000000000000000000000000007",
-        "0x0000000000000000000000000000000000000008",
-        "0x0000000000000000000000000000000000000009",
-        "0x0000000000000000000000000000000000000010",
-        "0x0000000000000000000000000000000000000011",
-      ])
+      if(chainId === 2818){
+        setRewardDescInfo("Morph Points based on Gas usage and unlock more leaderboard rewards");
+        setRecipient("0x784844480280ca865ac8ef89bb554283dddff737");
+        setBridgeUrl("https://bridge.morphl2.io/")
+        setChianIcon("https://poster-phi.vercel.app/Morphl2_Logo_Circle.webp");
+      }else if(chainId === 8333){
+        setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
+        setBridgeUrl("https://docs.b3.fun/bridge")
+        setChianIcon("https://cdn.b3.fun/b3_logo.svg");
+      }else if(chainId === 8453 || chainId ===31337){
+        setRecipient("0xee56e9d317131ec8d9ecadc8e039da93bbcba634");
+        setBridgeUrl("https://superbridge.app/base")
+        setChianIcon("https://www.base.org/document/favicon-32x32.png");
+      }
     }
   }, [chainId]);
 

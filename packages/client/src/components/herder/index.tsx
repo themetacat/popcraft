@@ -215,7 +215,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       return () => {
         clearInterval(intervalId);
       };
-    } else if(chainId === 8333 || chainId === 2818 || chainId === 31337) {
+    } else if(chainId === 8333 || chainId === 2818 || chainId === 31337 || chainId === 8453) {
       setGPBalance(address);
       const intervalId = setInterval(() => {
         setGPBalance(address);
@@ -2459,7 +2459,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       )}
 
       {/* add new chain: chain here */}
-      {(chainId === 31337 || chainId === 2818 || chainId === 8333) && address && (
+      {(chainId === 31337 || chainId === 2818 || chainId === 8333 || chainId === 8453) && address && (
         <NewUserBenefitsToken
           checkTaskInProcess={checkTaskInProcess}
           handleErrorAll={handleErrorAll}

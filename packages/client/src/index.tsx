@@ -31,6 +31,7 @@ const metacatDev = getChain(31338);
 const mintchain = getChain(185);
 const morph = getChain(2818);
 const b3 = getChain(8333);
+const base = getChain(8453);
 const local = getChain(31337);
 
 if (!redstone || !metacatDev || !mintchain || !morph || !b3) {
@@ -46,10 +47,11 @@ const config = getDefaultConfig({
   }],
   chains: [
     morph,
-    mintchain,
-    redstone,
-    metacatDev,
     b3,
+    base,
+    redstone,
+    mintchain,
+    metacatDev,
     // local,
   ],
   ssr: true,

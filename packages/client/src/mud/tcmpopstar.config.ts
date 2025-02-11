@@ -47,7 +47,7 @@ export default mudConfig({
         successTimes: "uint256",
         unissuedRewards: "uint256",
         // add new chain: change here
-        ...(chainId === 31337 || chainId === 2818 || chainId === 8333
+        ...(chainId === 31337 || chainId === 2818 || chainId === 8333 || chainId === 8453
           ? {
               totalPoints: "uint256",
             }

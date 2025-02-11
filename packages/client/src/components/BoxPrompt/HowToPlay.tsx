@@ -20,9 +20,9 @@ interface Props {
 
 export default function HowToPlay({ setShowHowToPlay }: Props) {
   const { chainId } = useTopUp();
-  let rewardsImg = RewardsMorph;
-  if(chainId === 8333){
-    rewardsImg = RewardsB3;
+  let rewardsImg = RewardsB3;
+  if(chainId === 2818){
+    rewardsImg = RewardsMorph;
   }
   const images = [PlayerGuide1, PlayerGuide2, PlayerGuide3, PlayerGuide4, PlayerGuide5, rewardsImg, MyPlantsGuide];
   const [currentIndex, setCurrentIndex] = useState(0);

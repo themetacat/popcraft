@@ -16,7 +16,7 @@ import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
 import LoadingImg from "../../images/loadingto.webp"
 import { useTopUp } from "../select";
-import topupbackImg from "../../images/topup/topupback.webp"; 
+import topupbackImg from "../../images/topup/topupback.webp";
 
 import {
   type BaseError,
@@ -72,8 +72,8 @@ export default function TopUp({
       const hash = await walletClient.sendTransaction({
         to: address,
         value: value,
-        maxFeePerGas: maxFeePerGas,
-        maxPriorityFeePerGas: maxPriorityFeePerGas
+        ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+        ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
       });
       setwithDrawHashVal(hash);
     } else {
@@ -204,9 +204,9 @@ export default function TopUp({
 
   const bridgeHandle = () => {
     setIsPlayButtonClicked(true); // 设置按钮点击状态
-    if(bridgeUrl != ""){
+    if (bridgeUrl != "") {
       window.open(bridgeUrl);
-    }else if(mainContent === "MAINNET") {
+    } else if (mainContent === "MAINNET") {
       window.open("https://redstone.xyz/deposit");
     } else {
       window.open("https://garnetchain.com/deposit");
@@ -235,7 +235,11 @@ export default function TopUp({
     const value = inputValue;
     try {
       const nonce = await publicClient.getTransactionCount({ address: address });
-      const result_hash = await sendTransactionAsync({ to, value: parseEther(inputValue), nonce, maxFeePerGas: maxFeePerGas, maxPriorityFeePerGas: maxPriorityFeePerGas });
+      const result_hash = await sendTransactionAsync({
+        to, value: parseEther(inputValue), nonce, maxFeePerGas: maxFeePerGas,
+        ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+        ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
+      });
       const result = await publicClient.waitForTransactionReceipt({ hash: result_hash });
       if (result.status === "success") {
         onTopUpSuccess();
@@ -335,15 +339,15 @@ export default function TopUp({
                       </button>
                     </div>
                     <div className={style.bridgePart}>
-                    <span
+                      <span
                         className={`${style.bridgeBTN} ${isPlayButtonClicked ? style.bridgeBTNClicked : ''}`}
                         onClick={bridgeHandle}>
                         Bridge
                       </span>
-                  </div>
                     </div>
+                  </div>
                 </div>
-                
+
               </div>
 
               <div className={style.partContent}>
@@ -437,18 +441,18 @@ export default function TopUp({
                       }}
                     />
                   </div>
-                 
+
                   <p className={style.prilf}>
-                  <img
-                    src={warningImgBlack}
-                    alt="Warning"
-                    className={style.warningImg2}
-                  />
-                  &nbsp;&nbsp;Save the private key as soon as possible.
-                  <br />
-                  &nbsp;Avoid clearing the cache during the game, or your 
-                  <br />
-                  &nbsp;session wallet may reset !!!
+                    <img
+                      src={warningImgBlack}
+                      alt="Warning"
+                      className={style.warningImg2}
+                    />
+                    &nbsp;&nbsp;Save the private key as soon as possible.
+                    <br />
+                    &nbsp;Avoid clearing the cache during the game, or your
+                    <br />
+                    &nbsp;session wallet may reset !!!
                   </p>
                 </div>
               </div>

@@ -146,8 +146,8 @@ export function createSystemCalls(
         functionName: "registerDelegation",
         args: [palyerAddress, SYSTEMBOUND_DELEGATION, callData],
         nonce: nonce,
-        maxFeePerGas: maxFeePerGas,
-        maxPriorityFeePerGas: maxPriorityFeePerGas
+        ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+        ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
       });
       hashValpublic = publicClient.waitForTransactionReceipt({ hash: hash });
 
@@ -534,8 +534,9 @@ export function createSystemCalls(
             encodeData,
           ], {
             gas: 29599000n,
-            nonce, maxFeePerGas: maxFeePerGas,
-            maxPriorityFeePerGas: maxPriorityFeePerGas
+            nonce,
+            ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+            ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
           });
           hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
           // hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }),7000);
@@ -560,8 +561,8 @@ export function createSystemCalls(
           ], {
             gas: 15000000n,
             nonce,
-            maxFeePerGas: maxFeePerGas,
-            maxPriorityFeePerGas: maxPriorityFeePerGas
+            ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+            ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
           });
           // const txStatus = await publicClient.getTransaction({ hash: txData });
           tx = txData;
@@ -658,8 +659,8 @@ export function createSystemCalls(
         value: payArgs.totalValue,
         nonce: nonce,
         gas: 8000000n,
-        maxFeePerGas: maxFeePerGas,
-        maxPriorityFeePerGas: maxPriorityFeePerGas
+        ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+        ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
       });
 
       // const hash = await worldContract.write.call([resourceToHex({ "type": "system", "namespace": namespace, "name": system_name }), encodeData], { value: payArgs.totalValue });
@@ -1022,8 +1023,8 @@ export function createSystemCalls(
       ], {
         gas: 5000000n,
         nonce,
-        maxFeePerGas: maxFeePerGas,
-        maxPriorityFeePerGas: maxPriorityFeePerGas
+        ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+        ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
       });
       hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
       await waitForTransaction(txData);
@@ -1065,8 +1066,8 @@ export function createSystemCalls(
       ], {
         gas: 5000000n,
         nonce,
-        maxFeePerGas: maxFeePerGas,
-        maxPriorityFeePerGas: maxPriorityFeePerGas
+        ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+        ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
       });
 
       hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
@@ -1109,8 +1110,8 @@ export function createSystemCalls(
       ], {
         gas: 5000000n,
         nonce,
-        maxFeePerGas: maxFeePerGas,
-        maxPriorityFeePerGas: maxPriorityFeePerGas
+        ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+        ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
       });
       hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
       await waitForTransaction(txData);
