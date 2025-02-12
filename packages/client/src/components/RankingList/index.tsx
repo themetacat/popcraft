@@ -84,6 +84,8 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
     const sortedRankingRecords = rankingRecordEntities
         .map((entity) => {
             const value = getComponentValue(RankingRecord, entity);
+            const address = decodeEntity({ address: "address" }, entity);
+            
             if (value) {
                 const gameRecord = getComponentValue(
                     GameRecord,
@@ -93,7 +95,6 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                 const wins = Number(gameRecord.successTimes);
                 const losses = totalGames - wins;
                 const winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
-                const address = decodeEntity({ address: "address" }, entity);
                 const totalPoints = Number(gameRecord.totalPoints);
                 let sortValue;
                 // add new chain: change here
@@ -115,8 +116,26 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                     sortValue
                 };
             }
+            return {
+                entity: address.address,
+                totalScore: 0,
+                bestScore: 0,
+                totalPoints: 0,
+                shortestTime: 0,
+                totalGames: 0,
+                wins: 0,
+                losses: 0,
+                winRate: 0,
+                sortValue: 0
+            };
         })
-        .sort((a, b) => b.sortValue - a.sortValue);
+        .sort((a, b) => {
+            if (b.sortValue !== a.sortValue) {
+                return b.sortValue - a.sortValue;
+            } else {
+                return b.totalScore - a.totalScore;
+            }
+        });
 
     const gameRecordSelf = address ? getComponentValue(
         GameRecord,

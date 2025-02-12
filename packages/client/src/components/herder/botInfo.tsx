@@ -58,12 +58,18 @@ export default function BotInfo({ sendCount, receiveCount, botInfoTaskTips }: Pr
                 };
             }
             return {
-                address: playerAddress.address,
+                entity: playerAddress.address,
                 totalScore: 0,
                 sortValue: 0
             };
         })
-        .sort((a, b) => b.sortValue - a.sortValue);
+        .sort((a, b) => {
+            if (b.sortValue !== a.sortValue) {
+                return b.sortValue - a.sortValue;
+            } else {
+                return b.totalScore - a.totalScore;
+            }
+        });
 
     let userRank = 0;
     let totalScore = 0
