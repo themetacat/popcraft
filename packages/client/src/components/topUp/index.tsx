@@ -96,8 +96,6 @@ export default function TopUp({
 
   useEffect(() => {
     publicClient.getBalance({ address: palyerAddress }).then((balance: any) => {
-      console.log(balance);
-      
       setBalance(Number(balance));
     });
   }, []);
