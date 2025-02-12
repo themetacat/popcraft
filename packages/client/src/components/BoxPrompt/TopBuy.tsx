@@ -47,7 +47,7 @@ export default function TopBuy({ setShowTopBuy }: Props) {
     const [numberData, setNumberData] = useState<{ [key: string]: number }>({});
     const [loadingPrices, setLoadingPrices] = useState<{ [key: string]: boolean }>({});
     const [prices, setPrices] = useState<Record<string, PriceDetails>>({});
-    const { recipient, chainId, tokenAddress, priTokenAddress } = useTopUp();
+    const { recipient, chainId, tokenAddress, priTokenAddress, nativeToken } = useTopUp();
     const [totalPrice, setTotalPrice] = useState(0);
     const [cresa, setcresa] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -153,7 +153,7 @@ export default function TopBuy({ setShowTopBuy }: Props) {
         );
 
     const formatAmount = (amount: any) => {
-        return parseFloat(amount).toFixed(8);
+        return parseFloat(parseFloat(amount).toFixed(8)).toString();
     };
 
     function getBuydData(tokenAddresses: any) {
@@ -469,7 +469,7 @@ export default function TopBuy({ setShowTopBuy }: Props) {
                                     "0.0000000"
                                 )}
                                 <br />
-                                ETH
+                                {nativeToken}
                             </span>
 
                         </div>
@@ -478,7 +478,7 @@ export default function TopBuy({ setShowTopBuy }: Props) {
             </div>
             <div className={style.totalAmount}>
                 <span className={style.fontNumyo}>
-                    TOTAL: {formatAmount(totalPrice)} ETH
+                    TOTAL: {formatAmount(totalPrice)} {nativeToken}
                 </span>
             </div>
 

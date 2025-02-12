@@ -224,8 +224,41 @@ const base = defineChain({
   },
 })
 
+const happyTest = defineChain({
+  id: 216,
+  name: 'Happy Chain Testnet',
+  network: 'Happy Chain Testnet',
+  iconUrl:'https://ugc.production.linktr.ee/eaf67eb0-14e8-4a70-aa3d-c03e7045761c_happychain.png',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'HappyChain',
+    symbol: 'HAPPY',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://happy-testnet-sepolia.rpc.caldera.xyz/http'],
+      webSocket: ['wss://happy-testnet-sepolia.rpc.caldera.xyz/ws'],
+    },
+    public: {
+      http: ['https://happy-testnet-sepolia.rpc.caldera.xyz/http'],
+      webSocket: ['wss://happy-testnet-sepolia.rpc.caldera.xyz/ws'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Happy Chain Testnet",
+      url: "https://happy-testnet-sepolia.explorer.caldera.xyz/",
+    },
+  },
+})
+
 export const newMudFoundry = {
   ...mudFoundry,
+  nativeCurrency: {
+    decimals: 18,
+    name: 'HappyChain',
+    symbol: 'HAPPY',
+  },
   blockExplorers: {
     default: {
       name: "Blockscout",
@@ -238,4 +271,4 @@ export const newMudFoundry = {
  * See https://mud.dev/tutorials/minimal/deploy#run-the-user-interface
  * for instructions on how to add networks.
  */
-export const supportedChains: MUDChain[] = [ latticeTestnet, core_foundry, redstone, mintchain, morph, b3, newMudFoundry, base];
+export const supportedChains: MUDChain[] = [ latticeTestnet, core_foundry, redstone, mintchain, morph, b3, newMudFoundry, base, happyTest];

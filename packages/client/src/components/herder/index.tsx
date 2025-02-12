@@ -23,7 +23,7 @@ import success from '../../images/substance/successto.png'
 import failto from '../../images/substance/failto.png'
 import RankingListimg from '../../images/RankingList/trophy.png'
 import RankingList from '../RankingList'
-import { useTopUp } from "../select";
+import { useTopUp, COMMON_CHAIN_IDS } from "../select";
 import Arrow from "../../images/Arrow.png"
 import { opRenderingCalc } from "./calc";
 import { addressToEntityID } from "../rightPart";
@@ -205,7 +205,7 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   useEffect(() => {
     if (!address) return;
-    
+    // add new chain: change here
     if (chainId === 185) {
       setMpBalance(address);
       const intervalId = setInterval(() => {
@@ -215,7 +215,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       return () => {
         clearInterval(intervalId);
       };
-    } else if(chainId === 8333 || chainId === 2818 || chainId === 31337 || chainId === 8453) {
+    } else if(COMMON_CHAIN_IDS.includes(chainId)) {
       setGPBalance(address);
       const intervalId = setInterval(() => {
         setGPBalance(address);
@@ -2459,7 +2459,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       )}
 
       {/* add new chain: chain here */}
-      {(chainId === 31337 || chainId === 2818 || chainId === 8333 || chainId === 8453) && address && (
+      {chainId !== null && COMMON_CHAIN_IDS.includes(chainId) && address && (
         <NewUserBenefitsToken
           checkTaskInProcess={checkTaskInProcess}
           handleErrorAll={handleErrorAll}
