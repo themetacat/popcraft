@@ -61,7 +61,7 @@ export default function TopUp({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
-  const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE, bridgeUrl, chainIcon } = useTopUp();
+  const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE, bridgeUrl, chainIcon, nativeToken } = useTopUp();
 
   async function withDraw() {
     const balance_eth = balance / 1e18;
@@ -333,7 +333,7 @@ export default function TopUp({
                           <p>
                             {balanceResultEOA.data?.value
                               ? ` ${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)}`
-                              : "0"}&nbsp;&nbsp;&nbsp;&nbsp;ETH
+                              : "0"}&nbsp;&nbsp;&nbsp;&nbsp;{nativeToken}
                           </p>
                         </div>
                       </button>
@@ -388,7 +388,7 @@ export default function TopUp({
                       />
                       <span className={style.ConfirmingFont}>
                         {!isConfirmingWith && (
-                          <>{(Number(balance) / 1e18).toFixed(8)}&nbsp;&nbsp;&nbsp;ETH</>
+                          <>{(Number(balance) / 1e18).toFixed(8)}&nbsp;&nbsp;&nbsp;{nativeToken}</>
                         )}
                       </span>
                     </div>
@@ -464,29 +464,29 @@ export default function TopUp({
                   <div
                     style={{
                       display: "flex",
-                      gap: "8px",
+                      gap: "1rem",
                       verticalAlign: "middle",
-                      height: "34px",
-                      width: "400px",
+                      height: "25px",
+                      width: "54rem",
                     }}>
                     <img src={chainIcon} alt="" className={style.svgIcon} />
                     <input
                       name="value"
-                      placeholder="Amount (ETH)"
+                      placeholder={`Amount (${nativeToken})`}
                       type="number"
                       step="0.0001"
                       value={inputValue}
                       onChange={handleChange}
                       required
                     />
-                    <span className={style.inputEth}>ETH</span>
+                    <span className={style.inputEth}>{nativeToken}</span>
                   </div>
                   <div className={style.partFive}>
                     <span>Available to deposit</span>
                     <div className={style.mainFontbox}>
                       {balanceResultEOA.data?.value
                         ? ` ${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)}`
-                        : " 0ETH"}&nbsp;&nbsp;ETH
+                        : " 0"}&nbsp;&nbsp;{nativeToken}
                     </div>
                   </div>
                   <div className={style.partFiveboxto}>

@@ -77,7 +77,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loadingPrices, setLoadingPrices] = useState({});
   const [lastPrices, setLastPrices] = useState({});
-  const { rewardInfo, rewardDescInfo, recipient, chainId, priTokenAddress } = useTopUp();
+  const { rewardInfo, rewardDescInfo, recipient, chainId, priTokenAddress, nativeToken } = useTopUp();
   const [ showHowToPlay, setShowHowToPlay ] = useState(false);
 
   useEffect(() => {
@@ -606,7 +606,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   }, []);
 
   const formatAmount = (amount: any) => {
-    return parseFloat(amount).toFixed(8);
+    return parseFloat(parseFloat(amount).toFixed(8)).toString();
   };
 
   const formatBalance = (balance) => {
@@ -758,7 +758,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                         "0.0000000"
                       )}
                       <br />
-                      ETH
+                      {nativeToken}
                     </span>
 
                     {forPayMonType === true ? (
@@ -781,7 +781,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             </div>
             <div className={style.totalAmount}>
               <span className={style.fontNumyo}>
-                TOTAL: {formatAmount(totalPrice)} ETH
+                TOTAL: {formatAmount(totalPrice)} {nativeToken}
               </span>
             </div>
 

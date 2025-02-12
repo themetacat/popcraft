@@ -487,7 +487,7 @@
   margin-top: 0.5rem;
   font-family: "AdobeHeitiStd-Regular";
   font-size: 2.4rem;
-  margin-left: 1.3rem;
+  margin-left: auto;
 }
 .mainFontbox {
   font-family: "AdobeHeitiStd-Regular";
@@ -496,7 +496,6 @@
   letter-spacing: 0.2rem;
   text-align: left;
   color: #9a3916;
-  margin-left: 12.5rem;
 }
 .svgIcon {
   width: 3.3rem;
@@ -514,6 +513,8 @@
   font-family: "AdobeHeitiStd-Regular";
   font-size: 2rem;
   margin-left: 2.3rem;
+  justify-content: space-between;
+  width: 52rem;
 }
 .partFiveboxto {
   display: flex;
@@ -524,6 +525,7 @@
   font-family: "AdobeHeitiStd-Regular";
   font-size: 2rem;
   margin-left: 2.3rem;
+  width: 52rem;
 }
 .partFivebox {
   font-family: "AdobeHeitiStd-Regular";
@@ -532,7 +534,7 @@
   letter-spacing: 0.1rem;
   text-align: left;
   color: #9a3916;
-  margin-left: 18rem;
+  margin-left: 19.3rem;
 }
 .mainFont {
   display: grid;

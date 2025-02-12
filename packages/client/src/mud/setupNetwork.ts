@@ -144,6 +144,8 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
       }else if(networkConfig.chain.id === 8453){
         indexerUrl = "https://indexerbase.pixelaw.world/";
         maxPriorityFeePerGas = parseGwei('0.0001')
+      }else if(networkConfig.chain.id === 216){
+        indexerUrl = "https://mud.happy.tech/";
       }
       // else if(networkConfig.chain.id === 17069){
       //   indexerUrl = "https://indexertest.pixelaw.world/";

@@ -1,5 +1,6 @@
 import { mudConfig } from "@latticexyz/world/register";
 import { getNetworkConfig } from "./getNetworkConfig";
+import { COMMON_CHAIN_IDS } from "../components/select/index";
 
 const networkConfigPromise = await getNetworkConfig();
 const chainId = networkConfigPromise.chainId;
@@ -47,7 +48,7 @@ export default mudConfig({
         successTimes: "uint256",
         unissuedRewards: "uint256",
         // add new chain: change here
-        ...(chainId === 31337 || chainId === 2818 || chainId === 8333 || chainId === 8453
+        ...(COMMON_CHAIN_IDS.includes(chainId)
           ? {
               totalPoints: "uint256",
             }
