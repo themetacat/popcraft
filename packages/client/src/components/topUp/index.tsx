@@ -236,7 +236,7 @@ export default function TopUp({
     try {
       const nonce = await publicClient.getTransactionCount({ address: address });
       const result_hash = await sendTransactionAsync({
-        to, value: parseEther(inputValue), nonce, maxFeePerGas: maxFeePerGas,
+        to, value: parseEther(inputValue), nonce,
         ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
         ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
       });
