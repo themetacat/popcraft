@@ -12,6 +12,7 @@ import loadingImg from "../../images/loadingto.webp"
 import { PlantsResponse } from "../../mud/createSystemCalls";
 import toast from "react-hot-toast";
 import LightAnimation from "./plantsAnimation";
+import { COMMON_CHAIN_IDS, useTopUp } from "../select/index";
 
 interface PlantingRecord {
     name: string;
@@ -66,6 +67,7 @@ export default function PlantsIndex({ checkTaskInProcess, handleErrorAll }: Prop
     const [loadingChange, setLoadingChange] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     const [growLevel, setGrowLevel] = useState(-1);
+    const { chainId } = useTopUp();
 
     const callPlantsSystem = async (value: number = 0) => {
         if (checkTaskInProcess()) {
@@ -506,7 +508,7 @@ export default function PlantsIndex({ checkTaskInProcess, handleErrorAll }: Prop
                         {growLevel === 4 &&
                             <>
                                 <LightAnimation />
-                                {currentPlantName in PLANTS_NAME_GP &&
+                                {(currentPlantName in PLANTS_NAME_GP && chainId != null && COMMON_CHAIN_IDS.includes(chainId)) &&
                                     <div className={plantsStyle.PlantsGp}>
                                         +{PLANTS_NAME_GP[currentPlantName as keyof typeof PLANTS_NAME_GP]} GP!
                                     </div>
