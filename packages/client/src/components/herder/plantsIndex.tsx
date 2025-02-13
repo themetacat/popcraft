@@ -44,7 +44,7 @@ export default function PlantsIndex({ checkTaskInProcess, handleErrorAll }: Prop
         },
         systemCalls: { collectSeed, grow },
     } = useMUD();
-    const [showMyPlants, setShowMyPlants] = useState(true);
+    const [showMyPlants, setShowMyPlants] = useState(false);
     const [currentPlantName, setCurrentPlantName] = useState("");
     const [currentLevelName, setCurrentLevelName] = useState("Seed");
     const [currentLevel, setCurrentLevel] = useState(0);
