@@ -31,7 +31,7 @@ interface Star {
     duration: number;
 }
 
-export default function Plants({ checkTaskInProcess, handleErrorAll }: Props) {
+export default function PlantsIndex({ checkTaskInProcess, handleErrorAll }: Props) {
     const {
         network: { palyerAddress, publicClient },
         components: {
@@ -517,4 +517,44 @@ export default function Plants({ checkTaskInProcess, handleErrorAll }: Props) {
             </div>
         </div>
     );
+}
+
+// add new plants: change here
+const CLASS_MULTIPLIERS: Record<number, number> = {
+    4: 600, 5: 600,  // CLASS_A_PLANTS
+    1: 300, 6: 300, 8: 300,  // CLASS_B_PLANTS
+    2: 100, 3: 100, 7: 100   // CLASS_C_PLANTS
+};
+
+export function usePlantsGp() {
+    const {
+        components: {
+            PlayerPlantingRecord,
+            TotalPlants
+        },
+    } = useMUD();
+    const getPlantsGp = (address: `0x${string}`) => {
+        const totalPlants = getComponentValue(
+            TotalPlants,
+            numToEntityID(0)
+        );
+        let plantsGp = 0;
+        if (totalPlants && totalPlants.totalAmount) {
+            for (let index = 1; index <= Number(totalPlants.totalAmount); index++) {
+                const plantingRecord = getComponentValue(
+                    PlayerPlantingRecord,
+                    numAddressToEntityID(index, address)
+                );
+                if (plantingRecord && Number(plantingRecord.plantsAmount) > 0) {
+                    // add new plants: change here
+                    const multiplier = CLASS_MULTIPLIERS[index] ?? 0;
+                    plantsGp += Number(plantingRecord.plantsAmount) * multiplier;
+                }
+            }
+        }
+        return plantsGp;
+    }
+
+    return { getPlantsGp };
+
 }

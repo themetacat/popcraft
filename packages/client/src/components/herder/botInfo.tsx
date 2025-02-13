@@ -7,6 +7,7 @@ import { useEntityQuery } from "@latticexyz/react";
 import { Has, getComponentValue } from "@latticexyz/recs";
 import { decodeEntity, } from "@latticexyz/store-sync/recs";
 import { useTopUp } from "../select";
+import { usePlantsGp } from "./plantsIndex";
 
 interface Props {
     sendCount: number,
@@ -26,6 +27,7 @@ export default function BotInfo({ sendCount, receiveCount, botInfoTaskTips }: Pr
     const [sessionWalletBalance, setSessionWalletBalance] = useState("0");
     const rankingRecordEntities = useEntityQuery([Has(RankingRecord)]);
     const { chainId } = useTopUp();
+    const { getPlantsGp } = usePlantsGp();
 
     const SWB = useBalance({
         address: palyerAddress,
@@ -43,12 +45,13 @@ export default function BotInfo({ sendCount, receiveCount, botInfoTaskTips }: Pr
                     GameRecord,
                     entity,
                 );
-                const totalPoints = gameRecord ? Number(gameRecord.totalPoints) : 0;
+                let totalPoints = gameRecord ? Number(gameRecord.totalPoints) : 0;
                 let sortValue = 0;
                 // add new chain: change here
                 if (chainId === 690 || chainId == 31338 || chainId == 185) {
                     sortValue = Number(value.totalScore)
                 } else {
+                    totalPoints += getPlantsGp(playerAddress.address);
                     sortValue = totalPoints
                 }
                 return {
