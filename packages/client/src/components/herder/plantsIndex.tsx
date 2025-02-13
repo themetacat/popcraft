@@ -12,6 +12,7 @@ import loadingImg from "../../images/loadingto.webp"
 import { PlantsResponse } from "../../mud/createSystemCalls";
 import toast from "react-hot-toast";
 import LightAnimation from "./plantsAnimation";
+import { COMMON_CHAIN_IDS, useTopUp } from "../select/index";
 
 interface PlantingRecord {
     name: string;
@@ -31,7 +32,7 @@ interface Star {
     duration: number;
 }
 
-export default function Plants({ checkTaskInProcess, handleErrorAll }: Props) {
+export default function PlantsIndex({ checkTaskInProcess, handleErrorAll }: Props) {
     const {
         network: { palyerAddress, publicClient },
         components: {
@@ -44,7 +45,7 @@ export default function Plants({ checkTaskInProcess, handleErrorAll }: Props) {
         },
         systemCalls: { collectSeed, grow },
     } = useMUD();
-    const [showMyPlants, setShowMyPlants] = useState(true);
+    const [showMyPlants, setShowMyPlants] = useState(false);
     const [currentPlantName, setCurrentPlantName] = useState("");
     const [currentLevelName, setCurrentLevelName] = useState("Seed");
     const [currentLevel, setCurrentLevel] = useState(0);
@@ -66,6 +67,7 @@ export default function Plants({ checkTaskInProcess, handleErrorAll }: Props) {
     const [loadingChange, setLoadingChange] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     const [growLevel, setGrowLevel] = useState(-1);
+    const { chainId } = useTopUp();
 
     const callPlantsSystem = async (value: number = 0) => {
         if (checkTaskInProcess()) {
@@ -503,7 +505,16 @@ export default function Plants({ checkTaskInProcess, handleErrorAll }: Props) {
                                 alt="Plant"
                             />
                         )}
-                        {growLevel === 4 && <LightAnimation />}
+                        {growLevel === 4 &&
+                            <>
+                                <LightAnimation />
+                                {(currentPlantName in PLANTS_NAME_GP && chainId != null && COMMON_CHAIN_IDS.includes(chainId)) &&
+                                    <div className={plantsStyle.PlantsGp}>
+                                        +{PLANTS_NAME_GP[currentPlantName as keyof typeof PLANTS_NAME_GP]} GP!
+                                    </div>
+                                }
+                            </>
+                        }
                     </div>
                 </div>
             )}
@@ -517,4 +528,55 @@ export default function Plants({ checkTaskInProcess, handleErrorAll }: Props) {
             </div>
         </div>
     );
+}
+
+// add new plants: change here
+const PLANTS_NAME_GP = {
+    "Rose": 300,
+    "Lotus": 100,
+    "Tulip": 100,
+    "Edelweiss": 600,
+    "Plum blossom": 600,
+    "Marigold": 300,
+    "Chrysanthemum": 100,
+    "Hydrangea": 300,
+};
+
+const CLASS_MULTIPLIERS: Record<number, number> = {
+    4: 600, 5: 600,  // CLASS_A_PLANTS
+    1: 300, 6: 300, 8: 300,  // CLASS_B_PLANTS
+    2: 100, 3: 100, 7: 100   // CLASS_C_PLANTS
+};
+
+export function usePlantsGp() {
+    const {
+        components: {
+            PlayerPlantingRecord,
+            TotalPlants
+        },
+    } = useMUD();
+    const getPlantsGp = (address: `0x${string}`) => {
+        const totalPlants = getComponentValue(
+            TotalPlants,
+            numToEntityID(0)
+        );
+        let plantsGp = 0;
+        if (totalPlants && totalPlants.totalAmount) {
+            for (let index = 1; index <= Number(totalPlants.totalAmount); index++) {
+                const plantingRecord = getComponentValue(
+                    PlayerPlantingRecord,
+                    numAddressToEntityID(index, address)
+                );
+                if (plantingRecord && Number(plantingRecord.plantsAmount) > 0) {
+                    // add new plants: change here
+                    const multiplier = CLASS_MULTIPLIERS[index] ?? 0;
+                    plantsGp += Number(plantingRecord.plantsAmount) * multiplier;
+                }
+            }
+        }
+        return plantsGp;
+    }
+
+    return { getPlantsGp };
+
 }

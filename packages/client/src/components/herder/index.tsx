@@ -31,7 +31,7 @@ import BGMOn from "../../images/BGMOn.webp";
 import BGMOff from "../../images/BGMOff.webp";
 import { error } from "@latticexyz/common/src/debug";
 import BotInfo from "./botInfo"
-import Plants from "./plantsIndex"
+import PlantsIndex, { usePlantsGp } from "./plantsIndex"
 import TopBuy from "../BoxPrompt/TopBuy"
 import toast from "react-hot-toast";
 import NewUserBenefitsToken from "./newUserBenefitsToken"
@@ -122,8 +122,8 @@ export default function Header({ hoveredData, handleData }: Props) {
   const { balanceCheck, currencySymbol, chainId } = useTopUp();
   const [isOpen, setIsOpen] = useState(false);
   const [botInfoTaskTips, setBotInfoTaskTips] = useState(false);
-
   const [gasPrice, setGasPrice] = useState<string>("");
+  const { getPlantsGp } = usePlantsGp();
 
   useEffect(() => {
     const fetchGasPrice = async () => {
@@ -190,17 +190,18 @@ export default function Header({ hoveredData, handleData }: Props) {
   };
 
   const setGPBalance = async (userAddress: any) => {
-    
+
     if (!userAddress) {
       return
     }
     const gameRecord = getComponentValue(GameRecord, addressToEntityID(userAddress));
-    
+
     if (gameRecord && Number(gameRecord.totalPoints) > 0) {
-      setBalancover(Number(gameRecord.totalPoints));
+      setBalancover(Number(gameRecord.totalPoints) + getPlantsGp(userAddress));
     } else {
-      setBalancover(0);
+      setBalancover(getPlantsGp(userAddress));
     }
+
   };
 
   useEffect(() => {
@@ -215,7 +216,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       return () => {
         clearInterval(intervalId);
       };
-    } else if(COMMON_CHAIN_IDS.includes(chainId)) {
+    } else if (COMMON_CHAIN_IDS.includes(chainId)) {
       setGPBalance(address);
       const intervalId = setInterval(() => {
         setGPBalance(address);
@@ -2452,7 +2453,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         botInfoTaskTips={botInfoTaskTips}
       />
       {(isConnected && address) && (
-        <Plants
+        <PlantsIndex
           checkTaskInProcess={checkTaskInProcess}
           handleErrorAll={handleErrorAll}
         />

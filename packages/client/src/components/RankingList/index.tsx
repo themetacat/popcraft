@@ -11,6 +11,7 @@ import { useAccount } from 'wagmi';
 import { useEntityQuery } from "@latticexyz/react";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { useTopUp } from "../select";
+import { usePlantsGp } from "../herder/plantsIndex";
 
 interface Props {
     loadingplay: any;
@@ -28,6 +29,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
     } = useMUD();
     const { address, isConnected } = useAccount();
     const { chainId } = useTopUp();
+    const { getPlantsGp } = usePlantsGp();
 
     //格式化地址，只显示前4位和后4位
     const formatAddress = (address) => {
@@ -95,12 +97,13 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                 const wins = Number(gameRecord.successTimes);
                 const losses = totalGames - wins;
                 const winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
-                const totalPoints = Number(gameRecord.totalPoints);
+                let totalPoints = Number(gameRecord.totalPoints);
                 let sortValue;
                 // add new chain: change here
                 if (chainId === 185 || chainId == 690 || chainId == 31338) {
                     sortValue = Number(value.totalScore)
                 } else {
+                    totalPoints += getPlantsGp(address.address);
                     sortValue = totalPoints
                 }
                 return {

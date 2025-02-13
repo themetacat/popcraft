@@ -566,8 +566,6 @@
 }
 .footerBtn {
   display: flex;
-  justify-content: center;
-  align-items: center;
   width: 52rem;
   height: 6rem;
   gap: 10px;
@@ -580,7 +578,6 @@
   font-size: 3.3rem;
   margin-top: -14rem;
   margin-left: 2.5rem;
-  display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 700;
@@ -625,21 +622,23 @@
   cursor: pointer;
 }
 .footerBtnElse {
-  text-transform: uppercase;
-  width: 400px;
-  height: 44px;
-  padding: 10px 0px 10px 0px;
+  display: flex;
+  width: 52rem;
+  height: 6rem;
   gap: 10px;
   opacity: 0px;
   background-color: #fbae6a;
   background-image: url("../../images/topup/footerBtn.webp");
   background-size: 100% 100%;
   background-position: center;
-  color: #200d2f;
-  font-size: 18px;
+  border: none;
+  font-size: 3.3rem;
+  margin-top: -14rem;
+  margin-left: 2.5rem;
+  justify-content: center;
+  align-items: center;
   font-weight: 700;
-  line-height: 24px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.4rem;
   text-align: center;
   color: #ffffff;
 }
