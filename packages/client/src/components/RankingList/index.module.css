@@ -51,10 +51,11 @@
 }
 
 .table {
-    width: 120rem;
+    width: 114rem;
     /* height: auto; */
     border-collapse: collapse; 
     font-family: "AdobeHeitiStd-Regular";
+    table-layout: fixed;
 }
 
 .thead {
@@ -128,13 +129,13 @@
 
 
 .tableBox {
-    width: 120rem;
+    width: 113rem;
     height: 6rem;
     border: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 3rem;
+    margin-left: 3.5rem;
     text-align: center;
     font-size: 2rem;
     color: #ffffff;
@@ -158,8 +159,9 @@
 .scoreBox {
     display: flex;
     align-items: center;
-    width: 80rem;
-    gap: 4rem;
+    width: 81rem;
+    margin-left: -4rem;
+    gap: 1rem;
 }
 
 .scoreItem {
