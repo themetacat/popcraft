@@ -190,8 +190,8 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                     </>
                                 ) : (
                                     <>
-                                        <th>Total Points</th>
-                                        <th>Total Score</th>
+                                        <th>GP</th>
+                                        <th>Score</th>
                                     </>
                                 )}
                                 <th>Fastest Time</th>
@@ -255,8 +255,8 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                         {isConnected ? (
                             <>
                                 <div className={style.YouBox}>
-                                    <span>{userRank ? `${userRank} (You)` : 'N/A'}</span>
-                                    <span>{formatAddress(address)}</span>
+                                    <span style={{width: "13rem"}}>{userRank ? `${userRank} (You)` : 'N/A'}</span>
+                                    <span style={{marginLeft: "-3rem"}}>{formatAddress(address)}</span>
                                 </div>
                                 <div className={style.scoreBox}>
 
