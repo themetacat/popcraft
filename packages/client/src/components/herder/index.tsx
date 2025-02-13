@@ -1758,7 +1758,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       // } 
       else if (errorMessage.includes("The contract function \"callFrom\" reverted with the following reason:")) {
         // 不弹框
-      } else if (errorMessage.includes("Insufficient funds for gas * price + value")) {
+      } else if (errorMessage.includes("Insufficient funds for gas * price + value") || errorMessage.includes("The total cost (gas * gas fee + value) of executing this transaction exceeds the balance of the account")) {
         setShowNewPopUp(true);
       } else if (errorMessage.includes("replacement transaction underpriced")) {
         toast.error("Action too frequent. Please try again later.");
