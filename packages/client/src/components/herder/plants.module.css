@@ -606,3 +606,37 @@
     border-radius: 50%;
     background: radial-gradient(circle, #fff, rgba(255, 255, 255, 0.1));
 }
+
+
+.PlantsGp {
+    position: absolute;
+    top: 45%;
+    right: 12%;
+    width: 42rem;
+    height: 8rem;
+    border: none;
+    font-size: 7rem;
+    color: #59BDA0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Simplicity";
+    letter-spacing: 0.7rem;
+    text-shadow:
+    1px 3px 2px #292828,
+    0 0 1px #747373,
+    1px 1px 1px #292828,
+    0 0 1px rgba(131, 131, 131, 0.5);
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
+    animation-delay: 3s;
+}
+
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }

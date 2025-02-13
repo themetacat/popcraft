@@ -503,7 +503,16 @@ export default function PlantsIndex({ checkTaskInProcess, handleErrorAll }: Prop
                                 alt="Plant"
                             />
                         )}
-                        {growLevel === 4 && <LightAnimation />}
+                        {growLevel === 4 &&
+                            <>
+                                <LightAnimation />
+                                {currentPlantName.trim() in PLANTS_NAME_GP &&
+                                    <div className={plantsStyle.PlantsGp}>
+                                        +{PLANTS_NAME_GP[currentPlantName.trim() as keyof typeof PLANTS_NAME_GP]} GP!
+                                    </div>
+                                }
+                            </>
+                        }
                     </div>
                 </div>
             )}
@@ -520,6 +529,17 @@ export default function PlantsIndex({ checkTaskInProcess, handleErrorAll }: Prop
 }
 
 // add new plants: change here
+const PLANTS_NAME_GP = {
+    "Rose": 300,
+    "Lotus": 100,
+    "Tulip": 100,
+    "Edelweiss": 600,
+    "Plumblossom": 600,
+    "Marigold": 300,
+    "Chrysanthemum": 100,
+    "Hydrangea": 300,
+};
+
 const CLASS_MULTIPLIERS: Record<number, number> = {
     4: 600, 5: 600,  // CLASS_A_PLANTS
     1: 300, 6: 300, 8: 300,  // CLASS_B_PLANTS
