@@ -506,9 +506,9 @@ export default function PlantsIndex({ checkTaskInProcess, handleErrorAll }: Prop
                         {growLevel === 4 &&
                             <>
                                 <LightAnimation />
-                                {currentPlantName.trim() in PLANTS_NAME_GP &&
+                                {currentPlantName in PLANTS_NAME_GP &&
                                     <div className={plantsStyle.PlantsGp}>
-                                        +{PLANTS_NAME_GP[currentPlantName.trim() as keyof typeof PLANTS_NAME_GP]} GP!
+                                        +{PLANTS_NAME_GP[currentPlantName as keyof typeof PLANTS_NAME_GP]} GP!
                                     </div>
                                 }
                             </>
@@ -534,7 +534,7 @@ const PLANTS_NAME_GP = {
     "Lotus": 100,
     "Tulip": 100,
     "Edelweiss": 600,
-    "Plumblossom": 600,
+    "Plum blossom": 600,
     "Marigold": 300,
     "Chrysanthemum": 100,
     "Hydrangea": 300,
