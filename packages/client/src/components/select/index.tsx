@@ -187,8 +187,9 @@ export const useTopUp = () => {
         setRecipient("0x784844480280ca865ac8ef89bb554283dddff737");
         setBridgeUrl("https://bridge.morphl2.io/")
         setChianIcon("https://poster-phi.vercel.app/Morphl2_Logo_Circle.webp");
-        setTokenAddress([...defaultTokenAddresses, "0x0000000000000000000000000000000000000012"])
-        setPriTokenAddress([...defaultTokenAddresses, "0x0000000000000000000000000000000000000012"])
+        setTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
+        setPriTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
+        setMIN_SESSION_WALLET_BALANCE(parseEther("0.000003"));
       }else if(chainId === 8333){
         setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
         setBridgeUrl("https://docs.b3.fun/bridge")
