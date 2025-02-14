@@ -147,4 +147,8 @@ export const imageIconData = {
         src: 'image/private/CLUK.webp',
         name: "CLUK",
     },
+    '0x0000000000000000000000000000000000000012': {
+        src: 'image/private/KOALA.webp',
+        name: "KOALA",
+    },
 };

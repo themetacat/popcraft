@@ -169,9 +169,9 @@ export const useTopUp = () => {
       setbalanceCheck('0.00002')
       setRewardInfo("100 GP");
       setMIN_SESSION_WALLET_BALANCE(parseEther("0.000002"));
-      setTokenAddress([
+      const defaultTokenAddresses = [
         "0x0000000000000000000000000000000000000003",
-        '0x0000000000000000000000000000000000000004',
+        "0x0000000000000000000000000000000000000004",
         "0x0000000000000000000000000000000000000005",
         "0x0000000000000000000000000000000000000006",
         "0x0000000000000000000000000000000000000007",
@@ -179,23 +179,16 @@ export const useTopUp = () => {
         "0x0000000000000000000000000000000000000009",
         "0x0000000000000000000000000000000000000010",
         "0x0000000000000000000000000000000000000011",
-      ])
-      setPriTokenAddress([
-        "0x0000000000000000000000000000000000000003",
-        '0x0000000000000000000000000000000000000004',
-        "0x0000000000000000000000000000000000000005",
-        "0x0000000000000000000000000000000000000006",
-        "0x0000000000000000000000000000000000000007",
-        "0x0000000000000000000000000000000000000008",
-        "0x0000000000000000000000000000000000000009",
-        "0x0000000000000000000000000000000000000010",
-        "0x0000000000000000000000000000000000000011",
-      ])
-      if(chainId === 2818){
+      ];
+      setTokenAddress(defaultTokenAddresses)
+      setPriTokenAddress(defaultTokenAddresses)
+      if(chainId === 2818 || chainId === 31337){
         setRewardDescInfo("Morph Points based on Gas usage and unlock more leaderboard rewards");
         setRecipient("0x784844480280ca865ac8ef89bb554283dddff737");
         setBridgeUrl("https://bridge.morphl2.io/")
         setChianIcon("https://poster-phi.vercel.app/Morphl2_Logo_Circle.webp");
+        setTokenAddress([...defaultTokenAddresses, "0x0000000000000000000000000000000000000012"])
+        setPriTokenAddress([...defaultTokenAddresses, "0x0000000000000000000000000000000000000012"])
       }else if(chainId === 8333){
         setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
         setBridgeUrl("https://docs.b3.fun/bridge")
