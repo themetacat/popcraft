@@ -16,7 +16,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useDisconnect, useBalance } from 'wagmi';
 import popcraftLogo from '../../images/popcraft_logo.webp';
-import backgroundMusic from '../../audio/1.mp3';
+import backgroundMusic from '../../audio/bgm.mp3';
 import effectSound from '../../audio/2.mp3';
 import loadingImg from "../../images/checkerboard_loading.webp";
 import success from '../../images/substance/successto.png'
