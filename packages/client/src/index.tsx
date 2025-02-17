@@ -50,9 +50,9 @@ const config = getDefaultConfig({
   }],
   chains: [
     morph,
+    hashkey,
     b3,
     base,
-    hashkey,
     happyTest,
     redstone,
     mintchain,
