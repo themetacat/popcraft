@@ -26,6 +26,7 @@ import 'buffer'
 
 const getChain = (id) => supportedChains.find((c) => c.id === id) || null;
 
+// add new chain: change here
 const redstone = getChain(690);
 const metacatDev = getChain(31338);
 const mintchain = getChain(185);
@@ -33,6 +34,7 @@ const morph = getChain(2818);
 const b3 = getChain(8333);
 const base = getChain(8453);
 const happyTest = getChain(216);
+const hashkey = getChain(177);
 const local = getChain(31337);
 
 if (!redstone || !metacatDev || !mintchain || !morph || !b3) {
@@ -50,6 +52,7 @@ const config = getDefaultConfig({
     morph,
     b3,
     base,
+    hashkey,
     happyTest,
     redstone,
     mintchain,

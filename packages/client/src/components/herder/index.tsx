@@ -25,7 +25,7 @@ import RankingListimg from '../../images/RankingList/trophy.png'
 import RankingList from '../RankingList'
 import { useTopUp, COMMON_CHAIN_IDS } from "../select";
 import Arrow from "../../images/Arrow.png"
-import { opRenderingCalc } from "./calc";
+// import { opRenderingCalc } from "./calc";
 import { addressToEntityID } from "../rightPart";
 import BGMOn from "../../images/BGMOn.webp";
 import BGMOff from "../../images/BGMOff.webp";

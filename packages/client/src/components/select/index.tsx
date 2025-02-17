@@ -13,7 +13,8 @@ export const networkConfig: Record<string, number> = {
   redstone: 690,
   metacat: 31338,
   base: 8453,
-  happytest: 216
+  happytest: 216,
+  hashkey: 177
 };
 
 const chainIdToNetwork: Record<number, string> = Object.fromEntries(
@@ -24,7 +25,9 @@ export const getNetworkName = (chainId: number): string | undefined => {
   return chainIdToNetwork[chainId];
 };
 
-export const COMMON_CHAIN_IDS = [31337, 2818, 8333, 8453, 216];
+// add new chain: change here
+
+export const COMMON_CHAIN_IDS = [31337, 2818, 8333, 8453, 216, 177];
 
 export const useTopUp = () => {
   const [chainId, setChainId] = useState(null);
@@ -198,11 +201,19 @@ export const useTopUp = () => {
         setRecipient("0xee56e9d317131ec8d9ecadc8e039da93bbcba634");
         setBridgeUrl("https://superbridge.app/base")
         setChianIcon("https://www.base.org/document/favicon-32x32.png");
-      }else if(chainId === 216 || chainId === 31337){
+      }else if(chainId === 216){
         setNativeToken("HAPPY")
         setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
         setBridgeUrl("https://happy-testnet-sepolia.hub.caldera.xyz/")
         setChianIcon("https://ugc.production.linktr.ee/eaf67eb0-14e8-4a70-aa3d-c03e7045761c_happychain.png");
+      }else if(chainId === 177 || chainId === 31337){
+        setInputValue("5");
+        setbalanceCheck('0.005')
+        setNativeToken("HSK")
+        setMIN_SESSION_WALLET_BALANCE(parseEther("0.006"));
+        setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
+        setBridgeUrl("https://bridge.hsk.xyz/")
+        setChianIcon("https://hsk.xyz/static/logo.png");
       }
     }
   }, [chainId]);

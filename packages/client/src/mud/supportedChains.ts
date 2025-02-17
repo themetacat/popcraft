@@ -252,12 +252,40 @@ const happyTest = defineChain({
   },
 })
 
+const hashkey = defineChain({
+  id: 177,
+  name: 'HashKey Chain',
+  network: 'HashKey Chain',
+  iconUrl:'https://hsk.xyz/static/logo.png',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'HashKey Platform Token',
+    symbol: 'HSK',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://mainnet.hsk.xyz'],
+      webSocket: ['wss://indexerhashkey.pixelaw.world/ws'],
+    },
+    public: {
+      http: ['https://mainnet.hsk.xyz'],
+      webSocket: ['wss://indexerhashkey.pixelaw.world/ws'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "HashKey Chain",
+      url: "https://hashkey.blockscout.com",
+    },
+  },
+})
+
 export const newMudFoundry = {
   ...mudFoundry,
   nativeCurrency: {
     decimals: 18,
-    name: 'HappyChain',
-    symbol: 'HAPPY',
+    name: 'HashKey',
+    symbol: 'HSK',
   },
   blockExplorers: {
     default: {
@@ -271,4 +299,4 @@ export const newMudFoundry = {
  * See https://mud.dev/tutorials/minimal/deploy#run-the-user-interface
  * for instructions on how to add networks.
  */
-export const supportedChains: MUDChain[] = [ latticeTestnet, core_foundry, redstone, mintchain, morph, b3, newMudFoundry, base, happyTest];
+export const supportedChains: MUDChain[] = [ latticeTestnet, core_foundry, redstone, mintchain, morph, b3, newMudFoundry, base, happyTest, hashkey];
