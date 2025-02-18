@@ -370,7 +370,7 @@
     background-size: 100% 100%;
     background-position: center;
     border: none;
-    background-color: #9bfffc;
+    background-color: transparent;
     width: 320px;
     height: 45px;
     /* gap: 10pxx; */
@@ -471,7 +471,7 @@
     background-size: 100% 100%;
     background-position: center;
     border: none;
-    background-color: #ffc5d3;
+    background-color: transparent;
     width: 320px;
     height: 45px;
     font-size: 23px;
