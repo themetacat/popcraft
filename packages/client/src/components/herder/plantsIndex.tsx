@@ -13,6 +13,7 @@ import { PlantsResponse } from "../../mud/createSystemCalls";
 import toast from "react-hot-toast";
 import LightAnimation from "./plantsAnimation";
 import { COMMON_CHAIN_IDS, useTopUp } from "../select/index";
+import PlantsBtnImg from "../../images/Plants/plantsBtn.webp";
 
 interface PlantingRecord {
     name: string;
@@ -518,14 +519,16 @@ export default function PlantsIndex({ checkTaskInProcess, handleErrorAll }: Prop
                     </div>
                 </div>
             )}
+            {!showMyPlants &&
+                <div className={plantsStyle.myPlantsBtn} onClick={() => myPlantsTransports(!showMyPlants)}>
+                    <img src={PlantsBtnImg} alt="" />
+                    <button> MY PLANTS</button>
+                    {(remainingTime === 0 && availableScores >= needScore) && (
+                        <div className={plantsStyle.btnTips}>1</div>
+                    )}
+                </div>
+            }
 
-            <div className={plantsStyle.myPlantsBtn} onClick={() => myPlantsTransports(!showMyPlants)}>
-                <button> My Plants</button>
-                {/* {(!showMyPlants && ((currentLevel === 1 && availableChangeScores >= changeScore) || (remainingTime === 0 && availableScores >= needScore))) && ( */}
-                {(!showMyPlants && (remainingTime === 0 && availableScores >= needScore)) && (
-                    <div className={plantsStyle.btnTips}>1</div>
-                )}
-            </div>
         </div>
     );
 }

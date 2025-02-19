@@ -59,7 +59,8 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 15px rgba(0, 0, 0);
+  font-family: "Zihun-Buding";
 }
 
 .containerImg {
@@ -77,12 +78,11 @@ canvas {
   align-items: center;
   justify-content: space-between;
   height: 7rem;
-  font-size: clamp(1.125rem, 1.875vw + 0.75rem, 2.25rem);
+  font-size: 3rem;
   color: #fff;
   position: fixed;
   top: 2rem;
   left: 27rem;
-  font-weight: bold;
   letter-spacing: 0.05em;
   margin: 0 1rem;
 }
@@ -149,12 +149,13 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 4rem;
+  margin-left: 6rem;
   gap: 1rem;
+  margin-right: 3rem;
 }
 
 .chain {
-  width: 15rem;
+  width: 18rem;
   height: 8rem;
   display: flex;
   align-items: center;
@@ -169,21 +170,27 @@ canvas {
   height: 5rem;
   border: none;
   border-radius: 10rem;
-  background-color: #2b8e9d;
+  background: none;
   cursor: pointer;
 }
 
 .iconimg {
-  width: 3rem;
-  height: 3rem;
+  width: 4.5rem;
+  height: 4.5rem;
+  border: 0.26rem solid white;
+  border-radius: 50%;
+}
+
+.Chainbutton:hover .iconimg {
+  transform: scale(1.06);
+  transition: transform 0.3s ease;
 }
 
 .arrow {
   width: 2rem;
   height: 1.5rem;
-  margin-left: 1rem;
-  background-color: #2b8e9d;
-  background-color: none;
+  margin-left: 1.5rem;
+  background-color: transparent;
   transform: rotate(0deg); 
 }
 
@@ -247,36 +254,57 @@ canvas {
 }
 
 .addressbox {
-  min-width: 37rem;
+  min-width: 36rem;
   max-width: 40rem;
   height: 5rem;
   position: relative;
   display: flex;
   border-radius: 30rem;
   align-items: center;
-  justify-content: center;
-  background-color: #2b8e9d;
+  /* justify-content: center; */
+  background: none;
   white-space: nowrap;
-  /* 防止内容换行 */
   cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-.buyButton {
-  height: 5rem;
-  width: 13rem;
-  position: relative;
+.addressbox:hover .addressboxUserImg{
+  transform: scale(1.06); 
+}
+.addressbox:hover .boldAddress{
+  text-shadow: 2px 2px 3px rgba(0, 0, 0);
+}
+
+.addressboxUserImg{
+  width: 4.7rem;
+  height: 4.7rem;
+}
+
+.buyButton{
   display: flex;
-  border-radius: 30rem;
-  justify-content: center;
-  background-color: #2b8e9d;
-  white-space: nowrap;
+  transition: transform 0.3s ease;
+  display: flex;
   align-items: center;
-  text-align: center;
-  font-size: 2.3rem;
-  font-weight: bold;
-  border: none;
-  letter-spacing: 0.15rem;
-  color: #fff;
+}
+
+.buyButton img{
+  width: 7rem;
+  height: 6rem;
+}
+
+.buyButton:hover img{
+  transform: scale(1.06);
+}
+
+.buyButton span {
+  margin-left: 1.2rem;
+  display: flex;
+  align-items: center;
+  font-size: 2.5rem;
+}
+
+.buyButton:hover span {
+  text-shadow: 2px 2px 3px rgba(0, 0, 0);
 }
 
 canvas {
@@ -461,23 +489,44 @@ canvas {
   letter-spacing: 0.2rem;
   cursor: pointer;
   margin-left: 20rem;
+  font-family: "Zihun-Buding";
 }
 
 .btnConnectbox {
   border: none;
-  background: #437e94; /* 设置按钮背景颜色 */
   color: #fff;
   font-size: 2.3rem;
   font-weight: 700;
-  margin-left: 5rem;
-  cursor: pointer; /* 添加鼠标悬停时变为小手的样式 */
-  border-radius: 20px; /* 添加圆角 */
-  padding: 10px 20px; /* 添加内边距 */
-  transition: background 0.3s; /* 添加过渡效果 */
+  margin-left: 3rem;
+  cursor: pointer;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-family: "Zihun-Buding";
+  display: flex;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  width: 22rem;
 }
 
-.btnConnectbox:hover {
-  background: #5a9db8; /* 悬停时的背景颜色 */
+.btnConnectbox img{
+  width: 6rem;
+  height: 5rem;
+}
+
+.btnConnectbox:hover img{
+  transform: scale(1.06);
+}
+
+.btnConnectbox span {
+  margin-left: 1.2rem;
+  display: flex;
+  align-items: center;
+  font-size: 2.5rem;
+}
+
+.btnConnectbox:hover span {
+  text-shadow: 2px 2px 3px rgba(0, 0, 0);
 }
 
 .boldAddress {
@@ -487,6 +536,9 @@ canvas {
   background: none;
   letter-spacing: 0.15rem;
   color: #fff;
+  font-family: "Zihun-Buding";
+  margin-left: -1rem;
+  cursor: pointer;
 }
 
 .downBox {
@@ -505,6 +557,7 @@ canvas {
   justify-content: center;
   flex-direction: column;
   margin-top: -0.45rem;
+  font-family: "Zihun-Buding";
 }
 
 .downBoxclocese {
@@ -527,7 +580,6 @@ canvas {
   letter-spacing: 0.5rem;
   text-transform: uppercase;
   text-shadow: 2px 2px 5px rgba(49, 49, 49, 0.5);
-  font-family: "AdobeHeitiStd-Regular";
 }
 
 .downBoxItem:hover {
@@ -547,6 +599,11 @@ canvas {
 @font-face {
   font-family: "AdobeHeitiStd-Regular2";
   src: url("/fonts/Langyuanti.woff2");
+}
+
+@font-face {
+  font-family: "Zihun-Buding";
+  src: url("/fonts/ZIHUN27BUDING.TTF");
 }
 
 .downBoxItemContent {
@@ -675,16 +732,22 @@ canvas {
 
 .RankingListimg {
   display: flex;
-}
-
-.RankingListimg img {
-  width: 6rem;
-  height: 6rem;
   transition: transform 0.3s ease;
 }
 
-.RankingListimg img:hover {
-  transform: scale(1.1);
+.RankingListimg img {
+  width: 6.2rem;
+  height: 6rem;
+}
+
+.RankingListimg:hover img,
+.RankingListimgNotConnected:hover img{
+  transform: scale(1.06);
+}
+
+.RankingListimg:hover span,
+.RankingListimgNotConnected:hover span {
+  text-shadow: 2px 2px 3px rgba(0, 0, 0);
 }
 
 .RankingListimgNotConnected {
@@ -697,8 +760,19 @@ canvas {
   transition: transform 0.3s ease;
 }
 
-.RankingListimgNotConnected img:hover {
-  transform: scale(1.1);
+.RankingListimg,
+.RankingListimgNotConnected {
+  display: flex;
+  align-items: center;
+}
+
+.RankingListimg span,
+.RankingListimgNotConnected span {
+  margin-left: 1.5rem;
+  display: flex;
+  align-items: center;
+  font-size: 2.5rem;
+  font-weight: 100;
 }
 
 .TopBuyImg {
@@ -731,8 +805,8 @@ canvas {
 }
 
 .BGMButton { /* 喇叭按钮样式 */
-  width: 4rem; /* 设置宽度 */
-  height: 4rem; /* 设置高度 */
+  width: 4.5rem; /* 设置宽度 */
+  height: 4.5rem; /* 设置高度 */
   border: none; /* 移除边框 */
   background-color: transparent; /* 背景透明 */
   cursor: pointer; /* 鼠标悬停时显示为手型 */
@@ -744,9 +818,15 @@ canvas {
   transition: opacity 0.3s ease; /* 添加过渡效果 */
 }
 
+.BGMButton:hover{
+  transform: scale(1.06);
+}
+
 .BGMButton img {
-  width: 100%; /* 图标宽度自适应 */
-  height: 100%; /* 图标高度自适应 */
+  width: auto;  /* 图片宽度自适应 */
+  height: auto; /* 图片高度自适应 */
+  max-width: 100%;  /* 限制图片最大宽度为父容器的100% */
+  max-height: 100%; /* 限制图片最大高度为父容器的100% */
 }
 
 .waitingOverlay {
@@ -828,14 +908,13 @@ canvas {
 }
 
 .bottomLeftText {
-  bottom: 1%;
-  left: 11%;
+  bottom: 4%;
+  left: 3%;
   position: absolute;
   margin: 0 auto;
-  transform: translate(-50%, -50%);
   text-align: left;
   text-transform: uppercase;
-  color: #00AB6B;
+  color: rgba(23, 166, 124, 1);
   font-size: calc(0.35vw + 0.35vh + 0.35em);
   border: none;
   letter-spacing: 0.0625rem; 

@@ -15,13 +15,15 @@ import reduce from '../../images/substance/reduce.png'
 import add from '../../images/substance/add.png'
 import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
+import HowToPlayBtnImg from "../../images/HowToPlay/howToPlayBtn.webp";
+import RewardsImg from "../../images/HowToPlay/rewardsBtn.webp";
 import { generateRoute, generateRouteMintChain } from '../../uniswap_routing/routing'
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useTopUp } from "../select";
 import { encodeEntity } from "@latticexyz/store-sync/recs";
 import { getComponentValue } from "@latticexyz/recs";
 import substanceImg from "../../images/substance/substance.webp";
-import HowToPlay from "./HowToPlay";
+import HowToPlay, { Rewards } from "./HowToPlay";
 
 interface Props {
   coordinates: any;
@@ -78,15 +80,16 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [loadingPrices, setLoadingPrices] = useState({});
   const [lastPrices, setLastPrices] = useState({});
   const { rewardInfo, rewardDescInfo, recipient, chainId, priTokenAddress, nativeToken } = useTopUp();
-  const [ showHowToPlay, setShowHowToPlay ] = useState(false);
+  const [showHowToPlay, setShowHowToPlay] = useState(false);
+  const [showRewards, setShowRewards] = useState(false);
 
   useEffect(() => {
     const rankRecord = address ? getComponentValue(
       GameRecord,
       addressToEntityID(address)
     ) : undefined;
-    if(!rankRecord || rankRecord.successTimes === 0n){
-      setShowHowToPlay(true);
+    if (!rankRecord || rankRecord.successTimes === 0n) {
+      // setShowHowToPlay(true);
     } else {
       setShowHowToPlay(false);
     }
@@ -257,36 +260,36 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
   useEffect(() => {
     if (timeControl && gameSuccess === false) {
-      
+
       if (timeLeft > 0) {
-        if(localStorage.getItem('showGameOver') != 'false'){
+        if (localStorage.getItem('showGameOver') != 'false') {
           localStorage.setItem('showGameOver', 'false')
         }
         const timer = setTimeout(() => {
           setTimeLeft(timeLeft - 1);
-          
-          if(localStorage.getItem('showGameOver') === 'false'){
+
+          if (localStorage.getItem('showGameOver') === 'false') {
             if (timeLeft <= 1 && !interactTaskToExecute && localStorage.getItem("isShowWaitingMaskLayer") === "false") {
               localStorage.setItem('showGameOver', 'true')
             }
-          setLoading(false)
+            setLoading(false)
           }
         }, 1000);
-      } 
-    } 
-    if(gameSuccess === true){
+      }
+    }
+    if (gameSuccess === true) {
       setTimeLeft(0)
     }
   }, [timeLeft, timeControl, gameSuccess, interactTaskToExecute]);
 
   useEffect(() => {
-    if(checkInteractTask && timeLeft <= 0){
-      if(interactTaskToExecute && localStorage.getItem("showGameOver") === "false"){
+    if (checkInteractTask && timeLeft <= 0) {
+      if (interactTaskToExecute && localStorage.getItem("showGameOver") === "false") {
         localStorage.setItem('isShowWaitingMaskLayer', 'true')
       }
-      
-      if(timeControl && gameSuccess === false && !interactTaskToExecute){
-        if(localStorage.getItem('showGameOver') != 'true'){
+
+      if (timeControl && gameSuccess === false && !interactTaskToExecute) {
+        if (localStorage.getItem('showGameOver') != 'true') {
           localStorage.setItem('showGameOver', 'true')
         }
       }
@@ -376,14 +379,14 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             const route = getPriTokenPrice(key, quantity)
             price = route.price;
             routeMethodParameters = route.methodParameters
-          } else{
+          } else {
             const route = await generateRouteMintChain(key, quantity, recipient);
             if (route) {
               price = route.price; // 获取报价
               routeMethodParameters = route.methodParameters
             }
           }
-        } else if(chainId === 31338 || chainId === 690){
+        } else if (chainId === 31338 || chainId === 690) {
           const route = await generateRoute(key, quantity, recipient);
           if (route) {
             price = route.quote.toExact();
@@ -403,7 +406,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         };
         setLoadingPrices(prev => ({ ...prev, [key]: false }));
         // if (lastPrices[key]?.price !== price) {
-          return { [key]: { price, methodParameters } };
+        return { [key]: { price, methodParameters } };
         // } else {
         //   return { [key]: { price: lastPrices[key]?.price, methodParameters: lastPrices[key]?.methodParameters } };
         // }
@@ -422,30 +425,30 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
   const getPriTokenPrice = (address: any, quantity = 1) => {
     const price = address ? getComponentValue(
-        PriTokenPrice,
-        addressToEntityID(address)
+      PriTokenPrice,
+      addressToEntityID(address)
     ) : 0;
     let res = {};
     if (price === undefined) {
-        res = {
-            price: 0,
-            methodParameters: {
-                calldata: "",
-                value: "0"
-            }
+      res = {
+        price: 0,
+        methodParameters: {
+          calldata: "",
+          value: "0"
         }
+      }
     } else {
-        const value = Number(price.price) * quantity
-        res = {
-            price: value / 1e18,
-            methodParameters: {
-                calldata: "",
-                value: value.toString()
-            }
+      const value = Number(price.price) * quantity
+      res = {
+        price: value / 1e18,
+        methodParameters: {
+          calldata: "",
+          value: value.toString()
         }
+      }
     }
     return res;
-}
+  }
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -479,7 +482,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               routeMethodParameters = route.methodParameters
             }
           }
-        } else if(chainId === 690 || chainId === 31338){
+        } else if (chainId === 690 || chainId === 31338) {
           const route = await generateRoute(key, quantity, recipient);
           if (route) {
             price = route.quote.toExact();
@@ -490,7 +493,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
             const route = getPriTokenPrice(key, quantity)
             price = route.price;
             routeMethodParameters = route.methodParameters;
-          } 
+          }
         }
         const methodParameters = {
           ...routeMethodParameters,
@@ -499,17 +502,17 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         };
 
         // if (lastPrices[key]?.price !== price) {
-          setPrices(prev => ({
-            ...prev,
-            [key]: { price, methodParameters }
-          }));
-          
-          setLoadingPrices(prev => ({ ...prev, [key]: false }));
-          updateTotalPrice();
+        setPrices(prev => ({
+          ...prev,
+          [key]: { price, methodParameters }
+        }));
+
+        setLoadingPrices(prev => ({ ...prev, [key]: false }));
+        updateTotalPrice();
         // } else {
         //   setLoadingPrices(prev => ({ ...prev, [key]: false }));
         // }
-        
+
       } catch (error) {
         console.error(`Error fetching price for ${key}:`, error);
         setLoadingPrices(prev => ({ ...prev, [key]: false }));
@@ -601,7 +604,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     // if (showGameOver === 'true') {
     //   setGameSuccess(true);
     // } else {
-      setGameSuccess(false);
+    setGameSuccess(false);
     // }
   }, []);
 
@@ -1007,17 +1010,33 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         </div>
       ) : null}
 
-    <div className={howToPlayStyle.threePart}>
-      <button
-      className={`${howToPlayStyle.btnHtp} ${popStar === true && (!isConnected || localStorage.getItem('playAction') !== 'gameContinue') ? '': howToPlayStyle.alt}`}
-        // className={howToPlayStyle.btnHtp}
+      <div className={howToPlayStyle.btnHtp}
+        style={{
+          bottom: "30%"
+        }}
+        onClick={async () => {
+          setShowRewards(true);
+        }}
+      >
+        <img src={RewardsImg} alt="" />
+        <span>REWARDS</span>
+      </div>
+
+      <div className={howToPlayStyle.btnHtp}
         onClick={async () => {
           setShowHowToPlay(true);
         }}
       >
+        <img src={HowToPlayBtnImg} alt="" />
         <span>HOW TO PLAY</span>
-      </button>
-    </div>
+      </div>
+
+      {showRewards && (
+        <div className={style.overlay}>
+          <Rewards setShowRewards={setShowRewards}
+          />
+        </div>
+      )}
 
       {showHowToPlay && (
         <div className={style.overlay}>
