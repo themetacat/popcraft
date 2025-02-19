@@ -186,7 +186,8 @@ export const useTopUp = () => {
       setTokenAddress(defaultTokenAddresses)
       setPriTokenAddress(defaultTokenAddresses)
       if(chainId === 2818 || chainId === 31337){
-        setRewardDescInfo("Morph Points based on Leaderboard and Gas usage");
+        // setRewardDescInfo("Morph Points based on Leaderboard and Gas usage");
+        setRewardDescInfo("Morph Points based on Gas usage and unlock more leaderboard rewards");
         setRecipient("0x784844480280ca865ac8ef89bb554283dddff737");
         setBridgeUrl("https://bridge.morphl2.io/")
         setChianIcon("https://poster-phi.vercel.app/Morphl2_Logo_Circle.webp");
