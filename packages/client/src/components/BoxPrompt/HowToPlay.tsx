@@ -6,6 +6,7 @@ import PlayerGuide2 from '../../images/HowToPlay/PlayerGuide_2.webp';
 import PlayerGuide3 from '../../images/HowToPlay/PlayerGuide_3.webp';
 import PlayerGuide4 from '../../images/HowToPlay/PlayerGuide_4.webp';
 import PlayerGuide5 from '../../images/HowToPlay/PlayerGuide_5.webp';
+import PlayerGuide6 from '../../images/HowToPlay/PlayerGuide_6.webp';
 import RewardsMorph from '../../images/HowToPlay/RewardsMorph.webp';
 import RewardsB3 from '../../images/HowToPlay/RewardsB3.webp';
 import MyPlantsGuide from '../../images/HowToPlay/MyPlantsGuide.webp';
@@ -28,7 +29,7 @@ export default function HowToPlay({ setShowHowToPlay }: PropsHowToPlay) {
   if(chainId === 2818){
     rewardsImg = RewardsMorph;
   }
-  const images = [rewardsImg, PlayerGuide1, PlayerGuide2, PlayerGuide3, PlayerGuide4, PlayerGuide5, MyPlantsGuide];
+  const images = [rewardsImg, PlayerGuide1, PlayerGuide2, PlayerGuide3, PlayerGuide4, PlayerGuide5, PlayerGuide6, MyPlantsGuide];
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // useEffect(() => {

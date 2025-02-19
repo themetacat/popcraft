@@ -66,7 +66,16 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
           </span>) : (<span className={style.copywritingTwoyo}>You'll be rewarded with&nbsp;
             <span className={style.copywritingThree}>
               {rewardDescInfo ? (
-                rewardDescInfo
+                chainId === 2818 ? (
+                  <a
+                    href="#"
+                    style={{ color: '#FF7A00', textDecoration: 'underline', textDecorationColor: '#E64C00' }}
+                  >
+                    {rewardDescInfo}
+                  </a>
+                ) : (
+                  rewardDescInfo
+                )
               ) : rewardInfo ? (
                 rewardInfo
               ) : (
@@ -75,7 +84,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
             </span>
             <span className={style.copywritingTwoyo}>
               {" "}
-              for completing the game.
+              {chainId === 2818 ? "for playing the game." : "for completing the game."}
               <br />
             </span>
           </span>)}
