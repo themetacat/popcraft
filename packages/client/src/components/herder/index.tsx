@@ -18,23 +18,22 @@ import { useDisconnect, useBalance } from 'wagmi';
 import popcraftLogo from '../../images/popcraft_logo.webp';
 import backgroundMusic from '../../audio/bgm.mp3';
 import effectSound from '../../audio/2.mp3';
-import loadingImg from "../../images/checkerboard_loading.webp";
-import success from '../../images/substance/successto.png'
 import failto from '../../images/substance/failto.png'
 import RankingListimg from '../../images/RankingList/trophy.png'
+import ShoppingCartImg from '../../images/ShoppingCart.webp'
+import UserImg from "../../images/User.webp"
 import RankingList from '../RankingList'
 import { useTopUp, COMMON_CHAIN_IDS } from "../select";
-import Arrow from "../../images/Arrow.png"
-// import { opRenderingCalc } from "./calc";
+import Arrow from "../../images/Arrow.webp"
 import { addressToEntityID } from "../rightPart";
 import BGMOn from "../../images/BGMOn.webp";
 import BGMOff from "../../images/BGMOff.webp";
-import { error } from "@latticexyz/common/src/debug";
 import BotInfo from "./botInfo"
 import PlantsIndex, { usePlantsGp } from "./plantsIndex"
 import TopBuy from "../BoxPrompt/TopBuy"
 import toast from "react-hot-toast";
 import NewUserBenefitsToken from "./newUserBenefitsToken"
+import ConnectImg from "../../images/connect.webp";
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -2059,10 +2058,6 @@ export default function Header({ hoveredData, handleData }: Props) {
 
         <div
           className={style.addr}
-        // style={{
-        //   cursor: "pointer",
-        //   marginLeft: "32px",
-        // }}
         >
           <div
             className={isConnected ? style.RankingListimg : style.RankingListimgNotConnected}
@@ -2072,6 +2067,7 @@ export default function Header({ hoveredData, handleData }: Props) {
             }}
           >
             <img src={RankingListimg} alt="" />
+            <span>leaderboard</span>
           </div>
 
           <ConnectButton.Custom>
@@ -2106,13 +2102,14 @@ export default function Header({ hoveredData, handleData }: Props) {
                   {(() => {
                     if (!connected) {
                       return (
-                        <button
+                        <div
                           onClick={openConnectModal}
-                          type="button"
                           className={style.btnConnectbox}
                         >
-                          CONNECT
-                        </button>
+                          <img src={ConnectImg} alt="" />
+                          <span>CONNECT</span>
+                        </div>
+
                       );
                     }
 
@@ -2131,22 +2128,17 @@ export default function Header({ hoveredData, handleData }: Props) {
                     return (
                       // <div>
                       <div className={style.chainbox}>
-                        <button className={style.buyButton}
+
+                        <div
+                          className={style.buyButton}
                           onClick={() => topBuyTransports()}
                           style={{
                             cursor: "pointer",
-                          }}>
-                          BUY
-                        </button>
-                        {/* <div className={style.chain}>
-                            <button
-                              onClick={(event) => {
-                                openChainModal();
-                              }}
-                             >
-                            {chain.name} &nbsp;&nbsp;
-                            </button>
-                          </div> */}
+                          }}
+                        >
+                          <img src={ShoppingCartImg} alt="" />
+                          <span>BUY</span>
+                        </div>
 
                         <div className={style.chain}>
                           <div className={style.chainsbox}>
@@ -2165,25 +2157,7 @@ export default function Header({ hoveredData, handleData }: Props) {
                                 className={`${style.arrow} ${isOpen ? style.arrowRotated : ''}`}
                               />
                             </button>
-                            {/* 
-                            {isOpen && (
-                              <div className={style.chainlinks}>
-                                {chainLinks.map((link, index) => (
-                                  <a
-                                    onClick={(event) => {
-                                      openChainModal();
-                                    }}
-                                    key={index}
-                                  >
-                                    <img src={link.iconUrl} />
-                                    {link.name}
-                                    {chain.name === link.name && (
-                                      <img src={duigou} className={style.checkmark} />
-                                    )}
-                                  </a>
-                                ))}
-                              </div>
-                            )} */}
+
                           </div>
                         </div>
 
@@ -2198,6 +2172,7 @@ export default function Header({ hoveredData, handleData }: Props) {
                             setAddressModel(false);
                           }}
                         >
+                          <img src={UserImg} className={style.addressboxUserImg} alt="" />
                           <button
                             type="button"
                             className={style.boldAddress} // 添加这个类名

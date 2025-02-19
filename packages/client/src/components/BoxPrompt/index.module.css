@@ -520,7 +520,7 @@
   z-index: 100000;
   height: 100%;
   margin-top: 4%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.3);
   pointer-events: auto !important;
 }
 

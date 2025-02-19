@@ -14,17 +14,21 @@ import ArrowLeft from "../../images/HowToPlay/CarouselArrowLeft.png";
 import ArrowRight from "../../images/HowToPlay/CarouselArrowRight.png";
 import { useTopUp } from "../select";
 
-interface Props {
-  setShowHowToPlay: any
+interface PropsHowToPlay {
+  setShowHowToPlay: any,
 }
 
-export default function HowToPlay({ setShowHowToPlay }: Props) {
+interface PropsRewards {
+  setShowRewards: any,
+}
+
+export default function HowToPlay({ setShowHowToPlay }: PropsHowToPlay) {
   const { chainId } = useTopUp();
   let rewardsImg = RewardsB3;
   if(chainId === 2818){
     rewardsImg = RewardsMorph;
   }
-  const images = [PlayerGuide1, PlayerGuide2, PlayerGuide3, PlayerGuide4, PlayerGuide5, rewardsImg, MyPlantsGuide];
+  const images = [rewardsImg, PlayerGuide1, PlayerGuide2, PlayerGuide3, PlayerGuide4, PlayerGuide5, MyPlantsGuide];
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // useEffect(() => {
@@ -66,6 +70,30 @@ export default function HowToPlay({ setShowHowToPlay }: Props) {
             </span>
           ))}
         </div>
+
+      </div>
+    </div>
+  )
+}
+
+
+
+export function Rewards({ setShowRewards }: PropsRewards) {
+  const { chainId } = useTopUp();
+  let rewardsImg = RewardsB3;
+  if(chainId === 2818){
+    rewardsImg = RewardsMorph;
+  }
+  const images = [rewardsImg];
+
+  return (
+    <div className={style.overlayBuy}>
+      <div className={style.content}>
+
+        <div className={howToPlayStyle.cornerImage} onClick={() => { setShowRewards(false) }}>
+          <img src={close} />
+        </div>
+        <img src={images[0]} className={howToPlayStyle.carouselImage} />
 
       </div>
     </div>
