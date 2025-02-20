@@ -15,7 +15,7 @@
 
 .contentMorph {
   width: 70.75rem;
-  height: 64rem;
+  height: 76rem;
   background-size: 100% 100% !important;
 }
 p {
@@ -38,7 +38,7 @@ p {
 }
 
 .titleMorph {
-  margin-top: 8.5rem;
+  margin-top: 9.5rem;
 }
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
@@ -88,6 +88,12 @@ p {
   font-size: 2.5rem;
   line-height: 4rem;
   letter-spacing: 0.25rem;
+  /* font-family: "AdobeHeitiStd-Regular"; */
+}
+.copywritingTwoyoMorph {
+  font-size: 2.5rem;
+  line-height: 4rem;
+  letter-spacing: 0.35rem;
   /* font-family: "AdobeHeitiStd-Regular"; */
 }
 .copywritingFour {
