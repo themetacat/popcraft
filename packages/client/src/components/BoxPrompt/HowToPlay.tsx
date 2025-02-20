@@ -9,7 +9,8 @@ import PlayerGuide5 from '../../images/HowToPlay/PlayerGuide_5.webp';
 import PlayerGuide6 from '../../images/HowToPlay/PlayerGuide_6.webp';
 import RewardsMorph from '../../images/HowToPlay/RewardsMorph.webp';
 import RewardsB3 from '../../images/HowToPlay/RewardsB3.webp';
-import MyPlantsGuide from '../../images/HowToPlay/MyPlantsGuide.webp';
+import MyPlantsGuideMorph from '../../images/HowToPlay/MyPlantsGuideMorph.webp';
+import MyPlantsGuideB3 from '../../images/HowToPlay/MyPlantsGuideB3.webp';
 import close from "../../images/Plants/close.webp";
 import ArrowLeft from "../../images/HowToPlay/CarouselArrowLeft.png";
 import ArrowRight from "../../images/HowToPlay/CarouselArrowRight.png";
@@ -26,8 +27,10 @@ interface PropsRewards {
 export default function HowToPlay({ setShowHowToPlay }: PropsHowToPlay) {
   const { chainId } = useTopUp();
   let rewardsImg = RewardsB3;
+  let MyPlantsGuide = MyPlantsGuideB3;
   if(chainId === 2818){
     rewardsImg = RewardsMorph;
+    MyPlantsGuide = MyPlantsGuideMorph;
   }
   const images = [rewardsImg, PlayerGuide1, PlayerGuide2, PlayerGuide3, PlayerGuide4, PlayerGuide5, PlayerGuide6, MyPlantsGuide];
   const [currentIndex, setCurrentIndex] = useState(0);
