@@ -306,7 +306,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                 {/* add new chain: change here */}
                                 {(chainId === 31337 || chainId === 2818) ? (
                                     <>
-                                        <th>Score</th>
+                                        <th>Scores</th>
                                         <th>GP</th>
                                     </>
                                 ) : (chainId === 31338 || chainId === 185 || chainId === 690) ? (
@@ -317,7 +317,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                 ) : (
                                     <>
                                         <th>GP</th>
-                                        <th>Score</th>
+                                        <th>Scores</th>
                                     </>
                                 )}
                                 <th>Fastest Time</th>
