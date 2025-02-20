@@ -44,6 +44,7 @@ export type SetupNetworkResult = {
   clientOptions: any;
   maxFeePerGas: any;
   maxPriorityFeePerGas: any
+  chainId: any
 };
 export async function setupNetwork(): Promise<SetupNetworkResult> {
   return new Promise<SetupNetworkResult>((resolve, reject) => {
@@ -119,6 +120,7 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
       }else{
         worldAbiUrl="https://pixelaw-game.vercel.app/Snake.abi.json"
       }
+
       // add new chain: change here
       let indexerUrl = ""
       let maxFeePerGas = parseGwei('0')
@@ -183,9 +185,6 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
             indexerUrl: indexerUrl,
             tables: resolveConfig(tcmpopstarConfig).tables,
             filters: [
-              // {
-              //   tableId: resourceToHex({ type: "table", namespace: "", name: "Pixel" }),
-              // },
               {
                 tableId: resourceToHex({ type: "table", namespace: "", name: "App" }),
               },
@@ -243,6 +242,14 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
               {
                 tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "UserBenefitsToken" }),
               },
+              ...(networkConfig.chain.id === 2818 || networkConfig.chain.id === 31337
+                ? [
+                  { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "SeasonTime" }) },
+                  { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "CurrentSeasonDimension" }) },
+                  { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "WeeklyRecord" }) },
+                  { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "SeasonPlantsRecord" }) },
+                ]
+                : [])
             ],
           }).then(({ components, latestBlock$, storedBlockLogs$, waitForTransaction }) => {
             /*
@@ -322,7 +329,8 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
               abi: abi,
               clientOptions,
               maxFeePerGas,
-              maxPriorityFeePerGas
+              maxPriorityFeePerGas,
+              chainId: networkConfig.chain.id
             });
           
           }).catch(reject);

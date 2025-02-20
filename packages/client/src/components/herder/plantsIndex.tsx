@@ -7,7 +7,7 @@ import { useEntityQuery } from "@latticexyz/react";
 import { Has, getComponentValue } from "@latticexyz/recs";
 import { decodeEntity, } from "@latticexyz/store-sync/recs";
 import close from "../../images/Plants/close.webp";
-import { addressToEntityID, numAddressToEntityID, numToEntityID, twoNumToEntityID } from "../rightPart/index";
+import { addressToEntityID, numAddressToEntityID, numToEntityID, twoNumToEntityID, addr3NumToEntityID } from "../rightPart/index";
 import loadingImg from "../../images/loadingto.webp"
 import { PlantsResponse } from "../../mud/createSystemCalls";
 import toast from "react-hot-toast";
@@ -555,9 +555,11 @@ export function usePlantsGp() {
     const {
         components: {
             PlayerPlantingRecord,
-            TotalPlants
+            TotalPlants,
+            SeasonPlantsRecord,
         },
     } = useMUD();
+
     const getPlantsGp = (address: `0x${string}`) => {
         const totalPlants = getComponentValue(
             TotalPlants,
@@ -580,6 +582,30 @@ export function usePlantsGp() {
         return plantsGp;
     }
 
-    return { getPlantsGp };
+
+    const getPlantsGpSeason = (address: `0x${string}`, season: number, csd: number) => {
+        const totalPlants = getComponentValue(
+            TotalPlants,
+            numToEntityID(0)
+        );
+        let plantsGp = 0;
+        if (totalPlants && totalPlants.totalAmount) {
+            for (let index = 1; index <= Number(totalPlants.totalAmount); index++) {
+            
+                const seasonPlantsRecord = getComponentValue(
+                    SeasonPlantsRecord,
+                    addr3NumToEntityID(address, season, csd, index)
+                );
+                if (seasonPlantsRecord && Number(seasonPlantsRecord.amount) > 0) {
+                    // add new plants: change here
+                    const multiplier = CLASS_MULTIPLIERS[index] ?? 0;
+                    plantsGp += Number(seasonPlantsRecord.amount) * multiplier;
+                }
+            }
+        }
+        return plantsGp;
+    }
+
+    return { getPlantsGp, getPlantsGpSeason };
 
 }

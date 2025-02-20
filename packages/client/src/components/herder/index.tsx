@@ -25,7 +25,7 @@ import UserImg from "../../images/User.webp"
 import RankingList from '../RankingList'
 import { useTopUp, COMMON_CHAIN_IDS } from "../select";
 import Arrow from "../../images/Arrow.webp"
-import { addressToEntityID } from "../rightPart";
+import { addressToEntityID, addr2NumToEntityID } from "../rightPart";
 import BGMOn from "../../images/BGMOn.webp";
 import BGMOff from "../../images/BGMOff.webp";
 import BotInfo from "./botInfo"
@@ -34,6 +34,7 @@ import TopBuy from "../BoxPrompt/TopBuy"
 import toast from "react-hot-toast";
 import NewUserBenefitsToken from "./newUserBenefitsToken"
 import ConnectImg from "../../images/connect.webp";
+import { useUtils } from "./utils";
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -60,7 +61,8 @@ export default function Header({ hoveredData, handleData }: Props) {
       App,
       Pixel,
       TCMPopStar,
-      GameRecord
+      GameRecord,
+      WeeklyRecord
     },
     network: { publicClient, palyerAddress },
     systemCalls: { interact, interactTCM, registerDelegation, opRendering },
@@ -122,7 +124,8 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [botInfoTaskTips, setBotInfoTaskTips] = useState(false);
   const [gasPrice, setGasPrice] = useState<string>("");
-  const { getPlantsGp } = usePlantsGp();
+  const { getPlantsGp, getPlantsGpSeason } = usePlantsGp();
+  const { csd, season } = useUtils();
 
   useEffect(() => {
     const fetchGasPrice = async () => {
@@ -200,7 +203,19 @@ export default function Header({ hoveredData, handleData }: Props) {
     } else {
       setBalancover(getPlantsGp(userAddress));
     }
+  };
 
+  const setSeasonGPBalance = async (userAddress: any) => {
+    if (!userAddress) {
+      return
+    }
+    const seasonRecord = getComponentValue(WeeklyRecord, addr2NumToEntityID(userAddress, season, csd));
+
+    if (seasonRecord && Number(seasonRecord.totalPoints) > 0) {
+      setBalancover(Number(seasonRecord.totalPoints) + getPlantsGpSeason(userAddress, season, csd));
+    } else {
+      setBalancover(getPlantsGpSeason(userAddress, season, csd));
+    }
   };
 
   useEffect(() => {
@@ -215,7 +230,15 @@ export default function Header({ hoveredData, handleData }: Props) {
       return () => {
         clearInterval(intervalId);
       };
-    } else if (COMMON_CHAIN_IDS.includes(chainId)) {
+    }else if((chainId === 31337 || chainId === 2818) && season > 0){
+      setSeasonGPBalance(address);
+      const intervalId = setInterval(() => {
+        setSeasonGPBalance(address);
+      }, 3000);
+      return () => {
+        clearInterval(intervalId);
+      };
+    }else if (COMMON_CHAIN_IDS.includes(chainId)) {
       setGPBalance(address);
       const intervalId = setInterval(() => {
         setGPBalance(address);
@@ -233,7 +256,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       };
     }
 
-  }, [address, chainId]);
+  }, [address, chainId, season]);
 
   const formatBalance = (balancover: number) => {
 
@@ -1263,13 +1286,13 @@ export default function Header({ hoveredData, handleData }: Props) {
     let throwError = false;
     try {
       //点击后立即显示得分气泡 start
-      let popStarId: any, tokenBalanceId: any, newRankingRecordId: any, score: any;
+      let popStarId: any, tokenBalanceId: any, newRankingRecordId: any, score: any, seasonRankingRecordId: any;
       if (actionData == "pop") {
         if (localStorage.getItem("isShowWaitingMaskLayer") === "true") {
           return;
         }
         // const score = opRenderingCalc(coordinates.x, coordinates.y, address, TCMPopStar, StarToScore, TokenBalance);
-        [popStarId, tokenBalanceId, newRankingRecordId, score] = opRendering(coordinates.x, coordinates.y, address)
+        [popStarId, tokenBalanceId, newRankingRecordId, seasonRankingRecordId, score] = opRendering(coordinates.x, coordinates.y, address)
 
         if (Number(score) != 0) {
           addScoreBubble(Number(score));
@@ -1292,6 +1315,7 @@ export default function Header({ hoveredData, handleData }: Props) {
               popStarId,
               tokenBalanceId,
               newRankingRecordId,
+              seasonRankingRecordId,
               execute,
               account,
               nonce
@@ -1303,6 +1327,7 @@ export default function Header({ hoveredData, handleData }: Props) {
               selectedColor,
               actionData,
               other_params,
+              null,
               null,
               null,
               null,
