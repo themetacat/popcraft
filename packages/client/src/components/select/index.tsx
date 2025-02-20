@@ -30,7 +30,7 @@ export const getNetworkName = (chainId: number): string | undefined => {
 export const COMMON_CHAIN_IDS = [31337, 2818, 8333, 8453, 216, 177];
 
 export const useTopUp = () => {
-  const [chainId, setChainId] = useState(null);
+  const [chainId, setChainId] = useState(2818);
   const [inputValue, setInputValue] = useState("");
   const [MIN_SESSION_WALLET_BALANCE, setMIN_SESSION_WALLET_BALANCE] = useState(parseEther(""));
   const [balanceCheck, setbalanceCheck] = useState("");
