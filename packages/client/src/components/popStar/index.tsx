@@ -63,19 +63,9 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
               in your first 3 games every day.
               <br />
             </span>
-          </span>) : (<span className={style.copywritingTwoyo}>You'll be rewarded with&nbsp;
+          </span>) : (<span className={chainId === 2818 ? style.copywritingTwoyoMorph : style.copywritingTwoyo}>You'll be rewarded with&nbsp;
             <span className={style.copywritingThree}>
               {rewardDescInfo ? (
-                // chainId === 2818 ? (
-                //   <a
-                //     href="#"
-                //     style={{ color: '#FF7A00', textDecoration: 'underline', textDecorationColor: '#E64C00' }}
-                //   >
-                //     {rewardDescInfo}
-                //   </a>
-                // ) : (
-                //   rewardDescInfo
-                // )
                 rewardDescInfo
               ) : rewardInfo ? (
                 rewardInfo
@@ -85,8 +75,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
             </span>
             <span className={style.copywritingTwoyo}>
               {" "}
-              {/* {chainId === 2818 ? "for playing the game." : "for completing the game."} */}
-              for completing the game.
+              {chainId === 2818 ? <a href="#" style={{ color: '#FF7A00', textDecoration: 'underline', textDecorationColor: '#E64C00' }}>Learn more about the campaign and the rewards.</a> : "for completing the game."}
               <br />
             </span>
           </span>)}
