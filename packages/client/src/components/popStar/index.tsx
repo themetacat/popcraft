@@ -75,7 +75,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
             </span>
             <span className={style.copywritingTwoyo}>
               {" "}
-              {chainId === 2818 ? <a href="#" style={{ color: '#FF7A00', textDecoration: 'underline', textDecorationColor: '#E64C00' }}>Learn more about the campaign and the rewards.</a> : "for completing the game."}
+              {chainId === 2818 ? <a href="https://morph.ghost.io/play-to-earn-with-popcraft/" target="_blank" style={{ color: '#FF7A00', textDecoration: 'underline', textDecorationColor: '#E64C00' }}>Learn more about the campaign and the rewards.</a> : "for completing the game."}
               <br />
             </span>
           </span>)}
