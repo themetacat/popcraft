@@ -60,6 +60,12 @@ export const twoNumToEntityID = (num1: number, num2: number) =>
 export const numToEntityID = (num: number) =>
   encodeEntity({ num: "uint256" }, { num: BigInt(num) });
 
+export const addr2NumToEntityID = (address: Hex, num1: number, num2: number) =>
+  encodeEntity({ address: "address", num1: "uint256", num2: "uint256" }, { address, num1: BigInt(num1), num2: BigInt(num2) });
+
+export const addr3NumToEntityID = (address: Hex, num1: number, num2: number, num3: number) =>
+  encodeEntity({ address: "address", num1: "uint256", num2: "uint256", num3: "uint256" }, { address, num1: BigInt(num1), num2: BigInt(num2), num3: BigInt(num3) });
+
 export default function RightPart({
   coordinates,
   loading,

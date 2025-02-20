@@ -124,6 +124,51 @@ export default mudConfig({
         times: "uint256"
       }
     },
+    SeasonTime: {
+      keySchema: {
+        dimension: "uint256"
+      },
+      valueSchema: {
+        startTime: "uint256",
+        duration: "uint256"
+      }
+    },
+    CurrentSeasonDimension: {
+      keySchema: {
+        index: "uint256"
+      },
+      valueSchema: {
+        dimension: "uint256"
+      }
+    },
+    // gamerecord && rankingrecord
+    WeeklyRecord: {
+      keySchema:{
+        owner: "address",
+        season: "uint256",
+        dimension: "uint256"
+      },
+      valueSchema: {
+        totalScore: "uint256",
+        highestScore: "uint256",
+        latestScores: "uint256",
+        shortestTime: "uint256",
+        times: "uint256",
+        successTimes: "uint256",
+        totalPoints: "uint256",
+      }
+    },
+    SeasonPlantsRecord: {
+      keySchema:{
+        owner: "address",
+        season: "uint256",
+        dimension: "uint256",
+        plantsId: "uint256"
+      },
+      valueSchema: {
+        amount: "uint256"
+      }
+    },
     //    ------------- Plants ---------------
     // add Plants, update TotalPlants
     Plants: {

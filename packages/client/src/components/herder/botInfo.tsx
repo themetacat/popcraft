@@ -8,6 +8,8 @@ import { Has, getComponentValue } from "@latticexyz/recs";
 import { decodeEntity, } from "@latticexyz/store-sync/recs";
 import { useTopUp } from "../select";
 import { usePlantsGp } from "./plantsIndex";
+import { addr2NumToEntityID, numToEntityID } from "../rightPart";
+import { useUtils } from "./utils";
 
 interface Props {
     sendCount: number,
@@ -20,7 +22,10 @@ export default function BotInfo({ sendCount, receiveCount, botInfoTaskTips }: Pr
         network: { palyerAddress },
         components: {
             RankingRecord,
-            GameRecord
+            GameRecord,
+            SeasonTime,
+            CurrentSeasonDimension,
+            WeeklyRecord
         },
     } = useMUD();
     const { address, isConnected } = useAccount();
@@ -28,6 +33,7 @@ export default function BotInfo({ sendCount, receiveCount, botInfoTaskTips }: Pr
     const rankingRecordEntities = useEntityQuery([Has(RankingRecord)]);
     const { chainId } = useTopUp();
     const { getPlantsGp } = usePlantsGp();
+    const { csd, season } = useUtils();
 
     const SWB = useBalance({
         address: palyerAddress,
@@ -36,7 +42,39 @@ export default function BotInfo({ sendCount, receiveCount, botInfoTaskTips }: Pr
         }
     });
 
-    const sortedRankingRecords = rankingRecordEntities
+    let sortedRankingRecords;
+
+    let userRank = null;
+    let totalScore = 0;
+
+    if ((chainId === 2818 || chainId === 31337) && season > 0 && csd > 0) {
+
+        sortedRankingRecords = rankingRecordEntities.reduce((acc, entity) => {
+            const address = decodeEntity({ address: "address" }, entity);
+            const value = getComponentValue(WeeklyRecord, addr2NumToEntityID(address.address, season, csd));
+
+            if (!value) return acc;
+            let totalPoints = Number(value.totalPoints);
+            totalPoints += getPlantsGp(address.address);
+            const sortValue = totalPoints;
+
+            acc.push({
+                entity: address.address,
+                totalScore: Number(value.totalScore),
+                sortValue
+            });
+
+            return acc;
+        }, [])
+            .sort((a, b) => {
+                if (b.totalScore !== a.totalScore) {
+                    return b.totalScore - a.totalScore;
+                } else {
+                    return b.sortValue - a.sortValue;
+                }
+            });
+    } else {
+        sortedRankingRecords = rankingRecordEntities
         .map((entity) => {
             const value = getComponentValue(RankingRecord, entity);
             const playerAddress = decodeEntity({ address: "address" }, entity);
@@ -50,6 +88,9 @@ export default function BotInfo({ sendCount, receiveCount, botInfoTaskTips }: Pr
                 // add new chain: change here
                 if (chainId === 690 || chainId == 31338 || chainId == 185) {
                     sortValue = Number(value.totalScore)
+                } else if (chainId == 2818 || chainId == 31337) {
+                    sortValue = Number(value.totalScore)
+                    totalPoints += getPlantsGp(playerAddress.address);
                 } else {
                     totalPoints += getPlantsGp(playerAddress.address);
                     sortValue = totalPoints
@@ -73,9 +114,8 @@ export default function BotInfo({ sendCount, receiveCount, botInfoTaskTips }: Pr
                 return b.totalScore - a.totalScore;
             }
         });
+    }
 
-    let userRank = 0;
-    let totalScore = 0
     for (let i = 0; i < sortedRankingRecords.length; i++) {
         if (sortedRankingRecords[i].entity === address) {
             totalScore = sortedRankingRecords[i].totalScore

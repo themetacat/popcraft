@@ -89,7 +89,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       addressToEntityID(address)
     ) : undefined;
     if (!rankRecord || rankRecord.successTimes === 0n) {
-      // setShowHowToPlay(true);
+      setShowHowToPlay(true);
     } else {
       setShowHowToPlay(false);
     }
