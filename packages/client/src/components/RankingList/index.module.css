@@ -159,7 +159,7 @@
 .scoreBox {
     display: flex;
     align-items: center;
-    width: 78rem;
+    width: 77rem;
     margin-left: -1rem;
     gap: 1rem;
 }
@@ -238,7 +238,7 @@
     border-radius: 1rem;
     white-space: nowrap;
     min-width: 18.5rem;
-    height: 3rem;
+    height: 4rem;
 }
 
 .dropdownArrow {
