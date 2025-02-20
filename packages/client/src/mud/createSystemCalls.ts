@@ -18,6 +18,7 @@ let args_index: number = -1;
 import { Payments } from "@uniswap/v3-sdk"
 import { useTopUp } from "../components/select";
 import PlantsSystemAbi from "./PlantsSystem.abi.json";
+import { numToEntityID, addr2NumToEntityID } from "../components/rightPart"
 
 export const update_app_value = (index: number) => {
   args_index = index;
@@ -62,9 +63,10 @@ export function createSystemCalls(
     abi,
     clientOptions,
     maxFeePerGas,
-    maxPriorityFeePerGas
+    maxPriorityFeePerGas,
+    chainId
   }: SetupNetworkResult,
-  { TCMPopStar, TokenBalance, StarToScore, RankingRecord }: ClientComponents,
+  { TCMPopStar, TokenBalance, StarToScore, RankingRecord, WeeklyRecord, SeasonTime, CurrentSeasonDimension }: ClientComponents,
 ) {
 
   const app_name: string = window.localStorage.getItem("app_name") || "paint";
@@ -480,6 +482,7 @@ export function createSystemCalls(
     popStarId: any,
     tokenBalanceId: any,
     newRankingRecordId: any,
+    seasonRankingRecordId: any,
     isExecute: any,
     account: any,
     nonce: any
@@ -487,7 +490,7 @@ export function createSystemCalls(
     let tx, hashValpublic;
 
     if (!isExecute) {
-      rmOverride(popStarId, tokenBalanceId, newRankingRecordId);
+      rmOverride(popStarId, tokenBalanceId, newRankingRecordId, seasonRankingRecordId);
       return [tx, hashValpublic]
     }
     if (!account) {
@@ -594,7 +597,7 @@ export function createSystemCalls(
           // waitingTransaction = false;
           return { error: error.message };
         } finally {
-          rmOverride(popStarId, tokenBalanceId, newRankingRecordId)
+          rmOverride(popStarId, tokenBalanceId, newRankingRecordId, seasonRankingRecordId)
 
         }
 
@@ -624,7 +627,7 @@ export function createSystemCalls(
     });
   }
 
-  function rmOverride(popStarId: any, tokenBalanceId: any, newRankingRecordId: any) {
+  function rmOverride(popStarId: any, tokenBalanceId: any, newRankingRecordId: any, seasonRankingRecordId: any) {
     if (popStarId) {
       TCMPopStar.removeOverride(popStarId);
     }
@@ -633,6 +636,9 @@ export function createSystemCalls(
     }
     if (newRankingRecordId) {
       RankingRecord.removeOverride(newRankingRecordId);
+    }
+    if (seasonRankingRecordId) {
+      WeeklyRecord.removeOverride(seasonRankingRecordId);
     }
   }
 
@@ -736,6 +742,7 @@ export function createSystemCalls(
     let popStarId;
     let tokenBalanceId;
     let rankingRecordId;
+    let seasonRankingRecordId;
     let eliminateAmount = 0;
     if (!playerAddr) {
       throw new Error("Address undefind");
@@ -761,35 +768,17 @@ export function createSystemCalls(
     }
 
     const popAccess: boolean = checkPopAccess(matrixIndex, targetValue, matrixArray);
+    const tokenAddr = tcmPopStarData.tokenAddressArr[Number(targetValue) - 1];
     if (!popAccess) {
       matrixArray[matrixIndex] = 0n;
       eliminateAmount = 1;
-
-      const tokenAddr = tcmPopStarData.tokenAddressArr[Number(targetValue) - 1];
-      const tokenBalanceEntity = encodeEntity({ playerAddress: "address", tokenAddress: "address" }, { playerAddress: playerAddr, tokenAddress: tokenAddr });
-      const tokenBalanceData = getComponentValue(TokenBalance, tokenBalanceEntity);
-
-      if (!tokenBalanceData || tokenBalanceData.balance as bigint < 10n ** 18n) {
-        // token not enough
-        throw { message: "0x897f6c58" };
-        // return [undefined, undefined];
-      }
-
-      const updatedBalance = tokenBalanceData.balance as bigint - 10n ** 18n;
-      tokenBalanceId = uuid();
-      const newTokenBalance = {
-        ...tokenBalanceData,
-        balance: updatedBalance
-      };
-
-      TokenBalance.addOverride(tokenBalanceId, {
-        entity: tokenBalanceEntity,
-        value: newTokenBalance,
-      });
-
+      tokenBalanceId = consumeTokens(tokenAddr, playerAddr);
     } else {
       const [updatedMatrixArray, finalEliminateAmount] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0);
       eliminateAmount = finalEliminateAmount;
+      // if (chainId === 2818) {
+      //   tokenBalanceId = comboReward(eliminateAmount, tokenAddr, playerAddr);
+      // }
     }
 
     moveMatrixArray(matrixArray);
@@ -823,9 +812,95 @@ export function createSystemCalls(
           value: newRankingRecord,
         });
       }
-    }
+      
+      if (chainId === 2818 || chainId === 31337) {
+        const csd = getComponentValue(CurrentSeasonDimension, numToEntityID(0));
+        let season = 0;
 
-    return [popStarId, tokenBalanceId, rankingRecordId, score];
+        if (csd && Number(csd.dimension) > 0) {
+          const dimension = Number(csd.dimension);
+          const seasonTime = getComponentValue(SeasonTime, numToEntityID(dimension));
+
+          if (seasonTime) {
+            const startTime = Number(seasonTime.startTime);
+            const duration = Number(seasonTime.duration);
+            const currentTime = Math.floor(Date.now() / 1000);
+
+            if (currentTime > startTime) {
+              season = Math.floor((currentTime - startTime) / duration) + 1;
+            }
+          }
+        }
+
+        if (season > 0) {
+          const WeeklyRecordKey = addr2NumToEntityID(playerAddr, season, Number(csd?.dimension));
+          const seasonRankingRecordData = getComponentValue(WeeklyRecord, WeeklyRecordKey);
+
+          if (seasonRankingRecordData) {
+            seasonRankingRecordId = uuid();
+            const newSeasonRankingRecordData = {
+              ...seasonRankingRecordData,
+              totalScore: (seasonRankingRecordData.totalScore as bigint) + score,
+              latestScores: (seasonRankingRecordData.latestScores as bigint) + score,
+            };
+
+            WeeklyRecord.addOverride(seasonRankingRecordId, {
+              entity: WeeklyRecordKey,
+              value: newSeasonRankingRecordData,
+            });
+          }
+        }
+      }
+    }
+    return [popStarId, tokenBalanceId, rankingRecordId, seasonRankingRecordId, score];
+  }
+
+  function consumeTokens(tokenAddr: any, playerAddr: any) {
+    const tokenBalanceEntity = encodeEntity({ playerAddress: "address", tokenAddress: "address" }, { playerAddress: playerAddr, tokenAddress: tokenAddr });
+    const tokenBalanceData = getComponentValue(TokenBalance, tokenBalanceEntity);
+
+    if (!tokenBalanceData || tokenBalanceData.balance as bigint < 10n ** 18n) {
+      // token not enough
+      throw { message: "0x897f6c58" };
+      // return [undefined, undefined];
+    }
+    const updatedBalance = tokenBalanceData.balance as bigint - 10n ** 18n;
+    const tokenBalanceId = uuid();
+    const newTokenBalance = {
+      ...tokenBalanceData,
+      balance: updatedBalance
+    };
+
+    TokenBalance.addOverride(tokenBalanceId, {
+      entity: tokenBalanceEntity,
+      value: newTokenBalance,
+    });
+    return tokenBalanceId;
+  }
+
+  function comboReward(eliminateAmount: number, tokenAddr: `0x${string}`, playerAddr: `0x${string}`) {
+    if (eliminateAmount >= 5) {
+      const amount = Math.floor(eliminateAmount / 5);
+      // add new token: change here
+      const tokenBalanceEntity = encodeEntity({ playerAddress: "address", tokenAddress: "address" }, { playerAddress: playerAddr, tokenAddress: tokenAddr });
+      const tokenBalanceData = getComponentValue(TokenBalance, tokenBalanceEntity);
+      const tokenBalanceId = uuid();
+      let oldBalance = 0n;
+      if (tokenBalanceData && tokenBalanceData.balance) {
+        oldBalance = tokenBalanceData.balance as bigint
+      }
+      const rewardTokenAmount = oldBalance + BigInt(amount) * 10n ** 18n;
+      const newTokenBalance = {
+        ...tokenBalanceData,
+        balance: rewardTokenAmount
+      };
+
+      TokenBalance.addOverride(tokenBalanceId, {
+        entity: tokenBalanceEntity,
+        value: newTokenBalance,
+      });
+      return tokenBalanceId;
+    }
   }
 
   function dfsPopCraft(matrixIndex: number, targetValue: bigint, matrixArray: bigint[], eliminateAmount: number): [bigint[], number] {

@@ -159,8 +159,8 @@
 .scoreBox {
     display: flex;
     align-items: center;
-    width: 81rem;
-    margin-left: -4rem;
+    width: 78rem;
+    margin-left: -1rem;
     gap: 1rem;
 }
 
@@ -223,4 +223,45 @@
 
 .noLinkStyle {
     color: inherit; /* 继承父元素的颜色 */
+}
+
+
+.dropdown {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 241, 200, 0.3);
+    border: 0.125rem solid #b13200;
+    padding: 0.125rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(178, 50, 0, 0.1);
+    border-radius: 1rem;
+    white-space: nowrap;
+    min-width: 18.5rem;
+    height: 3rem;
+}
+
+.dropdownArrow {
+    font-size: 2rem;
+}
+
+.dropdownMenu {
+    position: absolute;
+    background-color: #fcc285;
+    border: 0.125rem solid #df9c56;
+    z-index: 1000;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+    width: 20.8rem;
+    font-size: 2.1rem;
+}
+
+.dropdownItem {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    text-align: left;
+}
+
+.dropdownItem:hover {
+    background-color: #fcad69;
 }

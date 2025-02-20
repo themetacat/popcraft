@@ -21,6 +21,7 @@ export function createClientComponents({ components }: SetupNetworkResult) {
     TCMPopStar: overridableComponent(components.TCMPopStar),
     TokenBalance: overridableComponent(components.TokenBalance),
     RankingRecord: overridableComponent(components.RankingRecord),
+    WeeklyRecord: overridableComponent(components.WeeklyRecord),
     // add your client components or overrides here
   };
 }

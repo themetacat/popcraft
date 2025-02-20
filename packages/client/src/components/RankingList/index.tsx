@@ -6,12 +6,13 @@ import Copper from '../../images/RankingList/copper.png'
 import trunOff from "../../images/turnOffBtntopup.webp"
 import { useMUD } from "../../MUDContext";
 import { getComponentValue, Has } from "@latticexyz/recs";
-import { addressToEntityID, numToEntityID } from "../rightPart";
+import { addressToEntityID, numToEntityID, addr2NumToEntityID } from "../rightPart";
 import { useAccount } from 'wagmi';
 import { useEntityQuery } from "@latticexyz/react";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { useTopUp } from "../select";
 import { usePlantsGp } from "../herder/plantsIndex";
+import { useUtils } from "../herder/utils";
 
 interface Props {
     loadingplay: any;
@@ -23,13 +24,22 @@ interface Props {
 export default function RankingList({ loadingplay, setShowRankingList }: Props) {
     const {
         components: {
-            RankingRecord, GameRecord, DayToScore, StarToScore,
+            RankingRecord, GameRecord, DayToScore, StarToScore, SeasonTime, CurrentSeasonDimension, WeeklyRecord
         },
         network: { publicClient },
     } = useMUD();
     const { address, isConnected } = useAccount();
     const { chainId } = useTopUp();
-    const { getPlantsGp } = usePlantsGp();
+    const { getPlantsGp, getPlantsGpSeason } = usePlantsGp();
+    const [selectSeason, setSelectSeason] = useState(0);
+    const { csd, season } = useUtils();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [selectedRank, setSelectedRank] = useState("Event Rank");
+
+    useEffect(() => {
+        setSelectSeason(season);
+        setSelectedRank(season === 0 ? "Global Rank" : "Event Rank");
+    }, [season]);
 
     //格式化地址，只显示前4位和后4位
     const formatAddress = (address) => {
@@ -43,16 +53,168 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
         return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     };
 
-    const rankRecord = address ? getComponentValue(
-        RankingRecord,
-        addressToEntityID(address)
-    ) : undefined;
+    let rankRecord;
+    let sortedRankingRecords;
+    const rankingRecordEntities = useEntityQuery([Has(RankingRecord)]);
 
+    let totalGames;
+    let wins;
+    let losses;
+    let winRate;
+    let totalPoints;
+    let userRank = null;
 
-    // const gameRecord = address ? getComponentValue(
-    //     GameRecord,
-    //     addressToEntityID(address)
-    // ) : undefined;
+    if ((chainId === 2818 || chainId === 31337) && selectSeason > 0 && csd > 0) {
+
+        rankRecord = address ? getComponentValue(
+            WeeklyRecord,
+            addr2NumToEntityID(address, selectSeason, csd)
+        ) : undefined;
+
+        sortedRankingRecords = rankingRecordEntities.reduce((acc, entity) => {
+            const address = decodeEntity({ address: "address" }, entity);
+            const value = getComponentValue(WeeklyRecord, addr2NumToEntityID(address.address, selectSeason, csd));
+
+            if (!value){
+                const seasonPlantsGpSeason = getPlantsGpSeason(address.address, selectSeason, csd)
+                if(seasonPlantsGpSeason === 0) return acc;
+                acc.push({
+                    entity: address.address,
+                    totalScore: 0,
+                    totalPoints: seasonPlantsGpSeason,
+                    shortestTime: 0,
+                    totalGames: 0,
+                    wins: 0,
+                    losses: 0,
+                    winRate: 0,
+                    sortValue: 0
+                });
+            }else{
+                let totalGames = Number(value.times);
+                const wins = Number(value.successTimes);
+                if (wins > totalGames) {
+                    totalGames = wins
+                }
+                const losses = totalGames - wins;
+                const winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
+                let totalPoints = Number(value.totalPoints);
+                totalPoints += getPlantsGpSeason(address.address, selectSeason, csd);
+                const sortValue = totalPoints;
+    
+                acc.push({
+                    entity: address.address,
+                    totalScore: Number(value.totalScore),
+                    totalPoints: totalPoints,
+                    shortestTime: Number(value.shortestTime),
+                    totalGames,
+                    wins,
+                    losses,
+                    winRate,
+                    sortValue
+                });
+            }
+            return acc;
+        }, [])
+            .sort((a, b) => {
+                if (b.totalScore !== a.totalScore) {
+                    return b.totalScore - a.totalScore;
+                } else {
+                    return b.sortValue - a.sortValue;
+                }
+            });
+
+        totalGames = rankRecord ? Number(rankRecord.times) : 0;
+        wins = rankRecord ? Number(rankRecord.successTimes) : 0;
+        if (wins > totalGames) {
+            totalGames = wins
+        }
+        losses = totalGames - wins;
+        winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
+        totalPoints = rankRecord ? Number(rankRecord.totalPoints) : 0;
+
+    } else {
+        const gameRecordSelf = address ? getComponentValue(
+            GameRecord,
+            addressToEntityID(address),
+        ) : undefined;
+
+        rankRecord = address ? getComponentValue(
+            RankingRecord,
+            addressToEntityID(address)
+        ) : undefined;
+
+        sortedRankingRecords = rankingRecordEntities
+            .map((entity) => {
+                const value = getComponentValue(RankingRecord, entity);
+                const address = decodeEntity({ address: "address" }, entity);
+
+                if (value) {
+                    const gameRecord = getComponentValue(
+                        GameRecord,
+                        entity,
+                    );
+                    const totalGames = Number(gameRecord.times);
+                    const wins = Number(gameRecord.successTimes);
+                    const losses = totalGames - wins;
+                    const winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
+                    let totalPoints = Number(gameRecord.totalPoints);
+                    let sortValue;
+                    // add new chain: change here
+                    if (chainId === 185 || chainId == 690 || chainId == 31338) {
+                        sortValue = Number(value.totalScore)
+                    } else if (chainId == 2818 || chainId == 31337) {
+                        sortValue = Number(value.totalScore)
+                        totalPoints += getPlantsGp(address.address);
+                    } else {
+                        totalPoints += getPlantsGp(address.address);
+                        sortValue = totalPoints
+                    }
+                    return {
+                        entity: address.address,
+                        totalScore: Number(value.totalScore),
+                        bestScore: Number(value.highestScore),
+                        totalPoints: totalPoints,
+                        shortestTime: Number(value.shortestTime),
+                        totalGames,
+                        wins,
+                        losses,
+                        winRate,
+                        sortValue
+                    };
+                }
+                return {
+                    entity: address.address,
+                    totalScore: 0,
+                    bestScore: 0,
+                    totalPoints: 0,
+                    shortestTime: 0,
+                    totalGames: 0,
+                    wins: 0,
+                    losses: 0,
+                    winRate: 0,
+                    sortValue: 0
+                };
+            })
+            .sort((a, b) => {
+                if (b.sortValue !== a.sortValue) {
+                    return b.sortValue - a.sortValue;
+                } else {
+                    return b.totalScore - a.totalScore;
+                }
+            });
+        totalGames = gameRecordSelf ? Number(gameRecordSelf.times) : 0;
+        wins = gameRecordSelf ? Number(gameRecordSelf.successTimes) : 0;
+        losses = totalGames - wins;
+        winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
+        totalPoints = gameRecordSelf ? Number(gameRecordSelf.totalPoints) : 0;
+    }
+
+    for (let i = 0; i < sortedRankingRecords.length; i++) {
+        if (sortedRankingRecords[i].entity === address) {
+            userRank = i + 1;
+            break;
+        }
+    }
 
     const dayScoresDict: { [key: number]: number; } = {};
     for (let i = 0; i <= 7; i++) {
@@ -82,84 +244,15 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
         starScoresDict[101] = Number(satrRecord.score);
     }
 
-    const rankingRecordEntities = useEntityQuery([Has(RankingRecord)]);
-    const sortedRankingRecords = rankingRecordEntities
-        .map((entity) => {
-            const value = getComponentValue(RankingRecord, entity);
-            const address = decodeEntity({ address: "address" }, entity);
-            
-            if (value) {
-                const gameRecord = getComponentValue(
-                    GameRecord,
-                    entity,
-                );
-                const totalGames = Number(gameRecord.times);
-                const wins = Number(gameRecord.successTimes);
-                const losses = totalGames - wins;
-                const winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
-                let totalPoints = Number(gameRecord.totalPoints);
-                let sortValue;
-                // add new chain: change here
-                if (chainId === 185 || chainId == 690 || chainId == 31338) {
-                    sortValue = Number(value.totalScore)
-                } else {
-                    totalPoints += getPlantsGp(address.address);
-                    sortValue = totalPoints
-                }
-                return {
-                    entity: address.address,
-                    totalScore: Number(value.totalScore),
-                    bestScore: Number(value.highestScore),
-                    totalPoints: totalPoints,
-                    shortestTime: Number(value.shortestTime),
-                    totalGames,
-                    wins,
-                    losses,
-                    winRate,
-                    sortValue
-                };
-            }
-            return {
-                entity: address.address,
-                totalScore: 0,
-                bestScore: 0,
-                totalPoints: 0,
-                shortestTime: 0,
-                totalGames: 0,
-                wins: 0,
-                losses: 0,
-                winRate: 0,
-                sortValue: 0
-            };
-        })
-        .sort((a, b) => {
-            if (b.sortValue !== a.sortValue) {
-                return b.sortValue - a.sortValue;
-            } else {
-                return b.totalScore - a.totalScore;
-            }
-        });
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
 
-    const gameRecordSelf = address ? getComponentValue(
-        GameRecord,
-        addressToEntityID(address),
-    ) : undefined;
-
-
-    const totalGames = gameRecordSelf ? Number(gameRecordSelf.times) : 0;
-    const wins = gameRecordSelf ? Number(gameRecordSelf.successTimes) : 0;
-    const losses = totalGames - wins;
-    const winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
-    const totalPoints = gameRecordSelf ? Number(gameRecordSelf.totalPoints) : 0;
-
-    // 找到当前用户的排名
-    let userRank = null;
-    for (let i = 0; i < sortedRankingRecords.length; i++) {
-        if (sortedRankingRecords[i].entity === address) {
-            userRank = i + 1;
-            break;
-        }
-    }
+    const handleRankSelect = (rank: string) => {
+        setSelectSeason(rank === 'Global Rank' ? 0 : season || 1);
+        setSelectedRank(rank);
+        setIsDropdownOpen(false);
+    };
 
     return (
         <div>
@@ -177,13 +270,46 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                 </div>
                 <div className={style.tablecontainer}>
                     <table className={style.table}>
+                        <colgroup>
+                            <col style={{ width: "21rem" }} />
+                        </colgroup>
                         <thead className={style.thead}>
                             <tr>
-                                <th>Rank</th>
+                                <th>
+                                    <div onClick={toggleDropdown} className={style.dropdown}>
+                                        {selectedRank}
+                                        <span className={style.dropdownArrow}>{isDropdownOpen ? '▲' : '▼'}</span>
+                                    </div>
+                                    {isDropdownOpen && (
+                                        <div className={style.dropdownMenu}>
+                                            <div
+                                                className={style.dropdownItem}
+                                                onClick={() => handleRankSelect("Global Rank")}
+                                            >
+                                                Global Rank {selectedRank === "Global Rank" && '✔️'}
+                                            </div>
+                                            {season > 0 && csd > 0 &&
+                                                <div
+                                                    className={style.dropdownItem}
+                                                    onClick={() => handleRankSelect("Event Rank")}
+                                                >
+                                                    Event Rank {selectedRank === "Event Rank" && '✔️'}
+                                                </div>
+                                            }
+
+                                        </div>
+                                    )}
+                                </th>
+
                                 <th>Address</th>
 
                                 {/* add new chain: change here */}
-                                {(chainId === 31338 || chainId === 185 || chainId === 690) ? (
+                                {(chainId === 31337 || chainId === 2818) ? (
+                                    <>
+                                        <th>Score</th>
+                                        <th>GP</th>
+                                    </>
+                                ) : (chainId === 31338 || chainId === 185 || chainId === 690) ? (
                                     <>
                                         <th>Total Score</th>
                                         <th>Best Score</th>
@@ -230,16 +356,22 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                     </td>
 
                                     {/* add new chain: change here */}
-                                    {(chainId === 31338 || chainId === 690 || chainId === 185) ?
-                                        <>
-                                            <td>{item.totalScore}</td>
-                                            <td>{item.bestScore}</td>
-                                        </>
-                                        :
-                                        <>
-                                            <td>{item?.totalPoints}</td>
-                                            <td>{item.totalScore}</td>
-                                        </>
+                                    {
+                                        (chainId === 31337 || chainId === 2818) ?
+                                            <>
+                                                <td>{item.totalScore}</td>
+                                                <td>{item?.totalPoints}</td>
+                                            </> :
+                                            (chainId === 31338 || chainId === 690 || chainId === 185) ?
+                                                <>
+                                                    <td>{item.totalScore}</td>
+                                                    <td>{item.bestScore}</td>
+                                                </>
+                                                :
+                                                <>
+                                                    <td>{item?.totalPoints}</td>
+                                                    <td>{item.totalScore}</td>
+                                                </>
                                     }
 
                                     <td>{formatTime(item.shortestTime)}</td>
@@ -255,22 +387,28 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                         {isConnected ? (
                             <>
                                 <div className={style.YouBox}>
-                                    <span style={{width: "13rem"}}>{userRank ? `${userRank} (You)` : 'N/A'}</span>
-                                    <span style={{marginLeft: "-3rem"}}>{formatAddress(address)}</span>
+                                    <span style={{ width: "13rem" }}>{userRank ? `${userRank} (You)` : 'N/A'}</span>
+                                    <span style={{ marginLeft: "1rem" }}>{formatAddress(address)}</span>
                                 </div>
                                 <div className={style.scoreBox}>
 
                                     {/* add new chain: change here */}
-                                    {(chainId === 31338 || chainId === 185 || chainId === 690) ?
+                                    {(chainId === 31337 || chainId === 2818) ?
                                         <>
                                             <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
-                                            <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
+                                            <span className={style.scoreItem}>{totalPoints ? totalPoints : 0}</span>
                                         </>
                                         :
-                                        <>
-                                            <span className={style.scoreItem}>{totalPoints ? totalPoints : 0}</span>
-                                            <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
-                                        </>
+                                        (chainId === 31338 || chainId === 185 || chainId === 690) ?
+                                            <>
+                                                <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
+                                                <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
+                                            </>
+                                            :
+                                            <>
+                                                <span className={style.scoreItem}>{totalPoints ? totalPoints : 0}</span>
+                                                <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
+                                            </>
                                     }
                                     <span className={style.scoreItem}>{rankRecord ? formatTime(Number(rankRecord.shortestTime)) : '00:00'}</span>
                                     <span className={style.scoreItem}>{wins}/{losses}</span>
