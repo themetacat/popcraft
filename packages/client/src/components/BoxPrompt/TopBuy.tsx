@@ -55,6 +55,7 @@ export default function TopBuy({ setShowTopBuy }: Props) {
     const [modalMessage, setModalMessage] = useState("");
     const { address } = useAccount();
     const [tokenBalance, setTokenBalance] = useState<{ [key: string]: string }>({});
+    const default_buy_token_num = 5;
 
     useEffect(() => {
         // const token = getComponentValue(Token, numToEntityID(0));
@@ -171,12 +172,12 @@ export default function TopBuy({ setShowTopBuy }: Props) {
     const downHandleNumber = (key: any) => {
         setNumberData(prev => ({
             ...prev,
-            [key]: Math.max(prev[key] - 1, 0)
+            [key]: Math.max(prev[key] - default_buy_token_num, 0)
         }));
 
-        if (numberData[key] > 1) {
+        if (numberData[key] > default_buy_token_num) {
             setLoadingPrices(prev => ({ ...prev, [key]: true }));
-            fetchPriceForSingleItem(key, numberData[key] - 1);
+            fetchPriceForSingleItem(key, numberData[key] - default_buy_token_num);
         } else {
             setPrices(prev => ({
                 ...prev,
@@ -189,11 +190,11 @@ export default function TopBuy({ setShowTopBuy }: Props) {
     const upHandleNumber = (key: any) => {
         setNumberData(prev => ({
             ...prev,
-            [key]: Math.max(prev[key] + 1, 0)
+            [key]: Math.max(prev[key] + default_buy_token_num, 0)
         }));
 
         setLoadingPrices(prev => ({ ...prev, [key]: true }));
-        fetchPriceForSingleItem(key, numberData[key] + 1);
+        fetchPriceForSingleItem(key, numberData[key] + default_buy_token_num);
     };
 
     const handleNumberChange = (key: any, value: string) => {
