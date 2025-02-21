@@ -30,7 +30,7 @@ export const getNetworkName = (chainId: number): string | undefined => {
 export const COMMON_CHAIN_IDS = [31337, 2818, 8333, 8453, 216, 177];
 
 export const useTopUp = () => {
-  const [chainId, setChainId] = useState(null);
+  const [chainId, setChainId] = useState(2818);
   const [inputValue, setInputValue] = useState("");
   const [MIN_SESSION_WALLET_BALANCE, setMIN_SESSION_WALLET_BALANCE] = useState(parseEther(""));
   const [balanceCheck, setbalanceCheck] = useState("");
@@ -192,7 +192,8 @@ export const useTopUp = () => {
         setChianIcon("https://poster-phi.vercel.app/Morphl2_Logo_Circle.webp");
         setTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
         setPriTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
-        setMIN_SESSION_WALLET_BALANCE(parseEther("0.000003"));
+        setRewardInfo("150 Scores");
+        setMIN_SESSION_WALLET_BALANCE(parseEther("0.000008"));
       }else if(chainId === 8333){
         setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
         setBridgeUrl("https://docs.b3.fun/bridge")

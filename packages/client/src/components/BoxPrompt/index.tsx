@@ -82,6 +82,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const { rewardInfo, rewardDescInfo, recipient, chainId, priTokenAddress, nativeToken } = useTopUp();
   const [showHowToPlay, setShowHowToPlay] = useState(false);
   const [showRewards, setShowRewards] = useState(false);
+  const default_buy_token_num = 5;
 
   useEffect(() => {
     const rankRecord = address ? getComponentValue(
@@ -531,11 +532,11 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const downHandleNumber = (key) => {
     setNumberData(prev => ({
       ...prev,
-      [key]: Math.max(prev[key] - 1, 0)
+      [key]: Math.max(prev[key] - default_buy_token_num, 0)
     }));
-    if (numberData[key] > 1) {
+    if (numberData[key] > default_buy_token_num) {
       setLoadingPrices(prev => ({ ...prev, [key]: true }));
-      fetchPriceForSingleItem(key, numberData[key] - 1);
+      fetchPriceForSingleItem(key, numberData[key] - default_buy_token_num);
     } else {
       setPrices(prev => ({
         ...prev,
@@ -549,10 +550,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     setLoadingUpHandle(true);
     setNumberData(prev => ({
       ...prev,
-      [key]: prev[key] + 1
+      [key]: prev[key] + default_buy_token_num
     }));
     setLoadingPrices(prev => ({ ...prev, [key]: true }));
-    fetchPriceForSingleItem(key, numberData[key] + 1);
+    fetchPriceForSingleItem(key, numberData[key] + default_buy_token_num);
     setLoadingUpHandle(false);
   };
 
