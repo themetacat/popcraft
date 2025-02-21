@@ -192,7 +192,8 @@ export const useTopUp = () => {
         setChianIcon("https://poster-phi.vercel.app/Morphl2_Logo_Circle.webp");
         setTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
         setPriTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
-        setMIN_SESSION_WALLET_BALANCE(parseEther("0.00001"));
+        setRewardInfo("150 Scores");
+        setMIN_SESSION_WALLET_BALANCE(parseEther("0.000008"));
       }else if(chainId === 8333){
         setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
         setBridgeUrl("https://docs.b3.fun/bridge")
