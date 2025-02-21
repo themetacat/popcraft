@@ -19,10 +19,10 @@ import { http } from 'viem';
 import merge from 'lodash.merge';
 import { BrowserRouter } from "react-router-dom";
 import { supportedChains } from "./mud/supportedChains";
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
 import 'buffer'
+import { Terms } from "./components/terms";
+import { Privacy } from "./components/privacy";
 
 const getChain = (id) => supportedChains.find((c) => c.id === id) || null;
 
@@ -65,25 +65,30 @@ const config = getDefaultConfig({
 const rootElement = document.getElementById("react-root");
 if (!rootElement) throw new Error("React root not found");
 const root = ReactDOM.createRoot(rootElement);
-
 const queryClient = new QueryClient();
 
-// TODO: figure out if we actually want this to be async or if we should render something else in the meantime
-// 初始化 manifest
+const path = (location.pathname.split("/").filter(Boolean)[0] ?? "").toLowerCase()
+const showTerms = path === 'terms';
+const showPrivacy = path === 'privacy';
+
 setup().then(async (result) => {
   root.render(
     <React.StrictMode>
-      <WagmiProvider config={config}>
-        <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider theme={lightTheme()}>
-            <MUDProvider value={result}>
-              <BrowserRouter>
-                <App />
-              </BrowserRouter>
-            </MUDProvider>
-          </RainbowKitProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
+      {
+        showTerms ? (<Terms/>) : showPrivacy ? (<Privacy/>) : (
+          <WagmiProvider config={config}>
+            <QueryClientProvider client={queryClient}>
+              <RainbowKitProvider theme={lightTheme()}>
+                <MUDProvider value={result}>
+                  <BrowserRouter>
+                    <App />
+                  </BrowserRouter>
+                </MUDProvider>
+              </RainbowKitProvider>
+            </QueryClientProvider>
+          </WagmiProvider>
+        )
+      }
     </React.StrictMode>
   );
 
