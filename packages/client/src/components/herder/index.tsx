@@ -20,6 +20,7 @@ import backgroundMusic from '../../audio/bgm.mp3';
 import effectSound from '../../audio/2.mp3';
 import failto from '../../images/substance/failto.png'
 import RankingListimg from '../../images/RankingList/trophy.png'
+import LuckyBagImg from '../../images/LuckyBag.webp'
 import ShoppingCartImg from '../../images/ShoppingCart.webp'
 import UserImg from "../../images/User.webp"
 import RankingList from '../RankingList'
@@ -2084,6 +2085,16 @@ export default function Header({ hoveredData, handleData }: Props) {
         <div
           className={style.addr}
         >
+          <div
+            className={isConnected ? style.LuckyBagImg : style.LuckyBagImgNotConnected}
+            onClick={() => window.open("https://taskon.xyz/quest/630902165", "_blank")}
+            style={{
+              cursor: "pointer",
+            }}
+          >
+          <img src={LuckyBagImg} alt="" />
+          <span>500 USDC</span>
+        </div>
           <div
             className={isConnected ? style.RankingListimg : style.RankingListimgNotConnected}
             onClick={() => rankTransports()}
