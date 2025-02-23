@@ -24,7 +24,7 @@ import 'buffer'
 import { Terms } from "./components/terms";
 import { Privacy } from "./components/privacy";
 
-const getChain = (id) => supportedChains.find((c) => c.id === id) || null;
+export const getChain = (id) => supportedChains.find((c) => c.id === id) || null;
 
 // add new chain: change here
 const redstone = getChain(690);

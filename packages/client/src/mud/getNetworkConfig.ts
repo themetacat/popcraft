@@ -35,24 +35,18 @@ import worlds from "contracts/worlds.json";
  * for instructions on how to add networks.
  */
 import { supportedChains } from "./supportedChains";
-
+import { networkConfig } from "../components/select/index"
 export async function getNetworkConfig() {
   const params = new URLSearchParams(window.location.search);
+  const pathSegments = window.location.pathname.split("/").filter(Boolean);
+  const oldNetworkName = pathSegments[0] ?? "";
 
   // default Chain: change here
-  let chainIdHex = '2818';
-  try {
-    if (window.ethereum) {
-      chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
-    } else {
-      throw new Error("Ethereum provider not found");
-    }
-  } catch (error) {
-    console.error("Failed to get chain ID:", error);
+  let chainId = 2818;
+  if(oldNetworkName in networkConfig){
+    chainId = networkConfig[oldNetworkName];
   }
-  var chainId = parseInt(chainIdHex, 16);
-  // console.log(chainId);
-
+ 
   /*
    * The chain ID is the first item available from this list:
    * 1. chainId query parameter
@@ -66,8 +60,8 @@ export async function getNetworkConfig() {
   /*
    * Find the chain (unless it isn't in the list of supported chains).
    */
-  var chainIndex = supportedChains.findIndex((c) => c.id === chainId);
-  var chain = supportedChains[chainIndex];
+  let chainIndex = supportedChains.findIndex((c) => c.id === chainId);
+  let chain = supportedChains[chainIndex];
   if (!chain) {
     // default Chain: change here
     // throw new Error(`Chain ${chainId} not found`);

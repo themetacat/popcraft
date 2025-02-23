@@ -154,7 +154,7 @@ export default function TopBuy({ setShowTopBuy }: Props) {
         );
 
     const formatAmount = (amount: any) => {
-        return parseFloat(parseFloat(amount).toFixed(8)).toString();
+        return parseFloat(amount).toFixed(8).replace(/\.?0+$/, "");
     };
 
     function getBuydData(tokenAddresses: any) {

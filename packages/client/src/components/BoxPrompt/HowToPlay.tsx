@@ -28,7 +28,8 @@ export default function HowToPlay({ setShowHowToPlay }: PropsHowToPlay) {
   const { chainId } = useTopUp();
   let rewardsImg = RewardsB3;
   let MyPlantsGuide = MyPlantsGuideB3;
-  if (chainId === 2818) {
+
+  if(chainId === 2818 || chainId === 0){
     rewardsImg = RewardsMorph;
     MyPlantsGuide = MyPlantsGuideMorph;
   }
@@ -84,7 +85,7 @@ export function Rewards({ setShowRewards }: PropsRewards) {
   const { chainId } = useTopUp();
   let rewardsImg = RewardsB3;
   let MyPlantsGuide = MyPlantsGuideB3;
-  if (chainId === 2818) {
+  if(chainId === 2818|| chainId === 0){
     rewardsImg = RewardsMorph;
     MyPlantsGuide = MyPlantsGuideMorph;
   }

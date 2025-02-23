@@ -610,7 +610,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   }, []);
 
   const formatAmount = (amount: any) => {
-    return parseFloat(parseFloat(amount).toFixed(8)).toString();
+    return parseFloat(amount).toFixed(8).replace(/\.?0+$/, "");
   };
 
   const formatBalance = (balance) => {

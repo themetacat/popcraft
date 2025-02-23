@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMUD } from "./MUDContext";
 import { singletonEntity } from "@latticexyz/store-sync/recs";
 import Header from "./components/herder";
@@ -6,9 +6,11 @@ import toast, { Toaster } from "react-hot-toast";
 import { SyncStep } from "@latticexyz/store-sync";
 import style from "./app.module.css";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
-import { useSwitchChain } from "wagmi";
+import { useSwitchChain, useAccount } from "wagmi";
 import { useLocation } from "react-router-dom";
-import { useTopUp, networkConfig } from "./components/select"
+import { useTopUp, networkConfig, getNetworkName } from "./components/select"
+import { getChain } from "./index";
+
 
 export const App = () => {
   const {
@@ -16,9 +18,10 @@ export const App = () => {
       SyncProgress,
     },
   } = useMUD();
-  const { chainId } = useTopUp();
+  const { chainId, getChainId } = useTopUp();
   const { switchChain } = useSwitchChain();
   const location = useLocation();
+  const { isConnected, address } = useAccount();
 
   const syncProgress = useComponentValue(SyncProgress, singletonEntity) as any;
   const [hoveredData, setHoveredData] = useState<{
@@ -57,25 +60,64 @@ export const App = () => {
       const pathSegments = location.pathname.split("/").filter(Boolean);
       const networkName = pathSegments[0];
 
-      if (networkName in networkConfig) {
-        const targetChainId = networkConfig[networkName];
-
-        if (chainId !== targetChainId) {
+        let targetChainId;
+        // add default chain
+        if (networkName === undefined || !(networkName  in networkConfig)) {
+          targetChainId = 2818;
+          window.history.replaceState(null, "", `/`);
+        }else{
+          targetChainId = networkConfig[networkName]
+        }
+        const currentId = await getChainId();
+        if (currentId !== targetChainId || chainId != targetChainId) {
           try {
             await window.ethereum.request({
               method: "wallet_switchEthereumChain",
               params: [{ chainId: `0x${targetChainId.toString(16)}` }],
             });
           } catch (error) {
-            console.error("Switch chain failed:", error);
+            if (address && error.code && error.code === 4902) {
+              const chainIdHex = `0x${targetChainId.toString(16)}`;
+              try {
+                await window.ethereum.request({
+                  method: "wallet_addEthereumChain",
+                  params: [getChainForMetaMask(getChain(targetChainId))],
+                });
+
+                await window.ethereum.request({
+                  method: "wallet_switchEthereumChain",
+                  params: [{ chainId: chainIdHex }],
+                });
+              } catch (addError) {
+                console.error("Failed to add or switch the chain:", addError);
+                window.history.replaceState(null, "", `/`+getNetworkName(currentId));
+                window.location.reload();
+              }
+            }
           }
         }
-      }else if(networkName){
-        window.history.replaceState(null, "", `/`);
-      }
     };
     switchNetwork();
-  }, [chainId]);
+  }, [chainId, address]);
+
+  function getChainForMetaMask(chain: any) {
+    if (!chain) return null;
+    const rpcUrls = [
+      ...Object.values(chain.rpcUrls.default.http || []),
+      ...Object.values(chain.rpcUrls.public.http || []),
+      ...Object.values(chain.rpcUrls.default.webSocket || []),
+      ...Object.values(chain.rpcUrls.public.webSocket || []),
+    ];
+  
+    return {
+      chainId: `0x${chain.id.toString(16)}`,
+      chainName: chain.name,
+      nativeCurrency: chain.nativeCurrency,
+      rpcUrls: rpcUrls,
+      blockExplorerUrls: chain.blockExplorers ? [chain.blockExplorers.default.url] : [],
+    };
+
+  }
 
   return (
     <div className={style.page}>
@@ -96,8 +138,8 @@ export const App = () => {
           className: style.toasterStyle
         }}
         containerStyle={{
-          zIndex: 99999999, 
-      }}
+          zIndex: 99999999,
+        }}
       />
     </div>
   );
