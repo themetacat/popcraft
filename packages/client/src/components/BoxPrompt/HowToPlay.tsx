@@ -28,6 +28,7 @@ export default function HowToPlay({ setShowHowToPlay }: PropsHowToPlay) {
   const { chainId } = useTopUp();
   let rewardsImg = RewardsB3;
   let MyPlantsGuide = MyPlantsGuideB3;
+
   if(chainId === 2818 || chainId === 0){
     rewardsImg = RewardsMorph;
     MyPlantsGuide = MyPlantsGuideMorph;
@@ -80,25 +81,49 @@ export default function HowToPlay({ setShowHowToPlay }: PropsHowToPlay) {
   )
 }
 
-
-
 export function Rewards({ setShowRewards }: PropsRewards) {
   const { chainId } = useTopUp();
   let rewardsImg = RewardsB3;
+  let MyPlantsGuide = MyPlantsGuideB3;
   if(chainId === 2818|| chainId === 0){
     rewardsImg = RewardsMorph;
+    MyPlantsGuide = MyPlantsGuideMorph;
   }
-  const images = [rewardsImg];
+  const images = [rewardsImg, MyPlantsGuide];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const switchPage = (page = 1) => {
+    if (page < 0) {
+      page = images.length - 1
+    } else if (page > images.length - 1) {
+      page = 0
+    }
+    setCurrentIndex(page);
+  };
 
   return (
     <div className={style.overlayBuy}>
       <div className={style.content}>
-
+        <div className={howToPlayStyle.leftArrow} onClick={() => { switchPage(currentIndex - 1) }}>
+          <img src={ArrowLeft} />
+        </div>
         <div className={howToPlayStyle.cornerImage} onClick={() => { setShowRewards(false) }}>
           <img src={close} />
         </div>
-        <img src={images[0]} className={howToPlayStyle.carouselImage} />
-
+        <img src={images[currentIndex]} alt={`Guide ${currentIndex + 1}`} className={howToPlayStyle.carouselImage} />
+        <div className={howToPlayStyle.rightArrow} onClick={() => { switchPage(currentIndex + 1) }}>
+          <img src={ArrowRight} />
+        </div>
+        <div className={howToPlayStyle.navigation}>
+          {images.map((_, index) => (
+            <span
+              key={index}
+              className={`${howToPlayStyle.navNumber} ${index === currentIndex ? howToPlayStyle.active : ''}`}
+              onClick={() => setCurrentIndex(index)}
+            >
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   )
