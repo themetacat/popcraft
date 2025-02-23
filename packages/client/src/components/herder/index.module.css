@@ -775,6 +775,62 @@ canvas {
   font-weight: 100;
 }
 
+.LuckyBagImg {
+  display: flex;
+  transform: translateX(-5rem);
+  transition: transform 0.3s ease;
+}
+.LuckyBagImgNotConnected {
+  transform: translateX(30rem);
+}
+
+.LuckyBagImg img {
+  width: 6.2rem;
+  height: 6rem;
+}
+
+.LuckyBagImg:hover img,
+.LuckyBagImgNotConnected:hover img{
+  transform: scale(1.06);
+}
+
+.LuckyBagImg:hover span,
+.LuckyBagImgNotConnected:hover span {
+  text-shadow: 2px 2px 3px rgba(0, 0, 0);
+}
+
+.LuckyBagImgNotConnected {
+  margin-left: 35rem;
+}
+
+.LuckyBagImgNotConnected img {
+  width: 6rem;
+  height: 6rem;
+  transition: transform 0.3s ease;
+}
+
+.LuckyBagImg span,
+.LuckyBagImgNotConnected span {
+  margin-left: 1.5rem;
+  display: flex;
+  align-items: center;
+  font-size: 2.5rem;
+  font-weight: 100;
+  color: #FFC940;
+}
+
+.LuckyBagImg,
+.LuckyBagImgNotConnected {
+  display: flex;
+  align-items: center;
+  background-image: url('../../images/LuckyBagBackground.gif');
+  background-position: center -8.625rem;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-clip: content-box;
+  cursor: pointer !important;
+}
+
 .TopBuyImg {
   display: flex;
   margin-left: 5rem;
