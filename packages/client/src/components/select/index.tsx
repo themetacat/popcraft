@@ -30,7 +30,7 @@ export const getNetworkName = (chainId: number): string | undefined => {
 export const COMMON_CHAIN_IDS = [31337, 2818, 8333, 8453, 216, 177];
 
 export const useTopUp = () => {
-  const [chainId, setChainId] = useState(2818);
+  const [chainId, setChainId] = useState(0);
   const [inputValue, setInputValue] = useState("");
   const [MIN_SESSION_WALLET_BALANCE, setMIN_SESSION_WALLET_BALANCE] = useState(parseEther(""));
   const [balanceCheck, setbalanceCheck] = useState("");
@@ -53,9 +53,10 @@ export const useTopUp = () => {
         method: "eth_chainId",
       });
       const chainId = parseInt(chainIdHex, 16);
-      setChainId(chainId);
+      return chainId;
     } catch (error) {
       console.error("Error fetching chainId:", error);
+      return 2818
     }
   };
 
@@ -72,14 +73,17 @@ export const useTopUp = () => {
 
 
   useEffect(() => {
-    getChainId();
-    // getEoaWallet();
+    const pathSegments = location.pathname.split("/").filter(Boolean);
+    const oldNetworkName = pathSegments[0] ?? "";
+    let targetChainId = 2818;
+    if(oldNetworkName in networkConfig){
+      targetChainId = networkConfig[oldNetworkName];
+    }
+    setChainId(targetChainId);
+
     if (window.ethereum) {
       window.ethereum.on('chainChanged', (chainIdHex) => {
         const chainId = parseInt(chainIdHex, 16);
-
-        const pathSegments = location.pathname.split("/").filter(Boolean);
-        const oldNetworkName = pathSegments[0] ?? "";
         const networkName = getNetworkName(chainId);
 
         if (networkName) {
@@ -185,16 +189,7 @@ export const useTopUp = () => {
       ];
       setTokenAddress(defaultTokenAddresses)
       setPriTokenAddress(defaultTokenAddresses)
-      if(chainId === 2818 || chainId === 31337){
-        setRewardDescInfo("Morph Points for each game, along with additional rewards for the top 250 players every week.");
-        setRecipient("0x784844480280ca865ac8ef89bb554283dddff737");
-        setBridgeUrl("https://bridge.morphl2.io/")
-        setChianIcon("https://poster-phi.vercel.app/Morphl2_Logo_Circle.webp");
-        setTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
-        setPriTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
-        setRewardInfo("150 Scores");
-        setMIN_SESSION_WALLET_BALANCE(parseEther("0.000008"));
-      }else if(chainId === 8333){
+      if(chainId === 8333){
         setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
         setBridgeUrl("https://docs.b3.fun/bridge")
         setChianIcon("https://cdn.b3.fun/b3_logo.svg");
@@ -215,6 +210,15 @@ export const useTopUp = () => {
         setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
         setBridgeUrl("https://bridge.hsk.xyz/")
         setChianIcon("https://hsk.xyz/static/logo.png");
+      }else if(chainId != 0){
+        setRewardDescInfo("Morph Points for each game, along with additional rewards for the top 250 players every week.");
+        setRecipient("0x784844480280ca865ac8ef89bb554283dddff737");
+        setBridgeUrl("https://bridge.morphl2.io/")
+        setChianIcon("https://poster-phi.vercel.app/Morphl2_Logo_Circle.webp");
+        setTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
+        setPriTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
+        setRewardInfo("150 Scores");
+        setMIN_SESSION_WALLET_BALANCE(parseEther("0.000008"));
       }
     }
   }, [chainId]);
@@ -234,7 +238,8 @@ export const useTopUp = () => {
     chainIcon,
     tokenAddress,
     priTokenAddress,
-    nativeToken
+    nativeToken,
+    getChainId
   };
 };
 

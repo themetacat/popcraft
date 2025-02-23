@@ -24,7 +24,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import 'buffer'
 
-const getChain = (id) => supportedChains.find((c) => c.id === id) || null;
+export const getChain = (id) => supportedChains.find((c) => c.id === id) || null;
 
 // add new chain: change here
 const redstone = getChain(690);
