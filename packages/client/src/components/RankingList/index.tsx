@@ -32,9 +32,29 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
     const { chainId } = useTopUp();
     const { getPlantsGp, getPlantsGpSeason } = usePlantsGp();
     const [selectSeason, setSelectSeason] = useState(0);
-    const { csd, season } = useUtils();
+    const { csd, season, seasonCountdown } = useUtils();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selectedRank, setSelectedRank] = useState("Event Rank");
+    const [timeLeft, setTimeLeft] = useState(0);
+
+    useEffect(() => {
+        setTimeLeft(seasonCountdown)
+        if (seasonCountdown <= 0) return;
+        const interval = setInterval(() => {
+            setTimeLeft((prev) => prev - 1);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [seasonCountdown]);
+
+    const formatSeasonCountDown = (time: any) => {
+        const days = Math.floor(time / (3600 * 24));
+        const hours = Math.floor((time % (3600 * 24)) / 3600);
+        const minutes = Math.floor((time % 3600) / 60);
+        const seconds = time % 60;
+    
+        return `${days}d ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      };
 
     useEffect(() => {
         setSelectSeason(season);
@@ -75,9 +95,9 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
             const address = decodeEntity({ address: "address" }, entity);
             const value = getComponentValue(WeeklyRecord, addr2NumToEntityID(address.address, selectSeason, csd));
 
-            if (!value){
+            if (!value) {
                 const seasonPlantsGpSeason = getPlantsGpSeason(address.address, selectSeason, csd)
-                if(seasonPlantsGpSeason === 0) return acc;
+                if (seasonPlantsGpSeason === 0) return acc;
                 acc.push({
                     entity: address.address,
                     totalScore: 0,
@@ -89,7 +109,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                     winRate: 0,
                     sortValue: 0
                 });
-            }else{
+            } else {
                 let totalGames = Number(value.times);
                 const wins = Number(value.successTimes);
                 if (wins > totalGames) {
@@ -100,7 +120,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                 let totalPoints = Number(value.totalPoints);
                 totalPoints += getPlantsGpSeason(address.address, selectSeason, csd);
                 const sortValue = totalPoints;
-    
+
                 acc.push({
                     entity: address.address,
                     totalScore: Number(value.totalScore),
@@ -267,6 +287,13 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                             setShowRankingList(false)
                         }}
                     />
+                </div>
+                <div className={style.seasonCountdownDiv}>
+                    {season > 0 && csd > 0 && timeLeft > 0 &&
+                        <span>
+                            {formatSeasonCountDown(timeLeft)}
+                        </span>
+                    }
                 </div>
                 <div className={style.tablecontainer}>
                     <table className={style.table}>
