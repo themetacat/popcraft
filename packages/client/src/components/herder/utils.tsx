@@ -11,6 +11,7 @@ export function useUtils() {
         },
     } = useMUD();
     const [season, setSeason] = useState(0);
+    const [seasonCountdown, setSeasonCountDown] = useState(0);
     const currentSeasonDimension = getComponentValue(
         CurrentSeasonDimension,
         numToEntityID(0)
@@ -41,12 +42,13 @@ export function useUtils() {
         setSeason(newSeason);
 
         const nextUpdateTime = startTime + newSeason * duration;
-        const delay = (nextUpdateTime - currentTime) * 1000;
+        const delay = (nextUpdateTime - currentTime);
+        setSeasonCountDown(delay);
 
-        if (delay < 1800000) {
+        if (delay < 1800) {
             const timeout = setTimeout(() => {
                 setSeason(newSeason + 1);
-            }, delay);
+            }, delay * 1000);
             return () => clearTimeout(timeout);
         }
     }, [])
@@ -56,7 +58,8 @@ export function useUtils() {
         csd: currentSeasonDimension && Number(currentSeasonDimension.dimension) > 0
             ? Number(currentSeasonDimension.dimension)
             : 0,
-        season
+        season,
+        seasonCountdown
     };
 
 }
