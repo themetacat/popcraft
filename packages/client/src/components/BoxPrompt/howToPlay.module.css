@@ -297,8 +297,9 @@
     justify-content: center;
     gap: 1.5rem;
     bottom: 20%;
-    left: 44.2%;
+    left: 50%;
     position: fixed;
+    transform: translateX(-50%);
 }
 
 .navNumber {
