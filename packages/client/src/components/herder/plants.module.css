@@ -62,14 +62,15 @@
     position: fixed;
     height: 3rem;
     width: 3rem;
+    line-height: 3rem;
     margin-top: -7rem;
     margin-right: -9rem;
     border-radius: 50%;
-    color: rgba(26, 145, 93, 1);
+    color: #ffffff;
     background-image: url("../../images/Plants/tips.webp");
     background-size: contain;
     background-repeat: no-repeat;
-    font-size: 1.9rem;
+    font-size: 1.6rem;
     display: flex;
     align-items: center;
     justify-content: center;
