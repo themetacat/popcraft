@@ -60,6 +60,7 @@
     -0.2rem  0.2rem 0 white,  
     0.2rem  0.2rem 0 white,  
     0.4rem 0.4rem 0.1rem rgba(0, 0, 0, 0.7);
+    transition: text-shadow 0.3s ease;
 }
 
 .buttonBox {

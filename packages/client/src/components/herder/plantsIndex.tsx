@@ -67,6 +67,7 @@ export default function PlantsIndex({ checkTaskInProcess, handleErrorAll }: Prop
     const [loadingGrow, setLoadingGrow] = useState(false);
     const [loadingChange, setLoadingChange] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
+    const [callFailed, setCallFailed] = useState(false);
     const [growLevel, setGrowLevel] = useState(-1);
     const { chainId } = useTopUp();
 
@@ -79,6 +80,7 @@ export default function PlantsIndex({ checkTaskInProcess, handleErrorAll }: Prop
         setLoadingChange(isCollectSeed);
         setLoadingGrow(!isCollectSeed);
         setGrowLevel(-1);
+        setCallFailed(false);
         let callPlants: PlantsResponse;
         const nonce = await publicClient.getTransactionCount({ address: palyerAddress })
 
@@ -93,6 +95,7 @@ export default function PlantsIndex({ checkTaskInProcess, handleErrorAll }: Prop
         if (callPlants && callPlants.error) {
             console.error(callPlants.error);
             handleErrorAll(callPlants.error)
+            setCallFailed(true);
         }
 
         setLoadingChange(false);
@@ -479,7 +482,7 @@ export default function PlantsIndex({ checkTaskInProcess, handleErrorAll }: Prop
                     </div>
                 </div>
             )}
-            {(growLevel >= 0 && currentPlantName) && (
+            {(growLevel >= 0 && currentPlantName && !callFailed) && (
                 <div className={plantsStyle.bloomBg}>
                     <div className={plantsStyle.overlay}>
                         <div className={plantsStyle.starContainer}>

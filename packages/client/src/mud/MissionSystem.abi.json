@@ -1,0 +1,7 @@
+[{
+  "type": "function",
+  "name": "getDailyGamesRewards",
+  "inputs": [],
+  "outputs": [],
+  "stateMutability": "nonpayable"
+}]
