@@ -169,6 +169,26 @@ export default mudConfig({
         amount: "uint256"
       }
     },
+    DailyGames: {
+      keySchema: {
+        player: "address" 
+      },
+      valueSchema: {
+        games: "uint256",
+        day: "uint256",
+        received: "uint256",
+        added: "bool"
+      }
+    },
+    GamesRewardsScores: {
+      keySchema: {
+        dimension: "uint256",
+        times: "uint256",
+      },
+      valueSchema: {
+        scores: "uint256"
+      }
+    },
     //    ------------- Plants ---------------
     // add Plants, update TotalPlants
     Plants: {

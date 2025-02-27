@@ -24,7 +24,7 @@ import LuckyBagImg from '../../images/LuckyBag.webp'
 import ShoppingCartImg from '../../images/ShoppingCart.webp'
 import UserImg from "../../images/User.webp"
 import RankingList from '../RankingList'
-import { useTopUp, COMMON_CHAIN_IDS } from "../select";
+import { useTopUp, COMMON_CHAIN_IDS, MISSION_BOUNS_CHAIN_IDS } from "../select";
 import Arrow from "../../images/Arrow.webp"
 import { addressToEntityID, addr2NumToEntityID } from "../rightPart";
 import BGMOn from "../../images/BGMOn.webp";
@@ -36,6 +36,7 @@ import toast from "react-hot-toast";
 import NewUserBenefitsToken from "./newUserBenefitsToken"
 import ConnectImg from "../../images/connect.webp";
 import { useUtils } from "./utils";
+import MissionBonus from "./missionBonus";
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -1995,6 +1996,10 @@ export default function Header({ hoveredData, handleData }: Props) {
         setShowNewPopUp(true)
       } else if (errMessage.includes("Already obtained")) {
         toastError = "Already obtained!";
+      } else if (errMessage.includes("Received")) {
+        toastError = "Already claimed!";
+      } else if (errMessage.includes("Not eligible")) {
+        toastError = "Not eligible!";
       } else if (errMessage.includes("Error: World_ResourceNotFound(bytes32 resourceId, string resourceIdString)")) {
         // Error: World_ResourceNotFound(bytes32 resourceId, string resourceIdString)
         toastError = "Unknow Error";
@@ -2465,6 +2470,13 @@ export default function Header({ hoveredData, handleData }: Props) {
       />
       {(isConnected && address) && (
         <PlantsIndex
+          checkTaskInProcess={checkTaskInProcess}
+          handleErrorAll={handleErrorAll}
+        />
+      )}
+      
+      {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (
+        <MissionBonus
           checkTaskInProcess={checkTaskInProcess}
           handleErrorAll={handleErrorAll}
         />

@@ -1,0 +1,495 @@
+.bounsContainer {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    top: 35rem;
+    left: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    z-index: 999999;
+    width: 74rem;
+    height: 20rem;
+    font-family: "Simplicity";
+    transform: translateX(-50rem);
+    animation: slideInFromLeft 0.3s ease-out forwards;
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-60rem);
+        clip-path: inset(-10rem 0 0 60rem);
+    }
+
+    100% {
+        transform: translateX(0);
+        clip-path: inset(-10rem 0 0 0);
+    }
+}
+
+.bounsContainerClose {
+    animation: slideInToLeft 0.3s ease-out forwards;
+}
+
+@keyframes slideInToLeft {
+    0% {
+        transform: translateX(0);
+        clip-path: inset(-10rem 0 0 0);
+    }
+
+    100% {
+        transform: translateX(-70rem);
+        clip-path: inset(-10rem 0 0 70rem);
+    }
+}
+
+.playerGames {
+    position: absolute;
+    left: 22rem;
+    height: 3.6rem;
+    top: -2.5rem;
+    font-size: 2rem;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.playerGamesPlayText{
+    color: #FCC911;
+    text-shadow:
+        0.15rem 0.15rem 0 #E1AD0B,
+        -0.15rem -0.15rem 0 #E1AD0B,
+        0.15rem -0.15rem 0 #E1AD0B,
+        -0.15rem 0.15rem 0 #E1AD0B,
+        0.15rem 0.15rem 0.2rem #000;
+}
+
+.playerGames img{
+    margin-left: 0.7rem;
+    width: 2.8rem;
+    cursor: pointer;
+}
+
+.playerGames img:hover{
+    transform: scale(1.25);
+    transition: transform 0.3s ease;
+}
+
+.playerGames img:hover + .playQuestion{
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+}
+
+.playQuestion{
+    font-size: 2.2rem;
+    font-family: "AdobeHeitiStd-Regular";
+    color: rgba(50, 123, 139, 1);
+    margin-left: -19rem;
+    margin-bottom: 7rem;
+    letter-spacing: 0.1rem;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s;
+}
+
+.countdown {
+    position: absolute;
+    left: 3rem;
+    top: -2.5rem;
+    font-size: 2rem;
+    z-index: 3;
+    color: rgba(50, 123, 139, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.6rem;
+
+}
+
+.countdown img{
+    width: 3.5rem;
+    height: 3.6rem;
+}
+
+.countdown span{
+    margin-left: 1.5rem;
+    letter-spacing: 0.2rem;
+    transform: scaleX(1.2);
+    text-shadow:
+    0.2rem 0.2rem 0 #ffffff,
+    -0.2rem -0.2rem 0 #ffffff,
+    0.2rem -0.2rem 0 #ffffff,
+    -0.2rem 0.2rem 0 #ffffff,
+    0.2rem 0.2rem 0.2rem #000;
+}
+
+.inDayBounsBtn {
+    margin-top: 4rem;
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    top: 35rem;
+    left: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    z-index: 999999;
+    width: 20rem;
+    height: 20rem;
+    font-family: "Simplicity";
+}
+
+.buttonClose {
+    width: 17rem;
+    height: 12rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-size: contain;
+    position: relative;
+
+}
+
+.buttonClose img {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.buttonClose span {
+    color: #4FD770;
+    font-weight: bold;
+    white-space: nowrap;
+    border: #ffffff;
+    text-shadow:
+        0.05rem 0.05rem 0 #ffffff,
+        -0.05rem -0.05rem 0 #ffffff;
+
+    font-family: "Simplicity";
+    color: #2DA335;
+    transition: font-size 0.3s ease;
+    font-size: 0.9vw;
+    cursor: pointer;
+    text-shadow:
+        -0.2rem -0.2rem 0 white,
+        0.2rem -0.2rem 0 white,
+        -0.2rem 0.2rem 0 white,
+        0.2rem 0.2rem 0 white,
+        0.3rem 0.3rem 0.1rem rgba(0, 0, 0, 0.6);
+}
+
+.inDayBounsBtn {
+    left: 2%;
+    width: 17rem;
+    height: 10rem;
+    position: fixed;
+    white-space: nowrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.inDayBounsBtn img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.inDayBounsBtn:hover img {
+    transform: scale(1.06);
+}
+
+.inDayBounsBtn:hover button {
+    text-shadow:
+        -0.2rem -0.2rem 0 white,
+        0.2rem -0.2rem 0 white,
+        -0.2rem 0.2rem 0 white,
+        0.2rem 0.2rem 0 white,
+        0.4rem 0.4rem 0.1rem rgba(0, 0, 0, 0.7);
+    transition: text-shadow 0.3s ease;
+}
+
+.inDayBounsBtn button {
+    position: absolute;
+    bottom: -2rem;
+    width: 17rem;
+    height: 3rem;
+    background-color: transparent;
+    border: none;
+    font-family: "Simplicity";
+    color: #4FD770;
+    transition: font-size 0.3s ease;
+    font-size: 0.7vw;
+    cursor: pointer;
+    margin-left: 1rem;
+    text-shadow:
+        -0.2rem -0.2rem 0 white,
+        0.2rem -0.2rem 0 white,
+        -0.2rem 0.2rem 0 white,
+        0.2rem 0.2rem 0 white,
+        0.3rem 0.3rem 0.1rem rgba(0, 0, 0, 0.6);
+}
+
+.bounsList {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    margin-left: 1rem;
+}
+
+.bounsItem {
+    width: 11rem;
+    height: 14rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    cursor: not-allowed;
+    transition: transform 0.3s ease;
+}
+
+.bounsItemPending {
+    cursor: pointer;
+}
+
+.bounsItemPending:hover .bounsCircle {
+    background-size: 102%;
+    transition: background-size 0.3s ease;
+}
+
+.bounsItemPending:hover .bounsCircle div span {
+    text-shadow: -0.1rem -0.1rem 0 #D57300,
+        0.1rem -0.1rem 0 #D57300,
+        -0.1rem 0.1rem 0 #D57300, 
+        0.1rem 0.1rem 0 #D57300, 
+        0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.6);
+    transition: text-shadow 0.3s ease;
+}
+
+.bounsItemPending:hover .bounsTextPending {
+    text-shadow: 0.2rem 0.2rem 0.2rem rgb(0, 0, 0, 0.7);
+    transition: text-shadow 0.3s ease;
+}
+
+
+.buttonMask {
+    position: absolute;
+    z-index: 1;
+}
+
+.buttonMask img {
+    margin-top: 0.915rem;
+    width: 10rem;
+    height: 10.1rem;
+}
+
+.cornerMark {
+    width: 4.5rem;
+    height: 4.5rem;
+    position: absolute;
+    top: -14%;
+    right: -5%;
+    z-index: 2;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.bounsCircle {
+    margin-top: 1rem;
+    width: 10rem;
+    height: 10rem;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    position: relative;
+    text-align: center;
+    line-height: 1.2;
+    display: flex;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 98%;
+}
+
+
+.bounsText {
+    margin-top: 1rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    white-space: nowrap;
+    font-family: "Simplicity";
+    border-radius: 1rem;
+    text-shadow: 0.1rem 0.1rem 0.1rem rgb(0, 0, 0, 0.6);
+}
+
+.bounsTextClaimed {
+    color: rgba(184, 234, 193, 1);
+    -webkit-text-stroke: 1px #569521;
+}
+
+.bounsTextPending {
+    color: #FCCA12;
+    -webkit-text-stroke: 1px #DDA500;
+}
+
+.bounsTextUnlocked {
+    color: rgba(151, 231, 136, 1);
+    -webkit-text-stroke: 1px #569521;
+}
+
+.bounsText img {
+    margin-top: 0.5rem;
+    width: 4.3rem;
+    height: 1rem;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    position: absolute;
+    right: 10.2rem;
+}
+
+.arrowLeft {
+    cursor: pointer;
+    border: none;
+    height: 0.3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.arrowLeft:hover {
+    scale: 1.1;
+    transition: scale 0.3s ease;
+}
+
+.arrowLeft img {
+    width: 5rem;
+    height: 5rem;
+}
+
+
+.loading {
+    position: absolute;
+    z-index: 1;
+}
+
+.loadingMask {
+    margin-top: 0.915rem;
+    width: 10rem;
+    height: 10.1rem;
+}
+
+
+.loadingMain {
+    animation: spin 5s linear infinite;
+    -webkit-transform: rotate(3600deg);
+    transform: rotate(3600deg);
+    -webkit-transition: -webkit-transform 5s linear;
+    transition: transform 5s linear;
+    position: absolute;
+    margin-left: -7.4rem;
+    margin-top: 3.4rem;
+    height: 5rem;
+    width: 5rem;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.addedPoints {
+    position: absolute;
+    top: -2.5rem;
+    right: 10rem;
+    font-size: 3rem;
+    color: #fff;
+    text-shadow:
+        -0.2rem -0.2rem 0 #569521,
+        0.2rem -0.2rem 0 #569521,
+        -0.2rem 0.2rem 0 #569521,
+        0.2rem 0.2rem 0 #569521,
+        0.3rem 0.3rem 0.1rem rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    animation: fadeUp 3s ease-in-out forwards;
+}
+
+
+@keyframes fadeUp {
+    0% {
+        transform: translateY(4rem);
+        opacity: 0;
+    }
+
+    20% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    80% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-7rem);
+        opacity: 0;
+    }
+}
+
+
+.connectionPoint {
+    position: absolute;
+    bottom: 1rem;
+    right: 11.2rem;
+}
+
+.btnTips {
+    position: fixed;
+    height: 3rem;
+    width: 3rem;
+    line-height: 3rem;
+    margin-top: -7rem;
+    margin-right: -9rem;
+    border-radius: 50%;
+    color: #ffffff;
+    background-image: url("../../images/Plants/tips.webp");
+    background-size: contain;
+    background-repeat: no-repeat;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: btnTipsScaleIn 0.1s ease-out forwards;
+}
+
+@keyframes btnTipsScaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
