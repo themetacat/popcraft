@@ -24,7 +24,7 @@ interface Props {
 export default function RankingList({ loadingplay, setShowRankingList }: Props) {
     const {
         components: {
-            RankingRecord, GameRecord, DayToScore, StarToScore, SeasonTime, CurrentSeasonDimension, WeeklyRecord
+            RankingRecord, GameRecord, DayToScore, StarToScore, WeeklyRecord
         },
         network: { publicClient },
     } = useMUD();
@@ -34,7 +34,6 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
     const [selectSeason, setSelectSeason] = useState(0);
     const { csd, season, seasonCountdown } = useUtils();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [selectedRank, setSelectedRank] = useState("Event Rank");
     const [timeLeft, setTimeLeft] = useState(0);
 
     useEffect(() => {
@@ -52,13 +51,12 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
         const hours = Math.floor((time % (3600 * 24)) / 3600);
         const minutes = Math.floor((time % 3600) / 60);
         const seconds = time % 60;
-    
+
         return `${days}d ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-      };
+    };
 
     useEffect(() => {
         setSelectSeason(season);
-        setSelectedRank(season === 0 ? "Global Rank" : "Event Rank");
     }, [season]);
 
     //格式化地址，只显示前4位和后4位
@@ -268,9 +266,9 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
         setIsDropdownOpen(!isDropdownOpen);
     };
 
-    const handleRankSelect = (rank: string) => {
-        setSelectSeason(rank === 'Global Rank' ? 0 : season || 1);
-        setSelectedRank(rank);
+
+    const handleRankSelect = (rank: number) => {
+        setSelectSeason(rank);
         setIsDropdownOpen(false);
     };
 
@@ -304,26 +302,31 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                             <tr>
                                 <th>
                                     <div onClick={toggleDropdown} className={style.dropdown}>
-                                        {selectedRank}
+                                    {selectSeason > 0 ? "Event Rank: " + selectSeason : "Global Rank"}
                                         <span className={style.dropdownArrow}>{isDropdownOpen ? '▲' : '▼'}</span>
                                     </div>
+                                   
                                     {isDropdownOpen && (
                                         <div className={style.dropdownMenu}>
                                             <div
                                                 className={style.dropdownItem}
-                                                onClick={() => handleRankSelect("Global Rank")}
+                                                onClick={() => handleRankSelect(0)}
                                             >
-                                                Global Rank {selectedRank === "Global Rank" && '✔️'}
+                                                Global Rank {selectSeason === 0 && '✔️'}
                                             </div>
-                                            {season > 0 && csd > 0 &&
-                                                <div
-                                                    className={style.dropdownItem}
-                                                    onClick={() => handleRankSelect("Event Rank")}
-                                                >
-                                                    Event Rank {selectedRank === "Event Rank" && '✔️'}
-                                                </div>
-                                            }
 
+                                            {season > 0 &&
+                                                Array.from({ length: season }, (_, index) => (
+                                                    
+                                                    <div
+                                                        key={index}
+                                                        className={style.dropdownItem}
+                                                        onClick={() => handleRankSelect(index + 1)}
+                                                    >
+                                                        Event Rank: {index + 1}{selectSeason === index + 1 && '✔️'}
+                                                    </div>
+                                                ))
+                                            }
                                         </div>
                                     )}
                                 </th>
