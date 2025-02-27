@@ -120,7 +120,7 @@ export default function MissionBonus({ checkTaskInProcess, handleErrorAll }: Pro
         thePlayDay = Number(dailyGamesData.day);
         received = Number(dailyGamesData.received);
     }
-    for (let index = 1; index <= 20; index++) {
+    for (let index = 1; index <= 50; index++) {
         const gamesRewardsScores = getComponentValue(GamesRewardsScores, twoNumToEntityID(1, index));
         if (gamesRewardsScores && gamesRewardsScores.scores != 0n) {
             let status = "unlocked";
@@ -196,7 +196,7 @@ export default function MissionBonus({ checkTaskInProcess, handleErrorAll }: Pro
                                     </div>
 
                                     <div className={`${missionBonus.bounsText} ${b.status === 'claimed' ? missionBonus.bounsTextClaimed : (b.status === 'pending' ? missionBonus.bounsTextPending : missionBonus.bounsTextUnlocked)}`}>
-                                        {b.plays === 1 ? null : thePlayDay === missionBonusDay && playerGames >= b.plays ? (
+                                        {b.plays === 3 ? null : thePlayDay === missionBonusDay && playerGames >= b.plays ? (
                                             <img src={ConnectingStripImg} alt="" />
                                         ) : (
                                             <span className={missionBonus.connectionPoint}>...</span>
