@@ -33,7 +33,6 @@ export default function TokenNotification({ value }: NotificationProps) {
     }, [notification]);
 
     useEffect(() => {
-        
         if (notificationBonus.length === 0) {
             if (timerRefBonus.current) {
                 clearInterval(timerRefBonus.current);
@@ -46,11 +45,11 @@ export default function TokenNotification({ value }: NotificationProps) {
             timerRefBonus.current = setInterval(() => {
                 setNotificationBonus((prev) => {
                     const newBonus = prev.slice(1);
-                    const removedBonus = prev[0];
-                    setNotification((prevNotification) => [
-                        ...prevNotification,
-                        removedBonus,
-                    ]);
+                    // const removedBonus = prev[0];
+                    // setNotification((prevNotification) => [
+                    //     ...prevNotification,
+                    //     removedBonus,
+                    // ]);
                     return newBonus;
                 });
             }, 1500);
