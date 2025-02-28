@@ -144,6 +144,7 @@ export default function MissionBonus({ checkTaskInProcess, handleErrorAll }: Pro
         <>
             {isContentVisible ? (
                 <div className={`${missionBonus.bounsContainer} ${isCloseAnimating ? missionBonus.bounsContainerClose : ''}`} style={{ backgroundImage: `url(${BounsBackgroundImg})` }}>
+                    <span className={missionBonus.title}>Unlock In-Day Bonus</span>
                     <div className={missionBonus.countdown}>
                         <img src={HourClockImg} alt="" />
                         <span>{formatSeasonCountDown(timeLeft)}</span>
