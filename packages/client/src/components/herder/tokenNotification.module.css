@@ -32,7 +32,7 @@
     font-size: 4rem;
     letter-spacing: 1.5rem;
     transform: scaleX(1.2);
-    text-shadow: 0.2rem 0.3rem 1rem #339a68;
+    text-shadow: 0rem 0.3rem 1rem rgba(0,0,0);
 }
 
 .fadeUp {
