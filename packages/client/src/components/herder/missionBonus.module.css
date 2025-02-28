@@ -3,7 +3,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    top: 35rem;
+    top: 40rem;
     left: 6rem;
     display: flex;
     align-items: center;
@@ -47,7 +47,7 @@
 
 .playerGames {
     position: absolute;
-    left: 22rem;
+    right: 3.5rem;
     height: 3.6rem;
     top: -2.5rem;
     font-size: 2rem;
@@ -78,25 +78,28 @@
     transition: transform 0.3s ease;
 }
 
-.playerGames img:hover + .playQuestion{
+.playerGames img:hover ~ .playQuestion {
     visibility: visible;
     opacity: 1;
-    transition-delay: 0s;
+    transition: opacity 0.1s ease-in-out, visibility 0s linear 0.1s;
 }
 
-.playQuestion{
+.playQuestion {
+    position: absolute;
     font-size: 2.2rem;
     font-family: "AdobeHeitiStd-Regular";
     color: rgba(50, 123, 139, 1);
-    margin-left: -19rem;
-    margin-bottom: 7rem;
     letter-spacing: 0.1rem;
     visibility: hidden;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s;
+    margin-bottom: 7rem;
+    margin-right: 14rem;
+    width: 40rem;
+    transition: opacity 0.05s ease-in-out, visibility 0s linear 0.05s;
 }
 
-.countdown {
+
+.title {
     position: absolute;
     left: 3rem;
     top: -2.5rem;
@@ -107,7 +110,26 @@
     align-items: center;
     justify-content: center;
     height: 3.6rem;
+    text-shadow:
+    0.2rem 0.2rem 0 #ffffff,
+    -0.2rem -0.2rem 0 #ffffff,
+    0.2rem -0.2rem 0 #ffffff,
+    -0.2rem 0.2rem 0 #ffffff,
+    0.2rem 0.2rem 0.2rem #000;
+}
 
+.countdown {
+    position: absolute;
+    /* left: 3rem; */
+    right: 22rem;
+    top: -2.5rem;
+    font-size: 2rem;
+    z-index: 3;
+    color: rgba(50, 123, 139, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.6rem;
 }
 
 .countdown img{
@@ -128,7 +150,7 @@
 }
 
 .inDayBounsBtn {
-    margin-top: 4rem;
+    margin-top: 8.5rem;
     position: absolute;
     background-size: contain;
     background-repeat: no-repeat;
@@ -140,9 +162,13 @@
     justify-content: center;
     border-radius: 0.75rem;
     z-index: 999999;
-    width: 20rem;
-    height: 20rem;
     font-family: "Simplicity";
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    width: 17rem;
+    height: 10rem;
+
 }
 
 .buttonClose {
@@ -153,7 +179,6 @@
     align-items: center;
     background-size: contain;
     position: relative;
-
 }
 
 .buttonClose img {
@@ -186,18 +211,6 @@
         0.3rem 0.3rem 0.1rem rgba(0, 0, 0, 0.6);
 }
 
-.inDayBounsBtn {
-    left: 2%;
-    width: 17rem;
-    height: 10rem;
-    position: fixed;
-    white-space: nowrap;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    transition: transform 0.3s ease;
-    cursor: pointer;
-}
 
 .inDayBounsBtn img {
     position: absolute;
@@ -419,8 +432,8 @@
 
 .addedPoints {
     position: absolute;
-    top: -2.5rem;
-    right: 10rem;
+    top: -13rem;
+    right: 9rem;
     font-size: 3rem;
     color: #fff;
     text-shadow:
@@ -428,7 +441,7 @@
         0.2rem -0.2rem 0 #569521,
         -0.2rem 0.2rem 0 #569521,
         0.2rem 0.2rem 0 #569521,
-        0.3rem 0.3rem 0.1rem rgba(0, 0, 0, 0.6);
+        0.4rem 0.4rem 0.3rem rgba(0, 0, 0, 0.8);
     opacity: 0;
     animation: fadeUp 3s ease-in-out forwards;
 }
@@ -436,22 +449,22 @@
 
 @keyframes fadeUp {
     0% {
-        transform: translateY(4rem);
+        transform: translateY(10rem);
         opacity: 0;
     }
 
     20% {
-        transform: translateY(0);
+        transform: translateY(6.5rem);
         opacity: 1;
     }
 
     80% {
-        transform: translateY(0);
+        transform: translateY(6.5rem);
         opacity: 1;
     }
 
     100% {
-        transform: translateY(-7rem);
+        transform: translateY(1.5rem);
         opacity: 0;
     }
 }
