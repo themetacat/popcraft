@@ -8,9 +8,9 @@
     flex-direction: column;
     min-height: 0rem;
     max-height: 50rem;
-    overflow-y: hidden;
     padding-top: 7rem;
     pointer-events: none;
+    overflow: hidden;
 }
 
 .message {
@@ -59,19 +59,18 @@
 
 .containerBouns {
     position: absolute;
-    bottom: 40%;
-    right: 37.4%;
+    bottom: 61%;
+    right: 36.4%;
     display: flex;
     z-index: 999999;
     flex-direction: column;
     min-height: 0rem;
-    max-height: 53rem;
+    max-height: 30rem;
     padding-top: 7rem;
-    min-width: 0rem;
-    max-width: 25rem;
+    width: 30rem;
     padding-right: 20rem;
     pointer-events: none;
-    overflow-y: hidden;
+    overflow: hidden
 }
 
 
