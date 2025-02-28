@@ -16,11 +16,10 @@ import { createWalletClient, custom, parseEther, parseGwei } from "viem";
 import toast from "react-hot-toast";
 let args_index: number = -1;
 import { Payments } from "@uniswap/v3-sdk"
-import { useTopUp } from "../components/select";
+import { MISSION_BOUNS_CHAIN_IDS } from "../components/select";
 import PlantsSystemAbi from "./PlantsSystem.abi.json";
 import MissionSystemAbi from "./MissionSystem.abi.json";
 import { numToEntityID, addr2NumToEntityID } from "../components/rightPart"
-
 export const update_app_value = (index: number) => {
   args_index = index;
 };
@@ -34,6 +33,33 @@ export type PlantsResponse = {
 export type CallResponse = {
   error?: string;
 } | any;
+
+export interface OpRenderingResult {
+  popStarId?: string;
+  tokenBalanceId?: string;
+  rankingRecordId?: string;
+  seasonRankingRecordId?: string;
+  score?: bigint;
+  tokenChange?: {
+    tokenAddr?: string;
+    amount?: bigint
+  };
+}
+
+interface InteractTCMParams {
+  coordinates: any;
+  addressData: any;
+  selectedColor: any;
+  action: string;
+  other_params: any;
+  popStarId?: any;
+  tokenBalanceId?: any;
+  newRankingRecordId?: any;
+  seasonRankingRecordId?: any;
+  isExecute: boolean;
+  account: any;
+  nonce: any;
+}
 
 export function createSystemCalls(
   /*
@@ -480,13 +506,13 @@ export function createSystemCalls(
     selectedColor: any,
     action: string,
     other_params: any,
-    popStarId: any,
-    tokenBalanceId: any,
-    newRankingRecordId: any,
-    seasonRankingRecordId: any,
     isExecute: any,
     account: any,
-    nonce: any
+    nonce: any,
+    popStarId?: any,
+    tokenBalanceId?: any,
+    newRankingRecordId?: any,
+    seasonRankingRecordId?: any,
   ) => {
     let tx, hashValpublic;
 
@@ -497,9 +523,12 @@ export function createSystemCalls(
     if (!account) {
       return { error: "Not connected" }
     }
-    const app_name = window.localStorage.getItem("app_name") || "paint";
-    const system_name = window.localStorage.getItem("system_name") as string;
-    const namespace = window.localStorage.getItem("namespace") as string;
+    // const app_name = window.localStorage.getItem("app_name") || "paint";
+    // const system_name = window.localStorage.getItem("system_name") as string;
+    // const namespace = window.localStorage.getItem("namespace") as string;
+    const app_name = "popCraft";
+    const system_name = "PopCraftSystem";
+    const namespace = "popCraft";
 
     let allArgs = [];
     const args = {
@@ -574,7 +603,7 @@ export function createSystemCalls(
 
           // hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
           if (hashValpublic.status === "reverted" && firstGameOver) {
-            firstGameOver = false;
+            // firstGameOver = false;
             const { simulateContractRequest } = await publicClient.simulateContract({
               account: palyerAddress,
               address: worldContract.address,
@@ -739,12 +768,14 @@ export function createSystemCalls(
   };
 
 
-  function opRendering(positionX: number, positionY: number, playerAddr: any) {
+  // function opRendering(positionX: number, positionY: number, playerAddr: any) {
+  const opRendering = (positionX: number, positionY: number, playerAddr: "0x${string}"): OpRenderingResult => {
     let popStarId;
     let tokenBalanceId;
     let rankingRecordId;
     let seasonRankingRecordId;
     let eliminateAmount = 0;
+    let tokenChange = {};
     if (!playerAddr) {
       throw new Error("Address undefind");
     }
@@ -754,7 +785,7 @@ export function createSystemCalls(
     const tcmPopStarData = getComponentValue(TCMPopStar, playerEntity);
     if (!tcmPopStarData) {
       console.error("game data is null");
-      return [undefined, undefined];
+      return {};
     }
     const newTcmPopStarData = {
       ...tcmPopStarData,
@@ -774,14 +805,22 @@ export function createSystemCalls(
       matrixArray[matrixIndex] = 0n;
       eliminateAmount = 1;
       tokenBalanceId = consumeTokens(tokenAddr, playerAddr);
+      tokenChange = {
+        tokenAddr,
+        amount: -1
+      }
     } else {
       const [updatedMatrixArray, finalEliminateAmount] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0);
       eliminateAmount = finalEliminateAmount;
-      // if (chainId === 2818) {
-      //   tokenBalanceId = comboReward(eliminateAmount, tokenAddr, playerAddr);
-      // }
+      if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && eliminateAmount >= 5) {
+        const amount = Math.floor(eliminateAmount / 5);
+        tokenChange = {
+          tokenAddr,
+          amount
+        }
+        tokenBalanceId = comboReward(amount, tokenAddr, playerAddr);
+      }
     }
-
     moveMatrixArray(matrixArray);
 
     const allZeros = matrixArray.every((data) => data === 0n);
@@ -853,7 +892,15 @@ export function createSystemCalls(
         }
       }
     }
-    return [popStarId, tokenBalanceId, rankingRecordId, seasonRankingRecordId, score];
+    return {
+      popStarId,
+      tokenBalanceId,
+      rankingRecordId,
+      seasonRankingRecordId,
+      score,
+      tokenChange
+    };
+    // return [popStarId, tokenBalanceId, rankingRecordId, seasonRankingRecordId, score, tokenChange];
   }
 
   function consumeTokens(tokenAddr: any, playerAddr: any) {
@@ -879,9 +926,7 @@ export function createSystemCalls(
     return tokenBalanceId;
   }
 
-  function comboReward(eliminateAmount: number, tokenAddr: `0x${string}`, playerAddr: `0x${string}`) {
-    if (eliminateAmount >= 5) {
-      const amount = Math.floor(eliminateAmount / 5);
+  function comboReward(amount: number, tokenAddr: `0x${string}`, playerAddr: `0x${string}`) {
       // add new token: change here
       const tokenBalanceEntity = encodeEntity({ playerAddress: "address", tokenAddress: "address" }, { playerAddress: playerAddr, tokenAddress: tokenAddr });
       const tokenBalanceData = getComponentValue(TokenBalance, tokenBalanceEntity);
@@ -901,7 +946,6 @@ export function createSystemCalls(
         value: newTokenBalance,
       });
       return tokenBalanceId;
-    }
   }
 
   function dfsPopCraft(matrixIndex: number, targetValue: bigint, matrixArray: bigint[], eliminateAmount: number): [bigint[], number] {
