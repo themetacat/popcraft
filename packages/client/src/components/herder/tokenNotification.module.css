@@ -1,7 +1,7 @@
 .container {
     position: fixed;
     top: 30rem;
-    right: 65rem;
+    right: 58rem;
     display: flex;
     gap: 1.2rem;
     z-index: 999999;
@@ -10,7 +10,8 @@
     max-height: 50rem;
     padding-top: 7rem;
     pointer-events: none;
-    overflow: hidden;
+    overflow-y: hidden;
+    width: 30rem;
 }
 
 .message {
@@ -60,17 +61,17 @@
 .containerBouns {
     position: absolute;
     bottom: 61%;
-    right: 36.4%;
+    right: 26.5%;
     display: flex;
     z-index: 999999;
     flex-direction: column;
     min-height: 0rem;
     max-height: 30rem;
     padding-top: 7rem;
-    width: 30rem;
+    width: 80rem;
     padding-right: 20rem;
     pointer-events: none;
-    overflow: hidden
+    overflow-y: hidden
 }
 
 
