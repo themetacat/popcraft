@@ -61,17 +61,18 @@
 .containerBouns {
     position: absolute;
     bottom: 61%;
-    right: 26.5%;
+    right: 36.5%;
     display: flex;
     z-index: 999999;
     flex-direction: column;
     min-height: 0rem;
     max-height: 30rem;
     padding-top: 7rem;
-    width: 80rem;
+    width: 30rem;
     padding-right: 20rem;
     pointer-events: none;
-    overflow-y: hidden
+    /* overflow-y: hidden
+     */
 }
 
 
