@@ -196,7 +196,7 @@ export default function MissionBonus({ checkTaskInProcess, handleErrorAll }: Pro
                                     </div>
 
                                     <div className={`${missionBonus.bounsText} ${b.status === 'claimed' ? missionBonus.bounsTextClaimed : (b.status === 'pending' ? missionBonus.bounsTextPending : missionBonus.bounsTextUnlocked)}`}>
-                                        {b.plays === 3 ? null : thePlayDay === missionBonusDay && playerGames >= b.plays ? (
+                                        {index == 0 ? null : thePlayDay === missionBonusDay && playerGames >= b.plays ? (
                                             <img src={ConnectingStripImg} alt="" />
                                         ) : (
                                             <span className={missionBonus.connectionPoint}>...</span>

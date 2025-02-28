@@ -10,7 +10,7 @@ import PopStar from "../popStar";
 import PopUpBox from "../popUpBox";
 import TopUpContent from "../topUp";
 import { encodeEntity, syncToRecs, decodeEntity, } from "@latticexyz/store-sync/recs";
-import { update_app_value } from "../../mud/createSystemCalls";
+import { update_app_value, OpRenderingResult } from "../../mud/createSystemCalls";
 import { CANVAS_HEIGHT } from "../../global/constants";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
@@ -37,6 +37,7 @@ import NewUserBenefitsToken from "./newUserBenefitsToken"
 import ConnectImg from "../../images/connect.webp";
 import { useUtils } from "./utils";
 import MissionBonus from "./missionBonus";
+import TokenNotification from "./tokenNotification";
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -128,7 +129,11 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [gasPrice, setGasPrice] = useState<string>("");
   const { getPlantsGp, getPlantsGpSeason } = usePlantsGp();
   const { csd, season } = useUtils();
-
+  const [tokenNotificationValue, setTokenNotificationValue] = useState<{ tokenAddr: string, amount: bigint }>({
+    tokenAddr: "",
+    amount: 0n,
+  });
+  
   useEffect(() => {
     const fetchGasPrice = async () => {
       try {
@@ -1288,20 +1293,24 @@ export default function Header({ hoveredData, handleData }: Props) {
     let throwError = false;
     try {
       //点击后立即显示得分气泡 start
-      let popStarId: any, tokenBalanceId: any, newRankingRecordId: any, score: any, seasonRankingRecordId: any;
+      let result: OpRenderingResult;
       if (actionData == "pop") {
         if (localStorage.getItem("isShowWaitingMaskLayer") === "true") {
           return;
         }
-        // const score = opRenderingCalc(coordinates.x, coordinates.y, address, TCMPopStar, StarToScore, TokenBalance);
-        [popStarId, tokenBalanceId, newRankingRecordId, seasonRankingRecordId, score] = opRendering(coordinates.x, coordinates.y, address)
-
-        if (Number(score) != 0) {
-          addScoreBubble(Number(score));
+        result = opRendering(coordinates.x, coordinates.y, address);
+        if (Number(result.score) != 0) {
+          addScoreBubble(Number(result.score));
+        }
+        if(result.tokenChange && MISSION_BOUNS_CHAIN_IDS.includes(chainId)){
+          setTokenNotificationValue({
+            tokenAddr: result.tokenChange.tokenAddr ?? "",
+            amount: result.tokenChange.amount ?? 0n,
+          });
         }
         sendCount += 1;
       }
-
+      
       interactTaskQueue.current.push(async (execute: boolean, account: any, nonce: any) => {
         let interact_data;
         try {
@@ -1314,13 +1323,13 @@ export default function Header({ hoveredData, handleData }: Props) {
               selectedColor,
               actionData,
               other_params,
-              popStarId,
-              tokenBalanceId,
-              newRankingRecordId,
-              seasonRankingRecordId,
               execute,
               account,
-              nonce
+              nonce,
+              result.popStarId,
+              result.tokenBalanceId,
+              result.rankingRecordId,
+              result.seasonRankingRecordId,
             );
           } else {
             interact_data = await interactTCM(
@@ -1329,10 +1338,6 @@ export default function Header({ hoveredData, handleData }: Props) {
               selectedColor,
               actionData,
               other_params,
-              null,
-              null,
-              null,
-              null,
               true,
               account,
               nonce
@@ -2476,10 +2481,14 @@ export default function Header({ hoveredData, handleData }: Props) {
       )}
       
       {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (
+        <>
+        <TokenNotification value={tokenNotificationValue} />
         <MissionBonus
           checkTaskInProcess={checkTaskInProcess}
           handleErrorAll={handleErrorAll}
         />
+        </>
+         
       )}
 
       {/* add new chain: chain here */}

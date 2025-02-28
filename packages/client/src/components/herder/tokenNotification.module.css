@@ -1,0 +1,119 @@
+.container {
+    position: fixed;
+    top: 30rem;
+    right: 65rem;
+    display: flex;
+    gap: 1.2rem;
+    z-index: 999999;
+    flex-direction: column;
+    min-height: 0rem;
+    max-height: 50rem;
+    overflow-y: hidden;
+    padding-top: 7rem;
+    pointer-events: none;
+}
+
+.message {
+    color: white;
+    padding: 0.5rem;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+.message img{
+    width: 5rem;
+}
+
+.message span{
+    margin-left: 3rem;
+    font-family: "Simplicity";
+    font-size: 4rem;
+    letter-spacing: 1.5rem;
+    transform: scaleX(1.2);
+    text-shadow: 0.2rem 0.3rem 1rem #339a68;
+}
+
+.fadeUp {
+    animation: fadeUp 3s ease-in-out forwards;
+}
+
+@keyframes fadeUp {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    75% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-7rem);
+        opacity: 0;
+    }
+}
+
+
+.containerBouns {
+    position: absolute;
+    bottom: 40%;
+    right: 37.4%;
+    display: flex;
+    z-index: 999999;
+    flex-direction: column;
+    min-height: 0rem;
+    max-height: 53rem;
+    padding-top: 7rem;
+    min-width: 0rem;
+    max-width: 25rem;
+    padding-right: 20rem;
+    pointer-events: none;
+    overflow-y: hidden;
+}
+
+
+.messageBonus {
+    color: white;
+    padding: 1rem;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+.messageBonus img{
+    width: 8rem;
+}
+
+.messageBonus span{
+    margin-left: 4rem;
+    font-family: "Simplicity";
+    font-size: 6rem;
+    letter-spacing: -0.5rem;
+    transform: scaleX(1.2);
+    text-shadow: 0.4rem 0.4rem 1rem rgba(0,0,0);
+}
+
+.fadeUpBonus {
+    animation: fadeUpBouns 1.5s ease-in-out forwards;
+}
+
+@keyframes fadeUpBouns {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(25rem);
+        opacity: 0;
+    }
+}
