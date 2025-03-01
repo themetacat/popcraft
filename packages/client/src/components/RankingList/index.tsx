@@ -289,7 +289,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                 <div className={style.seasonCountdownDiv}>
                     {season > 0 && csd > 0 && timeLeft > 0 &&
                         <span>
-                            {formatSeasonCountDown(timeLeft)}&nbsp;&nbsp;&nbsp;&nbsp;PRIZE POOL: 1000 Morph Point
+                            {formatSeasonCountDown(timeLeft)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRIZE POOL: 1000 Morph Points
                         </span>
                     }
                 </div>
