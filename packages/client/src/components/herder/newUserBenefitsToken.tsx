@@ -8,7 +8,8 @@ import { useTopUp } from "../select";
 import { addressToEntityID } from "../rightPart";
 import GiftBoxImg from '../../images/GiftBox/GiftBox.webp';
 import OpenGiftBoxImg from '../../images/GiftBox/GiftBoxOpen.webp';
-
+import OpenGiftBoxMorphImg from '../../images/GiftBox/GiftBoxOpenMorph.webp';
+import OpenGiftBoxHSKImg from '../../images/GiftBox/GiftBoxOpenHSK.webp';
 
 interface Props {
     checkTaskInProcess: any,
@@ -25,6 +26,7 @@ export default function NewUserBenefitsToken({ checkTaskInProcess, handleErrorAl
     } = useMUD();
     const { address } = useAccount();
     const [callStatus, setCallStatus] = useState(0);
+    const { chainId } = useTopUp();
 
     const userBenefitsToken = address ? getComponentValue(UserBenefitsToken, addressToEntityID(address)) : undefined;
     
@@ -77,7 +79,11 @@ export default function NewUserBenefitsToken({ checkTaskInProcess, handleErrorAl
                 <div className={benefitsStyle.bloomBg}>
                     <div className={benefitsStyle.overlay}>
                         <img
-                            src={OpenGiftBoxImg}
+                            src={
+                                chainId === 2818 ? OpenGiftBoxMorphImg :
+                                chainId === 177 ? OpenGiftBoxHSKImg :
+                                OpenGiftBoxImg
+                            }
                             className={benefitsStyle.animatedGiftOpen}
                             alt="GiftOpen"
                         />

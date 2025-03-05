@@ -211,6 +211,8 @@ export const useTopUp = () => {
         setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
         setBridgeUrl("https://bridge.hsk.xyz/")
         setChianIcon("https://hsk.xyz/static/logo.png");
+        setTokenAddress(["0x0000000000000000000000000000000000000013", ...defaultTokenAddresses])
+        setPriTokenAddress(["0x0000000000000000000000000000000000000013", ...defaultTokenAddresses])
       }else if(chainId != 0){
         setRewardDescInfo("Morph Points for each game, along with additional rewards for the top 250 players every week.");
         setRecipient("0x784844480280ca865ac8ef89bb554283dddff737");
