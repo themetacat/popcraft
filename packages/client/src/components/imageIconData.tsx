@@ -151,4 +151,8 @@ export const imageIconData = {
         src: 'image/private/KOALA.webp',
         name: "KOALA",
     },
+    '0x0000000000000000000000000000000000000013': {
+        src: 'image/private/SIMBA.webp',
+        name: "SIMBA",
+    },
 };
