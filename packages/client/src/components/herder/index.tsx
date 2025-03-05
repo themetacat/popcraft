@@ -2053,10 +2053,8 @@ export default function Header({ hoveredData, handleData }: Props) {
               >
                 {sendCount > 0 ? Math.floor((receiveCount / sendCount) * 100) : 0}%
               </span>
-
             </div>
-            <br />
-            This is a fully on-chain game,
+            This is a fully on-chain game.
             <br />
             Please wait while transactions are processed.
           </div>
