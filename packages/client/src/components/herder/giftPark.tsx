@@ -41,7 +41,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll }: Props) 
         },
         systemCalls: { getStreakDaysRewards },
     } = useMUD();
-    const [isShowGiftPark, setShowGiftPark] = useState(true);
+    const [isShowGiftPark, setShowGiftPark] = useState(false);
     const { address, } = useAccount();
     const { streakDayCycle, streakDayCountdown, dayInCycle } = useUtils();
     const [timeLeft, setTimeLeft] = useState(0);
