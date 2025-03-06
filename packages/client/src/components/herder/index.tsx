@@ -38,7 +38,7 @@ import ConnectImg from "../../images/connect.webp";
 import { useUtils } from "./utils";
 import MissionBonus from "./missionBonus";
 import TokenNotification from "./tokenNotification";
-import GiftPark from "./GiftPark"
+import GiftPark from "./giftPark"
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
