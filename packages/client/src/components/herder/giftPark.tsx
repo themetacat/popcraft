@@ -9,7 +9,7 @@ import PendingDayImg from "../../images/GiftPark/PendingDay.webp";
 import PendingImg from "../../images/GiftPark/Pending.webp";
 import StarsImg from "../../images/GiftPark/Stars.webp";
 import CloseImg from "../../images/GiftPark/Close.webp";
-import GiftParkImg from "../../images/GiftPark/GiftPark.webp";
+import GiftParkImg from "../../images/GiftPark/GiftParkBtn.webp";
 import CallLoadingImg from "../../images/InDayBouns/CallLoading.webp";
 import PlayQuestionsImg from "../../images/GiftPark/PlayQuestions.webp"
 import style from "./giftPark.module.css";
