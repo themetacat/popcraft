@@ -308,7 +308,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll }: Props) 
 
             <div className={style.giftsParkBtn} onClick={() => toggleContent()}>
                 <img src={GiftParkImg} alt="" />
-                <button>GIFT PARK</button>
+                <button>Daily Streak Bonus</button>
                 {tips > 0 &&
                     <div className={style.btnTips}>1</div>
                 }
