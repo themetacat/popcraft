@@ -194,6 +194,15 @@ export default mudConfig({
         addedDays: "uint256"
       }
     },
+    ComboRewardGames: {
+      keySchema: {
+        owner: "address",
+      },
+      valueSchema: {
+        games: "uint256",
+        addedTime: "uint256"
+      }
+    },
     GamesRewardsScores: {
       keySchema: {
         dimension: "uint256",

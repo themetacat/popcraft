@@ -93,7 +93,7 @@ export function createSystemCalls(
     maxPriorityFeePerGas,
     chainId
   }: SetupNetworkResult,
-  { TCMPopStar, TokenBalance, StarToScore, RankingRecord, WeeklyRecord, SeasonTime, CurrentSeasonDimension }: ClientComponents,
+  { TCMPopStar, TokenBalance, StarToScore, RankingRecord, WeeklyRecord, SeasonTime, CurrentSeasonDimension, ComboRewardGames }: ClientComponents,
 ) {
 
   const app_name: string = window.localStorage.getItem("app_name") || "paint";
@@ -813,12 +813,22 @@ export function createSystemCalls(
       const [updatedMatrixArray, finalEliminateAmount] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0);
       eliminateAmount = finalEliminateAmount;
       if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && eliminateAmount >= 5) {
-        const amount = Math.floor(eliminateAmount / 5);
-        tokenChange = {
-          tokenAddr,
-          amount
+        const comboRewardGamesData = getComponentValue(ComboRewardGames, playerEntity);
+        
+        if(comboRewardGamesData && Number(comboRewardGamesData.games) > 3 && Number(comboRewardGamesData.addedTime) == getCurrentCommon(5)){
+          tokenChange = {
+            tokenAddr: '',
+            amount: 0
+          }
+        }else{
+          const amount = Math.floor(eliminateAmount / 5);
+          tokenChange = {
+            tokenAddr,
+            amount
+          }
+          tokenBalanceId = comboReward(amount, tokenAddr, playerAddr);
         }
-        tokenBalanceId = comboReward(amount, tokenAddr, playerAddr);
+        
       }
     }
     moveMatrixArray(matrixArray);
@@ -1263,6 +1273,16 @@ export function createSystemCalls(
     }
     return hashValpublic;
   };
+
+  function getCurrentCommon(latitude: number){
+    const seasonTimeData = getComponentValue(SeasonTime, numToEntityID(latitude));
+    const timestamp = Math.floor(Date.now() / 1000);
+    if (!seasonTimeData || timestamp < Number(seasonTimeData.startTime) || Number(seasonTimeData.duration) === 0) {
+      return 0;
+    }
+    const currentDay = Math.floor((timestamp - Number(seasonTimeData.startTime)) / Number(seasonTimeData.duration)) + 1;
+    return currentDay;
+  }
 
   const getDailyGamesRewards = async (
     account: any,
