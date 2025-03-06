@@ -4,4 +4,11 @@
   "inputs": [],
   "outputs": [],
   "stateMutability": "nonpayable"
+},
+{
+  "type": "function",
+  "name": "getStreakDaysRewards",
+  "inputs": [],
+  "outputs": [],
+  "stateMutability": "nonpayable"
 }]

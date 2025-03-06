@@ -38,6 +38,7 @@ import ConnectImg from "../../images/connect.webp";
 import { useUtils } from "./utils";
 import MissionBonus from "./missionBonus";
 import TokenNotification from "./tokenNotification";
+import GiftPark from "./GiftPark"
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -133,7 +134,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     tokenAddr: "",
     amount: 0n,
   });
-  
+
   useEffect(() => {
     const fetchGasPrice = async () => {
       try {
@@ -237,7 +238,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       return () => {
         clearInterval(intervalId);
       };
-    }else if((chainId === 31337 || chainId === 2818) && season > 0){
+    } else if ((chainId === 31337 || chainId === 2818) && season > 0) {
       setSeasonGPBalance(address);
       const intervalId = setInterval(() => {
         setSeasonGPBalance(address);
@@ -245,7 +246,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       return () => {
         clearInterval(intervalId);
       };
-    }else if (COMMON_CHAIN_IDS.includes(chainId)) {
+    } else if (COMMON_CHAIN_IDS.includes(chainId)) {
       setGPBalance(address);
       const intervalId = setInterval(() => {
         setGPBalance(address);
@@ -1302,7 +1303,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         if (Number(result.score) != 0) {
           addScoreBubble(Number(result.score));
         }
-        if(result.tokenChange && MISSION_BOUNS_CHAIN_IDS.includes(chainId)){
+        if (result.tokenChange && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) {
           setTokenNotificationValue({
             tokenAddr: result.tokenChange.tokenAddr ?? "",
             amount: result.tokenChange.amount ?? 0n,
@@ -1310,7 +1311,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         }
         sendCount += 1;
       }
-      
+
       interactTaskQueue.current.push(async (execute: boolean, account: any, nonce: any) => {
         let interact_data;
         try {
@@ -2102,9 +2103,9 @@ export default function Header({ hoveredData, handleData }: Props) {
               cursor: "pointer",
             }}
           >
-          <img src={LuckyBagImg} alt="" />
-          <span>500 USDC</span>
-        </div>
+            <img src={LuckyBagImg} alt="" />
+            <span>500 USDC</span>
+          </div>
           <div
             className={isConnected ? style.RankingListimg : style.RankingListimgNotConnected}
             onClick={() => rankTransports()}
@@ -2479,16 +2480,20 @@ export default function Header({ hoveredData, handleData }: Props) {
           handleErrorAll={handleErrorAll}
         />
       )}
-      
+
       {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (
         <>
-        <TokenNotification value={tokenNotificationValue} />
-        <MissionBonus
-          checkTaskInProcess={checkTaskInProcess}
-          handleErrorAll={handleErrorAll}
-        />
+          <TokenNotification value={tokenNotificationValue} />
+          <MissionBonus
+            checkTaskInProcess={checkTaskInProcess}
+            handleErrorAll={handleErrorAll}
+          />
+          <GiftPark
+            checkTaskInProcess={checkTaskInProcess}
+            handleErrorAll={handleErrorAll}
+          />
         </>
-         
+
       )}
 
       {/* add new chain: chain here */}

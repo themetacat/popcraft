@@ -2,9 +2,9 @@ import { mudConfig } from "@latticexyz/world/register";
 import { getNetworkConfig } from "./getNetworkConfig";
 import { COMMON_CHAIN_IDS } from "../components/select/index";
 
-const networkConfigPromise = await getNetworkConfig();
-const chainId = networkConfigPromise.chainId;
-
+// const networkConfigPromise = await getNetworkConfig();
+// const chainId = networkConfigPromise.chainId;
+const chainId = 31337;
 export default mudConfig({
   namespace: "popCraft",
   tables: {
@@ -178,6 +178,20 @@ export default mudConfig({
         day: "uint256",
         received: "uint256",
         added: "bool"
+      }
+    },
+    StreakDays: {
+      keySchema: {
+        player: "address" 
+      },
+      valueSchema: {
+        times: "uint256",
+        totalTimes: "uint256",
+        received: "uint256",
+        totalReceived: "uint256",
+        cycle: "uint256",
+        addedCycle: "uint256",
+        addedDays: "uint256"
       }
     },
     GamesRewardsScores: {
