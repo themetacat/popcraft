@@ -2,9 +2,9 @@ import { mudConfig } from "@latticexyz/world/register";
 import { getNetworkConfig } from "./getNetworkConfig";
 import { COMMON_CHAIN_IDS } from "../components/select/index";
 
-// const networkConfigPromise = await getNetworkConfig();
-// const chainId = networkConfigPromise.chainId;
-const chainId = 31337;
+const networkConfigPromise = await getNetworkConfig();
+const chainId = networkConfigPromise.chainId;
+
 export default mudConfig({
   namespace: "popCraft",
   tables: {
