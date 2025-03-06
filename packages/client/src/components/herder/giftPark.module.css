@@ -1,0 +1,522 @@
+.container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 159rem;
+    height: 104rem;
+    border: none;
+    background-image: url('../../images/GiftPark/Background.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    place-items: center;
+    z-index: 999999;
+    animation: scaleIn 0.1s ease-out forwards;
+}
+
+.containerClosed {
+    animation: scaleOut 0.1s ease-in forwards;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: translate(-50%, -50%) scale(0.2);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes scaleOut {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+}
+
+.stars {
+    position: absolute;
+    top: 7.5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 55%;
+}
+
+.header {
+    position: absolute;
+    top: 9%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 4.5rem;
+    color: white;
+    font-weight: bold;
+    font-family: "MyriadPro";
+    letter-spacing: 0.7rem;
+    text-shadow: -0.15rem 0.15rem 0.3rem rgba(0, 0, 0, 0.71);
+}
+
+.cornerImage {
+    position: absolute;
+    right: 3%;
+    top: 4%;
+    width: 8rem;
+    height: 8rem;
+    cursor: pointer;
+
+}
+
+.cornerImage img:hover {
+    transform: scale(1.06);
+}
+
+.cornerImage img {
+    bottom: 0;
+    width: 5rem;
+    height: 5rem;
+    transition: transform 0.3s ease;
+    margin-left: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.containerIn {
+    position: fixed;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 82%;
+    height: 73%;
+    border: none;
+    background-image: url('../../images/GiftPark/BackgroundIn.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    place-items: center;
+}
+
+.titleStreakDay {
+    position: fixed;
+    height: 8rem;
+    left: 7.5rem;
+    font-size: 3.3rem;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin-top: 4rem;
+    font-family: "AdobeHeitiStd-Regular";
+    color: #B13200;
+    letter-spacing: 0.2rem !important;
+}
+
+.titleStreakDay img{
+    margin-top: 0.3rem;
+    margin-left: 0.5rem;
+    width: 3rem;
+    cursor: pointer;
+}
+
+.titleStreakDay img:hover ~ .playQuestion {
+    visibility: visible;
+    opacity: 1;
+}
+
+.titleStreakDay img:hover{
+    transform: scale(1.1);
+}
+
+.dayCountDown {
+    position: fixed;
+    width: 44rem;
+    height: 8rem;
+    right: 6.5rem;
+    font-size: 2.5rem;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin-top: 4rem;
+    font-family: "AdobeHeitiStd-Regular";
+    color: #B13200;
+    /* letter-spacing: 0.2rem !important; */
+}
+
+.carouselContainer {
+    margin-top: 13rem;
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: 21rem;
+    padding-top: 3rem;
+}
+
+.carouselInner {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+}
+
+
+.bonusItem {
+    flex-shrink: 0;
+    text-align: center;
+    border-radius: 7.3rem;
+    color: rgb(24, 22, 22);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.hoverEffect:hover .streakDaysImg {
+    transform: scale(1.03);
+    /* transition: transform 0.1s ease; */
+}
+
+.hoverEffect:hover .streakDaysContent {
+    text-shadow: 0.3rem 0.3rem 0.7rem rgba(0, 0, 0, 0.8);
+    transition: text-shadow 0.3s ease;
+}
+
+.arrowButton {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.arrowButton.enable:hover {
+    transform: scale(1.06);
+    transition: transform 0.3s ease;
+}
+
+.arrowIcon {
+    width: 5rem;
+    height: auto;
+}
+
+.arrowButton.disabled .arrowIcon {
+    cursor: not-allowed;
+}
+
+.cornerMark {
+    width: 4.5rem;
+    height: 4.5rem;
+    position: absolute;
+    top: -19%;
+    right: -9%;
+    z-index: 2;
+}
+
+
+.streakDaysImg {
+    width: 18.5rem;
+}
+
+.mask {
+    width: 19rem;
+    position: absolute;
+}
+
+.bonusItemUp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-family: "Zihun-Buding";
+    color: #fff;
+    font-size: 3rem;
+}
+
+
+.streakDaysContent {
+    position: absolute;
+    font-family: "Simplicity";
+}
+
+.bonusItemDown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-family: "Zihun-Buding";
+    color: #fff;
+    font-size: 2.3rem;
+    margin-top: 2rem;
+    z-index: 2;
+}
+
+.playQuestion {
+    position: absolute;
+    font-size: 2.2rem;
+    letter-spacing: 0.1rem;
+    visibility: hidden;
+    opacity: 1;
+    left: -7rem;
+    bottom: 6rem;
+    width: 50rem;
+    background-color: #FFF3A5;
+    border: 3px solid #E7AB86;
+    border-radius: 1.5rem;
+    box-shadow: 0.25rem 0.25rem 1rem rgba(0, 0, 0, 0.2);
+
+    padding: 1rem;
+}
+
+.dividingLine {
+    width: 88%;
+    height: 0.4rem;
+    background-color: #E7AB86;
+    border-radius: 2rem;
+    margin-top: 5rem;
+    box-shadow: 0 0.1rem 0.4rem rgba(0, 0, 0, 0.67);
+}
+
+.dayLine {
+    width: 10rem;
+    height: 1rem;
+    background-color: #E28764;
+    border-radius: 2rem;
+    position: absolute;
+    box-shadow: 0 0.1rem 0.4rem rgba(0, 0, 0, 0.67);
+    bottom: 2.5rem;
+    left: -5.5rem;
+}
+
+.dayPoint {
+    width: 10rem;
+    height: 1rem;
+    position: absolute;
+    bottom: 4rem;
+    left: -5.5rem;
+    font-size: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Simplicity";
+    color: #D88160;
+    text-shadow: none;
+}
+
+.otherGiftsTitle {
+    position: fixed;
+    width: 20rem;
+    height: 8rem;
+    left: 6.5rem;
+    font-size: 3.3rem;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin-top: 3rem;
+    font-family: "AdobeHeitiStd-Regular";
+    color: #B13200;
+    letter-spacing: 0.2rem;
+}
+
+.otherGifts {
+    margin-top: 14rem;
+    font-size: 4rem;
+    height: 20rem;
+    font-family: "Simplicity";
+    color: #B13200;
+}
+
+.giftsParkBtn {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    bottom: 40rem;
+    left: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    z-index: 999999;
+    font-family: "Simplicity";
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    width: 15rem;
+    height: 10rem;
+    color: #EB5F8C;
+}
+
+.giftsParkBtn img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.giftsParkBtn:hover img {
+    transform: scale(1.06);
+}
+
+.giftsParkBtn:hover button {
+    text-shadow:
+        -0.2rem -0.2rem 0 white,
+        0.2rem -0.2rem 0 white,
+        -0.2rem 0.2rem 0 white,
+        0.2rem 0.2rem 0 white,
+        0.4rem 0.4rem 0.1rem rgba(0, 0, 0, 0.7);
+    transition: text-shadow 0.3s ease;
+}
+
+.giftsParkBtn button {
+    position: absolute;
+    bottom: -2rem;
+    width: 17rem;
+    height: 3rem;
+    background-color: transparent;
+    border: none;
+    font-family: "Simplicity";
+    color: #4FD770;
+    transition: font-size 0.3s ease;
+    font-size: 0.7vw;
+    cursor: pointer;
+    margin-left: 1rem;
+    text-shadow:
+        -0.2rem -0.2rem 0 white,
+        0.2rem -0.2rem 0 white,
+        -0.2rem 0.2rem 0 white,
+        0.2rem 0.2rem 0 white,
+        0.3rem 0.3rem 0.1rem rgba(0, 0, 0, 0.6);
+}
+
+.loading {
+    position: absolute;
+    z-index: 111;
+}
+
+.loadingMask {
+    margin-top: 0.815rem;
+    margin-left: -0.01rem;
+    width: 18.6rem;
+    height: 11.8rem;
+}
+
+
+.loadingMain {
+    animation: spin 5s linear infinite;
+    -webkit-transform: rotate(3600deg);
+    transform: rotate(3600deg);
+    -webkit-transition: -webkit-transform 5s linear;
+    transition: transform 5s linear;
+    position: absolute;
+    margin-left: -12.4rem;
+    margin-top: 3.2rem;
+    height: 7rem;
+    width: 7rem;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.btnTips {
+    position: fixed;
+    height: 3rem;
+    width: 3rem;
+    line-height: 3rem;
+    margin-top: -7rem;
+    margin-right: -9rem;
+    border-radius: 50%;
+    color: #ffffff;
+    background-image: url("../../images/Plants/tips.webp");
+    background-size: contain;
+    background-repeat: no-repeat;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: btnTipsScaleIn 0.1s ease-out forwards;
+}
+
+@keyframes btnTipsScaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.rotated {
+    transform: rotate(180deg);
+}
+
+
+.addedPoints {
+    position: fixed;
+    top: 5.5rem;
+    /* right: 44rem; */
+    right: 45%;
+    font-size: 5rem;
+    color: #B13200;
+    /* text-shadow:
+        -0.2rem -0.2rem 0 #569521,
+        0.2rem -0.2rem 0 #569521,
+        -0.2rem 0.2rem 0 #569521,
+        0.2rem 0.2rem 0 #569521,
+        0.4rem 0.4rem 0.3rem rgba(0, 0, 0, 0.8); */
+    /* text-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.8); */
+    opacity: 1;
+    font-family: "AdobeHeitiStd-Regular";
+    animation: fadeUp 3s ease-in-out forwards;
+}
+
+
+@keyframes fadeUp {
+    0% {
+        transform: translateY(4rem);
+        opacity: 0;
+    }
+
+    20% {
+        transform: translateY(0rem);
+        opacity: 1;
+    }
+
+    80% {
+        transform: translateY(0rem);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-3.5rem);
+        opacity: 0;
+    }
+}

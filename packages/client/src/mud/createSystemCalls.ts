@@ -93,7 +93,7 @@ export function createSystemCalls(
     maxPriorityFeePerGas,
     chainId
   }: SetupNetworkResult,
-  { TCMPopStar, TokenBalance, StarToScore, RankingRecord, WeeklyRecord, SeasonTime, CurrentSeasonDimension }: ClientComponents,
+  { TCMPopStar, TokenBalance, StarToScore, RankingRecord, WeeklyRecord, SeasonTime, CurrentSeasonDimension, ComboRewardGames }: ClientComponents,
 ) {
 
   const app_name: string = window.localStorage.getItem("app_name") || "paint";
@@ -813,12 +813,22 @@ export function createSystemCalls(
       const [updatedMatrixArray, finalEliminateAmount] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0);
       eliminateAmount = finalEliminateAmount;
       if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && eliminateAmount >= 5) {
-        const amount = Math.floor(eliminateAmount / 5);
-        tokenChange = {
-          tokenAddr,
-          amount
+        const comboRewardGamesData = getComponentValue(ComboRewardGames, playerEntity);
+        
+        if(comboRewardGamesData && Number(comboRewardGamesData.games) > 3 && Number(comboRewardGamesData.addedTime) == getCurrentCommon(5)){
+          tokenChange = {
+            tokenAddr: '',
+            amount: 0
+          }
+        }else{
+          const amount = Math.floor(eliminateAmount / 5);
+          tokenChange = {
+            tokenAddr,
+            amount
+          }
+          tokenBalanceId = comboReward(amount, tokenAddr, playerAddr);
         }
-        tokenBalanceId = comboReward(amount, tokenAddr, playerAddr);
+        
       }
     }
     moveMatrixArray(matrixArray);
@@ -1130,6 +1140,12 @@ export function createSystemCalls(
     name: "MissionSystem",
   })
 
+  const bonusResourceHex = resourceToHex({
+    type: "system",
+    namespace: "popCraft",
+    name: "BonusSystem",
+  })
+
   const collectSeed = async (
     account: any,
     nonce: number
@@ -1229,7 +1245,7 @@ export function createSystemCalls(
     try {
       const txData = await worldContract.write.callFrom([
         account,
-        popcraftResourceHex,
+        bonusResourceHex,
         encodeData,
       ], {
         gas: 5000000n,
@@ -1258,6 +1274,16 @@ export function createSystemCalls(
     return hashValpublic;
   };
 
+  function getCurrentCommon(latitude: number){
+    const seasonTimeData = getComponentValue(SeasonTime, numToEntityID(latitude));
+    const timestamp = Math.floor(Date.now() / 1000);
+    if (!seasonTimeData || timestamp < Number(seasonTimeData.startTime) || Number(seasonTimeData.duration) === 0) {
+      return 0;
+    }
+    const currentDay = Math.floor((timestamp - Number(seasonTimeData.startTime)) / Number(seasonTimeData.duration)) + 1;
+    return currentDay;
+  }
+
   const getDailyGamesRewards = async (
     account: any,
     nonce: number
@@ -1266,6 +1292,51 @@ export function createSystemCalls(
     const encodeData = encodeFunctionData({
       abi: MissionSystemAbi,
       functionName: "getDailyGamesRewards",
+      args: [],
+    });
+    try {
+      const txData = await worldContract.write.callFrom([
+        account,
+        missionResourceHex,
+        encodeData,
+      ], {
+        gas: 5000000n,
+        nonce,
+        ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+        ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
+      });
+
+      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
+      await waitForTransaction(txData);
+      
+      if (hashValpublic.status === "reverted") {
+        const { simulateContractRequest } = await publicClient.simulateContract({
+          account: palyerAddress,
+          address: worldContract.address,
+          abi: worldContract.abi,
+          functionName: 'callFrom',
+          args: [
+            account,
+            missionResourceHex,
+            encodeData,
+          ],
+        })
+      }
+      
+    } catch (error) {
+      return { error: error.message };
+    }
+    return hashValpublic;
+  };
+
+  const getStreakDaysRewards = async (
+    account: any,
+    nonce: number
+  ): Promise<PlantsResponse> => {
+    let hashValpublic: any;
+    const encodeData = encodeFunctionData({
+      abi: MissionSystemAbi,
+      functionName: "getStreakDaysRewards",
       args: [],
     });
     try {
@@ -1314,6 +1385,7 @@ export function createSystemCalls(
     collectSeed,
     grow,
     getBenefitsToken,
-    getDailyGamesRewards
+    getDailyGamesRewards,
+    getStreakDaysRewards
   };
 }

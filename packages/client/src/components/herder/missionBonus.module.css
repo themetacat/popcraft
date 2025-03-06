@@ -150,12 +150,11 @@
 }
 
 .inDayBounsBtn {
-    margin-top: 8.5rem;
     position: absolute;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    top: 35rem;
+    top: 45rem;
     left: 6rem;
     display: flex;
     align-items: center;
@@ -166,7 +165,7 @@
     text-align: center;
     transition: transform 0.3s ease;
     cursor: pointer;
-    width: 17rem;
+    width: 16rem;
     height: 10rem;
 
 }
