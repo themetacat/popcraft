@@ -56,7 +56,7 @@ const config = getDefaultConfig({
     hashkey,
     b3,
     base,
-    happyTest,
+    // happyTest,
     redstone,
     mintchain,
     metacatDev,
