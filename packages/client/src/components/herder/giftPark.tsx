@@ -245,7 +245,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll }: Props) 
                                         };
                                         return (
                                             <div key={index} className={`${style.bonusItem} ${item.status === "pending" && callLoadingIndex === 0 ? style.hoverEffect : ""
-                                                }`} style={circleStyle} onClick={item.status !== '' ? () => callContract(item.days) : undefined}>
+                                                }`} style={circleStyle} onClick={item.status === 'pending' ? () => callContract(item.days) : undefined}>
                                                 <div className={style.bonusItemUp}>
                                                     {callLoadingIndex === item.days &&
                                                         <div className={style.loading}>
