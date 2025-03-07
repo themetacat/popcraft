@@ -3,7 +3,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    top: 40rem;
+    bottom: 65rem;
     left: 6rem;
     display: flex;
     align-items: center;
@@ -154,7 +154,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    top: 45rem;
+    bottom: 69.8rem;
     left: 6rem;
     display: flex;
     align-items: center;
@@ -165,7 +165,7 @@
     text-align: center;
     transition: transform 0.3s ease;
     cursor: pointer;
-    width: 16rem;
+    width: 15rem;
     height: 10rem;
 
 }
