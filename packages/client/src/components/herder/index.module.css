@@ -913,6 +913,7 @@ canvas {
   border-radius: 10px; /* Rounded corners */
   padding: 20px; /* Add some padding */
   box-sizing: border-box; /* Include padding in width/height calculations */
+  transform: translateY(9%) scale(0.92);
 }
 
 .progressBar {

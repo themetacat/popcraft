@@ -3,10 +3,10 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 143.75rem;
-    height: 96.125rem;
+    width: 125.75rem;
+    height: 112.125rem;
     border: none;
-    background-image: url('../../images/RankingList/trophyback.png');
+    background-image: url('../../images/RankingList/RankingListBackground.webp');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -15,7 +15,7 @@
 }
 
 .title {
-    width: 52.5rem;
+    width: 92.5rem;
     font-weight: 700;
     font-size: 4rem;
     line-height: 10rem;
@@ -25,34 +25,39 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: -1rem;
+    margin-top: 5rem;
     margin-left: 1rem;
+    background-image: url('../../images/RankingList/RankingListTitleBackground.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .imgOff {
     width: 6rem;
     height: 6rem;
     position: absolute;
-    left: 130rem;
-    top: 1rem;
+    left: 120rem;
+    top: 5rem;
 }
 
 .seasonCountdownDiv{
-    width: 52.5rem;
     font-weight: 900;
-    font-size: 2.7rem;
+    font-size: 2.9rem;
     line-height: 8rem;
-    color: #9E43E1;
+    color: #00A650;
     align-items: center;
     justify-content: center;
-    margin-top: -75rem;
-    margin-left: -63rem;
-    position: fixed;
+    margin-top: -95.5rem;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
     text-shadow: 
-    -0.2rem -0.2rem 0 #EED7FF,  
-    0.2rem -0.2rem 0 #EED7FF,  
-    -0.2rem  0.2rem 0 #EED7FF,  
-    0.2rem  0.2rem 0 #EED7FF;
+    -0.2rem -0.2rem 0 #ffffff,  
+    0.2rem -0.2rem 0 #ffffff,  
+    -0.2rem  0.2rem 0 #ffffff,  
+    0.2rem  0.2rem 0 #ffffff;
     font-family: "MyriadPro";
 }
 
@@ -64,7 +69,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    margin-top: -11rem;
+    margin-top: -5rem;
     overflow-y: auto;
     border-radius: 10px;
 }
@@ -134,10 +139,62 @@
     margin-top: -0.5rem;
 }
 
+.totalContainerBox {
+    width: 114rem;
+    height: 6rem;
+    margin-top: -11.6rem;
+    background-image: url('../../images/RankingList/TotalBackground.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: none;
+    font-family: "AdobeHeitiStd-Regular";
+}
+
+.totalContainerTableBox {
+    width: 113rem;
+    height: 6rem;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 3.5rem;
+    text-align: center;
+    font-size: 2rem;
+    color: #000000;
+    letter-spacing: 0.3rem;
+    font-weight: 600;
+}
+
+.totalLengthBox {
+    width: 32rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+.totalLengthBox span {
+    justify-content: center;
+    align-items: center;
+}
+
+.totalScoreBox {
+    display: flex;
+    align-items: center;
+    width: 77rem;
+    margin-left: -1rem;
+    gap: 1rem;
+}
+
+.totalScoreItem {
+    width: 18rem;
+    /* margin-left: 0.1rem; */
+}
+
 .tablecontainerbox {
     width: 120rem;
     height: 6rem;
-    margin-top: -11rem;
+    margin-top: -15rem;
     background-image: url('../../images/RankingList/buttombackages.png');
     background-size: contain;
     background-position: center;

@@ -287,9 +287,9 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                     />
                 </div>
                 <div className={style.seasonCountdownDiv}>
-                    {season > 0 && csd > 0 && timeLeft > 0 &&
+                    {season > 0 && selectSeason == season && csd > 0 && timeLeft > 0 &&
                         <span>
-                            {formatSeasonCountDown(timeLeft)}
+                            {formatSeasonCountDown(timeLeft)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRIZE POOL: 1000 Morph Points
                         </span>
                     }
                 </div>
@@ -411,6 +411,41 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                             ))}
                         </tbody>
                     </table>
+                </div>
+                <div className={style.totalContainerBox}>
+                    <div className={style.totalContainerTableBox}>
+                        <div className={style.totalLengthBox}>
+                            <span style={{ width: "13rem", marginLeft: "-1.3rem" }}>Total</span>
+                            <span style={{ marginLeft: "5.9rem" }}>{sortedRankingRecords.length}</span>
+                        </div>
+                        <div className={style.totalScoreBox}>
+                        {(chainId === 31337 || chainId === 2818) ? (
+                            <>
+                                <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalScore).reduce((sum, score) => sum + score, 0)}</span>
+                                <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalPoints).reduce((sum, score) => sum + score, 0)}</span>
+                                <span className={style.totalScoreItem}>{formatTime(Math.min(...sortedRankingRecords.map(record => record.shortestTime).filter(time => time > 0)))}</span>
+                                <span className={style.totalScoreItem}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
+                                <span className={style.totalScoreItem}>{Math.floor((sortedRankingRecords.reduce((w, r) => w + (r.wins || 0), 0) / sortedRankingRecords.reduce((w, r) => w + ((r.wins || 0) + (r.losses || 0)), 0) * 100) || 100)}%</span>
+                            </>
+                          ) : (chainId === 31338 || chainId === 185 || chainId === 690) ? (
+                            <>
+                                <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalScore).reduce((sum, score) => sum + score, 0)}</span>
+                                <span className={style.totalScoreItem}>{Math.max(...sortedRankingRecords.map(record => record.bestScore))}</span>
+                                <span className={style.totalScoreItem}>{formatTime(Math.min(...sortedRankingRecords.map(record => record.shortestTime).filter(time => time > 0)))}</span>
+                                <span className={style.totalScoreItem}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
+                                <span className={style.totalScoreItem}>{Math.floor((sortedRankingRecords.reduce((w, r) => w + (r.wins || 0), 0) / sortedRankingRecords.reduce((w, r) => w + ((r.wins || 0) + (r.losses || 0)), 0) * 100) || 100)}%</span>
+                            </>
+                         ) : (
+                            <>
+                                <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalPoints).reduce((sum, score) => sum + score, 0)}</span>
+                                <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalScore).reduce((sum, score) => sum + score, 0)}</span>
+                                <span className={style.totalScoreItem}>{formatTime(Math.min(...sortedRankingRecords.map(record => record.shortestTime).filter(time => time > 0)))}</span>
+                                <span className={style.totalScoreItem}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
+                                <span className={style.totalScoreItem}>{Math.floor((sortedRankingRecords.reduce((w, r) => w + (r.wins || 0), 0) / sortedRankingRecords.reduce((w, r) => w + ((r.wins || 0) + (r.losses || 0)), 0) * 100) || 100)}%</span>
+                            </>
+                         )}
+                        </div>
+                    </div>
                 </div>
                 <div className={style.tablecontainerbox}>
                     <div className={style.tableBox}>

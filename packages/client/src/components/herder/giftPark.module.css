@@ -148,6 +148,8 @@
     font-family: "AdobeHeitiStd-Regular";
     color: #B13200;
     /* letter-spacing: 0.2rem !important; */
+    border: 0.2rem solid #B13200;
+    border-radius: 1.5rem;
 }
 
 .carouselContainer {
@@ -348,7 +350,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    bottom: 40rem;
+    bottom: 58rem;
     left: 6rem;
     display: flex;
     align-items: center;
