@@ -712,9 +712,10 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
               }}
             />
             <div className={style.buyBoxContent}>
-              {Object.entries(matchedData).slice(0, 5).map(([key, { src, name }]) => (
+              {Object.entries(matchedData).slice(0, 5).map(([key, { src, balance, name }]) => (
                 <div key={key} className={style.firstBuy}>
                   <img src={src} alt={name} className={style.itemImage} />
+                  <div className={style.balanceIconFont}>{balance}</div>
                   <div className={style.itemNameto}>
                     <div className={style.itemName}>
                       <span className={style.itemNameText}>{name}</span>
