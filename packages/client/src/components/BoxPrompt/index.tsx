@@ -326,7 +326,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         setTimeout(() => {
           setShowSuccessModal(false);
           setdataq(false);
-        }, 3000);
+        }, 1000);
       } else {
         toast.error("Payment failed! Try again!");
         setcresa(false);
