@@ -1137,3 +1137,19 @@ p {
   text-transform: uppercase;
   cursor: pointer;
 }
+
+.balanceIconFont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  color: #ffffff;
+  background-color: #ffb739;
+  width: 22px;
+  height: 22px;
+  gap: 10px;
+  font-family: "Alibaba-PuHuiTi-TIMESBD";
+  font-size: 15px;
+  margin-left: -25px;
+  margin-top: 48px;
+}
