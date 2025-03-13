@@ -1173,7 +1173,7 @@ export function createSystemCalls(
         ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
         ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
       });
-      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
+      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
       await waitForTransaction(txData);
       if (hashValpublic.status === "reverted") {
         const { simulateContractRequest } = await publicClient.simulateContract({
@@ -1216,7 +1216,7 @@ export function createSystemCalls(
         ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
       });
 
-      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
+      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
       await waitForTransaction(txData);
       if (hashValpublic.status === "reverted") {
         const { simulateContractRequest } = await publicClient.simulateContract({
@@ -1258,7 +1258,7 @@ export function createSystemCalls(
         ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
         ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
       });
-      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
+      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
       await waitForTransaction(txData);
       if (hashValpublic.status === "reverted") {
         const { simulateContractRequest } = await publicClient.simulateContract({
@@ -1311,7 +1311,7 @@ export function createSystemCalls(
         ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
       });
 
-      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
+      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
       await waitForTransaction(txData);
       
       if (hashValpublic.status === "reverted") {
@@ -1356,7 +1356,7 @@ export function createSystemCalls(
         ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
       });
 
-      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 7000);
+      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
       await waitForTransaction(txData);
       
       if (hashValpublic.status === "reverted") {
