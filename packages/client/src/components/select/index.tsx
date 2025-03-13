@@ -13,8 +13,9 @@ export const networkConfig: Record<string, number> = {
   redstone: 690,
   metacat: 31338,
   base: 8453,
-  happytest: 216,
-  hashkey: 177
+  // happytest: 216,
+  hashkey: 177,
+  local: 31337
 };
 
 const chainIdToNetwork: Record<number, string> = Object.fromEntries(
@@ -28,7 +29,7 @@ export const getNetworkName = (chainId: number): string | undefined => {
 // add new chain: change here
 
 export const COMMON_CHAIN_IDS = [31337, 2818, 8333, 8453, 216, 177];
-export const MISSION_BOUNS_CHAIN_IDS = [31337, 2818];
+export const MISSION_BOUNS_CHAIN_IDS = [31337, 2818, 177];
 
 export const useTopUp = () => {
   const [chainId, setChainId] = useState(0);
@@ -203,16 +204,17 @@ export const useTopUp = () => {
         setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
         setBridgeUrl("https://happy-testnet-sepolia.hub.caldera.xyz/")
         setChianIcon("https://ugc.production.linktr.ee/eaf67eb0-14e8-4a70-aa3d-c03e7045761c_happychain.png");
-      }else if(chainId === 177){
+      }else if(chainId === 177 || chainId === 31337){
         setInputValue("5");
-        setbalanceCheck('0.005')
+        setbalanceCheck('0.05')
         setNativeToken("HSK")
-        setMIN_SESSION_WALLET_BALANCE(parseEther("0.006"));
+        setMIN_SESSION_WALLET_BALANCE(parseEther("0.02"));
         setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
         setBridgeUrl("https://bridge.hsk.xyz/")
         setChianIcon("https://hsk.xyz/static/logo.png");
         setTokenAddress(["0x0000000000000000000000000000000000000013", ...defaultTokenAddresses])
         setPriTokenAddress(["0x0000000000000000000000000000000000000013", ...defaultTokenAddresses])
+        setRewardDescInfo("game score for each game, along with additional rewards for the top 150 players every week. ");
       }else if(chainId != 0){
         setRewardDescInfo("Morph Points for each game, along with additional rewards for the top 250 players every week.");
         setRecipient("0x784844480280ca865ac8ef89bb554283dddff737");

@@ -193,7 +193,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll }: Props) 
                             <span style={{marginLeft: "5rem"}}>
                                 Starts on
                                 <br />
-                                March 6 at 14:00 (UTC)
+                                March 15 at 14:00 (UTC)
                             </span>
                                 </>
                             ) : (

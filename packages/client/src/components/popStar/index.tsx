@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import loadingImg from "../../images/welcome_pay_play_loading.webp";
-import { useTopUp } from "../select";
+import { useTopUp, MISSION_BOUNS_CHAIN_IDS } from "../select";
 
 interface Props {
   setPopStar: any;
@@ -40,10 +40,10 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
   };
 
   return (
-    <div className={`${style.content} ${chainId === 2818 ? style.contentMorph : ''}`}>
+    <div className={`${style.content} ${MISSION_BOUNS_CHAIN_IDS.includes(chainId) ? style.contentMorph : ''}`}>
 
-      <p className={`${style.title} ${chainId === 2818 ? style.titleMorph : ''}`}>WELCOME TO POPCRAFT!</p>
-      <div className={`${style.Container} ${chainId === 2818 ? style.ContainerMorph : ''}`}>
+      <p className={`${style.title} ${MISSION_BOUNS_CHAIN_IDS.includes(chainId) ? style.titleMorph : ''}`}>WELCOME TO POPCRAFT!</p>
+      <div className={`${style.Container} ${MISSION_BOUNS_CHAIN_IDS.includes(chainId) ? style.ContainerMorph : ''}`}>
         <span className={style.copywritingTwo}>This is a composability-based elimi-<br />
           <span className={style.copywritingbox}>nation game. You have</span>
           <span className={style.copywritingThree}> 120 seconds</span>&nbsp;<br />
@@ -63,7 +63,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
               in your first 3 games every day.
               <br />
             </span>
-          </span>) : (<span className={chainId === 2818 ? style.copywritingTwoyoMorph : style.copywritingTwoyo}>You'll be rewarded with&nbsp;
+          </span>) : (<span className={MISSION_BOUNS_CHAIN_IDS.includes(chainId) ? style.copywritingTwoyoMorph : style.copywritingTwoyo}>You'll be rewarded with&nbsp;
             <span className={style.copywritingThree}>
               {rewardDescInfo ? (
                 rewardDescInfo
@@ -75,7 +75,21 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
             </span>
             <span className={style.copywritingTwoyo}>
               {" "}
-              {chainId === 2818 ? <a href="https://morph.ghost.io/play-to-earn-with-popcraft/" target="_blank" style={{ color: '#FF7A00', textDecoration: 'underline', textDecorationColor: '#E64C00' }}>Learn more about the campaign and the rewards.</a> : "for completing the game."}
+              {/* {chainId === 2818 ? <a href="https://morph.ghost.io/play-to-earn-with-popcraft/" target="_blank" style={{ color: '#FF7A00', textDecoration: 'underline', textDecorationColor: '#E64C00' }}>Learn more about the campaign and the rewards.</a> : "for completing the game."} */}
+              {MISSION_BOUNS_CHAIN_IDS.includes(chainId) ? (
+                <a
+                  href={chainId === 2818
+                    ? "https://morph.ghost.io/play-to-earn-with-popcraft/"
+                    : ""}
+                  target="_blank"
+                  style={{ color: '#FF7A00', textDecoration: 'underline', textDecorationColor: '#E64C00' }}
+                >
+                  Learn more about the campaign and the rewards.
+                </a>
+              ) : (
+                "for completing the game."
+              )}
+
               <br />
             </span>
           </span>)}

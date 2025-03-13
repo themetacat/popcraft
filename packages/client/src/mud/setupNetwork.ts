@@ -78,12 +78,6 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
         account: burnerAccount,
       });
 
-      const testClient = createTestClient({
-        // ...clientOptions,
-        chain: networkConfig.chain,
-        mode: 'anvil',
-        transport: transportObserver(fallback([webSocket(), http()])),
-      })
 
       /*
        * Create an observable for contract writes that we can
@@ -242,7 +236,7 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
               {
                 tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "UserBenefitsToken" }),
               },
-              ...(networkConfig.chain.id === 2818 || networkConfig.chain.id === 31337
+              ...(networkConfig.chain.id === 2818 || networkConfig.chain.id === 31337 || networkConfig.chain.id === 177 
                 ? [
                   { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "SeasonTime" }) },
                   { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "CurrentSeasonDimension" }) },
@@ -275,6 +269,12 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
                 console.info(`[Dev Faucet]: Player balance -> ${balance}`);
                 const lowBalance = balance < parseEther("20");
                 if (lowBalance) {
+                  const testClient = createTestClient({
+                    // ...clientOptions,
+                    chain: networkConfig.chain,
+                    mode: 'anvil',
+                    transport: transportObserver(fallback([webSocket(), http()])),
+                  })
                   console.info("[Dev Faucet]: Balance is low, dripping funds to player");
                   await testClient.setBalance({ address: account, value: parseEther('100') });
                 };
@@ -306,10 +306,8 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
                
             }
             if(networkConfig.chain.id === 31338 || networkConfig.chain.id === 31337){
-              
               requestDrip();
               setInterval(requestDrip, 5000)
-              
             }
             // else if(networkConfig.chain.id === 17069){
             //   sendPostRequest();

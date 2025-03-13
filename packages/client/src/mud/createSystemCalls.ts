@@ -157,6 +157,11 @@ export function createSystemCalls(
     },
   ];
 
+  let waitTime = 13000;
+  if(chainId === 177){
+    waitTime = 20000
+  }
+
   const registerDelegation = async () => {
     const callData = encodeFunctionData({
       abi: ABI,
@@ -599,7 +604,7 @@ export function createSystemCalls(
           });
           // const txStatus = await publicClient.getTransaction({ hash: txData });
           tx = txData;
-          hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), 13000);
+          hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
 
           // hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
           if (hashValpublic.status === "reverted" && firstGameOver) {
@@ -812,7 +817,7 @@ export function createSystemCalls(
     } else {
       const [updatedMatrixArray, finalEliminateAmount] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0);
       eliminateAmount = finalEliminateAmount;
-      if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && eliminateAmount >= 5) {
+      if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && eliminateAmount >= 5 && chainId != 177) {
         const comboRewardGamesData = getComponentValue(ComboRewardGames, playerEntity);
         
         if(comboRewardGamesData && Number(comboRewardGamesData.games) > 3 && Number(comboRewardGamesData.addedTime) == getCurrentCommon(5)){
