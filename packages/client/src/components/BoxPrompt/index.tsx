@@ -17,13 +17,15 @@ import failto from '../../images/substance/failto.png'
 import success from '../../images/substance/successto.png'
 import HowToPlayBtnImg from "../../images/HowToPlay/howToPlayBtn.webp";
 import RewardsImg from "../../images/HowToPlay/rewardsBtn.webp";
+import SimbaImg from "../../../public/image/private/SIMBA.webp";
+import KoalaImg from "../../../public/image/private/KOALA.webp";
 import { generateRoute, generateRouteMintChain } from '../../uniswap_routing/routing'
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useTopUp } from "../select";
 import { encodeEntity } from "@latticexyz/store-sync/recs";
 import { getComponentValue } from "@latticexyz/recs";
 import substanceImg from "../../images/substance/substance.webp";
-import HowToPlay, { Rewards } from "./HowToPlay";
+import HowToPlay, { Rewards, CrossFlow } from "./HowToPlay";
 
 interface Props {
   coordinates: any;
@@ -82,6 +84,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const { rewardInfo, rewardDescInfo, recipient, chainId, priTokenAddress, nativeToken } = useTopUp();
   const [showHowToPlay, setShowHowToPlay] = useState(false);
   const [showRewards, setShowRewards] = useState(false);
+  const [showCrossFlow, setShowCrossFlow] = useState(false);
   const default_buy_token_num = 5;
 
   useEffect(() => {
@@ -1012,6 +1015,20 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         </div>
       ) : null}
 
+
+      <div className={howToPlayStyle.btnHtp}
+        style={{
+          display: "none",
+          bottom: "43%"
+        }}
+        onClick={async () => {
+          setShowCrossFlow(true);
+        }}
+      >
+        <img src={chainId === 177 ? KoalaImg : SimbaImg} alt="" />
+        <span>{chainId === 177 ? 'Earn Morph Points' : 'Earn $HSK'}</span>
+      </div>
+
       <div className={howToPlayStyle.btnHtp}
         style={{
           bottom: "30%"
@@ -1032,6 +1049,13 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         <img src={HowToPlayBtnImg} alt="" />
         <span>HOW TO PLAY</span>
       </div>
+
+      {showCrossFlow && (
+        <div className={style.overlay} >
+          <CrossFlow setShowCrossFlow={setShowCrossFlow}
+          />
+        </div>
+      )}
 
       {showRewards && (
         <div className={style.overlay}>

@@ -219,6 +219,7 @@
     background-position: center;
     bottom: 5%;
     left: 50%;
+    transform: translateX(-50%);
     width: 4.5rem;
     height: 4.5rem;
     z-index: 99999;
@@ -226,7 +227,7 @@
     transition: transform 0.3s ease;
 }
 .cornerImage:hover{
-    transform: scale(1.1);
+    transform: translateX(-50%) scale(1.1);
 }
 
 .cornerImage img {
@@ -327,3 +328,49 @@
 .navNumber:hover {
     opacity: 0.5;
 }
+
+.btnContainer {
+    position: absolute;
+    bottom: 14%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.goBtn {
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    width: 240px;
+    height: 43px;
+    border: none;
+    opacity: 1;
+    background-color: transparent;
+    box-shadow: none;
+    background-image: url("../../images/welcome/playnormal.webp");
+    background-size: 100% 100%;
+    background-position: center;
+    align-items: center;
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0.1em;
+    text-align: center;
+    color: #ffffff;
+    transition: font-size 0.3s ease;
+    text-transform: uppercase;
+    text-shadow:
+      -2px -2px 0 rgba(149, 148, 148, 0.7),
+      2px -2px 0 rgba(177, 175, 175, 0.7),
+      -2px 2px 0 rgba(165, 164, 164, 0.7),
+      2px 2px 0 rgba(206, 206, 206, 0.7);
+  }
+  
+  .goBtn:hover {
+    color: #ffffff;
+    font-size: 26px;
+    text-shadow:
+      -1px -1px 0 rgba(56, 56, 56, 0.7),
+      1px -1px 0 rgba(71, 71, 71, 0.7),
+      -1px 1px 0 rgba(59, 59, 59, 0.7),
+      1px 1px 0 rgba(69, 69, 69, 0.7)
+  }

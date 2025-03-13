@@ -9,6 +9,7 @@ import PlayerGuide5 from '../../images/HowToPlay/PlayerGuide_5.webp';
 import PlayerGuide6 from '../../images/HowToPlay/PlayerGuide_6.webp';
 import RewardsMorph from '../../images/HowToPlay/RewardsMorph.webp';
 import RewardsB3 from '../../images/HowToPlay/RewardsB3.webp';
+import RewardsHashkey from '../../images/HowToPlay/RewardsHashkey.webp';
 import MyPlantsGuideMorph from '../../images/HowToPlay/MyPlantsGuideMorph.webp';
 import MyPlantsGuideB3 from '../../images/HowToPlay/MyPlantsGuideB3.webp';
 import close from "../../images/Plants/close.webp";
@@ -24,15 +25,24 @@ interface PropsRewards {
   setShowRewards: any,
 }
 
+interface PropsCrossFlow {
+  setShowCrossFlow: any,
+}
+
 export default function HowToPlay({ setShowHowToPlay }: PropsHowToPlay) {
   const { chainId } = useTopUp();
   let rewardsImg = RewardsB3;
   let MyPlantsGuide = MyPlantsGuideB3;
 
-  if(chainId === 2818 || chainId === 0){
+  if (chainId === 2818 || chainId === 0) {
     rewardsImg = RewardsMorph;
     MyPlantsGuide = MyPlantsGuideMorph;
   }
+
+  if (chainId === 177) {
+    rewardsImg = RewardsHashkey;
+  }
+
   const images = [rewardsImg, PlayerGuide1, PlayerGuide2, PlayerGuide3, PlayerGuide4, PlayerGuide5, PlayerGuide6, MyPlantsGuide];
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -85,10 +95,15 @@ export function Rewards({ setShowRewards }: PropsRewards) {
   const { chainId } = useTopUp();
   let rewardsImg = RewardsB3;
   let MyPlantsGuide = MyPlantsGuideB3;
-  if(chainId === 2818|| chainId === 0){
+  if (chainId === 2818 || chainId === 0) {
     rewardsImg = RewardsMorph;
     MyPlantsGuide = MyPlantsGuideMorph;
   }
+
+  if (chainId === 177) {
+    rewardsImg = RewardsHashkey;
+  }
+
   const images = [rewardsImg, MyPlantsGuide];
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -123,6 +138,57 @@ export function Rewards({ setShowRewards }: PropsRewards) {
             >
             </span>
           ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function CrossFlow({ setShowCrossFlow }: PropsCrossFlow) {
+  const { chainId } = useTopUp();
+  let rewardsImg = RewardsB3;
+  if (chainId === 2818 || chainId === 0) {
+    rewardsImg = RewardsHashkey;
+  } else if (chainId === 177) {
+    rewardsImg = RewardsMorph;
+  }
+  const images = [rewardsImg];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const switchPage = (page = 1) => {
+    if (page < 0) {
+      page = images.length - 1
+    } else if (page > images.length - 1) {
+      page = 0
+    }
+    setCurrentIndex(page);
+  };
+
+  return (
+    <div className={style.overlayBuy}>
+      <div className={style.content}>
+        <div className={howToPlayStyle.cornerImage} onClick={() => { setShowCrossFlow(false) }}>
+          <img src={close} />
+        </div>
+        <img src={images[currentIndex]} alt={`Guide ${currentIndex + 1}`} className={howToPlayStyle.carouselImage} />
+        <div className={howToPlayStyle.btnContainer}>
+          <button
+            className={howToPlayStyle.goBtn}
+            onClick={() => {
+              if (chainId === 177) {
+                window.location.href = '/morph';
+              } else if (chainId === 2818) {
+                window.location.href = '/hashkey';
+              } else {
+                window.location.href = '/hashkey';
+              }
+            }}
+            style={{
+              cursor: "pointer"
+            }}
+          >
+            <span>Let's Go!</span>
+          </button>
         </div>
       </div>
     </div>
