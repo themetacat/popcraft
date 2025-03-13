@@ -265,11 +265,11 @@ const hashkey = defineChain({
   rpcUrls: {
     default: {
       http: ['https://mainnet.hsk.xyz'],
-      webSocket: ['wss://indexerhashkey.pixelaw.world/ws'],
+      webSocket: ['wss://devnet.pixelaw.world/ws'],
     },
     public: {
       http: ['https://mainnet.hsk.xyz'],
-      webSocket: ['wss://indexerhashkey.pixelaw.world/ws'],
+      webSocket: ['wss://devnet.pixelaw.world/ws'],
     },
   },
   blockExplorers: {
