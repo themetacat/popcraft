@@ -15,7 +15,7 @@ export const networkConfig: Record<string, number> = {
   base: 8453,
   // happytest: 216,
   hashkey: 177,
-  local: 31337
+  // local: 31337
 };
 
 const chainIdToNetwork: Record<number, string> = Object.fromEntries(
