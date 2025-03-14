@@ -10,7 +10,7 @@ import { addressToEntityID, numToEntityID, addr2NumToEntityID } from "../rightPa
 import { useAccount } from 'wagmi';
 import { useEntityQuery } from "@latticexyz/react";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
-import { useTopUp } from "../select";
+import { useTopUp, MISSION_BOUNS_CHAIN_IDS } from "../select";
 import { usePlantsGp } from "../herder/plantsIndex";
 import { useUtils } from "../herder/utils";
 
@@ -82,7 +82,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
     let totalPoints;
     let userRank = null;
 
-    if ((chainId === 2818 || chainId === 31337) && selectSeason > 0 && csd > 0) {
+    if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && selectSeason > 0 && csd > 0) {
 
         rankRecord = address ? getComponentValue(
             WeeklyRecord,
@@ -180,7 +180,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                     // add new chain: change here
                     if (chainId === 185 || chainId == 690 || chainId == 31338) {
                         sortValue = Number(value.totalScore)
-                    } else if (chainId == 2818 || chainId == 31337) {
+                    } else if (MISSION_BOUNS_CHAIN_IDS.includes(chainId)) {
                         sortValue = Number(value.totalScore)
                         totalPoints += getPlantsGp(address.address);
                     } else {
@@ -334,7 +334,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                 <th>Address</th>
 
                                 {/* add new chain: change here */}
-                                {(chainId === 31337 || chainId === 2818) ? (
+                                {MISSION_BOUNS_CHAIN_IDS.includes(chainId) ? (
                                     <>
                                         <th>Scores</th>
                                         <th>GP</th>
@@ -380,14 +380,14 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                     </td>
                                     <td>
                                         {/* add new chain: change here */}
-                                        <a className={style.noLinkStyle} href={`https://${publicClient.chain.id === 185 ? 'explorer.mintchain.io' : publicClient.chain.id === 690 ? 'explorer.redstone.xyz' : publicClient.chain.id === 2818 ? 'explorer.morphl2.io' : publicClient.chain.id === 8333 ? 'explorer.b3.fun' : 'etherscan.io'}/address/${item.entity}`} target="_blank">
+                                        <a className={style.noLinkStyle} href={`https://${publicClient.chain.id === 185 ? 'explorer.mintchain.io' : publicClient.chain.id === 690 ? 'explorer.redstone.xyz' : publicClient.chain.id === 2818 ? 'explorer.morphl2.io' : publicClient.chain.id === 8333 ? 'explorer.b3.fun' : publicClient.chain.id === 177 ? 'hashkey.blockscout.com' : 'etherscan.io'}/address/${item.entity}`} target="_blank">
                                             {formatAddress(item.entity)}
                                         </a>
                                     </td>
 
                                     {/* add new chain: change here */}
                                     {
-                                        (chainId === 31337 || chainId === 2818) ?
+                                        MISSION_BOUNS_CHAIN_IDS.includes(chainId) ?
                                             <>
                                                 <td>{item.totalScore}</td>
                                                 <td>{item?.totalPoints}</td>
@@ -419,7 +419,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                             <span style={{ marginLeft: "5.9rem" }}>{sortedRankingRecords.length}</span>
                         </div>
                         <div className={style.totalScoreBox}>
-                        {(chainId === 31337 || chainId === 2818) ? (
+                        {MISSION_BOUNS_CHAIN_IDS.includes(chainId) ? (
                             <>
                                 <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalScore).reduce((sum, score) => sum + score, 0)}</span>
                                 <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalPoints).reduce((sum, score) => sum + score, 0)}</span>
@@ -458,7 +458,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                                 <div className={style.scoreBox}>
 
                                     {/* add new chain: change here */}
-                                    {(chainId === 31337 || chainId === 2818) ?
+                                    {MISSION_BOUNS_CHAIN_IDS.includes(chainId) ?
                                         <>
                                             <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
                                             <span className={style.scoreItem}>{totalPoints ? totalPoints : 0}</span>

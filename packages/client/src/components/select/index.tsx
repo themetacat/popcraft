@@ -212,6 +212,7 @@ export const useTopUp = () => {
         setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
         setBridgeUrl("https://bridge.hsk.xyz/")
         setChianIcon("https://hsk.xyz/static/logo.png");
+        setRewardInfo("150 Scores");
         setTokenAddress(["0x0000000000000000000000000000000000000013", ...defaultTokenAddresses])
         setPriTokenAddress(["0x0000000000000000000000000000000000000013", ...defaultTokenAddresses])
         setRewardDescInfo("game score for each game, along with additional rewards for the top 150 players every week. ");
