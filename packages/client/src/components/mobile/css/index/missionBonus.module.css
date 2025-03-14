@@ -1,0 +1,62 @@
+.inDayBounsBtn {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    z-index: 999999;
+    font-family: "Simplicity";
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    width: 35rem;
+    height: 40rem;
+    margin-left: 17.96rem;
+}
+
+.inDayBounsBtn img {
+    position: absolute;
+    width: 33.04rem;
+    height: 33.26rem;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    top: 0;
+}
+
+.inDayBounsBtn:active img {
+    transform: scale(1.06);
+}
+
+.inDayBounsBtn:active button {
+    text-shadow:
+        -0.2rem -0.2rem 0 white,
+        0.2rem -0.2rem 0 white,
+        -0.2rem 0.2rem 0 white,
+        0.2rem 0.2rem 0 white,
+        0.4rem 0.4rem 0.1rem rgba(0, 0, 0, 0.7);
+    transition: text-shadow 0.3s ease;
+}
+
+.inDayBounsBtn button {
+    position: absolute;
+    width: 57rem;
+    height: 5.88rem;
+    background-color: transparent;
+    border: none;
+    font-family: "Simplicity";
+    color: #24A0D4;
+    transition: font-size 0.3s ease;
+    font-size: 4.88rem;
+    font-weight: 400;
+    top: 32.15rem;
+    margin: 0;
+    line-height: 2.29rem;
+    text-shadow:
+        -0.65rem -0.65rem 0 white,
+        0.65rem -0.65rem 0 white,
+        -0.65rem 0.65rem 0 white,
+        0.65rem 0.65rem 0 white,
+        0.5rem 1rem 1rem rgba(0, 0, 0, 1);
+}

@@ -1,0 +1,71 @@
+.containerImg {
+  width: 68.51rem;
+  height: 21.51rem;
+  position: absolute;
+  left: 14px;
+  top: 36px;
+}
+
+.welcome{
+  height: 88.69rem;
+  width: 174.94rem;
+  position: absolute;
+  left: 50%;
+  top: 29%;
+  transform: translate(-50%, 29%);
+  font-size: 12.93rem;
+  color: #14B383;
+  line-height: 22.87rem;
+  letter-spacing: 1.15rem;
+  font-family: "AdobeHeitiStd-Regular";
+  text-align: center;
+  text-shadow:
+  -1rem -1rem 0 white,
+  1rem -1rem 0 white,
+  -1rem 1rem 0 white,
+  1rem 1rem 0 white,
+  1.1rem 1.1rem 4rem rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+
+.homeIGLO{
+  width: 33.26rem;
+  height: 29.93rem;
+  position: absolute;
+  right: 23.28rem;
+  bottom: 74.72rem;
+}
+
+.homeKOALA{
+  width: 70.06rem;
+  height: 71.17rem;
+  position: absolute;
+  left: 7.98;
+  bottom: 72.95rem;
+}
+
+.homeHOOT{
+  width: 41.68rem;
+  height: 51.44rem;
+  position: absolute;
+  bottom: 121.28rem;
+}
+
+.homeCLUK{
+  width: 39.96rem;
+  height: 56.32rem;
+  position: absolute;
+  bottom: 82.92rem;
+  right: 0;
+}
+
+
+.buttomBtn{
+  width: 100%;
+  position: absolute;
+  bottom: 18.5rem;
+  overflow: hidden;
+  height: 40rem;
+  display: flex;
+}

@@ -60,7 +60,7 @@ const config = getDefaultConfig({
     redstone,
     mintchain,
     metacatDev,
-    // local,
+    local,
   ],
   ssr: true,
 });

@@ -11,6 +11,9 @@ import { useLocation } from "react-router-dom";
 import { useTopUp, networkConfig, getNetworkName } from "./components/select"
 import { getChain } from "./index";
 
+const isMobileDevice = () => {
+  return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
 
 export const App = () => {
   const {
@@ -32,6 +35,12 @@ export const App = () => {
   const handleMouseDown = (event: any) => {
     setHoveredData(event);
   };
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(isMobileDevice());
+  }, []);
 
   useEffect(() => {
     const adjustFontSize = () => {
@@ -120,14 +129,14 @@ export const App = () => {
   }
 
   return (
-    <div className={style.page}>
+    <div className={isMobile ? style.pageMobile : style.page}>
       {syncProgress ? (
         syncProgress.step !== SyncStep.LIVE ? (
           <div className={style.GameBoard}>
             {syncProgress.message} ({Math.floor(syncProgress.percentage)}%)
           </div>
         ) : (
-          <Header hoveredData={hoveredData} handleData={handleMouseDown} />
+          <Header hoveredData={hoveredData} handleData={handleMouseDown} isMobile={isMobile} />
         )
       ) : (
         <div style={{ color: "#000" }}>HYDRATING FROM RPC &nbsp;&nbsp;(0)</div>

@@ -16,6 +16,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useDisconnect, useBalance } from 'wagmi';
 import popcraftLogo from '../../images/popcraft_logo.webp';
+import PopcraftLogoMobile from '../../images/Mobile/Popcraft_logo.webp';
 import backgroundMusic from '../../audio/bgm.mp3';
 import effectSound from '../../audio/2.mp3';
 import failto from '../../images/substance/failto.png'
@@ -40,16 +41,19 @@ import MissionBonus from "./missionBonus";
 import TokenNotification from "./tokenNotification";
 import GiftPark from "./giftPark"
 
+import mobileStyle from "../mobile/css/index/index.module.css";
+
 interface Props {
   hoveredData: { x: number; y: number } | null;
   handleData: (data: { x: number; y: number }) => void;
+  isMobile: boolean
 }
 
 let sendCount = 0;
 let receiveCount = 0;
 
 localStorage.setItem('isShowWaitingMaskLayer', 'false')
-export default function Header({ hoveredData, handleData }: Props) {
+export default function Header({ hoveredData, handleData, isMobile }: Props) {
   // 得分气泡状态管理
   const [scoreBubble, setScoreBubble] = useState<{ visible: boolean; x: number; y: number; score: number }>({ visible: false, x: 0, y: 0, score: 0 });
 
@@ -2019,489 +2023,572 @@ export default function Header({ hoveredData, handleData }: Props) {
       toast.error(toastError);
     }
   }
-
-  return (
-    <>
-      {/* 最后一个/一组棋盘元素被点击后，交易未处理完成时的蒙层 */}
-      {localStorage.getItem('isShowWaitingMaskLayer') === 'true' && (
-        <div className={style.waitingOverlay}>
-          <div className={style.waitingOverlayText}>
-            <div className={style.progressBar}>
-              <div
-                className={style.progressFill}
-                style={{
-                  width: sendCount > 0 ? `${((receiveCount / sendCount) * 100).toFixed(2)}%` : '0%',
-                }}
-              ></div>
-              <div
-                className={style.diamondIcon}
-                style={{
-                  left: sendCount > 0 ? `calc(${((receiveCount / sendCount) * 100).toFixed(2)}% - 3vw)` : '0%',
-                }}
-              ></div>
-              <span
-                className={style.progressText}
-                style={{
-                  left: `${Math.min(
-                    Math.max(
-                      sendCount > 0 ? (receiveCount / sendCount) * 100 : 0,
-                      0
-                    ),
-                    100
-                  )}%`,
-                  transform: `translate(-50%, -50%)`, // 确保文字居中
-                }}
-              >
-                {sendCount > 0 ? Math.floor((receiveCount / sendCount) * 100) : 0}%
-              </span>
-            </div>
-            This is a fully on-chain game.
-            <br />
-            Please wait while transactions are processed.
-          </div>
-        </div>
-      )}
-
-      <div className={style.container}>
-        <img className={style.containerImg} src={popcraftLogo} alt="PopCraft Logo" />
-        <div className={style.gasPriceContainer}>
-          L1 Gas:
-          <span id="spanGasTooltip">
-            <a href="https://etherscan.io/gastracker" target="_blank" rel="noopener noreferrer">
-              <span className={style.gasPricePlaceHolder}>{gasPrice || " "}</span> Gwei
-            </a>
-          </span>
-          <span className={style.tooltip}>Gaming costs less at ~5 Gwei.</span>
-        </div>
-        <div className={style.content}>
-          <button
-            className={numberData === 25 ? style.btnBoxY : style.btnBox}
-            disabled={numberData === 25}
-            onClick={btnLower}
-          >
-            −
-          </button>
-          <span className={style.spanData}>{numberData}%</span>
-          <button
-            className={numberData === 100 ? style.btnBoxY : style.btnBox}
-            disabled={numberData === 100}
-            onClick={btnAdd}
-          >
-            +
-          </button>
-        </div>
-
-        <div
-          className={style.addr}
-        >
-          <div
-            className={isConnected ? style.LuckyBagImg : style.LuckyBagImgNotConnected}
-            onClick={() => window.open("https://taskon.xyz/quest/630902165", "_blank")}
-            style={{
-              cursor: "pointer",
-            }}
-          >
-            <img src={LuckyBagImg} alt="" />
-            <span>500 USDC</span>
-          </div>
-          <div
-            className={isConnected ? style.RankingListimg : style.RankingListimgNotConnected}
-            onClick={() => rankTransports()}
-            style={{
-              cursor: "pointer",
-            }}
-          >
-            <img src={RankingListimg} alt="" />
-            <span>leaderboard</span>
-          </div>
-
-          <ConnectButton.Custom>
-            {({
-              account,
-              chain,
-              openAccountModal,
-              openChainModal,
-              openConnectModal,
-              authenticationStatus,
-              mounted,
-            }) => {
-              const ready = mounted && authenticationStatus !== "loading";
-              const connected =
-                ready &&
-                account &&
-                chain &&
-                (!authenticationStatus ||
-                  authenticationStatus === "authenticated");
-
-              return (
+  if (!isMobile) {
+    return (
+      <>
+        {/* 最后一个/一组棋盘元素被点击后，交易未处理完成时的蒙层 */}
+        {localStorage.getItem('isShowWaitingMaskLayer') === 'true' && (
+          <div className={style.waitingOverlay}>
+            <div className={style.waitingOverlayText}>
+              <div className={style.progressBar}>
                 <div
-                  {...(!ready && {
-                    "aria-hidden": true,
-                    style: {
-                      opacity: 0,
-                      pointerEvents: "none",
-                      userSelect: "none",
-                    },
-                  })}
+                  className={style.progressFill}
+                  style={{
+                    width: sendCount > 0 ? `${((receiveCount / sendCount) * 100).toFixed(2)}%` : '0%',
+                  }}
+                ></div>
+                <div
+                  className={style.diamondIcon}
+                  style={{
+                    left: sendCount > 0 ? `calc(${((receiveCount / sendCount) * 100).toFixed(2)}% - 3vw)` : '0%',
+                  }}
+                ></div>
+                <span
+                  className={style.progressText}
+                  style={{
+                    left: `${Math.min(
+                      Math.max(
+                        sendCount > 0 ? (receiveCount / sendCount) * 100 : 0,
+                        0
+                      ),
+                      100
+                    )}%`,
+                    transform: `translate(-50%, -50%)`, // 确保文字居中
+                  }}
                 >
-                  {(() => {
-                    if (!connected) {
+                  {sendCount > 0 ? Math.floor((receiveCount / sendCount) * 100) : 0}%
+                </span>
+              </div>
+              This is a fully on-chain game.
+              <br />
+              Please wait while transactions are processed.
+            </div>
+          </div>
+        )}
+
+        <div className={style.container}>
+          <img className={style.containerImg} src={popcraftLogo} alt="PopCraft Logo" />
+          <div className={style.gasPriceContainer}>
+            L1 Gas:
+            <span id="spanGasTooltip">
+              <a href="https://etherscan.io/gastracker" target="_blank" rel="noopener noreferrer">
+                <span className={style.gasPricePlaceHolder}>{gasPrice || " "}</span> Gwei
+              </a>
+            </span>
+            <span className={style.tooltip}>Gaming costs less at ~5 Gwei.</span>
+          </div>
+          <div className={style.content}>
+            <button
+              className={numberData === 25 ? style.btnBoxY : style.btnBox}
+              disabled={numberData === 25}
+              onClick={btnLower}
+            >
+              −
+            </button>
+            <span className={style.spanData}>{numberData}%</span>
+            <button
+              className={numberData === 100 ? style.btnBoxY : style.btnBox}
+              disabled={numberData === 100}
+              onClick={btnAdd}
+            >
+              +
+            </button>
+          </div>
+
+          <div
+            className={style.addr}
+          >
+            <div
+              className={isConnected ? style.LuckyBagImg : style.LuckyBagImgNotConnected}
+              onClick={() => window.open("https://taskon.xyz/quest/630902165", "_blank")}
+              style={{
+                cursor: "pointer",
+              }}
+            >
+              <img src={LuckyBagImg} alt="" />
+              <span>500 USDC</span>
+            </div>
+            <div
+              className={isConnected ? style.RankingListimg : style.RankingListimgNotConnected}
+              onClick={() => rankTransports()}
+              style={{
+                cursor: "pointer",
+              }}
+            >
+              <img src={RankingListimg} alt="" />
+              <span>leaderboard</span>
+            </div>
+
+            <ConnectButton.Custom>
+              {({
+                account,
+                chain,
+                openAccountModal,
+                openChainModal,
+                openConnectModal,
+                authenticationStatus,
+                mounted,
+              }) => {
+                const ready = mounted && authenticationStatus !== "loading";
+                const connected =
+                  ready &&
+                  account &&
+                  chain &&
+                  (!authenticationStatus ||
+                    authenticationStatus === "authenticated");
+
+                return (
+                  <div
+                    {...(!ready && {
+                      "aria-hidden": true,
+                      style: {
+                        opacity: 0,
+                        pointerEvents: "none",
+                        userSelect: "none",
+                      },
+                    })}
+                  >
+                    {(() => {
+                      if (!connected) {
+                        return (
+                          <div
+                            onClick={openConnectModal}
+                            className={style.btnConnectbox}
+                          >
+                            <img src={ConnectImg} alt="" />
+                            <span>CONNECT</span>
+                          </div>
+
+                        );
+                      }
+
+                      if (chain.unsupported) {
+                        return (
+                          <button
+                            onClick={openChainModal(chain)}
+                            type="button"
+                            className={style.btnConnect}
+                          >
+                            Wrong network
+                          </button>
+                        );
+                      }
+
                       return (
-                        <div
-                          onClick={openConnectModal}
-                          className={style.btnConnectbox}
-                        >
-                          <img src={ConnectImg} alt="" />
-                          <span>CONNECT</span>
-                        </div>
+                        // <div>
+                        <div className={style.chainbox}>
 
-                      );
-                    }
+                          <div
+                            className={style.buyButton}
+                            onClick={() => topBuyTransports()}
+                            style={{
+                              cursor: "pointer",
+                            }}
+                          >
+                            <img src={ShoppingCartImg} alt="" />
+                            <span>BUY</span>
+                          </div>
 
-                    if (chain.unsupported) {
-                      return (
-                        <button
-                          onClick={openChainModal(chain)}
-                          type="button"
-                          className={style.btnConnect}
-                        >
-                          Wrong network
-                        </button>
-                      );
-                    }
-
-                    return (
-                      // <div>
-                      <div className={style.chainbox}>
-
-                        <div
-                          className={style.buyButton}
-                          onClick={() => topBuyTransports()}
-                          style={{
-                            cursor: "pointer",
-                          }}
-                        >
-                          <img src={ShoppingCartImg} alt="" />
-                          <span>BUY</span>
-                        </div>
-
-                        <div className={style.chain}>
-                          <div className={style.chainsbox}>
-                            <button onClick={(event) => {
-                              openChainModal();
-                            }} className={style.Chainbutton}>
-                              {chain.iconUrl && (
+                          <div className={style.chain}>
+                            <div className={style.chainsbox}>
+                              <button onClick={(event) => {
+                                openChainModal();
+                              }} className={style.Chainbutton}>
+                                {chain.iconUrl && (
+                                  <img
+                                    alt={chain.name ?? 'Chain icon'}
+                                    src={chain.iconUrl}
+                                    className={style.iconimg}
+                                  />
+                                )}
                                 <img
-                                  alt={chain.name ?? 'Chain icon'}
-                                  src={chain.iconUrl}
-                                  className={style.iconimg}
+                                  src={Arrow}
+                                  className={`${style.arrow} ${isOpen ? style.arrowRotated : ''}`}
                                 />
-                              )}
+                              </button>
+
+                            </div>
+                          </div>
+
+                          <div className={style.addressbox}
+                            style={{
+                              gap: 12,
+                            }}
+                            onMouseEnter={() => {
+                              setAddressModel(true);
+                            }}
+                            onMouseLeave={() => {
+                              setAddressModel(false);
+                            }}
+                          >
+                            <img src={UserImg} className={style.addressboxUserImg} alt="" />
+                            <button
+                              type="button"
+                              className={style.boldAddress} // 添加这个类名
+                            >
+                              {account.displayName}
+                              {account.displayBalance
+                                ? ` (${formatBalance(balancover)}  ${currencySymbol})`
+                                : ""}
                               <img
                                 src={Arrow}
                                 className={`${style.arrow} ${isOpen ? style.arrowRotated : ''}`}
                               />
                             </button>
 
-                          </div>
-                        </div>
-
-                        <div className={style.addressbox}
-                          style={{
-                            gap: 12,
-                          }}
-                          onMouseEnter={() => {
-                            setAddressModel(true);
-                          }}
-                          onMouseLeave={() => {
-                            setAddressModel(false);
-                          }}
-                        >
-                          <img src={UserImg} className={style.addressboxUserImg} alt="" />
-                          <button
-                            type="button"
-                            className={style.boldAddress} // 添加这个类名
-                          >
-                            {account.displayName}
-                            {account.displayBalance
-                              ? ` (${formatBalance(balancover)}  ${currencySymbol})`
-                              : ""}
-                            <img
-                              src={Arrow}
-                              className={`${style.arrow} ${isOpen ? style.arrowRotated : ''}`}
-                            />
-                          </button>
-
-                          {addressModel && (
-                            <div className={style.downBox}>
-                              <div className={style.downBoxclocese}>
-                                {addressContent.length > 0 &&
-                                  addressContent.map((item, index) => (
-                                    <div
-                                      className={style.downBoxItem}
-                                      key={index}
-                                      onClick={() => handleAddClick(item.value)}
-                                    >
-                                      {item.name}
-                                    </div>
-                                  ))}
+                            {addressModel && (
+                              <div className={style.downBox}>
+                                <div className={style.downBoxclocese}>
+                                  {addressContent.length > 0 &&
+                                    addressContent.map((item, index) => (
+                                      <div
+                                        className={style.downBoxItem}
+                                        key={index}
+                                        onClick={() => handleAddClick(item.value)}
+                                      >
+                                        {item.name}
+                                      </div>
+                                    ))}
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            )}
+                          </div>
+                          {" "}
+                          <button onClick={toggleMusic} className={style.BGMButton}>
+                            <img src={musicEnabled ? BGMOn : BGMOff} alt={musicEnabled ? 'pause' : 'play'} />
+                          </button>
                         </div>
-                        {" "}
-                        <button onClick={toggleMusic} className={style.BGMButton}>
-                          <img src={musicEnabled ? BGMOn : BGMOff} alt={musicEnabled ? 'pause' : 'play'} />
-                        </button>
-                      </div>
-                    );
-                  })()}
-                </div>
-              );
-            }}
-          </ConnectButton.Custom>
+                      );
+                    })()}
+                  </div>
+                );
+              }}
+            </ConnectButton.Custom>
+          </div>
         </div>
-      </div>
 
-      <div style={{ display: "flex", height: "100vh", overflowY: "hidden" }}>
-        <div
-          style={{
-            width: `calc(100vw)`,
-            overflow: "hidden",
-            position: "relative",
-            display: "flex",
-          }}
-          className={style.bodyCon}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMoveData}
-          onMouseLeave={handleLeave}
-          onMouseEnter={handleMouseEnter}
-        >
-          <div ref={visibleAreaRef} className={style.canvasWrapper}>
-            <canvas
-              ref={canvasRef}
-              width={CANVAS_WIDTH}
-              height={CANVAS_WIDTH}
+        <div style={{ display: "flex", height: "100vh", overflowY: "hidden" }}>
+          <div
+            style={{
+              width: `calc(100vw)`,
+              overflow: "hidden",
+              position: "relative",
+              display: "flex",
+            }}
+            className={style.bodyCon}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
+            onMouseMove={handleMouseMoveData}
+            onMouseLeave={handleLeave}
+            onMouseEnter={handleMouseEnter}
+          >
+            <div ref={visibleAreaRef} className={style.canvasWrapper}>
+              <canvas
+                ref={canvasRef}
+                width={CANVAS_WIDTH}
+                height={CANVAS_WIDTH}
+              />
+            </div>
+
+          </div>
+
+          <audio ref={audioRef} src={backgroundMusic} onEnded={handleEnded} loop />
+        </div>
+        {popExhibit === true ? (
+          <>
+            {showOverlay && <div className={style.overlay} />}
+            <PopUpBox
+              addressData={addressData}
+              coordinates={coordinates}
+              onHandleExe={onHandleExe}
+              selectedColor={selectedColor}
+              interactHandle={interactHandle}
+              onHandleLoading={onHandleLoading}
+              onHandleLoadingFun={onHandleLoadingFun}
+              paramInputs={paramInputs}
+              convertedParamsData={convertedParamsData}
+              enumValue={enumValue}
+              action={action}
+            />
+          </>
+        ) : (
+          ""
+        )}
+        {topUpType ? (
+          <div
+            className={style.overlay}
+            onClick={(event) => {
+              if (
+                !event.target.classList.contains("topBox") &&
+                event.target.classList.contains(style.overlay)
+              ) {
+                setTopUpType(false);
+              }
+            }}
+          >
+            <TopUpContent
+              setTopUpType={setTopUpType}
+              setTopUpTypeto={setTopUpTypeto}
+              mainContent={mainContent}
+              palyerAddress={palyerAddress}
+              onTopUpSuccess={handleTopupSuccess}
             />
           </div>
-
-        </div>
-
-        <audio ref={audioRef} src={backgroundMusic} onEnded={handleEnded} loop />
-      </div>
-      {popExhibit === true ? (
-        <>
-          {showOverlay && <div className={style.overlay} />}
-          <PopUpBox
-            addressData={addressData}
-            coordinates={coordinates}
-            onHandleExe={onHandleExe}
-            selectedColor={selectedColor}
-            interactHandle={interactHandle}
-            onHandleLoading={onHandleLoading}
-            onHandleLoadingFun={onHandleLoadingFun}
-            paramInputs={paramInputs}
-            convertedParamsData={convertedParamsData}
-            enumValue={enumValue}
-            action={action}
-          />
-        </>
-      ) : (
-        ""
-      )}
-      {topUpType ? (
-        <div
-          className={style.overlay}
-          onClick={(event) => {
-            if (
-              !event.target.classList.contains("topBox") &&
-              event.target.classList.contains(style.overlay)
-            ) {
-              setTopUpType(false);
+        ) : null}
+        {popStar === true && (playAction !== 'gameContinue' || !isConnected) ? (
+          <div
+            className={
+              panningType !== "false"
+                ? style.overlayPopStar
+                : style.overlayPopStarFl
             }
-          }}
-        >
-          <TopUpContent
-            setTopUpType={setTopUpType}
-            setTopUpTypeto={setTopUpTypeto}
-            mainContent={mainContent}
-            palyerAddress={palyerAddress}
-            onTopUpSuccess={handleTopupSuccess}
-          />
-        </div>
-      ) : null}
-      {popStar === true && (playAction !== 'gameContinue' || !isConnected) ? (
-        <div
-          className={
-            panningType !== "false"
-              ? style.overlayPopStar
-              : style.overlayPopStarFl
-          }
-          onClick={() => {
-            setBoxPrompt(true);
-          }}
-        >
-          <PopStar
-            setPopStar={setPopStar}
+            onClick={() => {
+              setBoxPrompt(true);
+            }}
+          >
+            <PopStar
+              setPopStar={setPopStar}
+              playFun={playFun}
+              playFuntop={playFuntop}
+              onTopUpClick={handleTopUpClick}
+              loadingplay={loadingplay}
+              setTopUpType={setTopUpType}
+              isMobile={isMobile}
+            />
+          </div>
+        ) : null}
+
+        {boxPrompt === true || appName === "BASE/PopCraftSystem" ? (
+          <BoxPrompt
+            coordinates={coordinates}
+            timeControl={timeControl}
+            showTopElements={showTopElements}
             playFun={playFun}
-            playFuntop={playFuntop}
-            onTopUpClick={handleTopUpClick}
-            loadingplay={loadingplay}
-            setTopUpType={setTopUpType}
+            handleEoaContractData={handleEoaContractData}
+            setPopStar={setPopStar}
+            interactTaskToExecute={interactTaskToExecute}
+            checkInteractTask={checkInteractTask}
+            popStar={popStar}
           />
-        </div>
-      ) : null}
+        ) : null}
 
-      {boxPrompt === true || appName === "BASE/PopCraftSystem" ? (
-        <BoxPrompt
-          coordinates={coordinates}
-          timeControl={timeControl}
-          showTopElements={showTopElements}
-          playFun={playFun}
-          handleEoaContractData={handleEoaContractData}
-          setPopStar={setPopStar}
-          interactTaskToExecute={interactTaskToExecute}
-          checkInteractTask={checkInteractTask}
-          popStar={popStar}
-        />
-      ) : null}
+        {showRankingList && (
+          <div className={style.overlay}>
+            <RankingList onClose={() => setShowRankingList(false)}
+              setShowRankingList={setShowRankingList}
+              showRankingList={showRankingList}
+              isMobile={isMobile}
+            />
+          </div>
+        )}
 
-      {showRankingList && (
-        <div className={style.overlay}>
-          <RankingList onClose={() => setShowRankingList(false)}
-            setShowRankingList={setShowRankingList}
-          />
-        </div>
-      )}
+        {showTopBuy && isConnected ? (
+          <div className={style.overlay}>
+            <TopBuy
+              setShowTopBuy={setShowTopBuy}
+            />
+          </div>
+        ) : null}
 
-      {showTopBuy && isConnected ? (
-        <div className={style.overlay}>
-          <TopBuy
-            setShowTopBuy={setShowTopBuy}
-          />
-        </div>
-      ) : null}
-
-      {showNewPopUp && localStorage.getItem("isShowWaitingMaskLayer") === "false" && (
-        <div className={style.overlaybox}>
-          <div className={style.popup}>
-            <div className={style.contentbox}>
-              <p>INSUFFICIENT GASBALANCE</p><br />
+        {showNewPopUp && localStorage.getItem("isShowWaitingMaskLayer") === "false" && (
+          <div className={style.overlaybox}>
+            <div className={style.popup}>
+              <div className={style.contentbox}>
+                <p>INSUFFICIENT GASBALANCE</p><br />
+              </div>
+              <button className={style.topupbtn} onClick={() => {
+                setShowNewPopUp(false);
+                setTopUpType(true);
+              }}>TOP UP</button>
             </div>
-            <button className={style.topupbtn} onClick={() => {
-              setShowNewPopUp(false);
-              setTopUpType(true);
-            }}>TOP UP</button>
           </div>
-        </div>
-      )}
-      {showSuccessModal && (
-        <div className={style.overlay}>
-          <div className={style.modal}>
-            <img src={failto} alt="" className={style.failto} />
-            <p className={style.colorto}>Out of stock, please buy!</p>
+        )}
+        {showSuccessModal && (
+          <div className={style.overlay}>
+            <div className={style.modal}>
+              <img src={failto} alt="" className={style.failto} />
+              <p className={style.colorto}>Out of stock, please buy!</p>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {scoreBubble.visible && (
-        <div className="score-popup"
-          style={{
-            left: scoreBubble.x,
-            top: scoreBubble.y,
-          }}
-        >
-          +{scoreBubble.score} {/* 显示得分 */}
-        </div>
-      )}
-      <style>
-        {`
-              .score-popup {
-                  position: absolute;
-                  color: #00AB6B; /* 使用更亮的粉色 */
-                  font-size: 1.5vw; /* 使用视口宽度的百分比进行适配 */
-                  // font-weight: bold; /* 加粗字体 */
-                  font-family: 'Simplicity', sans-serif; /* 设置字体为 Simplicity */
-                  padding: 10px 15px; /* 内边距 */
-                  /* 去掉背景颜色 */
-                  box-shadow: none; /* 去掉阴影效果 */
-                  animation: moveUp 3s forwards;
-                  pointer-events: none;
-                  text-align: center; /* 文字居中 */
-              }
-
-              @media (max-width: 600px) {
-                  .score-popup {
-                      font-size: 4vw; /* 小屏幕上的字体大小 */
-                  }
-              }
-
-              @media (min-width: 601px) and (max-width: 1200px) {
-                  .score-popup {
-                      font-size: 3vw; /* 中等屏幕上的字体大小 */
-                  }
-              }
-
-              @media (min-width: 1200px) {
-                  .score-popup {
-                      font-size: 2vw; /* 大屏幕上的字体大小 */
-                  }
-              }
-
-              @media (min-width: 1600px) {
-                  .score-popup {
-                      font-size: 1.5vw; /* 更大屏幕上的字体大小 */
-                  }
-              }
-
-              @keyframes moveUp {
-                  0% {
-                      transform: translateY(0);
-                      opacity: 1;
-                  }
-                  100% {
-                      transform: translateY(-320px);
-                      opacity: 0.1;
-                  }
-              }
-          `}
-      </style>
-      <BotInfo
-        sendCount={sendCount}
-        receiveCount={receiveCount}
-        botInfoTaskTips={botInfoTaskTips}
-      />
-      {(isConnected && address) && (
-        <PlantsIndex
-          checkTaskInProcess={checkTaskInProcess}
-          handleErrorAll={handleErrorAll}
+        {scoreBubble.visible && (
+          <div className="score-popup"
+            style={{
+              left: scoreBubble.x,
+              top: scoreBubble.y,
+            }}
+          >
+            +{scoreBubble.score} {/* 显示得分 */}
+          </div>
+        )}
+        <style>
+          {`
+                .score-popup {
+                    position: absolute;
+                    color: #00AB6B; /* 使用更亮的粉色 */
+                    font-size: 1.5vw; /* 使用视口宽度的百分比进行适配 */
+                    // font-weight: bold; /* 加粗字体 */
+                    font-family: 'Simplicity', sans-serif; /* 设置字体为 Simplicity */
+                    padding: 10px 15px; /* 内边距 */
+                    /* 去掉背景颜色 */
+                    box-shadow: none; /* 去掉阴影效果 */
+                    animation: moveUp 3s forwards;
+                    pointer-events: none;
+                    text-align: center; /* 文字居中 */
+                }
+  
+                @media (max-width: 600px) {
+                    .score-popup {
+                        font-size: 4vw; /* 小屏幕上的字体大小 */
+                    }
+                }
+  
+                @media (min-width: 601px) and (max-width: 1200px) {
+                    .score-popup {
+                        font-size: 3vw; /* 中等屏幕上的字体大小 */
+                    }
+                }
+  
+                @media (min-width: 1200px) {
+                    .score-popup {
+                        font-size: 2vw; /* 大屏幕上的字体大小 */
+                    }
+                }
+  
+                @media (min-width: 1600px) {
+                    .score-popup {
+                        font-size: 1.5vw; /* 更大屏幕上的字体大小 */
+                    }
+                }
+  
+                @keyframes moveUp {
+                    0% {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translateY(-320px);
+                        opacity: 0.1;
+                    }
+                }
+            `}
+        </style>
+        <BotInfo
+          sendCount={sendCount}
+          receiveCount={receiveCount}
+          botInfoTaskTips={botInfoTaskTips}
         />
-      )}
+        {(isConnected && address) && (
+          <PlantsIndex
+            checkTaskInProcess={checkTaskInProcess}
+            handleErrorAll={handleErrorAll}
+          />
+        )}
 
-      {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (
-        <>
-          <TokenNotification value={tokenNotificationValue} />
+        {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (
+          <>
+            <TokenNotification value={tokenNotificationValue} />
+            <MissionBonus
+              checkTaskInProcess={checkTaskInProcess}
+              handleErrorAll={handleErrorAll}
+              isMobile={isMobile}
+            />
+            <GiftPark
+              checkTaskInProcess={checkTaskInProcess}
+              handleErrorAll={handleErrorAll}
+            />
+          </>
+
+        )}
+
+        {/* add new chain: chain here */}
+        {chainId !== null && COMMON_CHAIN_IDS.includes(chainId) && address && (
+          <NewUserBenefitsToken
+            checkTaskInProcess={checkTaskInProcess}
+            handleErrorAll={handleErrorAll}
+          />
+        )}
+
+      </>
+    );
+  } else {
+    return (
+      <>
+        {localStorage.getItem('isShowWaitingMaskLayer') === 'true' && (
+          <div className={style.waitingOverlay}>
+            <div className={style.waitingOverlayText}>
+              <div className={style.progressBar}>
+                <div
+                  className={style.progressFill}
+                  style={{
+                    width: sendCount > 0 ? `${((receiveCount / sendCount) * 100).toFixed(2)}%` : '0%',
+                  }}
+                ></div>
+                <div
+                  className={style.diamondIcon}
+                  style={{
+                    left: sendCount > 0 ? `calc(${((receiveCount / sendCount) * 100).toFixed(2)}% - 3vw)` : '0%',
+                  }}
+                ></div>
+                <span
+                  className={style.progressText}
+                  style={{
+                    left: `${Math.min(
+                      Math.max(
+                        sendCount > 0 ? (receiveCount / sendCount) * 100 : 0,
+                        0
+                      ),
+                      100
+                    )}%`,
+                    transform: `translate(-50%, -50%)`, // 确保文字居中
+                  }}
+                >
+                  {sendCount > 0 ? Math.floor((receiveCount / sendCount) * 100) : 0}%
+                </span>
+              </div>
+              This is a fully on-chain game.
+              <br />
+              Please wait while transactions are processed.
+            </div>
+          </div>
+        )}
+        <div>
+          <img src={PopcraftLogoMobile} className={mobileStyle.containerImg} alt="" />
+        </div>
+        {popStar === true && (playAction !== 'gameContinue' || !isConnected) ? (
+          <div
+            onClick={() => {
+              setBoxPrompt(true);
+            }}
+          >
+            <PopStar
+              setPopStar={setPopStar}
+              playFun={playFun}
+              playFuntop={playFuntop}
+              onTopUpClick={handleTopUpClick}
+              loadingplay={loadingplay}
+              setTopUpType={setTopUpType}
+              isMobile={isMobile}
+            />
+          </div>
+        ) : null}
+
+        <div className={mobileStyle.buttomBtn}>
+          <RankingList
+            setShowRankingList={setShowRankingList}
+            showRankingList={showRankingList}
+            isMobile={isMobile}
+          />
           <MissionBonus
             checkTaskInProcess={checkTaskInProcess}
             handleErrorAll={handleErrorAll}
+            isMobile={isMobile}
           />
-          <GiftPark
-            checkTaskInProcess={checkTaskInProcess}
-            handleErrorAll={handleErrorAll}
-          />
-        </>
+        </div>
 
-      )}
+      </>
+    );
+  }
 
-      {/* add new chain: chain here */}
-      {chainId !== null && COMMON_CHAIN_IDS.includes(chainId) && address && (
-        <NewUserBenefitsToken
-          checkTaskInProcess={checkTaskInProcess}
-          handleErrorAll={handleErrorAll}
-        />
-      )}
-
-    </>
-  );
 }

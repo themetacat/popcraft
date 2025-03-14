@@ -1,0 +1,63 @@
+.btn {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    z-index: 999999;
+    font-family: "Simplicity";
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    color: #EB5F8C;
+    width: 35rem;
+    height: 40rem;
+    margin-left: 11.96rem;
+}
+
+.btn img {
+    position: absolute;
+    width: 33.04rem;
+    height: 33.04rem;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    top: 0;
+}
+
+.btn:active img {
+    transform: scale(1.06);
+}
+
+.btn:active button {
+    text-shadow:
+        -0.85rem -0.85rem 0 white,
+        0.85rem -0.85rem 0 white,
+        -0.85rem 0.85rem 0 white,
+        0.85rem 0.85rem 0 white,
+        0.7rem 1.2rem 1rem rgba(0, 0, 0, 1);
+    transition: text-shadow 0.3s ease;
+}
+
+.btn button {
+    position: absolute;
+    width: 57rem;
+    height: 5.88rem;
+    background-color: transparent;
+    border: none;
+    font-family: "Simplicity";
+    color: #FFB14B;
+    transition: font-size 0.3s ease;
+    font-size: 4.88rem;
+    font-weight: 400;
+    top: 32.15rem;
+    margin: 0;
+    line-height: 2.29rem;
+    text-shadow:
+        -0.65rem -0.65rem 0 white,
+        0.65rem -0.65rem 0 white,
+        -0.65rem 0.65rem 0 white,
+        0.65rem 0.65rem 0 white,
+        0.5rem 1rem 1rem rgba(0, 0, 0, 0.8);
+}
