@@ -238,7 +238,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       return () => {
         clearInterval(intervalId);
       };
-    } else if ((chainId === 31337 || chainId === 2818) && season > 0) {
+    } else if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && season > 0) {
       setSeasonGPBalance(address);
       const intervalId = setInterval(() => {
         setSeasonGPBalance(address);

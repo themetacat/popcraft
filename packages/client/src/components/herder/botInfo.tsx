@@ -6,7 +6,7 @@ import { useBalance } from 'wagmi';
 import { useEntityQuery } from "@latticexyz/react";
 import { Has, getComponentValue } from "@latticexyz/recs";
 import { decodeEntity, } from "@latticexyz/store-sync/recs";
-import { useTopUp } from "../select";
+import { useTopUp, MISSION_BOUNS_CHAIN_IDS } from "../select";
 import { usePlantsGp } from "./plantsIndex";
 import { addr2NumToEntityID, numToEntityID } from "../rightPart";
 import { useUtils } from "./utils";
@@ -47,7 +47,7 @@ export default function BotInfo({ sendCount, receiveCount, botInfoTaskTips }: Pr
     let userRank = null;
     let totalScore = 0;
 
-    if ((chainId === 2818 || chainId === 31337) && season > 0 && csd > 0) {
+    if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && season > 0 && csd > 0) {
 
         sortedRankingRecords = rankingRecordEntities.reduce((acc, entity) => {
             const address = decodeEntity({ address: "address" }, entity);
@@ -88,7 +88,7 @@ export default function BotInfo({ sendCount, receiveCount, botInfoTaskTips }: Pr
                 // add new chain: change here
                 if (chainId === 690 || chainId == 31338 || chainId == 185) {
                     sortValue = Number(value.totalScore)
-                } else if (chainId == 2818 || chainId == 31337) {
+                } else if (MISSION_BOUNS_CHAIN_IDS.includes(chainId)) {
                     sortValue = Number(value.totalScore)
                     totalPoints += getPlantsGp(playerAddress.address);
                 } else {
