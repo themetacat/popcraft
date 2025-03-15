@@ -215,7 +215,7 @@ export const useTopUp = () => {
         setRewardInfo("150 Scores");
         setTokenAddress(["0x0000000000000000000000000000000000000013", ...defaultTokenAddresses])
         setPriTokenAddress(["0x0000000000000000000000000000000000000013", ...defaultTokenAddresses])
-        setRewardDescInfo("game score for each game, along with additional rewards for the top 150 players every week. ");
+        setRewardDescInfo("game score for each game, along with additional rewards for the top 150 players in event week. ");
       }else if(chainId != 0){
         setRewardDescInfo("Morph Points for each game, along with additional rewards for the top 250 players every week.");
         setRecipient("0x784844480280ca865ac8ef89bb554283dddff737");
