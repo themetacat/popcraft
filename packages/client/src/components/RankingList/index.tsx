@@ -29,7 +29,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
         network: { publicClient },
     } = useMUD();
     const { address, isConnected } = useAccount();
-    const { chainId } = useTopUp();
+    const { chainId, prizePool } = useTopUp();
     const { getPlantsGp, getPlantsGpSeason } = usePlantsGp();
     const [selectSeason, setSelectSeason] = useState(0);
     const { csd, season, seasonCountdown } = useUtils();
@@ -289,7 +289,7 @@ export default function RankingList({ loadingplay, setShowRankingList }: Props) 
                 <div className={style.seasonCountdownDiv}>
                     {season > 0 && selectSeason == season && csd > 0 && timeLeft > 0 &&
                         <span>
-                            {formatSeasonCountDown(timeLeft)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{chainId === 2818 ? "PRIZE POOL: 1,000 Morph Points" : chainId === 177 ? "PRIZE POOL: 1,000 $HSK" : ""}
+                            {formatSeasonCountDown(timeLeft)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRIZE POOL: {prizePool}
                         </span>
                     }
                 </div>
