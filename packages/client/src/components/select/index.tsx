@@ -46,6 +46,7 @@ export const useTopUp = () => {
   const [tokenAddress, setTokenAddress] = useState<string[]>([]);
   const [priTokenAddress, setPriTokenAddress] = useState<string[]>([]);
   const [nativeToken, setNativeToken] = useState("ETH");
+  const [prizePool, setPrizePool] = useState("");
 
   const location = useLocation();
 
@@ -213,6 +214,7 @@ export const useTopUp = () => {
         setBridgeUrl("https://bridge.hsk.xyz/")
         setChianIcon("https://hsk.xyz/static/logo.png");
         setRewardInfo("150 Scores");
+        setPrizePool("1,000 $HKS");
         setTokenAddress(["0x0000000000000000000000000000000000000013", ...defaultTokenAddresses])
         setPriTokenAddress(["0x0000000000000000000000000000000000000013", ...defaultTokenAddresses])
         setRewardDescInfo("game score for each game, along with additional rewards for the top 150 players in event week. ");
@@ -224,6 +226,7 @@ export const useTopUp = () => {
         setTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
         setPriTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
         setRewardInfo("150 Scores");
+        setPrizePool("1,000 Morph Points");
         setMIN_SESSION_WALLET_BALANCE(parseEther("0.000008"));
       }
     }
@@ -234,6 +237,7 @@ export const useTopUp = () => {
     MIN_SESSION_WALLET_BALANCE,
     balanceCheck,
     rewardInfo,
+    prizePool,
     rewardDescInfo,
     recipient,
     currencySymbol,
