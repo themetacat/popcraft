@@ -1024,7 +1024,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
           setShowCrossFlow(true);
         }}
       >
-        <img src={chainId === 177 ? KoalaImg : SimbaImg} alt="" />
+        <img src={chainId === 177 ? KoalaImg : SimbaImg} alt="" className={howToPlayStyle.crossFlowAnimation}/>
         <span>{chainId === 177 ? 'Earn Morph Points' : 'Earn $HSK'}</span>
       </div>
 
