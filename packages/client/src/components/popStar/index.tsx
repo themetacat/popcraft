@@ -80,6 +80,8 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
                 <a
                   href={chainId === 2818
                     ? "https://morph.ghost.io/play-to-earn-with-popcraft/"
+                    : chainId === 177
+                    ? "https://mirror.xyz/0x7709f04439b59e8A25a35A64C69f5e481266AD17/HNtyfGKM-9nU4-Cl8H-sAlTQSOvZ8IWFIefkUe8KEPw"
                     : ""}
                   target="_blank"
                   style={{ color: '#FF7A00', textDecoration: 'underline', textDecorationColor: '#E64C00' }}
