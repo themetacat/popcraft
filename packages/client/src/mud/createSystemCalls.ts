@@ -159,7 +159,7 @@ export function createSystemCalls(
 
   let waitTime = 13000;
   if(chainId === 177){
-    waitTime = 40000
+    waitTime = 30000
   }
 
   const registerDelegation = async () => {
