@@ -817,7 +817,7 @@ export function createSystemCalls(
     } else {
       const [updatedMatrixArray, finalEliminateAmount] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0);
       eliminateAmount = finalEliminateAmount;
-      if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && eliminateAmount >= 5 && chainId != 177) {
+      if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && eliminateAmount >= 5) {
         const comboRewardGamesData = getComponentValue(ComboRewardGames, playerEntity);
         
         if(comboRewardGamesData && Number(comboRewardGamesData.games) > 3 && Number(comboRewardGamesData.addedTime) == getCurrentCommon(5)){
