@@ -1018,7 +1018,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
 
       <div className={howToPlayStyle.btnHtp}
         style={{
-          display: "none",
           bottom: "43%"
         }}
         onClick={async () => {
