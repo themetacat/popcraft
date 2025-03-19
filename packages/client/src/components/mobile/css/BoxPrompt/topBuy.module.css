@@ -1,0 +1,438 @@
+@font-face {
+    font-family: "Zihun-Buding";
+    src: url("/fonts/ZIHUN27BUDING.TTF");
+}
+
+@font-face {
+    font-family: "AdobeHeitiStd-Regular";
+    src: url("/fonts/BRLNSR.woff2");
+}
+
+.buyBoxContainer {
+    width: 230.23rem;
+    height: 301.4rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    gap: 5.32rem;
+    padding: 8.87rem;
+    background-size: 100% 100%;
+}
+
+.turnOff {
+    width: 18.3rem;
+    height: 18.3rem;
+    position: absolute;
+    left: 215.5rem;
+    top: 7.5rem;
+    cursor: pointer;
+}
+
+.firstBuy {
+    width: 179.99rem;
+    height: 38.22rem;
+    gap: 7.1rem;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../../../../images/substance/substancebar.webp");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 3.1rem auto;
+    cursor: pointer;
+}
+
+.firstBuy:active {
+    background-image: url("../../../../../images/substance/111.png");
+}
+
+.itemImage {
+    width: 29.37rem;
+    height: 29.37rem;
+    margin-right: 0;
+    flex-shrink: 1;
+    margin-left: 7.98rem;
+}
+
+.iconFont {
+    position: absolute;
+    display: flex;
+
+    width: 8.31rem;
+    height: 8.31rem;
+
+    font-family: Zihun-Buding;
+    font-weight: 400;
+    font-size: 7.92rem;
+    color: #FFFFFF;
+    line-height: 12.18rem;
+
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    
+    background-color: #ffb739;
+
+    right: 130rem;
+    top: 27rem;
+}
+
+.buyBoxContent {
+    position: absolute;
+    width: 195.58rem;
+    height: 209.55rem;
+    margin-top: 2.5rem;
+    margin-left: 0.67rem;
+    overflow-y: auto;
+    left: 50%;
+    top: 43%;
+    transform: translate(-50%, -50%);
+    overflow-x: hidden;
+}
+
+.totalAmount {
+    position: absolute;
+    width: 115.96rem;
+    height: 7.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+
+    left: 50%;
+    top: 250rem;
+    transform: translateX(-50%);
+
+    font-family: AdobeHeitiStd-Regular;
+    font-weight: 400;
+    font-size: 9.03rem;
+    color: #467999;
+    line-height: 11.11rem;
+}
+
+.payBtnBox {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    left: 50%;
+    top: 248rem;
+    transform: translateX(-50%);
+}
+
+.payBtn {
+    width: 176.71rem;
+    height: 22.84rem;
+    border: none;
+
+    background-color: #d5f7ff;
+    background-image: url("../../../../images/welcome/playnormal.webp");
+    background-size: 100% 100%;
+    background-position: center;
+
+    align-items: center;
+    margin-top: 15.76rem;
+    border-radius: 10rem;
+
+    font-family: AdobeHeitiStd-Regular;
+    font-size: 13.86rem;
+    font-weight: bold;
+    line-height: 8.31rem;
+    letter-spacing: 0.1em;
+
+    text-align: center;
+    color: #ffffff;
+    transition: font-size 0.3s ease;
+
+    text-transform: uppercase;
+    text-shadow:
+        -2px -2px 0 rgba(149, 148, 148, 0.7),
+        2px -2px 0 rgba(177, 175, 175, 0.7),
+        -2px 2px 0 rgba(165, 164, 164, 0.7),
+        2px 2px 0 rgba(206, 206, 206, 0.7);
+
+    cursor: pointer;
+}
+
+.payBtn:active {
+    color: #ffffff;
+    font-size: 15rem;
+
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+
+    text-shadow:
+        -1px -1px 0 rgba(56, 56, 56, 0.7),
+        1px -1px 0 rgba(71, 71, 71, 0.7),
+        -1px 1px 0 rgba(59, 59, 59, 0.7),
+        1px 1px 0 rgba(69, 69, 69, 0.7)
+}
+
+.commonCls1 {
+    animation: spin 5s linear infinite;
+    -webkit-transform: rotate(3600deg);
+    transform: rotate(3600deg);
+    -webkit-transition: -webkit-transform 5s linear;
+    transition: transform 5s linear;
+    width: 100%;
+    height: 100%;
+}
+
+.wrongNetworkBtn {
+    width: 176.71rem;
+    height: 22.84rem;
+    border: none;
+    opacity: 0;
+
+    background-color: #d5f7ff;
+    background-image: url("../../../../images/topup/wrongnetwork.webp");
+    background-size: 100% 100%;
+    background-position: center;
+
+    align-items: center;
+    margin-top: 15.76rem;
+    border-radius: 10rem;
+
+    font-family: AdobeHeitiStd-Regular;
+    font-size: 13.86rem;
+    font-weight: bold;
+    line-height: 8.31rem;
+    letter-spacing: 0.1em;
+
+    text-align: center;
+    color: red;
+    transition: font-size 0.3s ease;
+
+    text-transform: uppercase;
+    text-shadow:
+        -2px -2px 0 rgba(149, 148, 148, 0.7),
+        2px -2px 0 rgba(177, 175, 175, 0.7),
+        -2px 2px 0 rgba(165, 164, 164, 0.7),
+        2px 2px 0 rgba(206, 206, 206, 0.7);
+    cursor: pointer;
+}
+
+.wrongNetworkBtn:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+
+    text-shadow:
+        -1px -1px 0 rgba(56, 56, 56, 0.7),
+        1px -1px 0 rgba(71, 71, 71, 0.7),
+        -1px 1px 0 rgba(59, 59, 59, 0.7),
+        1px 1px 0 rgba(69, 69, 69, 0.7)
+}
+
+.fontNumyo {
+    font-size: 20px;
+    color: #47799a;
+    letter-spacing: 1.5px;
+    text-shadow:
+        0 0 5px rgba(147, 211, 246, 0.8),
+        0 0 10px rgba(147, 211, 246, 0.6),
+        0 0 15px rgba(147, 211, 246, 0.4);
+    border-radius: 10px;
+    border: none;
+}
+
+.overlay {
+    position: fixed;
+    top: 126px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalto {
+    width: 180px;
+    height: 10px;
+    background-image: url("../../../../images/substance/success.webp");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.failto {
+    width: 30px;
+    height: 30px;
+    float: left;
+    margin-top: -10px;
+}
+
+.color {
+    color: #03b243;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 20.48px;
+    font-family: AdobeHeitiStd-Regular;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    margin-top: -4px;
+}
+
+.modal {
+    width: 250px;
+    height: 10px;
+    background-image: url("../../../../images/substance/fail.webp");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.modal button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modal button:hover {
+    background-color: #0056b3;
+}
+
+.colorto {
+    color: red;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: AdobeHeitiStd-Regular;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    margin-top: -4px;
+}
+
+.itemNameto {
+    display: flex;
+    width: 65.81rem;
+    height: 41.23rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 10rem;
+}
+
+.itemName {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    width: 23.95rem;
+    height: 7.32rem;
+    font-family: Zihun-Buding;
+    font-weight: 400;
+    font-size: 10rem;
+    color: #FFED95;
+    line-height: 12.31rem;
+}
+
+.dataIcon {
+    width: 179.99rem;
+    height: 38.22rem;
+    gap: 11.55rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    top: 10%;
+    margin-left: 2rem;
+
+    .pp {
+        height: auto;
+    }
+
+    button {
+        color: #ffffff;
+        width: 12.19rem;
+        height: 12.19rem;
+        border: none;
+        background-size: 100% 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background: none;
+        /* 设置背景透明 */
+        border-radius: 1rem;
+        justify-content: center;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .addbox {
+        width: 12.42rem;
+        height: 12.42rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: -3.55rem;
+        margin-top: -3.44rem;
+    }
+
+    .numData {
+        width: 13.1rem;
+        height: 8.65rem;
+        font-weight: 400;
+        font-size: 10.69rem;
+        line-height: 14.39rem;
+        background-color: transparent;
+        border: none;
+        color: #ffffff;
+        border: none;
+        text-align: center;
+        font-family: Zihun-Buding;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: -3rem;
+    }
+
+    .numData:focus {
+        outline: none;
+    }
+}
+
+.twoBuy {
+    width: 42.57rem;
+    height: 17.52rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 5.32rem;
+
+    font-family: Zihun-Buding;
+    font-weight: 400;
+    font-size: 9.03rem;
+    color: #FFFFFF;
+    line-height: 11.11rem;
+}
+
+.fontNum {
+    display: inline-block;
+    color: #ffffff;
+}
+
+.loadingImg {
+    animation: spin 5s linear infinite;
+    -webkit-transform: rotate(3600deg);
+    transform: rotate(3600deg);
+    -webkit-transition: -webkit-transform 5s linear;
+    transition: transform 5s linear;
+    height: 100%;
+}

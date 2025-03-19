@@ -2386,6 +2386,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           <div className={style.overlay}>
             <TopBuy
               setShowTopBuy={setShowTopBuy}
+              isMobile={isMobile}
             />
           </div>
         ) : null}
@@ -2553,6 +2554,15 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             </div>
           </div>
         )}
+        {showTopBuy && isConnected ? (
+          <div className={style.overlay}>
+            <TopBuy
+              setShowTopBuy={setShowTopBuy}
+              isMobile={isMobile}
+            />
+          </div>
+        ) : null}
+
         <div>
           <img src={PopcraftLogoMobile} className={mobileStyle.containerImg} alt="" />
         </div>
