@@ -380,7 +380,7 @@
 }
 
 .genesisNFTAnimation {
-    animation: bounce 1.5s ease-in-out infinite, bounce 1.5s ease-in-out infinite 4s;
+    animation: bounce 1.5s ease-in-out infinite;
 }
   
 @keyframes bounce {
