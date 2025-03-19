@@ -8,6 +8,17 @@
     src: url("/fonts/BRLNSR.woff2");
 }
 
+.overlayBuy {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: calc(100%);
+    z-index: 1000000;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    pointer-events: auto !important;
+  }
+
 .buyBoxContainer {
     width: 230.23rem;
     height: 301.4rem;

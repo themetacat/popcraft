@@ -2369,6 +2369,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             interactTaskToExecute={interactTaskToExecute}
             checkInteractTask={checkInteractTask}
             popStar={popStar}
+            isMobile={isMobile}
           />
         ) : null}
 
@@ -2582,6 +2583,21 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               isMobile={isMobile}
             />
           </div>
+        ) : null}
+
+        {boxPrompt === true || appName === "BASE/PopCraftSystem" ? (
+          <BoxPrompt
+            coordinates={coordinates}
+            timeControl={timeControl}
+            showTopElements={showTopElements}
+            playFun={playFun}
+            handleEoaContractData={handleEoaContractData}
+            setPopStar={setPopStar}
+            interactTaskToExecute={interactTaskToExecute}
+            checkInteractTask={checkInteractTask}
+            popStar={popStar}
+            isMobile={isMobile}
+          />
         ) : null}
 
         <div className={mobileStyle.buttomBtn}>
