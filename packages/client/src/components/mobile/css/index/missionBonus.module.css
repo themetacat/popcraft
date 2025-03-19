@@ -1,4 +1,410 @@
-.inDayBounsBtn {
+
+.bounsContainer {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    bottom: 53.49rem;
+    left: 12.86rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    z-index: 100;
+    width: 227.94rem;
+    height: 60.66rem;
+    font-family: "Simplicity";
+    transform: translateX(-50rem);
+    animation: slideInFromLeft 0.15s ease-out forwards;
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-80%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.bounsContainerClose {
+    animation: slideInToLeft 0.15s ease-out forwards;
+}
+
+@keyframes slideInToLeft {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-80%);
+    }
+}
+
+.playerGames {
+    position: absolute;
+    right: 19.5rem;
+    height: 3.6rem;
+    top: -6.5rem;
+    font-size: 6.5rem;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.playerGamesPlayText{
+    color: #ffffff;
+    text-shadow:
+        0.15rem 0.15rem 0 #E1AD0B,
+        -0.15rem -0.15rem 0 #E1AD0B,
+        0.15rem -0.15rem 0 #E1AD0B,
+        -0.15rem 0.15rem 0 #E1AD0B,
+        0.15rem 0.15rem 0.2rem #000;
+}
+
+.playerGames img{
+    margin-left: 0.7rem;
+    width: 7.32rem;
+    cursor: pointer;
+}
+
+.playerGames img:active{
+    transform: scale(1.25);
+    transition: transform 0.3s ease;
+}
+
+.playerGames img:active ~ .playQuestion {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.1s ease-in-out, visibility 0s linear 0.1s;
+}
+
+.playQuestion {
+    position: absolute;
+    font-size: 2.2rem;
+    font-family: "AdobeHeitiStd-Regular";
+    color: rgba(50, 123, 139, 1);
+    letter-spacing: 0.1rem;
+    visibility: hidden;
+    opacity: 0;
+    margin-bottom: 7rem;
+    margin-right: 14rem;
+    width: 40rem;
+    transition: opacity 0.05s ease-in-out, visibility 0s linear 0.05s;
+}
+
+
+.title {
+    position: absolute;
+    left: 14rem;
+    top: -6.5rem;
+    font-size: 6.5rem;
+    z-index: 3;
+    color: rgba(50, 123, 139, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.6rem;
+    text-shadow:
+    0.2rem 0.2rem 0 #ffffff,
+    -0.2rem -0.2rem 0 #ffffff,
+    0.2rem -0.2rem 0 #ffffff,
+    -0.2rem 0.2rem 0 #ffffff,
+    0.2rem 0.2rem 0.2rem #000;
+}
+
+.countdown {
+    position: absolute;
+    right: 70.21rem;
+    top: -6.5rem;
+    font-size: 6.5rem;
+    z-index: 3;
+    color: rgba(50, 123, 139, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.6rem;
+}
+
+.countdown img{
+    width: 7.76rem;
+    height: 7.76rem;
+}
+
+.countdown span{
+    margin-left: 4.5rem;
+    letter-spacing: 0.2rem;
+    transform: scaleX(1.2);
+    text-shadow:
+    0.2rem 0.2rem 0 #ffffff,
+    -0.2rem -0.2rem 0 #ffffff,
+    0.2rem -0.2rem 0 #ffffff,
+    -0.2rem 0.2rem 0 #ffffff,
+    0.2rem 0.2rem 0.2rem #000;
+}
+
+
+.buttonClose {
+    width: 17rem;
+    height: 12rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-size: contain;
+    position: relative;
+}
+
+.buttonClose img {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.buttonClose span {
+    color: #4FD770;
+    font-weight: bold;
+    white-space: nowrap;
+    border: #ffffff;
+    text-shadow:
+        0.05rem 0.05rem 0 #ffffff,
+        -0.05rem -0.05rem 0 #ffffff;
+
+    font-family: "Simplicity";
+    color: #2DA335;
+    transition: font-size 0.3s ease;
+    font-size: 0.9vw;
+    cursor: pointer;
+    text-shadow:
+        -0.2rem -0.2rem 0 white,
+        0.2rem -0.2rem 0 white,
+        -0.2rem 0.2rem 0 white,
+        0.2rem 0.2rem 0 white,
+        0.3rem 0.3rem 0.1rem rgba(0, 0, 0, 0.6);
+}
+
+
+.bounsList {
+    display: flex;
+    align-items: center;
+    gap: 13.5rem;
+    margin-left: 1rem;
+}
+
+.bounsItem {
+    width: 28rem;
+    height: 40rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    cursor: not-allowed;
+    transition: transform 0.3s ease;
+}
+
+.bonusItemPending {
+    cursor: pointer;
+}
+
+.bonusItemPending:active .bounsCircle {
+    background-size: 102%;
+    transition: background-size 0.3s ease;
+}
+
+.bonusItemPending:active .bounsCircle div span {
+    text-shadow: -0.1rem -0.1rem 0 #D57300,
+        0.1rem -0.1rem 0 #D57300,
+        -0.1rem 0.1rem 0 #D57300, 
+        0.1rem 0.1rem 0 #D57300, 
+        0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.6);
+    transition: text-shadow 0.3s ease;
+}
+
+.bonusItemPending:active .bounsTextPending {
+    text-shadow: 0.2rem 0.2rem 0.2rem rgb(0, 0, 0, 0.7);
+    transition: text-shadow 0.3s ease;
+}
+
+
+.buttonMask {
+    position: absolute;
+    z-index: 1;
+}
+
+.buttonMask img {
+    margin-top: 1.2rem;
+    width: 30.4rem;
+    height: 31.4rem;
+}
+
+.cornerMark {
+    width: 11.75rem;
+    height: 11.75rem;
+    position: absolute;
+    top: -14%;
+    right: -5%;
+    z-index: 2;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.bounsCircle {
+    margin-top: 1rem;
+    width: 31.4rem;
+    height: 31.4rem;
+    align-items: center;
+    justify-content: center;
+    font-size: 5.5rem;
+    font-weight: bold;
+    position: relative;
+    text-align: center;
+    line-height: 7.58rem;
+    display: flex;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 98%;
+}
+
+
+.bonusText {
+    margin-top: 1rem;
+    font-size: 5.2rem;
+    font-weight: 500;
+    white-space: nowrap;
+    font-family: "Simplicity";
+    border-radius: 1rem;
+    text-shadow: 0.1rem 0.1rem 0.1rem rgb(0, 0, 0, 0.6);
+}
+
+.bonusTextClaimed {
+    color: rgba(184, 234, 193, 1);
+    -webkit-text-stroke: 1px #569521;
+}
+
+.bonusTextPending {
+    color: #FCCA12;
+    -webkit-text-stroke: 1px #DDA500;
+}
+
+.bonusTextUnlocked {
+    color: rgba(151, 231, 136, 1);
+    -webkit-text-stroke: 1px #569521;
+}
+
+.bonusText img {
+    margin-top: 0.5rem;
+    width: 9.53rem;
+    height: 1.55rem;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    position: absolute;
+    right: 10.2rem;
+}
+
+.closeBtn {
+    cursor: pointer;
+    border: none;
+    position: absolute;
+    top: -2rem;
+    right: 5rem;
+}
+
+.closeBtn:active {
+    scale: 1.1;
+    transition: scale 0.3s ease;
+}
+
+.closeBtn img {
+    width: 10.2rem;
+}
+
+
+.loading {
+    position: absolute;
+    z-index: 1;
+}
+
+.loadingMask {
+    margin-top: 1.2rem;
+    width: 30.4rem;
+    height: 31.4rem;
+}
+
+
+.loadingMain {
+    animation: spin 5s linear infinite;
+    -webkit-transform: rotate(3600deg);
+    transform: rotate(3600deg);
+    -webkit-transition: -webkit-transform 5s linear;
+    transition: transform 5s linear;
+    position: absolute;
+    margin-left: -23.7rem;
+    margin-top: 8.4rem;
+    height: 18rem;
+    width: 18rem;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.addedPoints {
+    position: absolute;
+    top: -13rem;
+    right: 9rem;
+    font-size: 3rem;
+    color: #fff;
+    text-shadow:
+        -0.2rem -0.2rem 0 #569521,
+        0.2rem -0.2rem 0 #569521,
+        -0.2rem 0.2rem 0 #569521,
+        0.2rem 0.2rem 0 #569521,
+        0.4rem 0.4rem 0.3rem rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    animation: fadeUp 3s ease-in-out forwards;
+}
+
+
+@keyframes fadeUp {
+    0% {
+        transform: translateY(10rem);
+        opacity: 0;
+    }
+
+    20% {
+        transform: translateY(6.5rem);
+        opacity: 1;
+    }
+
+    80% {
+        transform: translateY(6.5rem);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(1.5rem);
+        opacity: 0;
+    }
+}
+
+.connectionPoint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: -10rem;
+}
+
+.inDayBonusBtn {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -6,7 +412,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 0.75rem;
-    z-index: 999999;
+    z-index: 10;
     font-family: "Simplicity";
     text-align: center;
     transition: transform 0.3s ease;
@@ -16,7 +422,7 @@
     margin-left: 17.96rem;
 }
 
-.inDayBounsBtn img {
+.inDayBonusBtn img {
     position: absolute;
     width: 33.04rem;
     height: 33.26rem;
@@ -25,11 +431,11 @@
     top: 0;
 }
 
-.inDayBounsBtn:active img {
+.inDayBonusBtn:active img {
     transform: scale(1.06);
 }
 
-.inDayBounsBtn:active button {
+.inDayBonusBtn:active button {
     text-shadow:
         -0.2rem -0.2rem 0 white,
         0.2rem -0.2rem 0 white,
@@ -39,7 +445,7 @@
     transition: text-shadow 0.3s ease;
 }
 
-.inDayBounsBtn button {
+.inDayBonusBtn button {
     position: absolute;
     width: 57rem;
     height: 5.88rem;
@@ -59,4 +465,35 @@
         -0.65rem 0.65rem 0 white,
         0.65rem 0.65rem 0 white,
         0.5rem 1rem 1rem rgba(0, 0, 0, 1);
+}
+
+.btnTips {
+    position: fixed;
+    width: 11.87rem;
+    height: 11.87rem;
+    line-height: 3rem;
+    margin-top: -29rem;
+    margin-right: -27rem;
+    border-radius: 50%;
+    color: #ffffff;
+    background-image: url("../../../../images/Plants/tips.webp");
+    background-size: contain;
+    background-repeat: no-repeat;
+    font-size: 5.78rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: btnTipsScaleIn 0.1s ease-out forwards;
+}
+
+@keyframes btnTipsScaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }

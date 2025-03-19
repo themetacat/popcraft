@@ -8,6 +8,7 @@ import { useMUD } from "../../MUDContext";
 import { useAccount, useBalance } from 'wagmi';
 import { addressToEntityID } from "../rightPart";
 import loadingImg from "../../images/loadingto.webp";
+import LoadingMobileImg from "../../images/Mobile/GameOver/Loading.webp";
 import xLogo from '../../images/xLogo.png';
 import TelegramLogo from '../../images/TelegramLogo.png'
 import GithubLogo from '../../images/GithubLogo.webp'
@@ -26,9 +27,9 @@ import { encodeEntity } from "@latticexyz/store-sync/recs";
 import { getComponentValue } from "@latticexyz/recs";
 import substanceImg from "../../images/substance/substance.webp";
 import HowToPlay, { Rewards, CrossFlow } from "./HowToPlay";
+import mobileStyle from "../mobile/css/BoxPrompt/index.module.css";
 
 interface Props {
-  coordinates: any;
   timeControl: any;
   playFun: any;
   handleEoaContractData: any;
@@ -36,9 +37,10 @@ interface Props {
   showTopElements: any;
   interactTaskToExecute: any,
   checkInteractTask: any,
-  popStar: boolean
+  isMobile: boolean,
+  showMobileInDayBonus: any
 }
-export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoaContractData, setPopStar, showTopElements, interactTaskToExecute, checkInteractTask, popStar }: Props) {
+export default function BoxPrompt({ timeControl, playFun, handleEoaContractData, setPopStar, showTopElements, interactTaskToExecute, checkInteractTask, isMobile, showMobileInDayBonus }: Props) {
   const {
     components: {
       TCMPopStar,
@@ -49,7 +51,7 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       GameRecord
     },
     network: { palyerAddress },
-    systemCalls: { interact, payFunction, registerDelegation },
+    systemCalls: { payFunction },
   } = useMUD();
   const overTime = 122;
   const [timeLeft, setTimeLeft] = useState(overTime);
@@ -59,29 +61,21 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   const [forPayMonType, setForPayMonType] = useState(false);
   const [first, setFirst] = useState(false);
   const [data2, setdata2] = useState(false);
-  const [pay, setpay] = useState(false);
   const [gameSuccess, setGameSuccess] = useState(false);
-  const [datan, setdatan] = useState(null);
-  const [data, setdata] = useState(null);
-  const [data1, setdata1] = useState(null);
   const [getEoaContractData, setGetEoaContractData] = useState(null);
   const [balanceData, setBalanceData] = useState({});
   const [numberData, setNumberData] = useState({});
   const { address, isConnected } = useAccount();
   const [loading, setLoading] = useState(false);
-  const [balance, setBalance] = useState(0);
   const [loadingPlayAgain, setLoadingPlayAgain] = useState(false);
-  const [loadingUpHandle, setLoadingUpHandle] = useState(false);
   const [isPriceLoaded, setIsPriceLoaded] = useState(false);
   const [prices, setPrices] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
-  const [allZero, setAllZero] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loadingPrices, setLoadingPrices] = useState({});
-  const [lastPrices, setLastPrices] = useState({});
-  const { rewardInfo, rewardDescInfo, recipient, chainId, priTokenAddress, nativeToken } = useTopUp();
+  const { rewardInfo, recipient, chainId, priTokenAddress, nativeToken } = useTopUp();
   const [showHowToPlay, setShowHowToPlay] = useState(false);
   const [showRewards, setShowRewards] = useState(false);
   const [showCrossFlow, setShowCrossFlow] = useState(false);
@@ -99,19 +93,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }
   }, [])
 
-  const resultBugs = useBalance({
-    address: address,
-    token: '0x9c0153C56b460656DF4533246302d42Bd2b49947',
-    query: {
-      refetchInterval: 10000
-    }
-  })
-  useEffect(() => {
-    if (resultBugs.data?.value) {
-      setBalance(Math.floor(Number(resultBugs.data?.value) / 1e18));
-    }
-  }, [resultBugs.data]);
-
   const handlePlayAgain = () => {
     setLoading(true);
     playFun();
@@ -126,22 +107,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     setPopStar(false);
     setdataq(false);
   };
-
-  useEffect(() => {
-    let interval: any;
-    if (gameSuccess) {
-      interval = setInterval(() => {
-        resultBugs.refetch().then((data) => {
-          if (data.data?.value) {
-            setBalance(Math.floor(Number(data.data?.value) / 1e18));
-          }
-        });
-      }, 1000)
-    } else {
-      clearInterval(interval)
-    }
-    return () => clearInterval(interval)
-  }, [gameSuccess])
 
   const addressToEntityIDTwo = (address: Hex, addressTwo: Hex) =>
     encodeEntity(
@@ -300,10 +265,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     }
   }, [timeLeft, timeControl, gameSuccess, interactTaskToExecute, checkInteractTask])
 
-  useEffect(() => {
-    const allZero = Object.values(numberData).every(num => num === 0);
-    setAllZero(allZero);
-  }, [numberData]);
 
   const handlePayMent = () => {
     const renderedMaterials = Object.keys(matchedData);
@@ -333,7 +294,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
       } else {
         toast.error("Payment failed! Try again!");
         setcresa(false);
-        setpay(true);
         setModalMessage("PAYMENT FAILED! TRY AGAIN!");
         setShowModal(true);
         setTimeout(() => {
@@ -343,7 +303,6 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     })
       .catch((error) => {
         setcresa(false);
-        setpay(true);
         setModalMessage("PAYMENT FAILED! TRY AGAIN!");
         setShowModal(true);
         setTimeout(() => {
@@ -550,14 +509,12 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
   };
 
   const upHandleNumber = (key) => {
-    setLoadingUpHandle(true);
     setNumberData(prev => ({
       ...prev,
       [key]: prev[key] + default_buy_token_num
     }));
     setLoadingPrices(prev => ({ ...prev, [key]: true }));
     fetchPriceForSingleItem(key, numberData[key] + default_buy_token_num);
-    setLoadingUpHandle(false);
   };
 
   const resetNumberData = () => {
@@ -643,317 +600,347 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
     addressToEntityID(address)
   ) : undefined;
 
-  return (
-    <>
-      {showTopElements && (
-        <div className={style.container}>
-          <div className={style.container2}>
-            <div className={style.firstPart}>
-              <p className={style.firstnew}>
-                {timeControl && timeLeft !== 0 && gameSuccess === false ? formatTime(timeLeft) :
-                  <div onClick={() => {
-                    playFun()
-                  }}>New<br />Game</div>
-                }
-              </p>
-              {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
+  if (!isMobile) {
+    return (
+      <>
+        {showTopElements && (
+          <div className={style.container}>
+            <div className={style.container2}>
+              <div className={style.firstPart}>
+                <p className={style.firstnew}>
+                  {timeControl && timeLeft !== 0 && gameSuccess === false ? formatTime(timeLeft) :
+                    <div onClick={() => {
+                      playFun()
+                    }}>New<br />Game</div>
+                  }
+                </p>
+                {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
+              </div>
+              <div className={style.twoPart} >
+                <p>{rewardInfo}</p>
+                <p className={style.tooltip}>
+                  REWARDS
+                  {/* {rewardDescInfo && (
+                    <span className={style.tooltipText}>
+                      You'll get 100 MP for winning and 50 MP for losing in your first 3 games every day(UTC).
+                    </span>
+                  )} */}
+                </p>
+              </div>
+              <div className={style.threePart}>
+                <p className={style.balance}>
+                  {rankRecord ? Number(rankRecord.latestScores) : 0}
+                </p>
+                <p>SCORE</p>
+              </div>
             </div>
-            <div className={style.twoPart} >
-              <p>{rewardInfo}</p>
-              <p className={style.tooltip}>
-                REWARDS
-                {/* {rewardDescInfo && (
-                  <span className={style.tooltipText}>
-                    You'll get 100 MP for winning and 50 MP for losing in your first 3 games every day(UTC).
-                  </span>
-                )} */}
-              </p>
-            </div>
-            <div className={style.threePart}>
-              <p className={style.balance}>
-                {rankRecord ? Number(rankRecord.latestScores) : 0}
-              </p>
-              <p>SCORE</p>
+
+            <div className={style.container3}>
+              <div className={style.imgContent}  >
+                {Object.entries(matchedData).map(([key, { src, balance, name }]) => (
+                  <div key={key} className={style.containerItem}  >
+                    <div className={style.iconFont} > {balance}</div>
+                    <img className={style.imgconItem} src={src} alt={name} />
+                  </div>
+                ))}
+              </div>
+              <div className={style.buyBtnBox}>
+                <button
+                  className={style.buyBtn}
+                  onClick={async () => {
+                    setdataq(!warnBox);
+                    // getRoute()
+                  }}
+                >
+                  BUY
+                </button>
+              </div>
             </div>
           </div>
+        )}
 
-          <div className={style.container3}>
-            <div className={style.imgContent}  >
-              {Object.entries(matchedData).map(([key, { src, balance, name }]) => (
-                <div key={key} className={style.containerItem}  >
-                  <div className={style.iconFont} > {balance}</div>
-                  <img className={style.imgconItem} src={src} alt={name} />
-                </div>
-              ))}
+        {dataq === true ? (
+          <div className={panningType !== "false" ? style.overlayBuy : style.overlay}>
+            <div className={style.buYBox} style={{ backgroundImage: `url(${substanceImg})` }}>
+              <img
+                className={style.turnOff}
+                src={trunOff}
+                alt=""
+                onClick={() => {
+                  resetNumberData()
+                  setdataq(false);
+                }}
+              />
+              <div className={style.buyBoxContent}>
+                {Object.entries(matchedData).slice(0, 5).map(([key, { src, balance, name }]) => (
+                  <div key={key} className={style.firstBuy}>
+                    <img src={src} alt={name} className={style.itemImage} />
+                    <div className={style.balanceIconFont}>{balance}</div>
+                    <div className={style.itemNameto}>
+                      <div className={style.itemName}>
+                        <span className={style.itemNameText}>{name}</span>
+                      </div>
+                      <div className={style.dataIcon}>
+                        <button
+                          onClick={() => {
+                            downHandleNumber(key);
+                          }}
+                          disabled={numberData[key] <= 0 || loadingPrices[key]}
+                          style={{
+                            cursor: numberData[key] <= 0 || loadingPrices[key] ? "not-allowed" : "pointer"
+                          }}
+                        >
+                          <img src={reduce} className={style.addbox} alt="" />
+                        </button>
+                        <input
+                          value={numberData[key] || 0}
+                          onChange={(e) => handleNumberChange(key, e.target.value)}
+                          className={style.numData}
+                          min="0"
+                        />
+                        <button
+                          onClick={() => {
+                            upHandleNumber(key);
+                          }}
+                          disabled={loadingPrices[key]}
+                          style={{
+                            cursor: loadingPrices[key] ? "not-allowed" : "pointer"
+                          }}
+                        >
+                          <img src={add} className={style.addbox} alt="" />
+                        </button>
+                      </div>
+                    </div>
+                    <div className={style.twoBuy}>
+                      <span className={style.fontNum}>
+                        {numberData[key] > 0 ? (
+                          loadingPrices[key] ? (
+                            <img src={loadingImg} alt="" className={style.loadingImg} />
+                          ) : (
+                            formatAmount(prices[key] ? prices[key].price : 0)
+                          )
+                        ) : (
+                          "0.0000000"
+                        )}
+                        <br />
+                        {nativeToken}
+                      </span>
+
+                      {forPayMonType === true ? (
+                        <img
+                          src={loadingIcon}
+                          alt=""
+                          style={{
+                            width: "16px",
+                            height: "16px",
+                            marginTop: "5px",
+                            color: "#ffffff",
+                            filter: "grayscale(100%)",
+                          }}
+                          className={style.commonCls1}
+                        />
+                      ) : null}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className={style.totalAmount}>
+                <span className={style.fontNumyo}>
+                  TOTAL: {formatAmount(totalPrice)} {nativeToken}
+                </span>
+              </div>
+
+              <div className={style.payBtnBox}>
+                <ConnectButton.Custom>
+                  {({
+                    account,
+                    chain,
+                    openAccountModal,
+                    openChainModal,
+                    openConnectModal,
+                    authenticationStatus,
+                    mounted,
+                  }) => {
+                    const ready = mounted && authenticationStatus !== "loading";
+                    const connected =
+                      ready &&
+                      account &&
+                      chain &&
+                      (!authenticationStatus || authenticationStatus === "authenticated");
+
+                    return (
+                      <>
+                        {!chain.unsupported && (
+                          <button
+                            className={style.payBtn}
+                            onClick={() => {
+                              handlePayMent();
+                            }}
+                            disabled={
+                              Object.values(numberData).every(num => num === 0) ||
+                              cresa ||
+                              !isPriceLoaded ||
+                              Object.values(loadingPrices).some(isLoading => isLoading)
+                            }
+                            style={{
+                              cursor:
+                                Object.values(numberData).every(num => num === 0) ||
+                                  cresa ||
+                                  !isPriceLoaded ||
+                                  Object.values(loadingPrices).some(isLoading => isLoading)
+                                  ? "not-allowed"
+                                  : "auto"
+                            }}
+                          >
+                            {cresa ? (
+                              <img
+                                src={loadingIcon}
+                                alt=""
+                                style={{
+                                  width: "40px",
+                                  height: "40px",
+                                  marginTop: "5px",
+                                  color: "#ffffff",
+                                  filter: "grayscale(100%)",
+                                }}
+                                className={style.commonCls1}
+                              />
+                            ) : (
+                              <span>PAY</span>
+                            )}
+                          </button>
+                        )}
+
+                        {chain.unsupported && (
+                          <button
+                            onClick={openChainModal}
+                            type="button"
+                            className={style.wrongNetworkBtn}
+                          >
+                            Wrong network
+                          </button>
+                        )}
+                      </>
+                    );
+                  }}
+                </ConnectButton.Custom>
+              </div>
             </div>
-            <div className={style.buyBtnBox}>
+          </div>
+        ) : null}
+
+        {showSuccessModal && (
+          <div className={style.overlay}>
+            <div className={style.modalto} >
+              <img src={success} alt="" className={style.failto} />
+              <p className={style.color}>{modalMessage}</p>
+            </div>
+          </div>
+        )}
+
+        {showModal && !showSuccessModal && (
+          <div className={style.overlay}>
+            <div className={style.modal}>
+              <img src={failto} alt="" className={style.failto} />
+              <p className={style.colorto}>{modalMessage}</p>
+            </div>
+          </div>
+        )}
+
+        {warnBox === true ? (
+          <div
+            className={panningType !== "false" ? style.overlayBuy : style.overlay}
+          >
+            <div className={style.content}>
+              <p className={style.title}>How to Play</p>
+              <p className={style.actical}>
+                <span className={style.copywritingTwo}>This is a composability-based elimination game. You have 120 </span>
+                <span className={style.copywritingTwo}> seconds to eliminate all the pieces.</span>
+                {/* {rewardDescInfo? (
+                  <span className={style.copywritingTwo}>You'll&nbsp;
+                  {rewardDescInfo}
+                  &nbsp; in your first 3 games every day.
+                </span>
+                ): (
+                  <span className={style.copywritingTwo}>You'll be rewarded with&nbsp;
+                  <p> {rewardInfo}</p>
+                  &nbsp; for completing the game.
+                </span>
+                )} */}
+                <span className={style.copywritingTwobox}>
+                  On the game board,any two or more adjacent identical pieces
+                  can be clicked to eliminate them. Isolated pieces require a elimination tool
+                  to remove.
+                </span>
+                <span className={style.copyBox}>Click the 'BUY' button in the top right corner of the game <br />
+                </span>
+                <span className={style.copyBoxto}>screen to purchase elimination tools that will help you remove isolated pieces.</span>
+                <br />
+                <span className={style.copywithing}>We also need your feedback:</span>
+                <br />
+                <a className={style.hrefbox} href="https://forms.gle/LSwhJUL5XZZmhLYJ9" target="_blank" rel="noopener noreferrer">
+                  https://forms.gle/LSwhJUL5XZZmhLYJ9
+                </a>
+              </p>
+
               <button
-                className={style.buyBtn}
-                onClick={async () => {
-                  setdataq(!warnBox);
-                  // getRoute()
+                className={style.btnOk}
+                onClick={() => {
+                  setWarnBox(false);
                 }}
               >
-                BUY
+                OK
               </button>
             </div>
           </div>
-        </div>
-      )}
-
-      {dataq === true ? (
-        <div className={panningType !== "false" ? style.overlayBuy : style.overlay}>
-          <div className={style.buYBox} style={{ backgroundImage: `url(${substanceImg})` }}>
-            <img
-              className={style.turnOff}
-              src={trunOff}
-              alt=""
-              onClick={() => {
-                resetNumberData()
-                setpay(false);
-                setdataq(false);
-              }}
-            />
-            <div className={style.buyBoxContent}>
-              {Object.entries(matchedData).slice(0, 5).map(([key, { src, balance, name }]) => (
-                <div key={key} className={style.firstBuy}>
-                  <img src={src} alt={name} className={style.itemImage} />
-                  <div className={style.balanceIconFont}>{balance}</div>
-                  <div className={style.itemNameto}>
-                    <div className={style.itemName}>
-                      <span className={style.itemNameText}>{name}</span>
-                    </div>
-                    <div className={style.dataIcon}>
-                      <button
-                        onClick={() => {
-                          downHandleNumber(key);
-                        }}
-                        disabled={numberData[key] <= 0 || loadingPrices[key]}
-                        style={{
-                          cursor: numberData[key] <= 0 || loadingPrices[key] ? "not-allowed" : "pointer"
-                        }}
-                      >
-                        <img src={reduce} className={style.addbox} alt="" />
-                      </button>
-                      <input
-                        value={numberData[key] || 0}
-                        onChange={(e) => handleNumberChange(key, e.target.value)}
-                        className={style.numData}
-                        min="0"
-                      />
-                      <button
-                        onClick={() => {
-                          upHandleNumber(key);
-                        }}
-                        disabled={loadingPrices[key]}
-                        style={{
-                          cursor: loadingPrices[key] ? "not-allowed" : "pointer"
-                        }}
-                      >
-                        <img src={add} className={style.addbox} alt="" />
-                      </button>
-                    </div>
-                  </div>
-                  <div className={style.twoBuy}>
-                    <span className={style.fontNum}>
-                      {numberData[key] > 0 ? (
-                        loadingPrices[key] ? (
-                          <img src={loadingImg} alt="" className={style.loadingImg} />
-                        ) : (
-                          formatAmount(prices[key] ? prices[key].price : 0)
-                        )
-                      ) : (
-                        "0.0000000"
-                      )}
-                      <br />
-                      {nativeToken}
-                    </span>
-
-                    {forPayMonType === true ? (
+        ) : null}
+        {
+          timeLeft === 0 && localStorage.getItem('showGameOver') === 'true' && !gameSuccess
+            ? (
+              <div
+                className={panningType !== "false" ? style.overlayBuy : style.overlay}
+              >
+                <div className={style.contentSuccess}>
+                  <p>Game Over!</p>
+                  <button
+                    onClick={handlePlayAgain}
+                    disabled={loading}
+                    style={{
+                      cursor: loading ? "not-allowed" : "pointer",
+                      pointerEvents: loading ? "none" : "auto"
+                    }}
+                  >
+                    {loading ? (
                       <img
-                        src={loadingIcon}
-                        alt=""
-                        style={{
-                          width: "16px",
-                          height: "16px",
-                          marginTop: "5px",
-                          color: "#ffffff",
-                          filter: "grayscale(100%)",
-                        }}
-                        className={style.commonCls1}
+                        src={loadingImg}
+                        className={`${style.commonCls2} ${style.spinAnimation}`}
                       />
-                    ) : null}
-                  </div>
+                    ) : (
+                      "Play Again"
+                    )}
+                  </button>
                 </div>
-              ))}
-            </div>
-            <div className={style.totalAmount}>
-              <span className={style.fontNumyo}>
-                TOTAL: {formatAmount(totalPrice)} {nativeToken}
-              </span>
-            </div>
+              </div>
+            ) : null}
 
-            <div className={style.payBtnBox}>
-              <ConnectButton.Custom>
-                {({
-                  account,
-                  chain,
-                  openAccountModal,
-                  openChainModal,
-                  openConnectModal,
-                  authenticationStatus,
-                  mounted,
-                }) => {
-                  const ready = mounted && authenticationStatus !== "loading";
-                  const connected =
-                    ready &&
-                    account &&
-                    chain &&
-                    (!authenticationStatus || authenticationStatus === "authenticated");
-
-                  return (
-                    <>
-                      {!chain.unsupported && (
-                        <button
-                          className={style.payBtn}
-                          onClick={() => {
-                            handlePayMent();
-                          }}
-                          disabled={
-                            Object.values(numberData).every(num => num === 0) ||
-                            cresa ||
-                            !isPriceLoaded ||
-                            Object.values(loadingPrices).some(isLoading => isLoading)
-                          }
-                          style={{
-                            cursor:
-                              Object.values(numberData).every(num => num === 0) ||
-                                cresa ||
-                                !isPriceLoaded ||
-                                Object.values(loadingPrices).some(isLoading => isLoading)
-                                ? "not-allowed"
-                                : "auto"
-                          }}
-                        >
-                          {cresa ? (
-                            <img
-                              src={loadingIcon}
-                              alt=""
-                              style={{
-                                width: "40px",
-                                height: "40px",
-                                marginTop: "5px",
-                                color: "#ffffff",
-                                filter: "grayscale(100%)",
-                              }}
-                              className={style.commonCls1}
-                            />
-                          ) : (
-                            <span>PAY</span>
-                          )}
-                        </button>
-                      )}
-
-                      {chain.unsupported && (
-                        <button
-                          onClick={openChainModal}
-                          type="button"
-                          className={style.wrongNetworkBtn}
-                        >
-                          Wrong network
-                        </button>
-                      )}
-                    </>
-                  );
-                }}
-              </ConnectButton.Custom>
-            </div>
-          </div>
-        </div>
-      ) : null}
-
-      {showSuccessModal && (
-        <div className={style.overlay}>
-          <div className={style.modalto} >
-            <img src={success} alt="" className={style.failto} />
-            <p className={style.color}>{modalMessage}</p>
-          </div>
-        </div>
-      )}
-
-      {showModal && !showSuccessModal && (
-        <div className={style.overlay}>
-          <div className={style.modal}>
-            <img src={failto} alt="" className={style.failto} />
-            <p className={style.colorto}>{modalMessage}</p>
-          </div>
-        </div>
-      )}
-
-      {warnBox === true ? (
-        <div
-          className={panningType !== "false" ? style.overlayBuy : style.overlay}
-        >
-          <div className={style.content}>
-            <p className={style.title}>How to Play</p>
-            <p className={style.actical}>
-              <span className={style.copywritingTwo}>This is a composability-based elimination game. You have 120 </span>
-              <span className={style.copywritingTwo}> seconds to eliminate all the pieces.</span>
-              {/* {rewardDescInfo? (
-                <span className={style.copywritingTwo}>You'll&nbsp;
-                {rewardDescInfo}
-                &nbsp; in your first 3 games every day.
-              </span>
-              ): (
-                <span className={style.copywritingTwo}>You'll be rewarded with&nbsp;
-                <p> {rewardInfo}</p>
-                &nbsp; for completing the game.
-              </span>
-              )} */}
-              <span className={style.copywritingTwobox}>
-                On the game board,any two or more adjacent identical pieces
-                can be clicked to eliminate them. Isolated pieces require a elimination tool
-                to remove.
-              </span>
-              <span className={style.copyBox}>Click the 'BUY' button in the top right corner of the game <br />
-              </span>
-              <span className={style.copyBoxto}>screen to purchase elimination tools that will help you remove isolated pieces.</span>
-              <br />
-              <span className={style.copywithing}>We also need your feedback:</span>
-              <br />
-              <a className={style.hrefbox} href="https://forms.gle/LSwhJUL5XZZmhLYJ9" target="_blank" rel="noopener noreferrer">
-                https://forms.gle/LSwhJUL5XZZmhLYJ9
-              </a>
-            </p>
-
-            <button
-              className={style.btnOk}
-              onClick={() => {
-                setWarnBox(false);
-              }}
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      ) : null}
-      {
-        timeLeft === 0 && localStorage.getItem('showGameOver') === 'true' && !gameSuccess
+        {gameSuccess === true
+          && localStorage.getItem('showGameOver') === 'true'
           ? (
             <div
               className={panningType !== "false" ? style.overlayBuy : style.overlay}
             >
-              <div className={style.contentSuccess}>
-                <p>Game Over!</p>
+              <div className={style.contentCon}>
+                <p>Congrats!</p>
+                {rewardInfo ? <p>+{rewardInfo}!</p> : <p></p>}
                 <button
-                  onClick={handlePlayAgain}
-                  disabled={loading}
+                  onClick={handlePlayAgaintow}
+                  disabled={loadingPlayAgain}
                   style={{
-                    cursor: loading ? "not-allowed" : "pointer",
-                    pointerEvents: loading ? "none" : "auto"
+                    cursor: loadingPlayAgain ? "not-allowed" : "pointer",
+                    pointerEvents: loadingPlayAgain ? "none" : "auto"
                   }}
                 >
-                  {loading ? (
+                  {loadingPlayAgain ? (
                     <img
                       src={loadingImg}
                       className={`${style.commonCls2} ${style.spinAnimation}`}
@@ -964,124 +951,392 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
                 </button>
               </div>
             </div>
-          ) : null}
+          ) : null
+        }
 
-      {gameSuccess === true
-        && localStorage.getItem('showGameOver') === 'true'
-        ? (
+        {data2 === true ? (
           <div
             className={panningType !== "false" ? style.overlayBuy : style.overlay}
           >
-            <div className={style.contentCon}>
-              <p>Congrats!</p>
-              {rewardInfo ? <p>+{rewardInfo}!</p> : <p></p>}
-              <button
-                onClick={handlePlayAgaintow}
-                disabled={loadingPlayAgain}
-                style={{
-                  cursor: loadingPlayAgain ? "not-allowed" : "pointer",
-                  pointerEvents: loadingPlayAgain ? "none" : "auto"
+            <div className={style.topUp}>
+              <img
+                src={trunOff}
+                alt=""
+                onClick={() => {
+                  setdata2(false);
                 }}
-              >
-                {loadingPlayAgain ? (
-                  <img
-                    src={loadingImg}
-                    className={`${style.commonCls2} ${style.spinAnimation}`}
-                  />
-                ) : (
-                  "Play Again"
-                )}
-              </button>
+              />
+              <p>insufficient gasbalance</p>
+              <button>top up</button>
             </div>
           </div>
-        ) : null
-      }
+        ) : null}
 
-      {data2 === true ? (
-        <div
-          className={panningType !== "false" ? style.overlayBuy : style.overlay}
+
+        <div className={howToPlayStyle.btnHtp}
+          style={{
+            display: "none",
+            bottom: "43%"
+          }}
+          onClick={async () => {
+            setShowCrossFlow(true);
+          }}
         >
-          <div className={style.topUp}>
-            <img
-              src={trunOff}
-              alt=""
-              onClick={() => {
-                setdata2(false);
-              }}
+          <img src={chainId === 177 ? KoalaImg : SimbaImg} alt="" />
+          <span>{chainId === 177 ? 'Earn Morph Points' : 'Earn $HSK'}</span>
+        </div>
+
+        <div className={howToPlayStyle.btnHtp}
+          style={{
+            bottom: "30%"
+          }}
+          onClick={async () => {
+            setShowRewards(true);
+          }}
+        >
+          <img src={RewardsImg} alt="" />
+          <span>REWARDS</span>
+        </div>
+
+        <div className={howToPlayStyle.btnHtp}
+          onClick={async () => {
+            setShowHowToPlay(true);
+          }}
+        >
+          <img src={HowToPlayBtnImg} alt="" />
+          <span>HOW TO PLAY</span>
+        </div>
+
+        {showCrossFlow && (
+          <div className={style.overlay} >
+            <CrossFlow setShowCrossFlow={setShowCrossFlow}
             />
-            <p>insufficient gasbalance</p>
-            <button>top up</button>
           </div>
+        )}
+
+        {showRewards && (
+          <div className={style.overlay}>
+            <Rewards setShowRewards={setShowRewards}
+            />
+          </div>
+        )}
+
+        {showHowToPlay && (
+          <div className={style.overlay}>
+            <HowToPlay setShowHowToPlay={setShowHowToPlay}
+            />
+          </div>
+        )}
+        <div className={style.buttonBox}>
+          <a href="https://x.com/popcraftonchain" target="_blank" rel="noopener noreferrer">
+            <img src={xLogo} className={xLogo} />
+          </a>
+          <a href="https://t.me/+R8NfZkneQYZkYWE1" target="_blank" rel="noopener noreferrer">
+            <img src={TelegramLogo} className={TelegramLogo} />
+          </a>
+          <a href="https://github.com/themetacat/popcraft" target="_blank" rel="noopener noreferrer">
+            <img src={GithubLogo} className={GithubLogo} />
+          </a>
         </div>
-      ) : null}
+      </>
+    );
+  } else {
+    return (
+      <>
+        {showTopElements && (
+          <>
+            <div className={mobileStyle.container}>
+              <div className={mobileStyle.timePart}>
+                <p>
+                  {timeControl && timeLeft !== 0 && gameSuccess === false ? formatTime(timeLeft) :
+                    <div onClick={() => {
+                      playFun()
+                    }}>New<br />Game</div>
+                  }
+                </p>
+                {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
+              </div>
+              <div className={mobileStyle.rewardsPart} >
+                <p>{rewardInfo}</p>
+                <p>
+                  REWARDS
+                </p>
+              </div>
+              <div className={mobileStyle.scoresPart}>
+                <p>
+                  {rankRecord ? Number(rankRecord.latestScores) : 0}
+                </p>
+                <p>SCORE</p>
+              </div>
+            </div>
+
+            {
+              !showMobileInDayBonus && (
+                <div className={mobileStyle.containerBuy}>
+                  {Object.entries(matchedData).map(([key, { src, balance, name }]) => (
+                    <div key={key} className={mobileStyle.containerItem}>
+                      <div className={mobileStyle.iconFont} > {balance}</div>
+                      <img className={mobileStyle.tokenImg} src={src} alt={name} />
+                    </div>
+                  ))}
+
+                  <div className={style.buyBtnBox}>
+                    <button
+                      className={mobileStyle.buyBtn}
+                      onClick={async () => {
+                        setdataq(!warnBox);
+                      }}
+                    >
+                    </button>
+                  </div>
+                </div>
+              )
+            }
+
+          </>
+        )}
+
+        {dataq === true ? (
+          <div className={panningType !== "false" ? style.overlayBuy : style.overlay}>
+            <div className={style.buYBox} style={{ backgroundImage: `url(${substanceImg})` }}>
+              <img
+                className={style.turnOff}
+                src={trunOff}
+                alt=""
+                onClick={() => {
+                  resetNumberData()
+                  setdataq(false);
+                }}
+              />
+              <div className={style.buyBoxContent}>
+                {Object.entries(matchedData).slice(0, 5).map(([key, { src, balance, name }]) => (
+                  <div key={key} className={style.firstBuy}>
+                    <img src={src} alt={name} className={style.itemImage} />
+                    <div className={style.balanceIconFont}>{balance}</div>
+                    <div className={style.itemNameto}>
+                      <div className={style.itemName}>
+                        <span className={style.itemNameText}>{name}</span>
+                      </div>
+                      <div className={style.dataIcon}>
+                        <button
+                          onClick={() => {
+                            downHandleNumber(key);
+                          }}
+                          disabled={numberData[key] <= 0 || loadingPrices[key]}
+                          style={{
+                            cursor: numberData[key] <= 0 || loadingPrices[key] ? "not-allowed" : "pointer"
+                          }}
+                        >
+                          <img src={reduce} className={style.addbox} alt="" />
+                        </button>
+                        <input
+                          value={numberData[key] || 0}
+                          onChange={(e) => handleNumberChange(key, e.target.value)}
+                          className={style.numData}
+                          min="0"
+                        />
+                        <button
+                          onClick={() => {
+                            upHandleNumber(key);
+                          }}
+                          disabled={loadingPrices[key]}
+                          style={{
+                            cursor: loadingPrices[key] ? "not-allowed" : "pointer"
+                          }}
+                        >
+                          <img src={add} className={style.addbox} alt="" />
+                        </button>
+                      </div>
+                    </div>
+                    <div className={style.twoBuy}>
+                      <span className={style.fontNum}>
+                        {numberData[key] > 0 ? (
+                          loadingPrices[key] ? (
+                            <img src={loadingImg} alt="" className={style.loadingImg} />
+                          ) : (
+                            formatAmount(prices[key] ? prices[key].price : 0)
+                          )
+                        ) : (
+                          "0.0000000"
+                        )}
+                        <br />
+                        {nativeToken}
+                      </span>
+
+                      {forPayMonType === true ? (
+                        <img
+                          src={loadingIcon}
+                          alt=""
+                          style={{
+                            width: "16px",
+                            height: "16px",
+                            marginTop: "5px",
+                            color: "#ffffff",
+                            filter: "grayscale(100%)",
+                          }}
+                          className={style.commonCls1}
+                        />
+                      ) : null}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className={style.totalAmount}>
+                <span className={style.fontNumyo}>
+                  TOTAL: {formatAmount(totalPrice)} {nativeToken}
+                </span>
+              </div>
+
+              <div className={style.payBtnBox}>
+                <ConnectButton.Custom>
+                  {({
+                    chain,
+                    openChainModal,
+                  }) => {
+                    return (
+                      <>
+                        {!chain.unsupported && (
+                          <button
+                            className={style.payBtn}
+                            onClick={() => {
+                              handlePayMent();
+                            }}
+                            disabled={
+                              Object.values(numberData).every(num => num === 0) ||
+                              cresa ||
+                              !isPriceLoaded ||
+                              Object.values(loadingPrices).some(isLoading => isLoading)
+                            }
+                            style={{
+                              cursor:
+                                Object.values(numberData).every(num => num === 0) ||
+                                  cresa ||
+                                  !isPriceLoaded ||
+                                  Object.values(loadingPrices).some(isLoading => isLoading)
+                                  ? "not-allowed"
+                                  : "auto"
+                            }}
+                          >
+                            {cresa ? (
+                              <img
+                                src={loadingIcon}
+                                alt=""
+                                style={{
+                                  width: "40px",
+                                  height: "40px",
+                                  marginTop: "5px",
+                                  color: "#ffffff",
+                                  filter: "grayscale(100%)",
+                                }}
+                                className={style.commonCls1}
+                              />
+                            ) : (
+                              <span>PAY</span>
+                            )}
+                          </button>
+                        )}
+
+                        {chain.unsupported && (
+                          <button
+                            onClick={openChainModal}
+                            type="button"
+                            className={style.wrongNetworkBtn}
+                          >
+                            Wrong network
+                          </button>
+                        )}
+                      </>
+                    );
+                  }}
+                </ConnectButton.Custom>
+              </div>
+            </div>
+          </div>
+        ) : null}
 
 
-      <div className={howToPlayStyle.btnHtp}
-        style={{
-          display: "none",
-          bottom: "43%"
-        }}
-        onClick={async () => {
-          setShowCrossFlow(true);
-        }}
-      >
-        <img src={chainId === 177 ? KoalaImg : SimbaImg} alt="" />
-        <span>{chainId === 177 ? 'Earn Morph Points' : 'Earn $HSK'}</span>
-      </div>
+        {showSuccessModal && (
+          <div className={style.overlay}>
+            <div className={style.modalto} >
+              <img src={success} alt="" className={style.failto} />
+              <p className={style.color}>{modalMessage}</p>
+            </div>
+          </div>
+        )}
 
-      <div className={howToPlayStyle.btnHtp}
-        style={{
-          bottom: "30%"
-        }}
-        onClick={async () => {
-          setShowRewards(true);
-        }}
-      >
-        <img src={RewardsImg} alt="" />
-        <span>REWARDS</span>
-      </div>
+        {showModal && !showSuccessModal && (
+          <div className={style.overlay}>
+            <div className={style.modal}>
+              <img src={failto} alt="" className={style.failto} />
+              <p className={style.colorto}>{modalMessage}</p>
+            </div>
+          </div>
+        )}
 
-      <div className={howToPlayStyle.btnHtp}
-        onClick={async () => {
-          setShowHowToPlay(true);
-        }}
-      >
-        <img src={HowToPlayBtnImg} alt="" />
-        <span>HOW TO PLAY</span>
-      </div>
+        {
+          timeLeft === 0 && localStorage.getItem('showGameOver') === 'true' && !gameSuccess
+            ? (
+              <div
+                className={mobileStyle.overlay}
+              >
+                <div className={mobileStyle.gameOver}>
+                  <p>Game Over!</p>
+                  <button
+                    onClick={handlePlayAgain}
+                    disabled={loading}
+                    style={{
+                      cursor: loading ? "not-allowed" : "pointer",
+                      pointerEvents: loading ? "none" : "auto"
+                    }}
+                  >
+                    {loading ? (
+                      <img
+                        src={loadingImg}
+                        className={`${mobileStyle.loading}`}
+                      />
+                    ) : (
+                      "Play Again"
+                    )}
+                  </button>
+                </div>
+              </div>
+            ) : null}
 
-      {showCrossFlow && (
-        <div className={style.overlay} >
-          <CrossFlow setShowCrossFlow={setShowCrossFlow}
-          />
-        </div>
-      )}
 
-      {showRewards && (
-        <div className={style.overlay}>
-          <Rewards setShowRewards={setShowRewards}
-          />
-        </div>
-      )}
+        {gameSuccess === true
+          && localStorage.getItem('showGameOver') === 'true'
+          ? (
+            <div
+              className={mobileStyle.overlay}
+            >
+              <div className={mobileStyle.congrats}>
+                <p>Congrats!</p>
+                {rewardInfo ? <p>+{rewardInfo}!</p> : <p></p>}
+                <button
+                  onClick={handlePlayAgaintow}
+                  disabled={loadingPlayAgain}
+                  style={{
+                    cursor: loadingPlayAgain ? "not-allowed" : "pointer",
+                    pointerEvents: loadingPlayAgain ? "none" : "auto"
+                  }}
+                >
+                  {loadingPlayAgain ? (
+                    <img
+                      src={LoadingMobileImg}
+                      className={`${mobileStyle.loading}`}
+                    />
+                  ) : (
+                    "Play Again"
+                  )}
+                </button>
+              </div>
+            </div>
+          ) : null
+        }
 
-      {showHowToPlay && (
-        <div className={style.overlay}>
-          <HowToPlay setShowHowToPlay={setShowHowToPlay}
-          />
-        </div>
-      )}
 
-      <div className={style.buttonBox}>
-        <a href="https://x.com/popcraftonchain" target="_blank" rel="noopener noreferrer">
-          <img src={xLogo} className={xLogo} />
-        </a>
-        <a href="https://t.me/+R8NfZkneQYZkYWE1" target="_blank" rel="noopener noreferrer">
-          <img src={TelegramLogo} className={TelegramLogo} />
-        </a>
-        <a href="https://github.com/themetacat/popcraft" target="_blank" rel="noopener noreferrer">
-          <img src={GithubLogo} className={GithubLogo} />
-        </a>
-      </div>
-    </>
-  );
+      </>
+    )
+  }
+
 }

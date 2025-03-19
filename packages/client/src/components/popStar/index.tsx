@@ -8,6 +8,7 @@ import mobileStyle from "../mobile/css/index/index.module.css";
 import mobilePopstarStyle from "../mobile/css/popstar/index.module.css";
 import SpikBtnImg from "../../images/Mobile/ConnectBtnSpik.webp";
 import DecorativeFigure from "../mobile/components/herder/index";
+import IndexMobileCloudBgImg from "../../images/Mobile/IndexBgCloud.webp"
 
 interface Props {
   setPopStar: any;
@@ -44,10 +45,10 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
     }
   };
 
-  if(!isMobile){
+  if (!isMobile) {
     return (
       <div className={`${style.content} ${MISSION_BOUNS_CHAIN_IDS.includes(chainId) ? style.contentMorph : ''}`}>
-  
+
         <p className={`${style.title} ${MISSION_BOUNS_CHAIN_IDS.includes(chainId) ? style.titleMorph : ''}`}>WELCOME TO POPCRAFT!</p>
         <div className={`${style.Container} ${MISSION_BOUNS_CHAIN_IDS.includes(chainId) ? style.ContainerMorph : ''}`}>
           <span className={style.copywritingTwo}>This is a composability-based elimi-<br />
@@ -95,11 +96,11 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
                 ) : (
                   "for completing the game."
                 )}
-  
+
                 <br />
               </span>
             </span>)}
-  
+
           </div>
         </div>
         <ConnectButton.Custom>
@@ -119,7 +120,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
               chain &&
               (!authenticationStatus ||
                 authenticationStatus === "authenticated");
-  
+
             return (
               <div
                 {...(!ready && {
@@ -144,7 +145,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
                       </button>
                     );
                   }
-  
+
                   if (chain.unsupported) {
                     return (
                       <button
@@ -156,7 +157,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
                       </button>
                     );
                   }
-  
+
                   return (
                     <button
                       onClick={handleConnectClick}
@@ -184,10 +185,11 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
         </ConnectButton.Custom>
       </div>
     );
-  }else{
-    return(
+  } else {
+    return (
       <>
-          <div className={mobileStyle.welcome}>
+      <img src={IndexMobileCloudBgImg} alt="" className={mobilePopstarStyle.cloudBg}/>
+        <div className={mobileStyle.welcome}>
           Welcome to PopCraft !
           <br />
           A fully on-chain,
@@ -239,7 +241,6 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
                       </button>
                     );
                   }
-  
                   if (chain.unsupported) {
                     return (
                       <button
@@ -251,10 +252,9 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
                       </button>
                     );
                   }
-  
                   return (
                     <button
-                      // onClick={handleConnectClick}
+                      onClick={handleConnectClick}
                       type="button"
                       disabled={playButtonClicked}
                       className={`${mobilePopstarStyle.btnPlay}`}
@@ -264,7 +264,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
                           <img
                             src={loadingImg}
                             alt=""
-                            className={`${mobilePopstarStyle.commonCls1}`}
+                            className={`${mobilePopstarStyle.loading}`}
                           />
                         ) : (
                           <> {playAction == 'play' ? "Play" : "Top Up First"}</>
@@ -277,9 +277,9 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
             );
           }}
         </ConnectButton.Custom>
-        <DecorativeFigure/>
+        <DecorativeFigure />
       </>
     )
   }
-  
+
 }

@@ -27,6 +27,7 @@ import UserImg from "../../images/User.webp"
 import RankingList from '../RankingList'
 import { useTopUp, COMMON_CHAIN_IDS, MISSION_BOUNS_CHAIN_IDS } from "../select";
 import Arrow from "../../images/Arrow.webp"
+import ArrowMobileImg from "../../images/Mobile/Top/ArrowDownChain.webp"
 import { addressToEntityID, addr2NumToEntityID } from "../rightPart";
 import BGMOn from "../../images/BGMOn.webp";
 import BGMOff from "../../images/BGMOff.webp";
@@ -42,6 +43,15 @@ import TokenNotification from "./tokenNotification";
 import GiftPark from "./giftPark"
 
 import mobileStyle from "../mobile/css/index/index.module.css";
+import UserMobileImg from "../../images/Mobile/Top/User.webp";
+import TopUpMobileImg from "../../images/Mobile/Top/TopUp.webp";
+import BuyMobileImg from "../../images/Mobile/Top/Buy.webp";
+import DisconnectMobileImg from "../../images/Mobile/Top/Disconnect.webp";
+import DividingLineMobileImg from "../../images/Mobile/Top/MenuDividingLine.webp";
+import XMobileImg from "../../images/Mobile/Top/x.webp";
+import GitHubMobileImg from "../../images/Mobile/Top/github.webp";
+import TGMobileImg from "../../images/Mobile/Top/tg.webp";
+
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -86,11 +96,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [translateX, setTranslateX] = useState(0);
   const [translateY, setTranslateY] = useState(0);
   const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
-  const [emptyRegionNum, setEmptyRegionNum] = useState({ x: 0, y: 0 });
-  const [coordinatesData, setCoordinatesData] = useState({ x: 0, y: 0 });
   const [paramInputs, setParamInputs] = useState([]);
   const [convertedParamsData, setConvertedParamsData] = useState(null);
-  const [tCMPopStarTime, setTCMPopStarTime] = useState(null);
   const [updateAbiJson, setUpdate_abi_json] = useState("");
   const [updateAbiCommonJson, setUpdate_abi_Common_json] = useState([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -108,10 +115,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [GRID_SIZE, setGRID_SIZE] = useState(32);
   // const entities = useEntityQuery([Has(Pixel)]);
   const tcmPopStarEntities = useEntityQuery([Has(TCMPopStar)]);
-  const entities_app = useEntityQuery([Has(App)]);
   const [mainContent, setMainContent] = useState("MAINNET");
   const [TCMPopStarData, setTCMPopStarData] = useState(null);
-  const [matchedData, setMatchedData] = useState(null);
   const [addressModel, setAddressModel] = useState(false);
   const [enumValue, setEnumValue] = useState({});
   const [ownerData, setOwnerData] = useState(null);
@@ -134,10 +139,14 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [gasPrice, setGasPrice] = useState<string>("");
   const { getPlantsGp, getPlantsGpSeason } = usePlantsGp();
   const { csd, season } = useUtils();
+  const [calcOffsetYValue, setCalcOffsetYValue] = useState(10);
   const [tokenNotificationValue, setTokenNotificationValue] = useState<{ tokenAddr: string, amount: bigint }>({
     tokenAddr: "",
     amount: 0n,
   });
+  const [showMenu, setShowMenu] = useState(false);
+  const [isCloseAnimatingMenu, setIsCloseAnimatingMenu] = useState(false);
+  const [showMobileInDayBonus, setShowMobileInDayBonus] = useState(false);
 
   useEffect(() => {
     const fetchGasPrice = async () => {
@@ -334,10 +343,13 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     } else {
       setBalance(0n);
     }
+    setShowMenu(false);
   }, [isConnected, palyerAddress, publicClient]);
 
   // 判断用户临时钱包有没有钱 
   useEffect(() => {
+    console.log(hasExecutedRef);
+
     if (isConnected && appName === "BASE/PopCraftSystem" && !hasExecutedRef.current) {
       if ((Number(balance) / 1e18) < balanceCheck) {
         // console.log(Number(balance));
@@ -385,6 +397,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       if (appName === "BASE/PopCraftSystem") {
         setPopStar(true);
         setTimeControl(false)
+        setShowTopElements(false);
       }
     }
   }, [isConnected, balance, hasExecutedRef.current]);
@@ -471,12 +484,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     audio.play();
   };
 
-  const getEoaContract = async () => {
-    const [account] = await window.ethereum!.request({
-      method: "eth_requestAccounts",
-    });
-    return account;
-  };
 
   const [hoveredSquare, setHoveredSquare] = useState<{
     x: number;
@@ -488,25 +495,15 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [selectedColor, setSelectedColor] = useState(
     colorSession !== null ? colorSession : "#ffffff"
   );
-  const onHandleOwner = (data: any) => {
-
-    setOwnerData(data)
-  }
   const mouseXRef = useRef(0);
   const mouseYRef = useRef(0);
   const panningType = window.localStorage.getItem("panning");
-  const coorToEntityID = (x: number, y: number) =>
-    encodeEntity({ x: "uint32", y: "uint32" }, { x, y });
 
   const addressData =
     palyerAddress.substring(0, 4) +
     "..." +
     palyerAddress.substring(palyerAddress.length - 4);
-  const chainName = publicClient.chain.name;
 
-  const capitalizedString =
-    chainName.charAt(0).toUpperCase() + chainName?.slice(1).toLowerCase();
-  const natIve = publicClient.chain.nativeCurrency.decimals;
   const btnLower = () => {
     setNumberData(numberData - 5);
     setGRID_SIZE(GRID_SIZE - 6);
@@ -522,11 +519,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     setTranslateY(0);
   };
 
-  function handleColorOptionClick(color: any) {
-    setSelectedColor(color);
-    window.sessionStorage.setItem("selectedColorSign", color);
-  }
-
   const handleLeave = () => {
     setHoveredSquare(null);
     if (downTimerRef.current) {
@@ -536,106 +528,32 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     setIsLongPress(false);
   };
 
-  // const entityData: { coordinates: { x: number; y: number }; value: any }[] =
-  //   [];
-  // if (entities.length !== 0) {
-  //   entities.forEach((entity) => {
-  //     const coordinates = decodeEntity({ x: "uint32", y: "uint32" }, entity);
-  //     const value = getComponentValueStrict(Pixel, entity);
-  //     if (value.text === "_none") {
-  //       value.text = "";
-  //     }
-  //     if (value.color === "0") {
-  //       value.color = "#2f1643";
-  //     }
-  //     entityData.push({ coordinates, value });
-  //   });
-  // }
-  // const getEntityAtCoordinates = (x: number, y: number) => {
-  //   return entityData.find(
-  //     (entity) => entity.coordinates.x === x && entity.coordinates.y === y
-  //   );
-  // };
-
   const appName = localStorage.getItem("manifest") as any;
-  const parts = appName?.split("/") as any;
-
-  // const findEmptyRegion = () => {
-  //   const gridSize = GRID_SIZE;
-  //   const checkSize = 10;
-  //   const isEmpty = (x, y) => {
-  //     const encodeEntityNum = coorToEntityID(x, y);
-  //     const value = getComponentValue(Pixel, encodeEntityNum);
-  //     return value === undefined;
-  //   };
-  //   let px = 0,
-  //     x = 0,
-  //     y = 0;
-  //   while (true) {
-  //     let res = isEmpty(x, y);
-
-  //     if (res) {
-  //       if (x - px >= 9) {
-  //         if (y === 9) {
-  //           break;
-  //         }
-  //         y++;
-  //         x = px;
-  //       } else {
-  //         x++;
-  //       }
-  //     } else {
-  //       px = x + 1;
-  //       x = px;
-  //       y = 0;
-  //     }
-  //   }
-  //   return px;
-  // };
 
   const findEmptyRegion = () => {
     const px = tcmPopStarEntities.length * 10;
     return px;
   };
 
-  const drawRotatingImage = (ctx: any, img: any, x: any, y: any, width: any, height: any, angle: any) => {
-    ctx.save();
-    ctx.translate(x + width / 2, y + height / 2);
-    ctx.rotate(angle * Math.PI / 180);
-    ctx.drawImage(img, -width / 2, -height / 2, width, height);
-    ctx.restore();
-  };
-
-  function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) {
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + width - radius, y);
-    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-    ctx.lineTo(x + width, y + height - radius);
-    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    ctx.lineTo(x + radius, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
-    ctx.closePath();
-    ctx.stroke();
-  }
-
-
-
   const drawGrid2 = useCallback(
     (
       ctx: CanvasRenderingContext2D,
       hoveredSquare: { x: number; y: number } | null,
-      playType: any
+      playType: boolean
     ) => {
-      const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
-      const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+
       // 清空画布
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
       // 绘制最外层的立体圆角边框
-      const outerBorderRadius = 20; // 外部圆角半径
+      let outerBorderRadius = 20;
+      const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+      const offsetY = (CANVAS_HEIGHT - calcOffsetYValue * GRID_SIZE) / 2;
+      let scale = 1.2;
+      if (isMobile) {
+        outerBorderRadius = 10;
+        scale = 1.4
+      }
       const outerBorderX = offsetX - outerBorderRadius;
       const outerBorderY = offsetY - outerBorderRadius;
       const outerBorderWidth = 10 * GRID_SIZE + 2 * outerBorderRadius;
@@ -767,26 +685,16 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         }
       }
 
-      const scale = 1.2;
-
-      if (hoveredSquare && coordinates.x < 10) {
+      if (hoveredSquare && coordinates.x < 10 && !isMobile) {
         const i = hoveredSquare.x;
         const j = hoveredSquare.y;
         const currentX = i * GRID_SIZE + offsetX;
         const currentY = j * GRID_SIZE + offsetY;
 
-        // 如果正在加载，则不放大并且只展示加载状态
-        // if (loadingSquare && loadingSquare.x === i && loadingSquare.y === j) {
-        //   const loadingImgElement = new Image();
-        //   loadingImgElement.src = loadingImg;
-        //   const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
-        // drawRotatingImage(ctx, loadingImgElement, currentX + GRID_SIZE * 0.1, currentY + GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8, angle);
-        //   ctx.canvas.style.cursor = "default";
-        // } else {
-        const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
         const drawY = currentY - (GRID_SIZE * (scale - 1)) / 2;
         const drawSize = GRID_SIZE * scale;
 
+        const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
         ctx.clearRect(drawX, drawY, drawSize, drawSize);
         ctx.lineWidth = 0.5;
         ctx.strokeRect(drawX, drawY, drawSize, drawSize);
@@ -820,17 +728,9 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           }
         }
         ctx.canvas.style.cursor = "pointer";
-        // }
       } else {
         ctx.canvas.style.cursor = "default";
       }
-
-      // if (loadingSquare && loadingSquare.x < 10 && loadingSquare.x >= 0 && loadingSquare.y < 10 && loadingSquare.y >= 0) {
-      //   const loadingImgElement = new Image();
-      //   loadingImgElement.src = loadingImg;
-      //   const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
-      // drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX + GRID_SIZE * 0.1, loadingSquare.y * GRID_SIZE + offsetY + GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8, angle);
-      // }
     },
     [
       GRID_SIZE,
@@ -838,7 +738,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       numberData,
       TCMPopStarData,
       CANVAS_WIDTH,
-      // getEntityAtCoordinates,
       CANVAS_HEIGHT,
       selectedColor,
       scrollOffset,
@@ -846,14 +745,20 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       loadingplay,
       loadingSquare,
       imageCache,
+      isMobile,
+      calcOffsetYValue
     ]
   );
-
 
   useEffect(() => {
     if (appName === "BASE/PopCraftSystem") {
       setNumberData(30);
-      setGRID_SIZE(44);
+      if (!isMobile) {
+        setGRID_SIZE(44);
+      } else {
+        setCalcOffsetYValue(24);
+        setGRID_SIZE(33);
+      }
       setScrollOffset({ x: 0, y: 0 });
       setTranslateX(0);
       setTranslateY(0);
@@ -864,7 +769,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       setTranslateX(0);
       setTranslateY(0);
     }
-  }, [appName]);
+  }, [appName, isMobile]);
 
 
   //第一层画布
@@ -1006,59 +911,23 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       scrollOffset,
     ]
   );
-  let timeout: NodeJS.Timeout;
   const [isDragging, setIsDragging] = useState(false);
   const [timeControl, setTimeControl] = useState(false);
   const downTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [isLongPress, setIsLongPress] = useState(false);
-  // const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  // const [lastDragEndX, setLastDragEndX] = useState(0);
-  const [fingerNum, setFingerNum] = useState(0);
-  // const coor_entity = coorToEntityID(coordinates.x, coordinates.y);
-  // const pixel_value = getComponentValue(Pixel, coor_entity) as any;
-  // const action =
-  //   pixel_value && pixel_value.action ? pixel_value.action : "interact";
   const action = "interact";
 
-  const ClickThreshold = 150;
-
-
-  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseDown = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    if (appName === "BASE/PopCraftSystem") {
-      // drawGrid2 
-      if (coordinates.x < 10) {
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        drawGrid2(ctx, coordinates, false);
-      }
-    } else {
+    if (coordinates.x < 10) {
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      drawGrid(ctx, coordinates, false);
+      drawGrid2(ctx, coordinates, false);
     }
-    setFingerNum(event.buttons);
     if (pageClick === true) {
       return;
     }
-    if (appName === "BASE/PopCraftSystem") {
-    } else {
-      //禁止上下左右移动
-      setIsDragging(true);
-      setTranslateX(event.clientX);
-      setTranslateY(event.clientY);
-      downTimerRef.current = setTimeout(() => {
-        setIsLongPress(true);
-      }, ClickThreshold);
-    }
     get_function_param(action);
-  };
-
-  const handlePageClick = () => {
-    setPageClick(true);
-  };
-
-  const handlePageClickIs = () => {
-    setPageClick(false);
   };
 
   //点击方块触发事件
@@ -1088,82 +957,57 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         const mouseX = event.clientX - rect.left;
         const mouseY = event.clientY - rect.top;
 
-        if (appName === "BASE/PopCraftSystem") {
-          const CANVAS_WIDTH = document.documentElement.clientWidth;
-          const CANVAS_HEIGHT = document.documentElement.clientHeight;
-          const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
-          const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+        const CANVAS_WIDTH = document.documentElement.clientWidth;
+        const CANVAS_HEIGHT = document.documentElement.clientHeight;
+        const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+        const offsetY = (CANVAS_HEIGHT - calcOffsetYValue * GRID_SIZE) / 2;
 
-          const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
-          const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
-          const newHoveredSquare = { x: gridX, y: gridY };
-          setHoveredSquare(newHoveredSquare);
-          // setLoadingSquare(newHoveredSquare); // 设置 loading 状态
-        } else {
-          const gridX = Math.floor(mouseX / GRID_SIZE);
-          const gridY = Math.floor(mouseY / GRID_SIZE);
-          setCoordinatesData({ x: gridX, y: gridY });
-          const newHoveredSquare = { x: gridX, y: gridY };
-          setHoveredSquare(newHoveredSquare);
-          // setLoadingSquare(newHoveredSquare);// 设置 loading 状态
-        }
+        const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
+        const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
+        const newHoveredSquare = { x: gridX, y: gridY };
+        setHoveredSquare(newHoveredSquare);
+        const upCoordinates = { x: gridX, y: gridY };
 
         if (isEmpty) {
-          if (selectedColor && coordinates) {
-            hoveredSquareRef.current = coordinates;
-            setIsDragging(false);
-            if (appName === "BASE/PopCraftSystem") {
-              // if (action === "pop") {
-              if (TCMPopStarData && coordinates.x < 10 && coordinates.x >= 0 && coordinates.y < 10 && coordinates.y >= 0) {
-                const new_coor = {
-                  x: coordinates.x + TCMPopStarData.x,
-                  y: coordinates.y + TCMPopStarData.y,
-                }
-                if (new_coor.x >= 0 && new_coor.y >= 0) {
-                  interactHandleTCM(
-                    new_coor,
-                    palyerAddress,
-                    selectedColor,
-                    'pop',
-                    null
-                  );
-                }
-              }
-            } else {
-              interactHandle(
-                coordinates,
+          // if (selectedColor && coordinates) {
+          hoveredSquareRef.current = upCoordinates;
+          setIsDragging(false);
+          // if (action === "pop") {
+          if (TCMPopStarData && upCoordinates.x < 10 && upCoordinates.x >= 0 && upCoordinates.y < 10 && upCoordinates.y >= 0) {
+            const new_coor = {
+              x: upCoordinates.x + TCMPopStarData.x,
+              y: upCoordinates.y + TCMPopStarData.y,
+            }
+            if (new_coor.x >= 0 && new_coor.y >= 0) {
+              interactHandleTCM(
+                new_coor,
                 palyerAddress,
                 selectedColor,
-                action,
+                'pop',
                 null
               );
             }
+          }
 
-            mouseXRef.current = mouseX;
-            mouseYRef.current = mouseY;
-            handleData(hoveredSquare as any);
-            const ctx = canvas.getContext("2d");
-            if (ctx) {
-              const { x, y } = coordinates;
-              ctx.fillStyle = selectedColor;
-              ctx.fillRect(
-                x * GRID_SIZE - scrollOffset.x,
-                y * GRID_SIZE - scrollOffset.y,
-                GRID_SIZE,
-                GRID_SIZE
-              );
-              if (appName === "BASE/PopCraftSystem") {
-                // drawGrid2
-                if (coordinates.x < 10 && coordinates.x >= 0 && coordinates.y < 10 && coordinates.y >= 0) {
-                  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                  drawGrid2(ctx, coordinates, true);
-                }
-              } else {
-                ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                drawGrid(ctx, coordinates, false);
-              }
+          mouseXRef.current = mouseX;
+          mouseYRef.current = mouseY;
+          handleData(hoveredSquare as any);
+          const ctx = canvas.getContext("2d");
+          if (ctx) {
+            const { x, y } = upCoordinates;
+            ctx.fillStyle = selectedColor;
+            ctx.fillRect(
+              x * GRID_SIZE - scrollOffset.x,
+              y * GRID_SIZE - scrollOffset.y,
+              GRID_SIZE,
+              GRID_SIZE
+            );
+            if (upCoordinates.x < 10 && upCoordinates.x >= 0 && upCoordinates.y < 10 && upCoordinates.y >= 0) {
+              ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+              drawGrid2(ctx, upCoordinates, true);
             }
           }
+          // }
         } else {
           setPopExhibit(true);
         }
@@ -1174,16 +1018,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         setTranslateY(0);
       }
     });
-
-    // 检查余额
-    if (isConnected) {
-      const balanceFN = publicClient.getBalance({ address: palyerAddress });
-      balanceFN.then((balance: any) => {
-        if ((Number(balance) / 1e18) < balanceCheck) {
-          setShowNewPopUp(true);
-        }
-      });
-    }
   };
 
   const interactHandle = (
@@ -1438,7 +1272,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     scoreBubbleDiv.innerText = `+${Number(score)}`; // 使用获得的分数
 
     const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
-    const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+    const offsetY = (CANVAS_HEIGHT - calcOffsetYValue * GRID_SIZE) / 2;
     // scoreBubbleDiv.style.left = `${coordinates.x * GRID_SIZE + offsetX}px`; // 加上偏移量
     // scoreBubbleDiv.style.top = `${coordinates.y * GRID_SIZE + offsetY}px`; // 加上偏移量
     scoreBubbleDiv.style.left = `${3.2 * GRID_SIZE + offsetX}px`; // 加上偏移量
@@ -1541,9 +1375,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     if (TCMPopStarData === undefined) {
       const emptyRegion = findEmptyRegion();
       EmptyRegionNum = emptyRegion
-      setEmptyRegionNum({ x: emptyRegion, y: 0 });
-    } else {
-      setEmptyRegionNum({ x: 0, y: 0 });
     }
     const ctx = canvasRef?.current?.getContext("2d");
 
@@ -1861,19 +1692,13 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    // if (canvas && entityData.length > 0) {
     if (canvas) {
       const ctx = canvas.getContext("2d");
-      //   if (ctx && appName !== "BASE/PopCraftSystem") {
-      //     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      //     drawGrid(ctx, hoveredSquare, false);
-      //   } else {
       if (ctx) {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         drawGrid2(ctx, hoveredSquare, true);
       }
     }
-    // }
   }, [
     appName,
     drawGrid,
@@ -1898,7 +1723,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         const CANVAS_HEIGHT = document.documentElement.clientHeight;
 
         const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
-        const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+        const offsetY = (CANVAS_HEIGHT - calcOffsetYValue * GRID_SIZE) / 2;
 
         // 计算悬停的网格坐标
         const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
@@ -1957,6 +1782,18 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
 
   const topBuyTransports = () => {
     setShowTopBuy(true)
+  }
+
+  const menuTransports = () => {
+    if (!showMenu) {
+      setShowMenu(!showMenu)
+    } else {
+      setIsCloseAnimatingMenu(true);
+      setTimeout(() => {
+        setShowMenu(!showMenu)
+        setIsCloseAnimatingMenu(false);
+      }, 200);
+    }
   }
 
   // const toggleDropdown = () => {
@@ -2023,6 +1860,9 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       toast.error(toastError);
     }
   }
+  // console.log(popStar === true && (playAction !== 'gameContinue' || !isConnected));
+  // console.log(popStar, playAction, isConnected, localStorage.getItem('playAction'));
+
   if (!isMobile) {
     return (
       <>
@@ -2360,7 +2200,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
 
         {boxPrompt === true || appName === "BASE/PopCraftSystem" ? (
           <BoxPrompt
-            coordinates={coordinates}
             timeControl={timeControl}
             showTopElements={showTopElements}
             playFun={playFun}
@@ -2368,7 +2207,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             setPopStar={setPopStar}
             interactTaskToExecute={interactTaskToExecute}
             checkInteractTask={checkInteractTask}
-            popStar={popStar}
+            isMobile={isMobile}
+            showMobileInDayBonus={showMobileInDayBonus}
           />
         ) : null}
 
@@ -2493,10 +2333,12 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               checkTaskInProcess={checkTaskInProcess}
               handleErrorAll={handleErrorAll}
               isMobile={isMobile}
+              setShowMobileInDayBonus={setShowMobileInDayBonus}
             />
             <GiftPark
               checkTaskInProcess={checkTaskInProcess}
               handleErrorAll={handleErrorAll}
+              isMobile={isMobile}
             />
           </>
 
@@ -2558,6 +2400,9 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         </div>
         {popStar === true && (playAction !== 'gameContinue' || !isConnected) ? (
           <div
+            className={
+              mobileStyle.overlayPopStar
+            }
             onClick={() => {
               setBoxPrompt(true);
             }}
@@ -2573,6 +2418,195 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             />
           </div>
         ) : null}
+        {isConnected &&
+          <>
+            <div className={mobileStyle.topContainer}>
+              <ConnectButton.Custom>
+                {({
+                  chain,
+                  openChainModal,
+                  authenticationStatus,
+                  mounted,
+                }) => {
+                  const ready = mounted && authenticationStatus !== "loading";
+                  return (
+                    <div
+                      {...(!ready && {
+                        "aria-hidden": true,
+                        style: {
+                          opacity: 0,
+                          pointerEvents: "none",
+                          userSelect: "none",
+                        },
+                      })}
+                    >
+                      {(() => {
+                        return (
+                          <div className={mobileStyle.chain}>
+                            <button onClick={(event) => {
+                              openChainModal();
+                            }} className={mobileStyle.Chainbutton}>
+                              {chain.iconUrl && (
+                                <img
+                                  alt={chain.name ?? 'Chain icon'}
+                                  src={chain.iconUrl}
+                                  className={mobileStyle.iconimg}
+                                />
+                              )}
+                              <img
+                                src={ArrowMobileImg}
+                                className={`${mobileStyle.arrow}`}
+                              />
+                            </button>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  );
+                }}
+              </ConnectButton.Custom>
+              <button onClick={toggleMusic} className={mobileStyle.BGMBtn}></button>
+              <button className={mobileStyle.menuBtn} onClick={() => menuTransports()}></button>
+            </div>
+            {
+              showMenu && <div className={`${mobileStyle.menuContainerOut} ${isCloseAnimatingMenu ? mobileStyle.menuContainerOutHide : ""}`}>
+                <div className={mobileStyle.menuContainerIn}>
+                  <div style={{ marginLeft: "10.64rem" }}>
+                    <div className={mobileStyle.menuUser}>
+                      <img src={UserMobileImg} alt="" />
+                      <ConnectButton.Custom>
+                        {({
+                          account,
+                          authenticationStatus,
+                          mounted,
+                        }) => {
+                          const ready = mounted && authenticationStatus !== "loading";
+                          return (
+                            <div
+                              {...(!ready && {
+                                "aria-hidden": true,
+                                style: {
+                                  opacity: 0,
+                                  pointerEvents: "none",
+                                  userSelect: "none",
+                                },
+                              })}
+                            >
+                              {(() => {
+                                return (
+                                  <span>
+                                    {account.displayName}
+                                    {account.displayBalance
+                                      ? ` (${formatBalance(balancover)}  ${currencySymbol})`
+                                      : ""}
+                                  </span>
+                                );
+                              })()}
+                            </div>
+                          );
+                        }}
+                      </ConnectButton.Custom>
+                    </div>
+
+                    <img src={DividingLineMobileImg} style={{ marginTop: "12.64rem" }} className={mobileStyle.dividingLineImg} alt="" />
+                    <div className={mobileStyle.menuTopUp} onClick={() => handleAddClick("topUp")}>
+                      <img src={TopUpMobileImg} alt="" />
+                      <span>
+                        TOP UP
+                      </span>
+                    </div>
+                    <img src={DividingLineMobileImg} style={{ marginTop: "12.64rem" }} className={mobileStyle.dividingLineImg} alt="" />
+                    <div className={mobileStyle.menuBuy} onClick={() => topBuyTransports()}>
+                      <img src={BuyMobileImg} alt="" />
+                      <span>
+                        BUY
+                      </span>
+                    </div>
+                    <img src={DividingLineMobileImg} style={{ marginTop: "12.64rem" }} className={mobileStyle.dividingLineImg} alt="" />
+                    <div className={mobileStyle.menuDisconnect} onClick={() => handleAddClick("")}>
+                      <img src={DisconnectMobileImg} alt="" />
+                      <span>
+                        DISCONNECT
+                      </span>
+                    </div>
+                    <img src={DividingLineMobileImg} style={{ marginTop: "12.64rem" }} className={mobileStyle.dividingLineImg} alt="" />
+                    <div className={mobileStyle.mediaContainer}>
+                      <a href="https://x.com/popcraftonchain" target="_blank" rel="noopener noreferrer">
+                        <img src={XMobileImg} className={mobileStyle.x} />
+                      </a>
+                      <a href="https://t.me/+R8NfZkneQYZkYWE1" target="_blank" rel="noopener noreferrer">
+                        <img src={TGMobileImg} className={mobileStyle.tg} />
+                      </a>
+                      <a href="https://github.com/themetacat/popcraft" target="_blank" rel="noopener noreferrer">
+                        <img src={GitHubMobileImg} className={mobileStyle.github} />
+                      </a>
+                    </div>
+                    <button className={mobileStyle.menuCloseBtn} onClick={() => menuTransports()} >CLOSE</button>
+                  </div>
+                </div>
+
+              </div>
+            }
+
+            <div
+              className={mobileStyle.bodyCon}
+              onMouseDown={handleMouseDown}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMoveData}
+              onMouseLeave={handleLeave}
+              onMouseEnter={handleMouseEnter}
+            >
+              <canvas
+                ref={canvasRef}
+                width={CANVAS_WIDTH}
+                height={CANVAS_WIDTH}
+              />
+            </div>
+          </>}
+
+        {topUpType ? (
+          <div
+            className={style.overlay}
+            onClick={(event) => {
+              if (
+                !event.target.classList.contains("topBox") &&
+                event.target.classList.contains(style.overlay)
+              ) {
+                setTopUpType(false);
+              }
+            }}
+          >
+            <TopUpContent
+              setTopUpType={setTopUpType}
+              setTopUpTypeto={setTopUpTypeto}
+              mainContent={mainContent}
+              palyerAddress={palyerAddress}
+              onTopUpSuccess={handleTopupSuccess}
+            />
+          </div>
+        ) : null}
+
+        <BoxPrompt
+          timeControl={timeControl}
+          showTopElements={showTopElements}
+          playFun={playFun}
+          handleEoaContractData={handleEoaContractData}
+          setPopStar={setPopStar}
+          interactTaskToExecute={interactTaskToExecute}
+          checkInteractTask={checkInteractTask}
+          isMobile={isMobile}
+          showMobileInDayBonus={showMobileInDayBonus}
+        />
+
+        <audio ref={audioRef} src={backgroundMusic} onEnded={handleEnded} loop />
+
+        {showTopBuy && isConnected ? (
+          <div className={style.overlay}>
+            <TopBuy
+              setShowTopBuy={setShowTopBuy}
+            />
+          </div>
+        ) : null}
 
         <div className={mobileStyle.buttomBtn}>
           <RankingList
@@ -2580,11 +2614,21 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             showRankingList={showRankingList}
             isMobile={isMobile}
           />
-          <MissionBonus
-            checkTaskInProcess={checkTaskInProcess}
-            handleErrorAll={handleErrorAll}
-            isMobile={isMobile}
-          />
+          {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (
+            <>
+              <MissionBonus
+                checkTaskInProcess={checkTaskInProcess}
+                handleErrorAll={handleErrorAll}
+                isMobile={isMobile}
+                setShowMobileInDayBonus={setShowMobileInDayBonus}
+              />
+              <GiftPark
+                checkTaskInProcess={checkTaskInProcess}
+                handleErrorAll={handleErrorAll}
+                isMobile={isMobile}
+              />
+            </>
+          )}
         </div>
 
       </>

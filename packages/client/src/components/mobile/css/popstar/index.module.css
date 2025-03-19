@@ -47,7 +47,7 @@
         0.5rem 0.5rem 0.4rem rgba(0, 0, 0, 0.5);
 }
 
-.commonCls1 {
+.loading {
     animation: spin 5s linear infinite;
     -webkit-transform: rotate(3600deg);
     transform: rotate(3600deg);
@@ -72,4 +72,11 @@
     position: absolute;
     right: 7.76rem;
     bottom: 25.5rem;
+}
+
+.cloudBg{
+    width: 100%;
+    height: 431.69rem;
+    position: absolute;
+    bottom: 0;
 }

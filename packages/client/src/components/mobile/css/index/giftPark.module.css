@@ -1,0 +1,94 @@
+.giftsParkBtn {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    z-index: 10;
+    font-family: "Simplicity";
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    width: 35rem;
+    height: 40rem;
+    margin-left: 13.97rem;
+}
+
+.giftsParkBtn img {
+    position: absolute;
+    width: 33.04rem;
+    height: 33.26rem;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    top: 0;
+}
+
+.giftsParkBtn:active img {
+    transform: scale(1.06);
+}
+
+.giftsParkBtn:active button {
+    text-shadow:
+        -0.2rem -0.2rem 0 white,
+        0.2rem -0.2rem 0 white,
+        -0.2rem 0.2rem 0 white,
+        0.2rem 0.2rem 0 white,
+        0.4rem 0.4rem 0.1rem rgba(0, 0, 0, 0.7);
+    transition: text-shadow 0.3s ease;
+}
+
+.giftsParkBtn button {
+    position: absolute;
+    width: 57rem;
+    background-color: transparent;
+    border: none;
+    font-family: "Simplicity";
+    color: #EB5F8C;
+    transition: font-size 0.3s ease;
+    font-size: 4.88rem;
+    font-weight: 400;
+    top: 30.5rem;
+    margin: 0;
+    line-height: 5.7rem;
+    height: 8rem;
+    text-shadow:
+        -0.65rem -0.65rem 0 white,
+        0.65rem -0.65rem 0 white,
+        -0.65rem 0.65rem 0 white,
+        0.65rem 0.65rem 0 white,
+        0.5rem 1rem 1rem rgba(0, 0, 0, 1);
+}
+
+
+.btnTips {
+    position: fixed;
+    width: 11.87rem;
+    height: 11.87rem;
+    line-height: 3rem;
+    margin-top: -29rem;
+    margin-right: -27rem;
+    border-radius: 50%;
+    color: #ffffff;
+    background-image: url("../../../../images/Plants/tips.webp");
+    background-size: contain;
+    background-repeat: no-repeat;
+    font-size: 5.78rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: btnTipsScaleIn 0.1s ease-out forwards;
+}
+
+@keyframes btnTipsScaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

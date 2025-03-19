@@ -6,7 +6,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 0.75rem;
-    z-index: 999999;
+    z-index: 100;
     font-family: "Simplicity";
     text-align: center;
     transition: transform 0.3s ease;
