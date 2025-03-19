@@ -26,6 +26,7 @@ import { encodeEntity } from "@latticexyz/store-sync/recs";
 import { getComponentValue } from "@latticexyz/recs";
 import substanceImg from "../../images/substance/substance.webp";
 import HowToPlay, { Rewards, CrossFlow } from "./HowToPlay";
+import GenesisNFTImg from "../../images/HowToPlay/GenesisNFT117.webp";
 
 interface Props {
   coordinates: any;
@@ -1027,6 +1028,18 @@ export default function BoxPrompt({ coordinates, timeControl, playFun, handleEoa
         <img src={chainId === 177 ? KoalaImg : SimbaImg} alt="" className={howToPlayStyle.crossFlowAnimation}/>
         <span>{chainId === 177 ? 'Earn Morph Points' : 'Earn $HSK'}</span>
       </div>
+
+      {chainId === 2818 && (
+        <div className={howToPlayStyle.btnHtp}
+          style={{
+            bottom: "55%"
+          }}
+          onClick={() => window.open("https://morpha.io/en/launchpad", "_blank")}
+        >
+          <img src={GenesisNFTImg} alt="" className={howToPlayStyle.genesisNFTAnimation}/>
+          <span>{'Genesis NFT'}</span>
+        </div>
+      )}
 
       <div className={howToPlayStyle.btnHtp}
         style={{
