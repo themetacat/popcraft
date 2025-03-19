@@ -2397,14 +2397,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             </div>
           </div>
         )}
-        {showTopBuy && isConnected ? (
-          <div className={style.overlay}>
-            <TopBuy
-              setShowTopBuy={setShowTopBuy}
-              isMobile={isMobile}
-            />
-          </div>
-        ) : null}
 
         <div>
           <img src={PopcraftLogoMobile} className={mobileStyle.containerImg} alt="" />
@@ -2611,15 +2603,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         />
 
         <audio ref={audioRef} src={backgroundMusic} onEnded={handleEnded} loop />
-
-        {showTopBuy && isConnected ? (
-          <div className={style.overlay}>
-            <TopBuy
-              setShowTopBuy={setShowTopBuy}
-              isMobile={isMobile}
-            />
-          </div>
-        ) : null}
 
         {showTopBuy && isConnected ? (
           <div className={style.overlay}>
