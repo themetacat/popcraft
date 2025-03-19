@@ -2209,6 +2209,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             checkInteractTask={checkInteractTask}
             isMobile={isMobile}
             showMobileInDayBonus={showMobileInDayBonus}
+            popStar={popStar}
           />
         ) : null}
 
@@ -2226,6 +2227,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           <div className={style.overlay}>
             <TopBuy
               setShowTopBuy={setShowTopBuy}
+              isMobile={isMobile}
             />
           </div>
         ) : null}
@@ -2358,23 +2360,23 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     return (
       <>
         {localStorage.getItem('isShowWaitingMaskLayer') === 'true' && (
-          <div className={style.waitingOverlay}>
-            <div className={style.waitingOverlayText}>
-              <div className={style.progressBar}>
+          <div className={mobileStyle.waitingOverlay}>
+            <div className={mobileStyle.waitingContainer}>
+              <div className={mobileStyle.progressBar}>
                 <div
-                  className={style.progressFill}
+                  className={mobileStyle.progressFill}
                   style={{
                     width: sendCount > 0 ? `${((receiveCount / sendCount) * 100).toFixed(2)}%` : '0%',
                   }}
                 ></div>
                 <div
-                  className={style.diamondIcon}
+                  className={mobileStyle.diamondIcon}
                   style={{
                     left: sendCount > 0 ? `calc(${((receiveCount / sendCount) * 100).toFixed(2)}% - 3vw)` : '0%',
                   }}
                 ></div>
                 <span
-                  className={style.progressText}
+                  className={mobileStyle.progressText}
                   style={{
                     left: `${Math.min(
                       Math.max(
@@ -2389,12 +2391,21 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
                   {sendCount > 0 ? Math.floor((receiveCount / sendCount) * 100) : 0}%
                 </span>
               </div>
-              This is a fully on-chain game.
-              <br />
-              Please wait while transactions are processed.
+              <div className={mobileStyle.waitingOverlayText}>
+                This is a fully on-chain game, so please kindly wait while all on-chain interactions are being processed.
+              </div>
             </div>
           </div>
         )}
+        {showTopBuy && isConnected ? (
+          <div className={style.overlay}>
+            <TopBuy
+              setShowTopBuy={setShowTopBuy}
+              isMobile={isMobile}
+            />
+          </div>
+        ) : null}
+
         <div>
           <img src={PopcraftLogoMobile} className={mobileStyle.containerImg} alt="" />
         </div>
@@ -2606,6 +2617,21 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               setShowTopBuy={setShowTopBuy}
             />
           </div>
+        ) : null}
+
+        {boxPrompt === true || appName === "BASE/PopCraftSystem" ? (
+          <BoxPrompt
+            coordinates={coordinates}
+            timeControl={timeControl}
+            showTopElements={showTopElements}
+            playFun={playFun}
+            handleEoaContractData={handleEoaContractData}
+            setPopStar={setPopStar}
+            interactTaskToExecute={interactTaskToExecute}
+            checkInteractTask={checkInteractTask}
+            popStar={popStar}
+            isMobile={isMobile}
+          />
         ) : null}
 
         <div className={mobileStyle.buttomBtn}>

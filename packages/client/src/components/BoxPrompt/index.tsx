@@ -1,4 +1,6 @@
 import style from "./index.module.css";
+import mobileTopBuyStyle from "../mobile/css/BoxPrompt/topBuy.module.css";
+import mobileSubstanceImg from "../../images/Mobile/TopBuy/Bg.webp";
 import howToPlayStyle from "./howToPlay.module.css"
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import loadingIcon from "../../images/welcome_pay_play_loading.webp";
@@ -39,8 +41,9 @@ interface Props {
   checkInteractTask: any,
   isMobile: boolean,
   showMobileInDayBonus: any
+  popStar: boolean,
 }
-export default function BoxPrompt({ timeControl, playFun, handleEoaContractData, setPopStar, showTopElements, interactTaskToExecute, checkInteractTask, isMobile, showMobileInDayBonus }: Props) {
+export default function BoxPrompt({ timeControl, playFun, handleEoaContractData, setPopStar, showTopElements, interactTaskToExecute, checkInteractTask, isMobile, showMobileInDayBonus, popStar }: Props) {
   const {
     components: {
       TCMPopStar,
@@ -668,6 +671,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                 alt=""
                 onClick={() => {
                   resetNumberData()
+                  setpay(false);
                   setdataq(false);
                 }}
               />
@@ -767,7 +771,6 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                       account &&
                       chain &&
                       (!authenticationStatus || authenticationStatus === "authenticated");
-
                     return (
                       <>
                         {!chain.unsupported && (
@@ -810,7 +813,6 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                             )}
                           </button>
                         )}
-
                         {chain.unsupported && (
                           <button
                             onClick={openChainModal}
@@ -828,7 +830,6 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
             </div>
           </div>
         ) : null}
-
         {showSuccessModal && (
           <div className={style.overlay}>
             <div className={style.modalto} >
@@ -837,7 +838,6 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
             </div>
           </div>
         )}
-
         {showModal && !showSuccessModal && (
           <div className={style.overlay}>
             <div className={style.modal}>
@@ -846,7 +846,6 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
             </div>
           </div>
         )}
-
         {warnBox === true ? (
           <div
             className={panningType !== "false" ? style.overlayBuy : style.overlay}
@@ -882,7 +881,6 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                   https://forms.gle/LSwhJUL5XZZmhLYJ9
                 </a>
               </p>
-
               <button
                 className={style.btnOk}
                 onClick={() => {
@@ -922,7 +920,6 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                 </div>
               </div>
             ) : null}
-
         {gameSuccess === true
           && localStorage.getItem('showGameOver') === 'true'
           ? (
@@ -953,7 +950,6 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
             </div>
           ) : null
         }
-
         {data2 === true ? (
           <div
             className={panningType !== "false" ? style.overlayBuy : style.overlay}
@@ -985,7 +981,6 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
           <img src={chainId === 177 ? KoalaImg : SimbaImg} alt="" />
           <span>{chainId === 177 ? 'Earn Morph Points' : 'Earn $HSK'}</span>
         </div>
-
         <div className={howToPlayStyle.btnHtp}
           style={{
             bottom: "30%"
@@ -997,7 +992,6 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
           <img src={RewardsImg} alt="" />
           <span>REWARDS</span>
         </div>
-
         <div className={howToPlayStyle.btnHtp}
           onClick={async () => {
             setShowHowToPlay(true);
@@ -1006,21 +1000,18 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
           <img src={HowToPlayBtnImg} alt="" />
           <span>HOW TO PLAY</span>
         </div>
-
         {showCrossFlow && (
           <div className={style.overlay} >
             <CrossFlow setShowCrossFlow={setShowCrossFlow}
             />
           </div>
         )}
-
         {showRewards && (
           <div className={style.overlay}>
             <Rewards setShowRewards={setShowRewards}
             />
           </div>
         )}
-
         {showHowToPlay && (
           <div className={style.overlay}>
             <HowToPlay setShowHowToPlay={setShowHowToPlay}
@@ -1097,27 +1088,28 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
         )}
 
         {dataq === true ? (
-          <div className={panningType !== "false" ? style.overlayBuy : style.overlay}>
-            <div className={style.buYBox} style={{ backgroundImage: `url(${substanceImg})` }}>
+          <div className={mobileTopBuyStyle.overlayBuy}>
+            <div className={mobileTopBuyStyle.buyBoxContainer} style={{ backgroundImage: `url(${mobileSubstanceImg})` }}>
               <img
-                className={style.turnOff}
+                className={mobileTopBuyStyle.turnOff}
                 src={trunOff}
                 alt=""
                 onClick={() => {
                   resetNumberData()
+                  setpay(false);
                   setdataq(false);
                 }}
               />
-              <div className={style.buyBoxContent}>
+              <div className={mobileTopBuyStyle.buyBoxContent}>
                 {Object.entries(matchedData).slice(0, 5).map(([key, { src, balance, name }]) => (
-                  <div key={key} className={style.firstBuy}>
-                    <img src={src} alt={name} className={style.itemImage} />
-                    <div className={style.balanceIconFont}>{balance}</div>
-                    <div className={style.itemNameto}>
-                      <div className={style.itemName}>
-                        <span className={style.itemNameText}>{name}</span>
+                  <div key={key} className={mobileTopBuyStyle.firstBuy}>
+                    <img src={src} alt={name} className={mobileTopBuyStyle.itemImage} />
+                    <div className={mobileTopBuyStyle.iconFont}>{balance}</div>
+                    <div className={mobileTopBuyStyle.itemNameto}>
+                      <div className={mobileTopBuyStyle.itemName}>
+                        <span className={mobileTopBuyStyle.itemNameText}>{name}</span>
                       </div>
-                      <div className={style.dataIcon}>
+                      <div className={mobileTopBuyStyle.dataIcon}>
                         <button
                           onClick={() => {
                             downHandleNumber(key);
@@ -1127,14 +1119,16 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                             cursor: numberData[key] <= 0 || loadingPrices[key] ? "not-allowed" : "pointer"
                           }}
                         >
-                          <img src={reduce} className={style.addbox} alt="" />
+                          <img src={reduce} className={mobileTopBuyStyle.addbox} alt="" />
                         </button>
+
                         <input
                           value={numberData[key] || 0}
                           onChange={(e) => handleNumberChange(key, e.target.value)}
-                          className={style.numData}
+                          className={mobileTopBuyStyle.numData}
                           min="0"
                         />
+
                         <button
                           onClick={() => {
                             upHandleNumber(key);
@@ -1144,15 +1138,15 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                             cursor: loadingPrices[key] ? "not-allowed" : "pointer"
                           }}
                         >
-                          <img src={add} className={style.addbox} alt="" />
+                          <img src={add} className={mobileTopBuyStyle.addbox} alt="" />
                         </button>
                       </div>
                     </div>
-                    <div className={style.twoBuy}>
-                      <span className={style.fontNum}>
+                    <div className={mobileTopBuyStyle.twoBuy}>
+                      <span className={mobileTopBuyStyle.fontNum}>
                         {numberData[key] > 0 ? (
                           loadingPrices[key] ? (
-                            <img src={loadingImg} alt="" className={style.loadingImg} />
+                            <img src={loadingImg} alt="" className={mobileTopBuyStyle.loadingImg} />
                           ) : (
                             formatAmount(prices[key] ? prices[key].price : 0)
                           )
@@ -1163,31 +1157,17 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                         {nativeToken}
                       </span>
 
-                      {forPayMonType === true ? (
-                        <img
-                          src={loadingIcon}
-                          alt=""
-                          style={{
-                            width: "16px",
-                            height: "16px",
-                            marginTop: "5px",
-                            color: "#ffffff",
-                            filter: "grayscale(100%)",
-                          }}
-                          className={style.commonCls1}
-                        />
-                      ) : null}
                     </div>
                   </div>
                 ))}
               </div>
-              <div className={style.totalAmount}>
-                <span className={style.fontNumyo}>
+              <div className={mobileTopBuyStyle.totalAmount}>
+                <span className={mobileTopBuyStyle.fontNumyo}>
                   TOTAL: {formatAmount(totalPrice)} {nativeToken}
                 </span>
               </div>
 
-              <div className={style.payBtnBox}>
+              <div className={mobileTopBuyStyle.payBtnBox}>
                 <ConnectButton.Custom>
                   {({
                     chain,
@@ -1197,21 +1177,19 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                       <>
                         {!chain.unsupported && (
                           <button
-                            className={style.payBtn}
+                            className={mobileTopBuyStyle.payBtn}
                             onClick={() => {
                               handlePayMent();
                             }}
                             disabled={
                               Object.values(numberData).every(num => num === 0) ||
                               cresa ||
-                              !isPriceLoaded ||
                               Object.values(loadingPrices).some(isLoading => isLoading)
                             }
                             style={{
                               cursor:
                                 Object.values(numberData).every(num => num === 0) ||
                                   cresa ||
-                                  !isPriceLoaded ||
                                   Object.values(loadingPrices).some(isLoading => isLoading)
                                   ? "not-allowed"
                                   : "auto"
@@ -1222,13 +1200,13 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                                 src={loadingIcon}
                                 alt=""
                                 style={{
-                                  width: "40px",
-                                  height: "40px",
-                                  marginTop: "5px",
+                                  width: "19.06rem",
+                                  height: "19.06rem",
+                                  marginTop: "3rem",
                                   color: "#ffffff",
                                   filter: "grayscale(100%)",
                                 }}
-                                className={style.commonCls1}
+                                className={mobileTopBuyStyle.commonCls1}
                               />
                             ) : (
                               <span>PAY</span>
@@ -1240,7 +1218,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                           <button
                             onClick={openChainModal}
                             type="button"
-                            className={style.wrongNetworkBtn}
+                            className={mobileTopBuyStyle.wrongNetworkBtn}
                           >
                             Wrong network
                           </button>
@@ -1250,10 +1228,10 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                   }}
                 </ConnectButton.Custom>
               </div>
+
             </div>
           </div>
         ) : null}
-
 
         {showSuccessModal && (
           <div className={style.overlay}>
@@ -1333,10 +1311,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
             </div>
           ) : null
         }
-
-
       </>
     )
   }
-
 }
