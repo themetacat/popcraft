@@ -271,7 +271,7 @@
 
 
 .bonusText {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     font-size: 5.2rem;
     font-weight: 500;
     white-space: nowrap;
@@ -296,14 +296,14 @@
 }
 
 .bonusText img {
-    margin-top: 0.5rem;
+    margin-top: 1rem;
     width: 9.53rem;
-    height: 1.55rem;
+    height: 3rem;
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
     position: absolute;
-    right: 10.2rem;
+    left: -11rem;
 }
 
 .closeBtn {
