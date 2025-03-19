@@ -2607,6 +2607,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           checkInteractTask={checkInteractTask}
           isMobile={isMobile}
           showMobileInDayBonus={showMobileInDayBonus}
+          popStar={popStar}
         />
 
         <audio ref={audioRef} src={backgroundMusic} onEnded={handleEnded} loop />
@@ -2615,23 +2616,18 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           <div className={style.overlay}>
             <TopBuy
               setShowTopBuy={setShowTopBuy}
+              isMobile={isMobile}
             />
           </div>
         ) : null}
 
-        {boxPrompt === true || appName === "BASE/PopCraftSystem" ? (
-          <BoxPrompt
-            coordinates={coordinates}
-            timeControl={timeControl}
-            showTopElements={showTopElements}
-            playFun={playFun}
-            handleEoaContractData={handleEoaContractData}
-            setPopStar={setPopStar}
-            interactTaskToExecute={interactTaskToExecute}
-            checkInteractTask={checkInteractTask}
-            popStar={popStar}
-            isMobile={isMobile}
-          />
+        {showTopBuy && isConnected ? (
+          <div className={style.overlay}>
+            <TopBuy
+              setShowTopBuy={setShowTopBuy}
+              isMobile={isMobile}
+            />
+          </div>
         ) : null}
 
         <div className={mobileStyle.buttomBtn}>

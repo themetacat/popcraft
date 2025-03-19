@@ -1096,7 +1096,6 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                 alt=""
                 onClick={() => {
                   resetNumberData()
-                  setpay(false);
                   setdataq(false);
                 }}
               />
