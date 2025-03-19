@@ -172,7 +172,7 @@
   height: 292.45rem;
   position: fixed;
   right: 0;
-  z-index: 20;
+  z-index: 30;
   transition: transform 0.3s ease, opacity 0.3s ease;
   animation: slideIn 0.15s ease-out forwards;
   transform-origin: top right;

@@ -50,7 +50,7 @@ export default function MissionBonus({ checkTaskInProcess, handleErrorAll, isMob
     const [isCloseAnimating, setIsCloseAnimating] = useState(false);
     const [timeOutCloseAnimating, setTimeOutCloseAnimating] = useState(300);
 
-    useEffect(()=> {
+    useEffect(() => {
         if (isMobile) {
             setContentVisible(false);
             setTimeOutCloseAnimating(150);
@@ -249,7 +249,7 @@ export default function MissionBonus({ checkTaskInProcess, handleErrorAll, isMob
     } else {
         return (
             <>
-            {isContentVisible && <div className={`${mobileStyle.bounsContainer} ${isCloseAnimating ? mobileStyle.bounsContainerClose : ''}`} style={{ backgroundImage: `url(${mobileBGImg})` }}>
+                {isContentVisible && <div className={`${mobileStyle.bounsContainer} ${isCloseAnimating ? mobileStyle.bounsContainerClose : ''}`} style={{ backgroundImage: `url(${mobileBGImg})` }}>
                     <span className={mobileStyle.title}>Unlock In-Day Bonus</span>
                     <div className={mobileStyle.countdown}>
                         <img src={HourClockImg} alt="" />
@@ -326,7 +326,7 @@ export default function MissionBonus({ checkTaskInProcess, handleErrorAll, isMob
                         </div>
                     }
                 </div>}
-                
+
                 <div className={mobileStyle.inDayBonusBtn} onClick={() => toggleContent()}>
                     <img src={mobileBtnImg} alt="" />
                     <button>In-Day Bouns</button>

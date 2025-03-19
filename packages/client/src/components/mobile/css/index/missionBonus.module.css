@@ -330,8 +330,8 @@
 }
 
 .loadingMask {
-    margin-top: 1.2rem;
-    width: 30.4rem;
+    margin-top: 1.1rem;
+    width: 30.7rem;
     height: 31.4rem;
 }
 
@@ -344,7 +344,7 @@
     transition: transform 5s linear;
     position: absolute;
     margin-left: -23.7rem;
-    margin-top: 8.4rem;
+    margin-top: 7.5rem;
     height: 18rem;
     width: 18rem;
 }
@@ -361,16 +361,16 @@
 
 .addedPoints {
     position: absolute;
-    top: -13rem;
-    right: 9rem;
-    font-size: 3rem;
+    top: -33rem;
+    right: 20rem;
+    font-size: 15rem;
     color: #fff;
     text-shadow:
-        -0.2rem -0.2rem 0 #569521,
-        0.2rem -0.2rem 0 #569521,
-        -0.2rem 0.2rem 0 #569521,
-        0.2rem 0.2rem 0 #569521,
-        0.4rem 0.4rem 0.3rem rgba(0, 0, 0, 0.8);
+        -0.4rem -0.4rem 0 #569521,
+        0.4rem -0.4rem 0 #569521,
+        -0.4rem 0.4rem 0 #569521,
+        0.4rem 0.4rem 0 #569521,
+        0.6rem 0.6rem 0.7rem rgba(0, 0, 0, 0.8);
     opacity: 0;
     animation: fadeUp 3s ease-in-out forwards;
 }
@@ -383,17 +383,17 @@
     }
 
     20% {
-        transform: translateY(6.5rem);
+        transform: translateY(5.5rem);
         opacity: 1;
     }
 
     80% {
-        transform: translateY(6.5rem);
+        transform: translateY(5.5rem);
         opacity: 1;
     }
 
     100% {
-        transform: translateY(1.5rem);
+        transform: translateY(0.5rem);
         opacity: 0;
     }
 }

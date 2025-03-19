@@ -1253,9 +1253,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
         {
           timeLeft === 0 && localStorage.getItem('showGameOver') === 'true' && !gameSuccess
             ? (
-              <div
-                className={mobileStyle.overlay}
-              >
+        
                 <div className={mobileStyle.gameOver}>
                   <p>Game Over!</p>
                   <button
@@ -1276,16 +1274,13 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                     )}
                   </button>
                 </div>
-              </div>
             ) : null}
 
 
         {gameSuccess === true
           && localStorage.getItem('showGameOver') === 'true'
           ? (
-            <div
-              className={mobileStyle.overlay}
-            >
+      
               <div className={mobileStyle.congrats}>
                 <p>Congrats!</p>
                 {rewardInfo ? <p>+{rewardInfo}!</p> : <p></p>}
@@ -1307,7 +1302,6 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                   )}
                 </button>
               </div>
-            </div>
           ) : null
         }
       </>

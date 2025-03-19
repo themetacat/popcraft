@@ -52,6 +52,8 @@ import XMobileImg from "../../images/Mobile/Top/x.webp";
 import GitHubMobileImg from "../../images/Mobile/Top/github.webp";
 import TGMobileImg from "../../images/Mobile/Top/tg.webp";
 
+import mobileTopBuyStyle from "../mobile/css/BoxPrompt/topBuy.module.css";
+
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -348,7 +350,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
 
   // 判断用户临时钱包有没有钱 
   useEffect(() => {
-    console.log(hasExecutedRef);
 
     if (isConnected && appName === "BASE/PopCraftSystem" && !hasExecutedRef.current) {
       if ((Number(balance) / 1e18) < balanceCheck) {
@@ -1860,8 +1861,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       toast.error(toastError);
     }
   }
-  // console.log(popStar === true && (playAction !== 'gameContinue' || !isConnected));
-  // console.log(popStar, playAction, isConnected, localStorage.getItem('playAction'));
 
   if (!isMobile) {
     return (
@@ -2605,7 +2604,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         <audio ref={audioRef} src={backgroundMusic} onEnded={handleEnded} loop />
 
         {showTopBuy && isConnected ? (
-          <div className={style.overlay}>
+          <div className={mobileTopBuyStyle.overlayBuy}>
             <TopBuy
               setShowTopBuy={setShowTopBuy}
               isMobile={isMobile}

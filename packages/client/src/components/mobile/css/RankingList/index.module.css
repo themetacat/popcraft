@@ -6,7 +6,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 0.75rem;
-    z-index: 100;
+    z-index: 30;
     font-family: "Simplicity";
     text-align: center;
     transition: transform 0.3s ease;
@@ -60,4 +60,22 @@
         -0.65rem 0.65rem 0 white,
         0.65rem 0.65rem 0 white,
         0.5rem 1rem 1rem rgba(0, 0, 0, 0.8);
+}
+
+
+.formcontainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 125.75rem;
+    height: 112.125rem;
+    border: none;
+    background-image: url('../../../../images/RankingList/RankingListBackground.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: grid;
+    place-items: center;
+    z-index: 25;
 }
