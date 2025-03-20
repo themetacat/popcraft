@@ -1040,12 +1040,11 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
               <div className={mobileStyle.timePart}>
                 <p>
                   {timeControl && timeLeft !== 0 && gameSuccess === false ? formatTime(timeLeft) :
-                    <div onClick={() => {
-                      playFun()
-                    }}>New<br />Game</div>
+                    <div>00:00</div>
                   }
                 </p>
-                {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
+                {/* {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null} */}
+                <p>TIME</p>
               </div>
               <div className={mobileStyle.rewardsPart} >
                 <p>{rewardInfo}</p>

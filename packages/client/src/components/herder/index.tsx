@@ -757,8 +757,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       if (!isMobile) {
         setGRID_SIZE(44);
       } else {
-        setCalcOffsetYValue(10.5);
-        setGRID_SIZE(31);
+        setCalcOffsetYValue(11);
+        setGRID_SIZE(33);
       }
       setScrollOffset({ x: 0, y: 0 });
       setTranslateX(0);
@@ -2650,6 +2650,15 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             </>
           )}
         </div>
+
+        {showSuccessModal && (
+          <div className={mobileStyle.modal}>
+            <img src={failto} alt="" className={mobileStyle.failto} />
+            <p className={mobileStyle.colorto}>Out of stock, please buy!</p>
+          </div>
+        )}
+
+
 
       </>
     );
