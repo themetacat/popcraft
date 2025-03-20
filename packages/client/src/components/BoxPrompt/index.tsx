@@ -1180,6 +1180,9 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                             onClick={() => {
                               handlePayMent();
                             }}
+                            onTouchStart={() => {
+                              handlePayMent();
+                            }}
                             disabled={
                               Object.values(numberData).every(num => num === 0) ||
                               cresa ||

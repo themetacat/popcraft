@@ -811,6 +811,7 @@ export default function TopUp({
                 {!chain.unsupported && (
                   <button
                     onClick={transferPay}
+                    onTouchStart={transferPay}
                     className={`
                       ${transferPayType === false ? mobileStyle.footerBtn : mobileStyle.footerBtnElse}
                       ${isDepositButtonClicked ? mobileStyle.footerBtnClicked : ''}

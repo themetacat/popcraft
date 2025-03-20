@@ -659,6 +659,9 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                                             onClick={() => {
                                                 handlePayMent();
                                             }}
+                                            onTouchStart={() => {
+                                                handlePayMent();
+                                            }}
                                             disabled={
                                                 Object.values(numberData).every(num => num === 0) ||
                                                 cresa ||
