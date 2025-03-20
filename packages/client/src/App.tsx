@@ -39,7 +39,12 @@ export const App = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    setIsMobile(isMobileDevice());
+    const isMobile = isMobileDevice();
+    setIsMobile(isMobile);
+    if (isMobile) {
+      document.documentElement.requestFullscreen();
+
+    }]
   }, []);
 
   useEffect(() => {
@@ -69,42 +74,42 @@ export const App = () => {
       const pathSegments = location.pathname.split("/").filter(Boolean);
       const networkName = pathSegments[0];
 
-        let targetChainId;
-        // add default chain
-        if (networkName === undefined || !(networkName  in networkConfig)) {
-          targetChainId = 2818;
-          window.history.replaceState(null, "", `/`);
-        }else{
-          targetChainId = networkConfig[networkName]
-        }
-        const currentId = await getChainId();
-        if (currentId !== targetChainId || chainId != targetChainId) {
-          try {
-            await window.ethereum.request({
-              method: "wallet_switchEthereumChain",
-              params: [{ chainId: `0x${targetChainId.toString(16)}` }],
-            });
-          } catch (error) {
-            if (address && error.code && error.code === 4902) {
-              const chainIdHex = `0x${targetChainId.toString(16)}`;
-              try {
-                await window.ethereum.request({
-                  method: "wallet_addEthereumChain",
-                  params: [getChainForMetaMask(getChain(targetChainId))],
-                });
+      let targetChainId;
+      // add default chain
+      if (networkName === undefined || !(networkName in networkConfig)) {
+        targetChainId = 2818;
+        window.history.replaceState(null, "", `/`);
+      } else {
+        targetChainId = networkConfig[networkName]
+      }
+      const currentId = await getChainId();
+      if (currentId !== targetChainId || chainId != targetChainId) {
+        try {
+          await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: `0x${targetChainId.toString(16)}` }],
+          });
+        } catch (error) {
+          if (address && error.code && error.code === 4902) {
+            const chainIdHex = `0x${targetChainId.toString(16)}`;
+            try {
+              await window.ethereum.request({
+                method: "wallet_addEthereumChain",
+                params: [getChainForMetaMask(getChain(targetChainId))],
+              });
 
-                await window.ethereum.request({
-                  method: "wallet_switchEthereumChain",
-                  params: [{ chainId: chainIdHex }],
-                });
-              } catch (addError) {
-                console.error("Failed to add or switch the chain:", addError);
-                window.history.replaceState(null, "", `/`+getNetworkName(currentId));
-                window.location.reload();
-              }
+              await window.ethereum.request({
+                method: "wallet_switchEthereumChain",
+                params: [{ chainId: chainIdHex }],
+              });
+            } catch (addError) {
+              console.error("Failed to add or switch the chain:", addError);
+              window.history.replaceState(null, "", `/` + getNetworkName(currentId));
+              window.location.reload();
             }
           }
         }
+      }
     };
     switchNetwork();
   }, [chainId, address]);
@@ -117,7 +122,7 @@ export const App = () => {
       ...Object.values(chain.rpcUrls.default.webSocket || []),
       ...Object.values(chain.rpcUrls.public.webSocket || []),
     ];
-  
+
     return {
       chainId: `0x${chain.id.toString(16)}`,
       chainName: chain.name,
