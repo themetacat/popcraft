@@ -757,7 +757,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       if (!isMobile) {
         setGRID_SIZE(44);
       } else {
-        setCalcOffsetYValue(19);
+        setCalcOffsetYValue(10.5);
         setGRID_SIZE(31);
       }
       setScrollOffset({ x: 0, y: 0 });
@@ -2557,7 +2557,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               <canvas
                 ref={canvasRef}
                 width={CANVAS_WIDTH}
-                height={CANVAS_WIDTH}
+                height={CANVAS_HEIGHT}
               />
             </div>
           </>}
