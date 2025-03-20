@@ -1,10 +1,10 @@
 
 .bounsContainer {
-    position: absolute;
+    position: fixed;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    bottom: 53.49rem;
+    top: 76%;
     left: 12.86rem;
     display: flex;
     align-items: center;

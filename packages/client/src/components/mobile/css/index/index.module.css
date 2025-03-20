@@ -123,6 +123,10 @@
   transition: transform 0.1s ease;
 }
 
+.BGMOff{
+  background-image: url("../../../../images/Mobile/Top/BGMOffBtn.webp");
+}
+
 .chain {
   height: 20rem;
   display: flex;
@@ -288,11 +292,11 @@
   transition: text-shadow 0.15s ease-in-out, font-size 0.1s ease-in-out;
 }
 
-.menuTopUp:active img{
+.menuBuy:active img{
   transform: scale(1.2);
 }
 
-.menuTopUp:active span {
+.menuBuy:active span {
   font-size: 9.55rem;
   text-shadow: 0.2rem 0.2rem 0.4rem rgba(0, 0, 0, 0.6);
 }
@@ -496,3 +500,70 @@
   transition: left 0.1s ease; /* 平滑的动画效果 */
   white-space: nowrap; /* 防止数字换行 */
 }
+
+
+/* ================INSUFFICIENT GASBALANCE============== */
+.popup {
+  width: 233.03rem;
+  height: 148.33rem;
+  border: none;
+  background-image: url("../../../../images/Mobile/InsufficientBg.webp");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* border-radius: 8px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.contentbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 400;
+  font-size: 15.49rem;
+  color: #ffffff;
+  font-family: "AdobeHeitiStd-Regular2";
+  letter-spacing: 2px;
+  margin-top: 30.91rem;
+  text-shadow: 0.4rem 0.4rem 2rem #494848;
+  line-height: 26.79rem;
+}
+
+
+.topupbtn {
+  width: 168rem;
+  height: 22.84rem;
+  background-color: transparent;
+  background-image: url("../../../../images/topup/Layerquestionback.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  margin-top: 8.07rem;
+  font-size: 13.86rem;
+  font-weight: bold;
+  line-height: 7.91rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+  color: #ffffff;
+  transition: font-size 0.3s ease;
+  text-transform: uppercase;
+  text-shadow: -0.2rem -0.2rem 0 rgba(0, 0, 0, 0.20),
+  0.2rem -0.2rem 0 rgba(0, 0, 0, 0.20),
+    -0.2rem 0.2rem 0 rgba(0, 0, 0, 0.20),
+    0.2rem 0.2rem 0 rgba(0, 0, 0, 0.20);
+}
+
+.topupbtn:active {
+  font-size: 14.3rem;
+  text-shadow:
+    -0.3rem -0.3rem 0 rgba(56, 56, 56, 0.7),
+    0.3rem -0.3rem 0 rgba(71, 71, 71, 0.7),
+    -0.3rem 0.3rem 0 rgba(59, 59, 59, 0.7),
+    0.3rem 0.3rem 0 rgba(69, 69, 69, 0.7)
+}
+
