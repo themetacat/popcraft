@@ -44,7 +44,7 @@
 
 .playerGames {
     position: absolute;
-    right: 19.5rem;
+    right: 17.5rem;
     height: 3.6rem;
     top: -6.5rem;
     font-size: 6.5rem;
@@ -66,7 +66,7 @@
 
 .playerGames img{
     margin-left: 0.7rem;
-    width: 7.32rem;
+    width: 9.82rem;
     cursor: pointer;
 }
 
@@ -83,22 +83,22 @@
 
 .playQuestion {
     position: absolute;
-    font-size: 2.2rem;
+    font-size: 8.5rem;
     font-family: "AdobeHeitiStd-Regular";
     color: rgba(50, 123, 139, 1);
     letter-spacing: 0.1rem;
     visibility: hidden;
     opacity: 0;
-    margin-bottom: 7rem;
-    margin-right: 14rem;
-    width: 40rem;
+    margin-bottom: 23rem;
+    margin-right: 12rem;
+    width: 186rem;
     transition: opacity 0.05s ease-in-out, visibility 0s linear 0.05s;
 }
 
 
 .title {
     position: absolute;
-    left: 14rem;
+    left: 13rem;
     top: -6.5rem;
     font-size: 6.5rem;
     z-index: 3;
@@ -117,7 +117,7 @@
 
 .countdown {
     position: absolute;
-    right: 70.21rem;
+    right: 71rem;
     top: -6.5rem;
     font-size: 6.5rem;
     z-index: 3;
