@@ -1654,18 +1654,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     setLoadingpaly(true)
   };
 
-  const handleUpdateAbiJson = (data: any) => {
-    setUpdate_abi_json(data);
-  };
 
-  const handleUpdateAbiCommonJson = (data: any) => {
-    setUpdate_abi_Common_json(data);
-
-  };
-
-  const handleItemClick = (content) => {
-    setMainContent(content);
-  };
   const handleAddClick = (content: any) => {
     if (content === "topUp") {
       setTopUpType(true);
