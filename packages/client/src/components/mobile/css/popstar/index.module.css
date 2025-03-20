@@ -29,6 +29,8 @@
     color: #FFFFFF;
     background-image: url("../../../../images/Mobile/Connect.webp");
     -webkit-text-stroke: 0.22px rgba(0, 0, 0, 0.60);
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
     text-shadow:
         -0.45rem -0.45rem 0.3rem rgba(255, 255, 255, 0.2),
         0.45rem -0.45rem 0.3rem rgba(255, 255, 255, 0.2),
@@ -38,7 +40,7 @@
 
 .btnPlay:active {
     transition: transform 0.1s ease, font-size 0.1s ease;
-    font-size: 14.5rem;
+    font-size: 15.5rem;
     text-shadow:
         -0.45rem -0.45rem 0.3rem rgba(255, 255, 255, 0.3),
         0.45rem -0.45rem 0.3rem rgba(255, 255, 255, 0.3),

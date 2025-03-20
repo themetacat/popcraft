@@ -57,6 +57,8 @@
     background-repeat: no-repeat;
     margin: 3.1rem auto;
     cursor: pointer;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .firstBuy:active {
@@ -163,6 +165,8 @@
     transition: font-size 0.3s ease;
 
     text-transform: uppercase;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
     text-shadow:
         -2px -2px 0 rgba(149, 148, 148, 0.7),
         2px -2px 0 rgba(177, 175, 175, 0.7),
@@ -228,6 +232,9 @@
         -2px 2px 0 rgba(165, 164, 164, 0.7),
         2px 2px 0 rgba(206, 206, 206, 0.7);
     cursor: pointer;
+
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .wrongNetworkBtn:active {

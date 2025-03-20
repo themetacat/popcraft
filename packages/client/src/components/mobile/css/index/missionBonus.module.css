@@ -52,6 +52,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .playerGamesPlayText{
@@ -68,6 +70,8 @@
     margin-left: 0.7rem;
     width: 9.82rem;
     cursor: pointer;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .playerGames img:active{
@@ -207,6 +211,8 @@
 
 .bonusItemPending {
     cursor: pointer;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .bonusItemPending:active .bounsCircle {
@@ -312,11 +318,13 @@
     position: absolute;
     top: -2rem;
     right: 5rem;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.3s ease;
 }
 
 .closeBtn:active {
-    scale: 1.1;
-    transition: scale 0.3s ease;
+    transform: scale(1.4);
 }
 
 .closeBtn img {
@@ -420,6 +428,8 @@
     width: 35rem;
     height: 40rem;
     margin-left: 17.96rem;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .inDayBonusBtn img {
@@ -429,20 +439,21 @@
     object-fit: contain;
     transition: transform 0.3s ease;
     top: 0;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .inDayBonusBtn:active img {
-    transform: scale(1.06);
+    transform: scale(1.4);
 }
 
 .inDayBonusBtn:active button {
     text-shadow:
-        -0.2rem -0.2rem 0 white,
-        0.2rem -0.2rem 0 white,
-        -0.2rem 0.2rem 0 white,
-        0.2rem 0.2rem 0 white,
-        0.4rem 0.4rem 0.1rem rgba(0, 0, 0, 0.7);
-    transition: text-shadow 0.3s ease;
+        -0.4rem -0.4rem 0 white,
+        0.4rem -0.4rem 0 white,
+        -0.4rem 0.4rem 0 white,
+        0.4rem 0.4rem 0 white,
+        0.6rem 0.6rem 0.7rem rgba(0, 0, 0, 0.7);
 }
 
 .inDayBonusBtn button {
@@ -459,6 +470,9 @@
     top: 32.15rem;
     margin: 0;
     line-height: 2.29rem;
+    transition: text-shadow 0.3s ease;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
     text-shadow:
         -0.65rem -0.65rem 0 white,
         0.65rem -0.65rem 0 white,

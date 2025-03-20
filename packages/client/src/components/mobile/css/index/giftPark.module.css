@@ -14,6 +14,8 @@
     width: 35rem;
     height: 40rem;
     margin-left: 13.97rem;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .giftsParkBtn img {
@@ -23,23 +25,25 @@
     object-fit: contain;
     transition: transform 0.3s ease;
     top: 0;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .giftsParkBtn:active img {
-    transform: scale(1.06);
+    transform: scale(1.4);
 }
 
 .giftsParkBtn:active button {
     text-shadow:
-        -0.2rem -0.2rem 0 white,
-        0.2rem -0.2rem 0 white,
-        -0.2rem 0.2rem 0 white,
-        0.2rem 0.2rem 0 white,
-        0.4rem 0.4rem 0.1rem rgba(0, 0, 0, 0.7);
-    transition: text-shadow 0.3s ease;
+        -0.4rem -0.4rem 0 white,
+        0.4rem -0.4rem 0 white,
+        -0.4rem 0.4rem 0 white,
+        0.4rem 0.4rem 0 white,
+        0.6rem 0.6rem 0.3rem rgba(0, 0, 0, 0.8);
 }
 
 .giftsParkBtn button {
+    transition: text-shadow 0.3s ease;
     position: absolute;
     width: 57rem;
     background-color: transparent;
@@ -53,6 +57,8 @@
     margin: 0;
     line-height: 5.7rem;
     height: 8rem;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
     text-shadow:
         -0.65rem -0.65rem 0 white,
         0.65rem -0.65rem 0 white,

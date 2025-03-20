@@ -15,6 +15,8 @@
     width: 35rem;
     height: 40rem;
     margin-left: 11.96rem;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .btn img {
@@ -23,11 +25,13 @@
     height: 33.04rem;
     object-fit: contain;
     transition: transform 0.3s ease;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
     top: 0;
 }
 
 .btn:active img {
-    transform: scale(1.06);
+    transform: scale(1.4);
 }
 
 .btn:active button {
@@ -37,11 +41,11 @@
         -0.85rem 0.85rem 0 white,
         0.85rem 0.85rem 0 white,
         0.7rem 1.2rem 1rem rgba(0, 0, 0, 1);
-    transition: text-shadow 0.3s ease;
 }
 
 .btn button {
     position: absolute;
+    transition: text-shadow 0.3s ease;
     width: 57rem;
     height: 5.88rem;
     background-color: transparent;
@@ -54,6 +58,8 @@
     top: 32.15rem;
     margin: 0;
     line-height: 2.29rem;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
     text-shadow:
         -0.65rem -0.65rem 0 white,
         0.65rem -0.65rem 0 white,

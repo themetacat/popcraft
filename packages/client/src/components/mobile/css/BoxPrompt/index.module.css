@@ -163,12 +163,13 @@
   background-size: 100% 100%;
   background-color: transparent;
   transition: transform 0.1s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .buyBtn:active {
-  transform: scale(1.07);
+  transform: scale(1.4);
 }
-
 
 .gameOver {
   position: fixed;
@@ -222,20 +223,23 @@
     text-transform: uppercase;
     position: fixed;
     bottom: 34.81rem;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
     text-shadow:
       -0.5rem -0.5rem 0 rgba(163, 162, 162, 0.7),
       0.5rem -0.5rem 0 rgba(180, 179, 179, 0.7),
       -0.5rem 0.5rem 0 rgba(165, 164, 164, 0.7),
       0.5rem 0.5rem 0 rgba(206, 206, 206, 0.7);
+      
   }
 
   button:active {
-    font-size: 14rem;
+    font-size: 15rem;
     text-shadow:
-      -0.6rem -0.6rem 0 rgba(56, 56, 56, 0.7),
-      0.6rem -0.6rem 0 rgba(71, 71, 71, 0.7),
-      -0.6rem 0.6rem 0 rgba(59, 59, 59, 0.7),
-      0.6rem 0.6rem 0 rgba(69, 69, 69, 0.7);
+      -0.7rem -0.7rem 0 rgba(56, 56, 56, 0.7),
+      0.7rem -0.7rem 0 rgba(71, 71, 71, 0.7),
+      -0.7rem 0.7rem 0 rgba(59, 59, 59, 0.7),
+      0.7rem 0.7rem 0 rgba(69, 69, 69, 0.7);
   }
 }
 
@@ -341,6 +345,8 @@
     position: fixed;
     top: 140.13rem;
     color: #ffffff;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
     text-shadow:
       -0.5rem -0.5rem 0 rgba(163, 162, 162, 0.7),
       0.5rem -0.5rem 0 rgba(180, 179, 179, 0.7),
@@ -349,11 +355,11 @@
   }
 
   button:active {
-    font-size: 14rem;
+    font-size: 15rem;
     text-shadow:
-      -0.6rem -0.6rem 0 rgba(56, 56, 56, 0.7),
-      0.6rem -0.6rem 0 rgba(71, 71, 71, 0.7),
-      -0.6rem 0.6rem 0 rgba(59, 59, 59, 0.7),
-      0.6rem 0.6rem 0 rgba(69, 69, 69, 0.7);
+      -0.7rem -0.7rem 0 rgba(56, 56, 56, 0.7),
+      0.7rem -0.7rem 0 rgba(71, 71, 71, 0.7),
+      -0.7rem 0.7rem 0 rgba(59, 59, 59, 0.7),
+      0.7rem 0.7rem 0 rgba(69, 69, 69, 0.7);
   }
 }

@@ -2658,8 +2658,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           </div>
         )}
 
-
-
       </>
     );
   }

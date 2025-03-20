@@ -98,14 +98,13 @@
   height: 20.18rem;
   border: none;
   border-radius: 50%;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.3s ease;
 }
 
 .menuBtn:active {
-  transform: scale(1.06);
-  transition: transform 0.1s ease;
-}
-.menuBtn:focus {
-  outline: none;
+  transform: scale(1.2);
 }
 
 .BGMBtn{
@@ -118,14 +117,13 @@
   border: none;
   border-radius: 50%;
   margin-right: 15.74rem;
-}
-.BGMBtn:focus {
+  transition: transform 0.3s ease;
   outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .BGMBtn:active {
-  transform: scale(1.06);
-  transition: transform 0.1s ease;
+  transform: scale(1.2);
 }
 
 .BGMOff{
@@ -139,6 +137,8 @@
   justify-content: center;
   margin-right: 15.74rem;
   width: 36rem;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .Chainbutton {
@@ -151,6 +151,9 @@
   border-radius: 50%;
   background: none;
   cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.3s ease;
 }
 
 .iconimg {
@@ -161,11 +164,7 @@
 }
 
 .Chainbutton:active .iconimg {
-  transform: scale(1.06);
-  transition: transform 0.3s ease;
-}
-.Chainbutton:focus {
-  outline: none;
+  transform: scale(1.2);
 }
 
 .arrow {
@@ -266,20 +265,20 @@
 .menuTopUp img{
   width: 13.97rem;
   height: 9.98rem;
-  transition: transform 0.15s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 .menuTopUp span{
   margin-left: 13.08rem;
-  transition: text-shadow 0.15s ease-in-out, font-size 0.1s ease-in-out;
+  transition: text-shadow 0.2s ease-in-out, font-size 0.1s ease-in-out;
 }
 
 .menuTopUp:active img{
-  transform: scale(1.2);
+  transform: scale(1.4);
 }
 
 .menuTopUp:active span {
-  font-size: 9.55rem;
-  text-shadow: 0.2rem 0.2rem 0.4rem rgba(0, 0, 0, 0.6);
+  font-size: 10.55rem;
+  text-shadow: 0.4rem 0.4rem 0.8rem rgba(0, 0, 0);
 }
 
 .menuBuy{
@@ -293,20 +292,20 @@
 .menuBuy img{
   width: 13.97rem;
   height: 11.75rem;
-  transition: transform 0.15s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 .menuBuy span{
   margin-left: 13.08rem;
-  transition: text-shadow 0.15s ease-in-out, font-size 0.1s ease-in-out;
+  transition: text-shadow 0.2s ease-in-out, font-size 0.1s ease-in-out;
 }
 
 .menuBuy:active img{
-  transform: scale(1.2);
+  transform: scale(1.4);
 }
 
 .menuBuy:active span {
-  font-size: 9.55rem;
-  text-shadow: 0.2rem 0.2rem 0.4rem rgba(0, 0, 0, 0.6);
+  font-size: 10.55rem;
+  text-shadow: 0.4rem 0.4rem 0.8rem rgba(0, 0, 0);
 }
 
 .menuDisconnect{
@@ -320,20 +319,20 @@
 .menuDisconnect img{
   width: 13.75rem;
   height: 13.97rem;
-  transition: transform 0.15s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 .menuDisconnect span{
   margin-left: 13.3rem;
-  transition: text-shadow 0.15s ease-in-out, font-size 0.1s ease-in-out;
+  transition: text-shadow 0.2s ease-in-out, font-size 0.1s ease-in-out;
 }
 
-.menuTopUp:active img{
-  transform: scale(1.2);
+.menuDisconnect:active img{
+  transform: scale(1.4);
 }
 
-.menuTopUp:active span {
-  font-size: 9.55rem;
-  text-shadow: 0.2rem 0.2rem 0.4rem rgba(0, 0, 0, 0.6);
+.menuDisconnect:active span {
+  font-size: 10.55rem;
+  text-shadow: 0.4rem 0.4rem 0.8rem rgba(0, 0, 0);
 }
 
 .mediaContainer{
@@ -350,20 +349,24 @@
   width: 19.75rem;
   height: 19.75rem;
   transition: transform 0.15s ease-in-out;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .x:active{
-  transform: scale(1.1);
+  transform: scale(1.4);
 }
 
 .tg{
   width: 19.75rem;
   height: 19.75rem;
   transition: transform 0.15s ease-in-out;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .tg:active{
-  transform: scale(1.1);
+  transform: scale(1.4);
 }
 
 
@@ -371,10 +374,12 @@
   width: 19.75rem;
   height: 19.75rem;
   transition: transform 0.15s ease-in-out;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .github:active{
-  transform: scale(1.1);
+  transform: scale(1.4);
 }
 
 .menuCloseBtn{
@@ -400,11 +405,13 @@
   border-radius: 13.08rem;
   border: 1.35rem solid;
   transition: font-size 0.3s ease, text-shadow 0.3s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .menuCloseBtn:active{
-  text-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.8);
-  font-size: 10.86rem;
+  text-shadow: 0.6rem 0.6rem 1rem rgba(0, 0, 0, 0.8);
+  font-size: 12.56rem;
 }
 
 .overlayPopStar {
@@ -594,6 +601,8 @@
   color: #ffffff;
   transition: font-size 0.3s ease;
   text-transform: uppercase;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
   text-shadow: -0.2rem -0.2rem 0 rgba(0, 0, 0, 0.20),
   0.2rem -0.2rem 0 rgba(0, 0, 0, 0.20),
     -0.2rem 0.2rem 0 rgba(0, 0, 0, 0.20),
@@ -601,11 +610,11 @@
 }
 
 .topupbtn:active {
-  font-size: 14.3rem;
+  font-size: 15.3rem;
   text-shadow:
-    -0.3rem -0.3rem 0 rgba(56, 56, 56, 0.7),
-    0.3rem -0.3rem 0 rgba(71, 71, 71, 0.7),
-    -0.3rem 0.3rem 0 rgba(59, 59, 59, 0.7),
-    0.3rem 0.3rem 0 rgba(69, 69, 69, 0.7)
+    -0.4rem -0.4rem 0 rgba(56, 56, 56, 0.7),
+    0.4rem -0.4rem 0 rgba(71, 71, 71, 0.7),
+    -0.4rem 0.4rem 0 rgba(59, 59, 59, 0.7),
+    0.4rem 0.4rem 0 rgba(69, 69, 69, 0.7)
 }
 
