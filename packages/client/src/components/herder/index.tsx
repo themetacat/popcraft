@@ -296,7 +296,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     height: document.documentElement.clientHeight,
   });
   const [loadingSquare, setLoadingSquare] = useState<{ x: number; y: number } | null>(null);
-  const overTime = 12222222222; //控制顶部时间
+  const overTime = 122; //控制顶部时间
 
   useEffect(() => {
     // 默认设置localStorage中的值为popCraft相关的值
