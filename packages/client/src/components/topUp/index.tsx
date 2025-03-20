@@ -69,19 +69,53 @@ export default function TopUp({
   const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE, bridgeUrl, chainIcon, nativeToken } = useTopUp();
 
   // 初始化 testLocal 为 null
-  let testLocal = null;
+let testLocal = null;
 
-  // 检查 localStorage 是否已经存在 'testLocal'，如果没有，则设置它
-  if (sessionStorage.getItem('testLocal') === null) {
-      sessionStorage.setItem('testLocal', Math.floor(Date.now() / 1000).toString());
+// 打开 IndexedDB 数据库
+let request = indexedDB.open('myDatabase', 1);
+
+// 处理数据库版本升级
+request.onupgradeneeded = function(event) {
+  let db = event.target.result;
+  if (!db.objectStoreNames.contains('myStore')) {
+    db.createObjectStore('myStore', { keyPath: 'id' });
   }
+};
 
-  // 再次检查并获取 'testLocal' 的值
-  if (sessionStorage.getItem('testLocal') !== null) {
-      testLocal = sessionStorage.getItem('testLocal');
+// 处理数据库打开成功
+request.onsuccess = function(event) {
+  let db = event.target.result;
+  let transaction = db.transaction('myStore', 'readwrite');
+  let store = transaction.objectStore('myStore');
+
+  // 检查数据是否已经存在
+  let getRequest = store.get(1); // 假设我们使用 id = 1 来存取数据
+  getRequest.onsuccess = function() {
+    if (getRequest.result === undefined) {
+      // 如果没有找到数据，则存储当前时间戳
+      store.put({ id: 1, timestamp: Math.floor(Date.now() / 1000).toString() });
+    }
+
+    // 获取存储的数据
+    let getRequestAfter = store.get(1);
+    getRequestAfter.onsuccess = function() {
+      testLocal = getRequestAfter.result ? getRequestAfter.result.timestamp : null;
       // 输出获取的值
-      console.log('testLocal:', testLocal);
-  }
+      // console.log('testLocal:', testLocal);
+    };
+  };
+
+  // 处理数据库操作错误
+  transaction.onerror = function(event) {
+    console.error('Error in IndexedDB transaction:', event.target.error);
+  };
+};
+
+// 处理数据库打开失败
+request.onerror = function(event) {
+  console.error('Error opening IndexedDB:', event.target.error);
+};
+
 
   async function withDraw() {
     const balance_eth = balance / 1e18;
