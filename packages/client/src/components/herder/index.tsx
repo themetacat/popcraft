@@ -2171,6 +2171,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               mainContent={mainContent}
               palyerAddress={palyerAddress}
               onTopUpSuccess={handleTopupSuccess}
+              isMobile={isMobile}
             />
           </div>
         ) : null}
@@ -2584,6 +2585,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               mainContent={mainContent}
               palyerAddress={palyerAddress}
               onTopUpSuccess={handleTopupSuccess}
+              isMobile={isMobile}
             />
           </div>
         ) : null}

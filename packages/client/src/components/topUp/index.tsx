@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import style from "./index.module.css";
+import mobileStyle from "../mobile/css/topUp/index.module.css";
 import trunOff from "../../images/turnOffBtntopup.webp"
 import toast, { Toaster } from "react-hot-toast";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -17,6 +18,7 @@ import success from '../../images/substance/successto.png'
 import LoadingImg from "../../images/loadingto.webp"
 import { useTopUp } from "../select";
 import topupbackImg from "../../images/topup/topupback.webp";
+import mobileTopUpBgImg from "../../images/Mobile/TopUp/TopUpBg.webp";
 
 import {
   type BaseError,
@@ -32,6 +34,7 @@ interface Props {
   mainContent: any;
   onTopUpSuccess: () => void;
   setTopUpTypeto: any;
+  isMobile: boolean;
 }
 
 export default function TopUp({
@@ -39,6 +42,8 @@ export default function TopUp({
   palyerAddress,
   mainContent,
   onTopUpSuccess,
+  setTopUpTypeto,
+  isMobile,
 }: Props) {
   const [warningModel, setWarningModel] = useState(false);
   const [withDrawType, setWithDrawType] = useState(false);
@@ -266,48 +271,354 @@ export default function TopUp({
       setIsLoading(false);
     }
   }
-  return (
-    <div className={style.topBox} style={{ backgroundImage: `url(${topupbackImg})` }}>
-      <div className={style.cant}>
-        <div className={style.title}>
-          TOP UP
-        </div>
-        <img
-          className={style.imgOff}
-          src={trunOff}
-          alt=""
-          onClick={() => {
-            setTopUpType(false);
-          }}
-        />
-      </div>
-      <ConnectButton.Custom>
-        {({
-          account,
-          chain,
-          openAccountModal,
-          openChainModal,
-          openConnectModal,
-          authenticationStatus,
-          mounted,
-        }) => {
-          const ready = mounted && authenticationStatus !== "loading";
-          const connected =
-            ready &&
-            account &&
-            chain &&
-            (!authenticationStatus || authenticationStatus === "authenticated");
 
-          return (
-            <>
-              <div className={style.onePart}>
-                <div className={style.onePartMain}>
-                  <p className={style.titleOne1}>MAIN WALLET</p>
-                  <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
+  if (!isMobile) {
+    return (
+      <div className={style.topBox} style={{ backgroundImage: `url(${topupbackImg})` }}>
+        <div className={style.cant}>
+          <div className={style.title}>
+            TOP UP
+          </div>
+          <img
+            className={style.imgOff}
+            src={trunOff}
+            alt=""
+            onClick={() => {
+              setTopUpType(false);
+            }}
+          />
+        </div>
+
+        <ConnectButton.Custom>
+          {({
+            account,
+            chain,
+            openAccountModal,
+            openChainModal,
+            openConnectModal,
+            authenticationStatus,
+            mounted,
+          }) => {
+            const ready = mounted && authenticationStatus !== "loading";
+            const connected =
+              ready &&
+              account &&
+              chain &&
+              (!authenticationStatus || authenticationStatus === "authenticated");
+  
+            return (
+              <>
+                <div className={style.onePart}>
+                  <div className={style.onePartMain}>
+                    <p className={style.titleOne1}>MAIN WALLET</p>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div style={{ display: "flex" }} className={style.btnPart}>
+                        <img src={chainIcon} alt="" className={style.imgICon} />
+                        <button
+                          onClick={(event) => {
+                            openChainModal();
+                          }}
+                          style={{
+                            border: "none",
+                            background: "none",
+                            padding: "0px",
+                          }}
+                          type="button"
+                        >
+                          <div className={style.mainFont}>
+                            <span>{account.displayName}</span>
+                            <img
+                              src={UnioncopyBtn}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleCopy(address);
+                              }}
+                              alt=""
+                              className={style.imgUnionCopyBtn}
+                            />
+                            <p>
+                              {balanceResultEOA.data?.value
+                                ? ` ${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)}`
+                                : "0"}&nbsp;&nbsp;&nbsp;&nbsp;{nativeToken}
+                            </p>
+                          </div>
+                        </button>
+                      </div>
+                      <div className={style.bridgePart}>
+                        <span
+                          className={`${style.bridgeBTN} ${isPlayButtonClicked ? style.bridgeBTNClicked : ''}`}
+                          onClick={bridgeHandle}>
+                          Bridge
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div className={style.partContent}>
+                  <div className={style.container}>
+                    <p>
+                      <span className={style.titleOne}>SESSION WALLET</span>
+                    </p>
+                    <img
+                      src={warningImgBlack}
+                      alt="Warning"
+                      className={style.warningImg}
+                      onMouseEnter={() => setWarningModel(true)}
+                      onMouseLeave={() => setWarningModel(false)}
+                    />
+                  </div>
+  
+                  <div className={style.partTwo}>
+                    <div style={{ display: "flex", gap: "4px" }}>
+                      <img src={chainIcon} alt="" className={style.imgIConbox} />
+                      <div className={style.addcon}>
+                        <input
+                          type="text"
+                          value={
+                            palyerAddress.substring(0, 4) +
+                            "..." +
+                            palyerAddress.substring(palyerAddress.length - 4)
+                          }
+                          className={style.inputCon}
+                          readOnly
+                        />
+                        <img
+                          src={UnioncopyBtn}
+                          onClick={() => {
+                            handleCopy(palyerAddress);
+                          }}
+                          alt=""
+                          className={style.imgUnioncopyBtn}
+                        />
+                        <span className={style.ConfirmingFont}>
+                          {!isConfirmingWith && (
+                            <>{(Number(balance) / 1e18).toFixed(8)}&nbsp;&nbsp;&nbsp;{nativeToken}</>
+                          )}
+                        </span>
+                      </div>
+                    </div>
+  
+                    <div
+                      className={`
+                        ${style.btnMe}
+                        ${isWithdrawButtonClicked ? style.btnMeClicked : ''}
+                        ${isWithdrawButtonWaiting ? style.btnMeWaiting : ''}
+                        ${style.btnMeLoading}
+                      `}
+                      onClick={withDraw}
+                      disabled={isWithdrawing || balance === 0}
+                    >
+                      {isWithdrawLoading ? (
+                        <img src={LoadingImg} alt="Loading" className={style.loadingImgbox} />
+                      ) : (
+                        withdrawButtonText
+                      )}
+                    </div>
+  
+                  </div>
+  
+                  <div className={style.prvkey}>
+                    <p className={style.pqad}>PRIVATE KEY</p>
+                    <div style={{ display: "flex", gap: "2.66rem", marginTop: "1.6rem" }}>
+                      <input
+                        type={showPassword === true ? "text" : "password"}
+                        value={privateKey}
+                        style={{
+                          width: showPassword === false ? "140px" : "auto",
+                        }}
+                        readOnly
+                        className={style.inputConPassWord} />
+                      <img
+                        src={showPassword === true ? openEye : turnOffEye}
+                        alt=""
+                        className={showPassword ? style.openEyeStyle : style.turnOffEyeStyle}
+                        onClick={() => {
+                          setShowPassword(!showPassword);
+                        }}
+                      />
+                      <img
+                        src={UnioncopyBtn}
+                        alt=""
+                        className={style.imginputConPassWordto}
+                        onClick={() => {
+                          handleTogglePassword(privateKey);
+                        }}
+                      />
+                    </div>
+  
+                    <p className={style.prilf}>
+                      <img
+                        src={warningImgBlack}
+                        alt="Warning"
+                        className={style.warningImg2}
+                      />
+                      &nbsp;&nbsp;Save the private key as soon as possible.
+                      <br />
+                      &nbsp;Avoid clearing the cache during the game, or your
+                      <br />
+                      &nbsp;session wallet may reset !!!
+                    </p>
+                  </div>
+                </div>
+                <div className={style.partFour}>
+                  <p className={style.partFourFont}>
+                    Every onchain interaction uses gas. Top up any amount to your session wallet.
+                  </p>
+                  <div className={style.partImo}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "1rem",
+                        verticalAlign: "middle",
+                        height: "25px",
+                        width: "54rem",
+                      }}>
+                      <img src={chainIcon} alt="" className={style.svgIcon} />
+                      <input
+                        name="value"
+                        placeholder={`Amount (${nativeToken})`}
+                        type="number"
+                        step="0.0001"
+                        value={inputValue}
+                        onChange={handleChange}
+                        required
+                      />
+                      <span className={style.inputEth}>{nativeToken}</span>
+                    </div>
+                    <div className={style.partFive}>
+                      <span>Available to deposit</span>
+                      <div className={style.mainFontbox}>
+                        {balanceResultEOA.data?.value
+                          ? ` ${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)}`
+                          : " 0"}&nbsp;&nbsp;{nativeToken}
+                      </div>
+                    </div>
+                    <div className={style.partFiveboxto}>
+                      <span>Time to deposit</span>
+                      <div className={style.partFivebox}>
+                        <span>A few seconds</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {!chain.unsupported && (
+                  <button
+                    onClick={transferPay}
+                    className={`
+                      ${transferPayType === false ? style.footerBtn : style.footerBtnElse}
+                      ${isDepositButtonClicked ? style.footerBtnClicked : ''}
+                    `}
+                    disabled={transferPayType === true || isConfirming || isPending || isDepositing}
                   >
-                    <div style={{ display: "flex" }} className={style.btnPart}>
-                      <img src={chainIcon} alt="" className={style.imgICon} />
+                    {isLoading ? (
+                      <img src={LoadingImg} alt="Loading" className={style.loadingImg} />
+                    ) : (
+                      <>
+                        {transferPayType === true && "Not enough funds"}
+                        {transferPayType === false &&
+                          !isConfirming &&
+                          !isPending &&
+                          !isDepositing &&
+                          "Deposit Via Transfer"}
+                      </>
+                    )}
+                  </button>
+                )}
+                {chain.unsupported && (
+                  <button
+                    onClick={openChainModal}
+                    type="button"
+                    className={style.wrongNetworkBtn}
+                  >
+                    Wrong network
+                  </button>
+                )}
+              </>
+            );
+          }}
+        </ConnectButton.Custom>
+  
+        {warningModel && (
+          <div className={style.warningOverlay} onClick={(e) => {
+            e.stopPropagation();
+            setWarningModel(false);
+          }}
+            onMouseEnter={() => setWarningModel(true)}
+            onMouseLeave={() => setWarningModel(false)}
+          >
+            <div className={style.warningCon}>
+              <div className={style.triangle}>
+                The session wallet is a private key stored in your
+                browser's local storage. It allows you to play games without
+                needing to confirm transactions, but it is less secure. Only deposit very
+                small amounts of ETH into this wallet.
+                The default deposit supports a reasonable number of transactions based on fees.
+              </div>
+            </div>
+          </div>
+        )}
+  
+        {showSuccessModal && (
+          <div className={style.overlay}>
+            <div className={style.modalto} >
+              <img src={success} alt="" className={style.failto} />
+              <p className={style.color}>{modalMessage}</p>
+  
+            </div>
+          </div>
+        )}
+  
+        {showModal && !showSuccessModal && (
+          <div className={style.overlay}>
+            <div className={style.modal}>
+              <img src={failto} alt="" className={style.failto} />
+              <p className={style.colorto}>{modalMessage}</p>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  } else {
+    return (
+      <div className={mobileStyle.topBoxContainer} style={{ backgroundImage: `url(${mobileTopUpBgImg})` }}>
+        <div className={mobileStyle.cant}>
+          <div className={mobileStyle.title}>
+            TOP UP
+          </div>
+          <img
+            className={mobileStyle.imgOff}
+            src={trunOff}
+            alt=""
+            onClick={() => {
+              setTopUpType(false);
+            }}
+          />
+        </div>
+        <ConnectButton.Custom>
+          {({
+            account,
+            chain,
+            openAccountModal,
+            openChainModal,
+            openConnectModal,
+            authenticationStatus,
+            mounted,
+          }) => {
+            const ready = mounted && authenticationStatus !== "loading";
+            const connected =
+              ready &&
+              account &&
+              chain &&
+              (!authenticationStatus || authenticationStatus === "authenticated");
+  
+            return (
+              <>
+                <div className={mobileStyle.onePartMain}>
+                  <p className={mobileStyle.titleOne1}>MAIN WALLET</p>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <div style={{ display: "flex" }} className={mobileStyle.btnPart}>
+                      <img src={chainIcon} alt="" className={mobileStyle.imgICon} />
                       <button
                         onClick={(event) => {
                           openChainModal();
@@ -319,7 +630,7 @@ export default function TopUp({
                         }}
                         type="button"
                       >
-                        <div className={style.mainFont}>
+                        <div className={mobileStyle.mainFont}>
                           <span>{account.displayName}</span>
                           <img
                             src={UnioncopyBtn}
@@ -328,7 +639,7 @@ export default function TopUp({
                               handleCopy(address);
                             }}
                             alt=""
-                            className={style.imgUnionCopyBtn}
+                            className={mobileStyle.imgUnionCopyBtn}
                           />
                           <p>
                             {balanceResultEOA.data?.value
@@ -338,240 +649,241 @@ export default function TopUp({
                         </div>
                       </button>
                     </div>
-                    <div className={style.bridgePart}>
+                    <div className={mobileStyle.bridgePart}>
                       <span
-                        className={`${style.bridgeBTN} ${isPlayButtonClicked ? style.bridgeBTNClicked : ''}`}
+                        className={`${mobileStyle.bridgeBTN} ${isPlayButtonClicked ? mobileStyle.bridgeBTNClicked : ''}`}
                         onClick={bridgeHandle}>
                         Bridge
                       </span>
                     </div>
                   </div>
                 </div>
-
-              </div>
-
-              <div className={style.partContent}>
-                <div className={style.container}>
-                  <p>
-                    <span className={style.titleOne}>SESSION WALLET</span>
-                  </p>
-                  <img
-                    src={warningImgBlack}
-                    alt="Warning"
-                    className={style.warningImg}
-                    onMouseEnter={() => setWarningModel(true)}
-                    onMouseLeave={() => setWarningModel(false)}
-                  />
-                </div>
-
-                <div className={style.partTwo}>
-                  <div style={{ display: "flex", gap: "4px" }}>
-                    <img src={chainIcon} alt="" className={style.imgIConbox} />
-                    <div className={style.addcon}>
-                      <input
-                        type="text"
-                        value={
-                          palyerAddress.substring(0, 4) +
-                          "..." +
-                          palyerAddress.substring(palyerAddress.length - 4)
-                        }
-                        className={style.inputCon}
-                        readOnly
-                      />
-                      <img
-                        src={UnioncopyBtn}
-                        onClick={() => {
-                          handleCopy(palyerAddress);
-                        }}
-                        alt=""
-                        className={style.imgUnioncopyBtn}
-                      />
-                      <span className={style.ConfirmingFont}>
-                        {!isConfirmingWith && (
-                          <>{(Number(balance) / 1e18).toFixed(8)}&nbsp;&nbsp;&nbsp;{nativeToken}</>
-                        )}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div
-                    className={`
-                      ${style.btnMe}
-                      ${isWithdrawButtonClicked ? style.btnMeClicked : ''}
-                      ${isWithdrawButtonWaiting ? style.btnMeWaiting : ''}
-                      ${style.btnMeLoading}
-                    `}
-                    onClick={withDraw}
-                    disabled={isWithdrawing || balance === 0}
-                  >
-                    {isWithdrawLoading ? (
-                      <img src={LoadingImg} alt="Loading" className={style.loadingImgbox} />
-                    ) : (
-                      withdrawButtonText
-                    )}
-                  </div>
-
-                </div>
-
-                <div className={style.prvkey}>
-                  <p className={style.pqad}>PRIVATE KEY</p>
-                  <div style={{ display: "flex", gap: "4px", marginTop: "-0.4rem" }}>
-                    <input
-                      type={showPassword === true ? "text" : "password"}
-                      value={privateKey}
-                      style={{
-                        width: showPassword === false ? "140px" : "auto",
-                      }}
-                      readOnly
-                      className={style.inputConPassWord} />
-                    <img
-                      src={showPassword === true ? openEye : turnOffEye}
-                      alt=""
-                      className={showPassword ? style.openEyeStyle : style.turnOffEyeStyle}
-                      onClick={() => {
-                        setShowPassword(!showPassword);
-                      }}
-                    />
-                    <img
-                      src={UnioncopyBtn}
-                      alt=""
-                      className={style.imginputConPassWordto}
-                      onClick={() => {
-                        handleTogglePassword(privateKey);
-                      }}
-                    />
-                  </div>
-
-                  <p className={style.prilf}>
+  
+                <div className={mobileStyle.partContent}>
+                  <div className={mobileStyle.container}>
+                    <p>
+                      <span className={mobileStyle.titleOne}>SESSION WALLET</span>
+                    </p>
                     <img
                       src={warningImgBlack}
                       alt="Warning"
-                      className={style.warningImg2}
+                      className={mobileStyle.warningImg}
+                      onMouseEnter={() => setWarningModel(true)}
+                      onMouseLeave={() => setWarningModel(false)}
                     />
-                    &nbsp;&nbsp;Save the private key as soon as possible.
-                    <br />
-                    &nbsp;Avoid clearing the cache during the game, or your
-                    <br />
-                    &nbsp;session wallet may reset !!!
+                  </div>
+  
+                  <div className={mobileStyle.partTwo}>
+                    <div style={{ display: "flex", gap: "4px" }}>
+                      <div style={{ height: "15rem" }}>
+                      <img src={chainIcon} alt="" className={mobileStyle.imgIConbox} />
+                        <input
+                          type="text"
+                          value={
+                            palyerAddress.substring(0, 4) +
+                            "..." +
+                            palyerAddress.substring(palyerAddress.length - 4)
+                          }
+                          className={mobileStyle.inputCon}
+                          readOnly
+                        />
+                        <img
+                          src={UnioncopyBtn}
+                          onClick={() => {
+                            handleCopy(palyerAddress);
+                          }}
+                          alt=""
+                          className={mobileStyle.imgUnioncopyBtn}
+                        />
+                        <span className={mobileStyle.ConfirmingFont}>
+                          {!isConfirmingWith && (
+                            <>{(Number(balance) / 1e18).toFixed(8)}&nbsp;&nbsp;&nbsp;{nativeToken}</>
+                          )}
+                        </span>
+                      </div>
+                    </div>
+  
+                    <div
+                      className={`
+                        ${mobileStyle.btnMe}
+                        ${isWithdrawButtonClicked ? mobileStyle.btnMeClicked : ''}
+                        ${isWithdrawButtonWaiting ? mobileStyle.btnMeWaiting : ''}
+                        ${mobileStyle.btnMeLoading}
+                      `}
+                      onClick={withDraw}
+                      disabled={isWithdrawing || balance === 0}
+                    >
+                      {isWithdrawLoading ? (
+                        <img src={LoadingImg} alt="Loading" className={mobileStyle.loadingImgbox} />
+                      ) : (
+                        withdrawButtonText
+                      )}
+                    </div>
+  
+                  </div>
+  
+                  <div className={mobileStyle.prvkey}>
+                    <p className={mobileStyle.pqad}>PRIVATE KEY</p>
+                    <div style={{ display: "flex", gap: "4px", marginTop: "-0.4rem" }}>
+                      <input
+                        type={showPassword === true ? "text" : "password"}
+                        value={privateKey}
+                        style={{
+                          width: showPassword === false ? "140px" : "auto",
+                        }}
+                        readOnly
+                        className={mobileStyle.inputConPassWord} />
+                      <img
+                        src={showPassword === true ? openEye : turnOffEye}
+                        alt=""
+                        className={showPassword ? mobileStyle.openEyeStyle : mobileStyle.turnOffEyeStyle}
+                        onClick={() => {
+                          setShowPassword(!showPassword);
+                        }}
+                      />
+                      <img
+                        src={UnioncopyBtn}
+                        alt=""
+                        className={mobileStyle.imginputConPassWordto}
+                        onClick={() => {
+                          handleTogglePassword(privateKey);
+                        }}
+                      />
+                    </div>
+  
+                    <p className={mobileStyle.prilf}>
+                      <img
+                        src={warningImgBlack}
+                        alt="Warning"
+                        className={mobileStyle.warningImg2}
+                      />
+                      &nbsp;&nbsp;Save the private key as soon as possible.
+                      <br />
+                      &nbsp;Avoid clearing the cache during the game, or your
+                      <br />
+                      &nbsp;session wallet may reset !!!
+                    </p>
+                  </div>
+                </div>
+                <div className={mobileStyle.partFour}>
+                  <p className={mobileStyle.partFourFont}>
+                    Every onchain interaction uses gas. Top up any amount to your session wallet.
                   </p>
-                </div>
-              </div>
-              <div className={style.partFour}>
-                <p className={style.partFourFont}>
-                  Every onchain interaction uses gas. Top up any amount to your session wallet.
-                </p>
-                <div className={style.partImo}>
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "1rem",
-                      verticalAlign: "middle",
-                      height: "25px",
-                      width: "54rem",
-                    }}>
-                    <img src={chainIcon} alt="" className={style.svgIcon} />
-                    <input
-                      name="value"
-                      placeholder={`Amount (${nativeToken})`}
-                      type="number"
-                      step="0.0001"
-                      value={inputValue}
-                      onChange={handleChange}
-                      required
-                    />
-                    <span className={style.inputEth}>{nativeToken}</span>
-                  </div>
-                  <div className={style.partFive}>
-                    <span>Available to deposit</span>
-                    <div className={style.mainFontbox}>
-                      {balanceResultEOA.data?.value
-                        ? ` ${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)}`
-                        : " 0"}&nbsp;&nbsp;{nativeToken}
+                  <div className={mobileStyle.partImo}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "3rem",
+                        verticalAlign: "middle",
+                        height: "17.55px",
+                        width: "202.21rem",
+                        marginLeft: "-4rem",
+                        marginTop: "8rem",
+                      }}>
+                      <img src={chainIcon} alt="" className={mobileStyle.svgIcon} />
+                      <input
+                        name="value"
+                        placeholder={`Amount (${nativeToken})`}
+                        type="number"
+                        step="0.0001"
+                        value={inputValue}
+                        onChange={handleChange}
+                        required
+                      />
+                      <span className={mobileStyle.inputEth}>{nativeToken}</span>
                     </div>
-                  </div>
-                  <div className={style.partFiveboxto}>
-                    <span>Time to deposit</span>
-                    <div className={style.partFivebox}>
-                      <span>A few seconds</span>
+                    <div className={mobileStyle.partFive}>
+                      <span>Available to deposit</span>
+                      <div className={mobileStyle.mainFontbox}>
+                        {balanceResultEOA.data?.value
+                          ? ` ${(Number(balanceResultEOA.data?.value) / 1e18).toFixed(6)}`
+                          : " 0"}&nbsp;&nbsp;{nativeToken}
+                      </div>
+                    </div>
+                    <div className={mobileStyle.partFiveboxto}>
+                      <span>Time to deposit</span>
+                      <div className={mobileStyle.partFivebox}>
+                        <span>A few seconds</span>
+                      </div>
                     </div>
                   </div>
                 </div>
+                {!chain.unsupported && (
+                  <button
+                    onClick={transferPay}
+                    className={`
+                      ${transferPayType === false ? mobileStyle.footerBtn : mobileStyle.footerBtnElse}
+                      ${isDepositButtonClicked ? mobileStyle.footerBtnClicked : ''}
+                    `}
+                    disabled={transferPayType === true || isConfirming || isPending || isDepositing}
+                  >
+                    {isLoading ? (
+                      <img src={LoadingImg} alt="Loading" className={mobileStyle.loadingImg} />
+                    ) : (
+                      <>
+                        {transferPayType === true && "Not enough funds"}
+                        {transferPayType === false &&
+                          !isConfirming &&
+                          !isPending &&
+                          !isDepositing &&
+                          "Deposit Via Transfer"}
+                      </>
+                    )}
+                  </button>
+                )}
+                {chain.unsupported && (
+                  <button
+                    onClick={openChainModal}
+                    type="button"
+                    className={mobileStyle.wrongNetworkBtn}
+                  >
+                    Wrong network
+                  </button>
+                )}
+              </>
+            );
+          }}
+        </ConnectButton.Custom>
+  
+        {warningModel && (
+          <div className={mobileStyle.warningOverlay} onClick={(e) => {
+            e.stopPropagation();
+            setWarningModel(false);
+          }}
+            onMouseEnter={() => setWarningModel(true)}
+            onMouseLeave={() => setWarningModel(false)}
+          >
+            <div className={mobileStyle.warningCon}>
+              <div className={mobileStyle.triangle}>
+                The session wallet is a private key stored in your
+                browser's local storage. It allows you to play games without
+                needing to confirm transactions, but it is less secure. Only deposit very
+                small amounts of ETH into this wallet.
+                The default deposit supports a reasonable number of transactions based on fees.
               </div>
-              {!chain.unsupported && (
-                <button
-                  onClick={transferPay}
-                  className={`
-                    ${transferPayType === false ? style.footerBtn : style.footerBtnElse}
-                    ${isDepositButtonClicked ? style.footerBtnClicked : ''}
-                  `}
-                  disabled={transferPayType === true || isConfirming || isPending || isDepositing}
-                >
-                  {isLoading ? (
-                    <img src={LoadingImg} alt="Loading" className={style.loadingImg} />
-                  ) : (
-                    <>
-                      {transferPayType === true && "Not enough funds"}
-                      {transferPayType === false &&
-                        !isConfirming &&
-                        !isPending &&
-                        !isDepositing &&
-                        "Deposit Via Transfer"}
-                    </>
-                  )}
-                </button>
-              )}
-              {chain.unsupported && (
-                <button
-                  onClick={openChainModal}
-                  type="button"
-                  className={style.wrongNetworkBtn}
-                >
-                  Wrong network
-                </button>
-              )}
-            </>
-          );
-        }}
-      </ConnectButton.Custom>
-
-      {warningModel && (
-        <div className={style.warningOverlay} onClick={(e) => {
-          e.stopPropagation();
-          setWarningModel(false);
-        }}
-          onMouseEnter={() => setWarningModel(true)}
-          onMouseLeave={() => setWarningModel(false)}
-        >
-          <div className={style.warningCon}>
-            <div className={style.triangle}>
-              The session wallet is a private key stored in your
-              browser's local storage. It allows you to play games without
-              needing to confirm transactions, but it is less secure. Only deposit very
-              small amounts of ETH into this wallet.
-              The default deposit supports a reasonable number of transactions based on fees.
             </div>
           </div>
-        </div>
-      )}
-
-      {showSuccessModal && (
-        <div className={style.overlay}>
-          <div className={style.modalto} >
-            <img src={success} alt="" className={style.failto} />
-            <p className={style.color}>{modalMessage}</p>
-
+        )}
+  
+        {showSuccessModal && (
+          <div className={mobileStyle.overlay}>
+            <div className={mobileStyle.modalto} >
+              <img src={success} alt="" className={mobileStyle.failto} />
+              <p className={mobileStyle.color}>{modalMessage}</p>
+  
+            </div>
           </div>
-        </div>
-      )}
-
-      {showModal && !showSuccessModal && (
-        <div className={style.overlay}>
-          <div className={style.modal}>
-            <img src={failto} alt="" className={style.failto} />
-            <p className={style.colorto}>{modalMessage}</p>
+        )}
+  
+        {showModal && !showSuccessModal && (
+          <div className={mobileStyle.overlay}>
+            <div className={mobileStyle.modal}>
+              <img src={failto} alt="" className={mobileStyle.failto} />
+              <p className={mobileStyle.colorto}>{modalMessage}</p>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  }
 }
