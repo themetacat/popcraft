@@ -68,55 +68,6 @@ export default function TopUp({
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
   const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE, bridgeUrl, chainIcon, nativeToken } = useTopUp();
 
-  // 初始化 testLocal 为 null
-let testLocal = null;
-
-// 打开 IndexedDB 数据库
-let request = indexedDB.open('myDatabase', 1);
-
-// 处理数据库版本升级
-request.onupgradeneeded = function(event) {
-  let db = event.target.result;
-  if (!db.objectStoreNames.contains('myStore')) {
-    db.createObjectStore('myStore', { keyPath: 'id' });
-  }
-};
-
-// 处理数据库打开成功
-request.onsuccess = function(event) {
-  let db = event.target.result;
-  let transaction = db.transaction('myStore', 'readwrite');
-  let store = transaction.objectStore('myStore');
-
-  // 检查数据是否已经存在
-  let getRequest = store.get(1); // 假设我们使用 id = 1 来存取数据
-  getRequest.onsuccess = function() {
-    if (getRequest.result === undefined) {
-      // 如果没有找到数据，则存储当前时间戳
-      store.put({ id: 1, timestamp: Math.floor(Date.now() / 1000).toString() });
-    }
-
-    // 获取存储的数据
-    let getRequestAfter = store.get(1);
-    getRequestAfter.onsuccess = function() {
-      testLocal = getRequestAfter.result ? getRequestAfter.result.timestamp : null;
-      // 输出获取的值
-      // console.log('testLocal:', testLocal);
-    };
-  };
-
-  // 处理数据库操作错误
-  transaction.onerror = function(event) {
-    console.error('Error in IndexedDB transaction:', event.target.error);
-  };
-};
-
-// 处理数据库打开失败
-request.onerror = function(event) {
-  console.error('Error opening IndexedDB:', event.target.error);
-};
-
-
   async function withDraw() {
     const balance_eth = balance / 1e18;
     if (parseEther(balance_eth.toString()) > Number(MIN_SESSION_WALLET_BALANCE)) {
@@ -665,7 +616,7 @@ request.onerror = function(event) {
             return (
               <>
                 <div className={mobileStyle.onePartMain}>
-                  <p className={mobileStyle.titleOne1}>{testLocal}</p>
+                  <p className={mobileStyle.titleOne1}>MAIN WALLET</p>
                   <div style={{ display: "flex", justifyContent: "space-between" }}>
                     <div style={{ display: "flex" }} className={mobileStyle.btnPart}>
                       <img src={chainIcon} alt="" className={mobileStyle.imgICon} />
