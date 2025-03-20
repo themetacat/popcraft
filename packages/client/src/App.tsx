@@ -41,9 +41,6 @@ export const App = () => {
   useEffect(() => {
     const isMobile = isMobileDevice();
     setIsMobile(isMobile);
-    if (isMobile) {
-      document.documentElement.requestFullscreen();
-    }
   }, []);
 
   useEffect(() => {
