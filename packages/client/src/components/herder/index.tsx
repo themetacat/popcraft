@@ -757,8 +757,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       if (!isMobile) {
         setGRID_SIZE(44);
       } else {
-        setCalcOffsetYValue(24);
-        setGRID_SIZE(33);
+        setCalcOffsetYValue(19);
+        setGRID_SIZE(31);
       }
       setScrollOffset({ x: 0, y: 0 });
       setTranslateX(0);

@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   position: absolute;
-  top: 75.83rem;
+  top: 59.83rem;
   display: flex;
   font-family: "Simplicity";
 }
@@ -9,7 +9,7 @@
 .timePart {
   width: 71.06rem;
   height: 33.44rem;
-  margin-left: 6.65rem;
+  margin-left: 10.65rem;
   background-image: url("../../../../images/Mobile/TimeBG.webp");
   background-size: contain;
   background-position: center;

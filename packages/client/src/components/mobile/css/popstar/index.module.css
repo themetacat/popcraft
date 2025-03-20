@@ -47,6 +47,10 @@
         0.5rem 0.5rem 0.4rem rgba(0, 0, 0, 0.5);
 }
 
+.btnPlay:focus {
+    outline: none;
+}
+
 .loading {
     animation: spin 5s linear infinite;
     -webkit-transform: rotate(3600deg);

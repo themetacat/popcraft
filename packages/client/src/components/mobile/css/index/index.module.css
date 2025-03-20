@@ -12,7 +12,7 @@
   width: 174.94rem;
   position: absolute;
   left: 50%;
-  top: 29%;
+  top: 26%;
   transform: translate(-50%, 29%);
   font-size: 12.93rem;
   color: #14B383;
@@ -77,7 +77,7 @@
 
 .bodyCon {
   position: absolute;
-  top: 138.58rem;
+  top: 86.58rem;
 }
 
 
@@ -105,6 +105,9 @@
   transform: scale(1.06);
   transition: transform 0.1s ease;
 }
+.menuBtn:focus {
+  outline: none;
+}
 
 .BGMBtn{
   background-image: url("../../../../images/Mobile/Top/BGMBtn.webp");
@@ -116,6 +119,9 @@
   border: none;
   border-radius: 50%;
   margin-right: 15.74rem;
+}
+.BGMBtn:focus {
+  outline: none;
 }
 
 .BGMBtn:active {
@@ -158,6 +164,9 @@
 .Chainbutton:active .iconimg {
   transform: scale(1.06);
   transition: transform 0.3s ease;
+}
+.Chainbutton:focus {
+  outline: none;
 }
 
 .arrow {
