@@ -179,7 +179,7 @@
 
     font-family: "Simplicity";
     color: #2DA335;
-    transition: font-size 0.3s ease;
+    transition: font-size 0.1s ease;
     font-size: 0.9vw;
     cursor: pointer;
     text-shadow:
@@ -206,18 +206,18 @@
     align-items: center;
     position: relative;
     cursor: not-allowed;
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease;
 }
 
 .bonusItemPending {
     cursor: pointer;
     outline: none;
     -webkit-tap-highlight-color: transparent;
+    transition: text-shadow 0.1s ease, background-size 0.1s ease;
 }
 
 .bonusItemPending:active .bounsCircle {
     background-size: 102%;
-    transition: background-size 0.3s ease;
 }
 
 .bonusItemPending:active .bounsCircle div span {
@@ -226,12 +226,10 @@
         -0.1rem 0.1rem 0 #D57300, 
         0.1rem 0.1rem 0 #D57300, 
         0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.6);
-    transition: text-shadow 0.3s ease;
 }
 
 .bonusItemPending:active .bounsTextPending {
     text-shadow: 0.2rem 0.2rem 0.2rem rgb(0, 0, 0, 0.7);
-    transition: text-shadow 0.3s ease;
 }
 
 
@@ -320,7 +318,7 @@
     right: 5rem;
     outline: none;
     -webkit-tap-highlight-color: transparent;
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease;
 }
 
 .closeBtn:active {
@@ -423,7 +421,7 @@
     z-index: 10;
     font-family: "Simplicity";
     text-align: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease;
     cursor: pointer;
     width: 35rem;
     height: 40rem;
@@ -437,7 +435,7 @@
     width: 33.04rem;
     height: 33.26rem;
     object-fit: contain;
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease;
     top: 0;
     outline: none;
     -webkit-tap-highlight-color: transparent;
@@ -449,11 +447,11 @@
 
 .inDayBonusBtn:active button {
     text-shadow:
-        -0.4rem -0.4rem 0 white,
-        0.4rem -0.4rem 0 white,
-        -0.4rem 0.4rem 0 white,
-        0.4rem 0.4rem 0 white,
-        0.6rem 0.6rem 0.7rem rgba(0, 0, 0, 0.7);
+        -0.8rem -0.8rem 0 white,
+        0.8rem -0.8rem 0 white,
+        -0.8rem 0.8rem 0 white,
+        0.8rem 0.8rem 0 white,
+        2rem 2rem 1.5rem rgba(0, 0, 0, 0.8);
 }
 
 .inDayBonusBtn button {
@@ -464,13 +462,13 @@
     border: none;
     font-family: "Simplicity";
     color: #24A0D4;
-    transition: font-size 0.3s ease;
+    transition: font-size 0.1s ease;
     font-size: 4.88rem;
     font-weight: 400;
     top: 32.15rem;
     margin: 0;
     line-height: 2.29rem;
-    transition: text-shadow 0.3s ease;
+    transition: text-shadow 0.1s ease;
     outline: none;
     -webkit-tap-highlight-color: transparent;
     text-shadow:

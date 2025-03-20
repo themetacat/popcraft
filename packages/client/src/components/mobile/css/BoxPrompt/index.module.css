@@ -219,7 +219,7 @@
     letter-spacing: 1.2rem;
     text-align: center;
     color: #ffffff;
-    transition: font-size 0.3s ease;
+    transition: font-size 0.1s ease;
     text-transform: uppercase;
     position: fixed;
     bottom: 34.81rem;
@@ -340,7 +340,7 @@
     line-height: 7.91rem;
     letter-spacing: 1.2rem;
     text-align: center;
-    transition: font-size 0.3s ease;
+    transition: font-size 0.1s ease;
     text-transform: uppercase;
     position: fixed;
     top: 140.13rem;

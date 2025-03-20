@@ -391,7 +391,7 @@
   margin-left: -4.2rem;
   margin-top: 5.3rem;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.1s ease;
 }
 
 .warningImg:active {
@@ -404,7 +404,7 @@
   margin-left: 0.8rem;
   /* margin-top: -1rem; */
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.1s ease;
 }
 
 .warningImg2:active {
@@ -417,7 +417,7 @@
   top: 1.5rem;
   width: 6.88rem;
   height: 6.88rem;
-  transition: transform 0.3s ease;
+  transition: transform 0.1s ease;
   cursor: pointer;
 }
 
@@ -473,7 +473,7 @@
   height: 6.88rem;
   margin-left: 4.3rem;
   margin-top: 0.4rem;
-  transition: transform 0.3s ease;
+  transition: transform 0.1s ease;
   cursor: pointer;
 }
 
@@ -657,7 +657,7 @@
   letter-spacing: 0.4rem;
   text-align: center;
   color: #ffffff;
-  transition: font-size 0.3s ease;
+  transition: font-size 0.1s ease;
   text-shadow:
     -1px -1px 0 rgba(192, 192, 192, 0.7),
     1px -1px 0 rgba(192, 192, 192, 0.7),

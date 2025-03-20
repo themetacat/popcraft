@@ -100,7 +100,7 @@
   border-radius: 50%;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  transition: transform 0.3s ease;
+  transition: transform 0.1s ease;
 }
 
 .menuBtn:active {
@@ -117,7 +117,7 @@
   border: none;
   border-radius: 50%;
   margin-right: 15.74rem;
-  transition: transform 0.3s ease;
+  transition: transform 0.1s ease;
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -153,7 +153,7 @@
   cursor: pointer;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  transition: transform 0.3s ease;
+  transition: transform 0.1s ease;
 }
 
 .iconimg {
@@ -184,7 +184,7 @@
   position: fixed;
   right: 0;
   z-index: 30;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.1s ease, opacity 0.1s ease;
   animation: slideIn 0.15s ease-out forwards;
   transform-origin: top right;
 }
@@ -265,11 +265,11 @@
 .menuTopUp img{
   width: 13.97rem;
   height: 9.98rem;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.1s ease-in-out;
 }
 .menuTopUp span{
   margin-left: 13.08rem;
-  transition: text-shadow 0.2s ease-in-out, font-size 0.1s ease-in-out;
+  transition: text-shadow 0.1s ease-in-out, font-size 0.1s ease-in-out;
 }
 
 .menuTopUp:active img{
@@ -292,11 +292,11 @@
 .menuBuy img{
   width: 13.97rem;
   height: 11.75rem;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.1s ease-in-out;
 }
 .menuBuy span{
   margin-left: 13.08rem;
-  transition: text-shadow 0.2s ease-in-out, font-size 0.1s ease-in-out;
+  transition: text-shadow 0.1s ease-in-out, font-size 0.1s ease-in-out;
 }
 
 .menuBuy:active img{
@@ -319,11 +319,11 @@
 .menuDisconnect img{
   width: 13.75rem;
   height: 13.97rem;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.1s ease-in-out;
 }
 .menuDisconnect span{
   margin-left: 13.3rem;
-  transition: text-shadow 0.2s ease-in-out, font-size 0.1s ease-in-out;
+  transition: text-shadow 0.1s ease-in-out, font-size 0.1s ease-in-out;
 }
 
 .menuDisconnect:active img{
@@ -348,7 +348,7 @@
 .x{
   width: 19.75rem;
   height: 19.75rem;
-  transition: transform 0.15s ease-in-out;
+  transition: transform 0.1s ease-in-out;
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -360,7 +360,7 @@
 .tg{
   width: 19.75rem;
   height: 19.75rem;
-  transition: transform 0.15s ease-in-out;
+  transition: transform 0.1s ease-in-out;
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -373,7 +373,7 @@
 .github{
   width: 19.75rem;
   height: 19.75rem;
-  transition: transform 0.15s ease-in-out;
+  transition: transform 0.1s ease-in-out;
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -404,7 +404,7 @@
   ) 1;
   border-radius: 13.08rem;
   border: 1.35rem solid;
-  transition: font-size 0.3s ease, text-shadow 0.3s ease;
+  transition: font-size 0.1s ease, text-shadow 0.1s ease;
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -599,7 +599,7 @@
   letter-spacing: 0.1em;
   text-align: center;
   color: #ffffff;
-  transition: font-size 0.3s ease;
+  transition: font-size 0.1s ease;
   text-transform: uppercase;
   outline: none;
   -webkit-tap-highlight-color: transparent;

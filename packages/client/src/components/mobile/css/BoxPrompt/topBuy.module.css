@@ -162,7 +162,7 @@
 
     text-align: center;
     color: #ffffff;
-    transition: font-size 0.3s ease;
+    transition: font-size 0.1s ease;
 
     text-transform: uppercase;
     outline: none;
@@ -223,7 +223,7 @@
 
     text-align: center;
     color: red;
-    transition: font-size 0.3s ease;
+    transition: font-size 0.1s ease;
 
     text-transform: uppercase;
     text-shadow:

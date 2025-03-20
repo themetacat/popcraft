@@ -9,7 +9,7 @@
     z-index: 30;
     font-family: "Simplicity";
     text-align: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease;
     cursor: pointer;
     color: #EB5F8C;
     width: 35rem;
@@ -24,7 +24,7 @@
     width: 33.04rem;
     height: 33.04rem;
     object-fit: contain;
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease;
     outline: none;
     -webkit-tap-highlight-color: transparent;
     top: 0;
@@ -36,23 +36,22 @@
 
 .btn:active button {
     text-shadow:
-        -0.85rem -0.85rem 0 white,
-        0.85rem -0.85rem 0 white,
-        -0.85rem 0.85rem 0 white,
-        0.85rem 0.85rem 0 white,
-        0.7rem 1.2rem 1rem rgba(0, 0, 0, 1);
+        -0.8rem -0.8rem 0 white,
+        0.8rem -0.8rem 0 white,
+        -0.8rem 0.8rem 0 white,
+        0.8rem 0.8rem 0 white,
+        2rem 2rem 1.5rem rgba(0, 0, 0, 0.8);
 }
 
 .btn button {
     position: absolute;
-    transition: text-shadow 0.3s ease;
     width: 57rem;
     height: 5.88rem;
     background-color: transparent;
     border: none;
     font-family: "Simplicity";
     color: #FFB14B;
-    transition: font-size 0.3s ease;
+    transition: font-size 0.1s ease, text-shadow 0.1s ease;
     font-size: 4.88rem;
     font-weight: 400;
     top: 32.15rem;
