@@ -296,7 +296,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     height: document.documentElement.clientHeight,
   });
   const [loadingSquare, setLoadingSquare] = useState<{ x: number; y: number } | null>(null);
-  const overTime = 122; //控制顶部时间
+  const overTime = 12222222222; //控制顶部时间
 
   useEffect(() => {
     // 默认设置localStorage中的值为popCraft相关的值
@@ -2330,7 +2330,10 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
 
         {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (
           <>
-            <TokenNotification value={tokenNotificationValue} />
+            <TokenNotification
+              value={tokenNotificationValue}
+              isMobile={isMobile}
+            />
             <MissionBonus
               checkTaskInProcess={checkTaskInProcess}
               handleErrorAll={handleErrorAll}
@@ -2468,7 +2471,10 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
                   );
                 }}
               </ConnectButton.Custom>
-              <button onClick={toggleMusic} className={mobileStyle.BGMBtn}></button>
+              <button
+                onClick={toggleMusic}
+                className={`${mobileStyle.BGMBtn} ${!musicEnabled ? mobileStyle.BGMOff : ''}`}
+              ></button>
               <button className={mobileStyle.menuBtn} onClick={() => menuTransports()}></button>
             </div>
             {
@@ -2613,6 +2619,24 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             />
           </div>
         ) : null}
+        {showNewPopUp && localStorage.getItem("isShowWaitingMaskLayer") === "false" && (
+          <div className={style.overlaybox}>
+            <div className={mobileStyle.popup}>
+              <div className={mobileStyle.contentbox}>
+                <p>INSUFFICIENT GASBALANCE</p><br />
+              </div>
+              <button className={mobileStyle.topupbtn} onClick={() => {
+                setShowNewPopUp(false);
+                setTopUpType(true);
+              }}>TOP UP</button>
+            </div>
+          </div>
+        )}
+
+        {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (<TokenNotification
+          value={tokenNotificationValue}
+          isMobile={isMobile}
+        />)}
 
         <div className={mobileStyle.buttomBtn}>
           <RankingList
@@ -2622,6 +2646,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           />
           {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (
             <>
+
               <MissionBonus
                 checkTaskInProcess={checkTaskInProcess}
                 handleErrorAll={handleErrorAll}
