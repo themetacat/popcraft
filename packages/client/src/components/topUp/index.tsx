@@ -72,13 +72,13 @@ export default function TopUp({
   let testLocal = null;
 
   // 检查 localStorage 是否已经存在 'testLocal'，如果没有，则设置它
-  if (localStorage.getItem('testLocal') === null) {
-      localStorage.setItem('testLocal', Math.floor(Date.now() / 1000).toString());
+  if (sessionStorage.getItem('testLocal') === null) {
+      sessionStorage.setItem('testLocal', Math.floor(Date.now() / 1000).toString());
   }
 
   // 再次检查并获取 'testLocal' 的值
-  if (localStorage.getItem('testLocal') !== null) {
-      testLocal = localStorage.getItem('testLocal');
+  if (sessionStorage.getItem('testLocal') !== null) {
+      testLocal = sessionStorage.getItem('testLocal');
       // 输出获取的值
       console.log('testLocal:', testLocal);
   }
