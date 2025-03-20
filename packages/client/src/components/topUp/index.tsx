@@ -68,6 +68,21 @@ export default function TopUp({
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
   const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE, bridgeUrl, chainIcon, nativeToken } = useTopUp();
 
+  // 初始化 testLocal 为 null
+  let testLocal = null;
+
+  // 检查 localStorage 是否已经存在 'testLocal'，如果没有，则设置它
+  if (localStorage.getItem('testLocal') === null) {
+      localStorage.setItem('testLocal', Math.floor(Date.now() / 1000).toString());
+  }
+
+  // 再次检查并获取 'testLocal' 的值
+  if (localStorage.getItem('testLocal') !== null) {
+      testLocal = localStorage.getItem('testLocal');
+      // 输出获取的值
+      console.log('testLocal:', testLocal);
+  }
+
   async function withDraw() {
     const balance_eth = balance / 1e18;
     if (parseEther(balance_eth.toString()) > Number(MIN_SESSION_WALLET_BALANCE)) {
@@ -616,7 +631,7 @@ export default function TopUp({
             return (
               <>
                 <div className={mobileStyle.onePartMain}>
-                  <p className={mobileStyle.titleOne1}>MAIN WALLET</p>
+                  <p className={mobileStyle.titleOne1}>{testLocal}</p>
                   <div style={{ display: "flex", justifyContent: "space-between" }}>
                     <div style={{ display: "flex" }} className={mobileStyle.btnPart}>
                       <img src={chainIcon} alt="" className={mobileStyle.imgICon} />
