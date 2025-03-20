@@ -43,8 +43,7 @@ export const App = () => {
     setIsMobile(isMobile);
     if (isMobile) {
       document.documentElement.requestFullscreen();
-
-    }]
+    }
   }, []);
 
   useEffect(() => {
