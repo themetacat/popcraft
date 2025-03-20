@@ -2482,14 +2482,14 @@ export default function Header({ hoveredData, handleData }: Props) {
       {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (
         <>
           <TokenNotification value={tokenNotificationValue} />
-          <MissionBonus
+          {/* <MissionBonus
             checkTaskInProcess={checkTaskInProcess}
             handleErrorAll={handleErrorAll}
           />
           <GiftPark
             checkTaskInProcess={checkTaskInProcess}
             handleErrorAll={handleErrorAll}
-          />
+          /> */}
         </>
 
       )}
