@@ -180,6 +180,7 @@
   color: #080808;
   margin-top: 5.54rem;
   margin-left: 8.65rem;
+  white-space: nowrap;
 }
 
 .titleOne1 {
@@ -194,6 +195,7 @@
   color: #000000;
   line-height: 19.9rem;
   letter-spacing: 0.4rem;
+  white-space: nowrap;
 }
 
 .prilf {
@@ -288,7 +290,7 @@
 .btnMe {
   width: 93.57rem;
   height: 14.19rem;
-  gap: 10px;
+  /* gap: 10px; */
   border: none;
   background-image: url("../../../../images/topup/btnMe.webp");
   background-size: 100% 100%;
@@ -299,6 +301,7 @@
   text-align: center;
   color: #ffffff;
   cursor: pointer;
+  white-space: nowrap;
   text-shadow:
     -1px -1px 0 rgba(192, 192, 192, 0.7),
     1px -1px 0 rgba(192, 192, 192, 0.7),
@@ -322,7 +325,7 @@
 }
 
 .btnMeWaiting {
-  font-size: 5px;
+  font-size: 7rem;
 }
 
 .btnMeB {
@@ -352,6 +355,7 @@
   margin-left: 5rem;
   font-family: AdobeHeitiStd-Regular;
   margin-top: 2rem;
+  white-space: nowrap;
 }
 
 .partContent {
@@ -366,6 +370,7 @@
 .inputCon {
   background: none;
   border: none;
+  width: 40rem;
   color: #050404;
   font-size: 7.25rem;
   font-weight: 500;
@@ -406,29 +411,17 @@
   transform: scale(1.2);
 }
 
-.imgUnioncopyBtn {
-  position: absolute;
-  margin-left: -29.5rem;
-  width: 4.88rem;
-  height: 4.88rem;
-  transition: transform 0.3s ease;
-}
-
-.imgUnioncopyBtn:active {
-  transform: scale(1.2);
-}
-
 .imgUnionCopyBtn {
   position: absolute;
   margin-left: 43.5rem;
   top: 1.5rem;
-  width: 3.77rem;
-  height: 3.77rem;
+  width: 6.88rem;
+  height: 6.88rem;
   transition: transform 0.3s ease;
   cursor: pointer;
 }
 
-.imgUnionCopyBtn:active {
+.imgUnioncopyBtn:active {
   transform: scale(1.2);
 }
 
@@ -448,16 +441,15 @@
 }
 
 .pqad {
-  gap: 0px;
-  opacity: 0px;
-  font-family: Silkscreen;
+  gap: 0;
   font-size: 7.39rem;
   font-weight: 400;
   letter-spacing: 0.1em;
   margin-top: 4.88rem;
   text-align: left;
   color: #999999;
-  font-family: "AdobeHeitiStd-Regular";
+  font-family: AdobeHeitiStd-Regular;
+  white-space: nowrap;
 }
 
 .openEyeStyle {
@@ -477,16 +469,16 @@
 }
 
 .imginputConPassWordto {
-  width: 4.88rem;
-  height: 4.88rem;
-  margin-left: 0.3rem;
+  width: 6.88rem;
+  height: 6.88rem;
+  margin-left: 4.3rem;
   margin-top: 0.4rem;
   transition: transform 0.3s ease;
   cursor: pointer;
 }
 
 .imginputConPassWordto:active {
-  transform: scale(1.2);
+  transform: scale(1.5);
 }
 
 .inputConPassWord {
@@ -583,6 +575,10 @@
   justify-content: space-between;
   width: 202rem;
   margin-top: 3rem;
+
+  span {
+    white-space: nowrap;
+  }
 }
 
 .partFiveboxto {
@@ -591,14 +587,18 @@
   font-weight: 400;
   color: #9c3a15;
   letter-spacing: 0.5rem;
-  font-family: "AdobeHeitiStd-Regular";
+  font-family: AdobeHeitiStd-Regular;
   font-size: 6.71rem;
   margin-left: 2.3rem;
   width: 202rem;
+
+  span {
+    white-space: nowrap;
+  }
 }
 
 .partFivebox {
-  font-family: "AdobeHeitiStd-Regular";
+  font-family: AdobeHeitiStd-Regular;
   font-size: 6.71rem;
   font-weight: 400;
   letter-spacing: 0.5rem;
@@ -613,8 +613,6 @@
   position: relative;
   margin-left: 2rem;
 
-  /* margin-top: -0.5rem; */
-  /* background-color: red; */
   span {
     font-size: 7.25rem;
     font-weight: 500;
@@ -623,6 +621,7 @@
     color: #000000;
     display: inline-block;
     font-family: AdobeHeitiStd-Regular;
+    white-space: nowrap;
   }
 
   p {
@@ -634,6 +633,7 @@
     text-align: left;
     color: #dc5468;
     margin-top: 3.54rem;
+    white-space: nowrap;
   }
 }
 
@@ -641,8 +641,8 @@
   display: flex;
   width: 197.55rem;
   height: 22.84rem;
-  gap: 0px;
-  opacity: 0px;
+  gap: 0;
+  opacity: 1;
   background-color: #fbae6a;
   background-image: url("../../../../images/topup/footerBtn.webp");
   background-size: 100% 100%;
@@ -675,6 +675,28 @@
     1px 1px 0 rgba(101, 101, 101, 0.7)
 }
 
+.footerBtnElse {
+  display: flex;
+  width: 197.55rem;
+  height: 22.84rem;
+  gap: 0;
+  opacity: 1;
+  background-color: #fbae6a;
+  background-image: url("../../../../images/topup/footerBtn.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  border: none;
+  font-size: 13.97rem;
+  margin-top: -32rem;
+  margin-left: 22.5rem;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  letter-spacing: 0.4rem;
+  text-align: center;
+  color: #ffffff;
+}
+
 .wrongNetworkBtn {
   /* text-transform: uppercase; */
   width: 197.55rem;
@@ -697,32 +719,22 @@
   align-items: center;
 }
 
-.footerBtnElse {
+.footerBtnClicked {
   display: flex;
-  width: 52rem;
-  height: 6rem;
-  gap: 10px;
-  opacity: 0px;
-  background-color: #fbae6a;
-  background-image: url("../../../../images/topup/footerBtn.webp");
+  width: 197.55rem;
+  height: 22.84rem;
+  gap: 0;
+  opacity: 1;
+
+  background-image: url("../../../../images/topup/footerBtnto.webp");
   background-size: 100% 100%;
   background-position: center;
   border: none;
-  font-size: 3.3rem;
-  margin-top: -14rem;
-  margin-left: 2.5rem;
   justify-content: center;
   align-items: center;
   font-weight: 700;
   letter-spacing: 0.4rem;
   text-align: center;
-  color: #ffffff;
-}
-
-.footerBtnClicked {
-  background-image: url("../../../../images/topup/footerBtnto.webp");
-  background-size: 100% 100%;
-  background-position: center;
 }
 
 .canvasWrapper {
@@ -767,12 +779,10 @@
   }
 }
 
-.footerBtn:disabled {
+.footerBtn:disabled, .footerBtnElse:disabled {
   cursor: not-allowed;
-}
-
-.footerBtnElse:disabled {
-  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .overlay {
@@ -843,11 +853,16 @@
   margin-top: -7px;
 }
 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(3600deg);
+  }
+}
+
 .loadingImg {
   animation: spin 5s linear infinite;
-  -webkit-transform: rotate(3600deg);
-  transform: rotate(3600deg);
-  -webkit-transition: -webkit-transform 5s linear;
-  transition: transform 5s linear;
   height: 100%;
 }

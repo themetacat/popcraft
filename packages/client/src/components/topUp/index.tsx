@@ -595,6 +595,7 @@ export default function TopUp({
             }}
           />
         </div>
+        
         <ConnectButton.Custom>
           {({
             account,
@@ -635,6 +636,12 @@ export default function TopUp({
                           <img
                             src={UnioncopyBtn}
                             onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleCopy(address);
+                            }}
+                            onTouchStart={(e) => {
+                              e.preventDefault();
                               e.stopPropagation();
                               handleCopy(address);
                             }}
@@ -689,11 +696,19 @@ export default function TopUp({
                         />
                         <img
                           src={UnioncopyBtn}
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleCopy(palyerAddress);
+                          }}
+                          onTouchStart={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
                             handleCopy(palyerAddress);
                           }}
                           alt=""
                           className={mobileStyle.imgUnioncopyBtn}
+                          style={{ width: "6.88rem", height: "6.88rem" }}
                         />
                         <span className={mobileStyle.ConfirmingFont}>
                           {!isConfirmingWith && (
@@ -745,7 +760,14 @@ export default function TopUp({
                         src={UnioncopyBtn}
                         alt=""
                         className={mobileStyle.imginputConPassWordto}
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleTogglePassword(privateKey);
+                        }}
+                        onTouchStart={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
                           handleTogglePassword(privateKey);
                         }}
                       />
@@ -757,14 +779,11 @@ export default function TopUp({
                         alt="Warning"
                         className={mobileStyle.warningImg2}
                       />
-                      &nbsp;&nbsp;Save the private key as soon as possible.
-                      <br />
-                      &nbsp;Avoid clearing the cache during the game, or your
-                      <br />
-                      &nbsp;session wallet may reset !!!
+                      &nbsp;&nbsp;Save the private key as soon as possible. Avoid clearing the cache during the game, or your session wallet may reset !!!
                     </p>
                   </div>
                 </div>
+
                 <div className={mobileStyle.partFour}>
                   <p className={mobileStyle.partFourFont}>
                     Every onchain interaction uses gas. Top up any amount to your session wallet.
@@ -779,7 +798,7 @@ export default function TopUp({
                         width: "202.21rem",
                         marginLeft: "-4rem",
                         marginTop: "8rem",
-                      }}>
+                    }}>
                       <img src={chainIcon} alt="" className={mobileStyle.svgIcon} />
                       <input
                         name="value"
@@ -808,6 +827,7 @@ export default function TopUp({
                     </div>
                   </div>
                 </div>
+
                 {!chain.unsupported && (
                   <button
                     onClick={transferPay}
@@ -832,6 +852,7 @@ export default function TopUp({
                     )}
                   </button>
                 )}
+
                 {chain.unsupported && (
                   <button
                     onClick={openChainModal}
