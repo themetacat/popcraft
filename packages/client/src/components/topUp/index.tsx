@@ -595,6 +595,7 @@ export default function TopUp({
             }}
           />
         </div>
+        
         <ConnectButton.Custom>
           {({
             account,
@@ -765,6 +766,7 @@ export default function TopUp({
                     </p>
                   </div>
                 </div>
+
                 <div className={mobileStyle.partFour}>
                   <p className={mobileStyle.partFourFont}>
                     Every onchain interaction uses gas. Top up any amount to your session wallet.
@@ -808,6 +810,7 @@ export default function TopUp({
                     </div>
                   </div>
                 </div>
+
                 {!chain.unsupported && (
                   <button
                     onClick={transferPay}
@@ -832,6 +835,7 @@ export default function TopUp({
                     )}
                   </button>
                 )}
+
                 {chain.unsupported && (
                   <button
                     onClick={openChainModal}
