@@ -214,7 +214,7 @@ export const useTopUp = () => {
         setBridgeUrl("https://bridge.hsk.xyz/")
         setChianIcon("https://hsk.xyz/static/logo.png");
         setRewardInfo("150 Scores");
-        setPrizePool("1,000 $HKS");
+        setPrizePool("1,000 $HSK");
         setTokenAddress(["0x0000000000000000000000000000000000000013", ...defaultTokenAddresses])
         setPriTokenAddress(["0x0000000000000000000000000000000000000013", ...defaultTokenAddresses])
         setRewardDescInfo("game score for each game, along with additional rewards for the top 150 players in event week. ");
