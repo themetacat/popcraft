@@ -875,18 +875,15 @@ export function createSystemCalls(
         if (csd && Number(csd.dimension) > 0) {
           const dimension = Number(csd.dimension);
           const seasonTime = getComponentValue(SeasonTime, numToEntityID(dimension));
-
           if (seasonTime) {
             const startTime = Number(seasonTime.startTime);
             const duration = Number(seasonTime.duration);
             const currentTime = Math.floor(Date.now() / 1000);
-
-            if (currentTime > startTime) {
+            if (currentTime > startTime && startTime > 0) {
               season = Math.floor((currentTime - startTime) / duration) + 1;
             }
           }
         }
-
         if (season > 0) {
           const WeeklyRecordKey = addr2NumToEntityID(playerAddr, season, Number(csd?.dimension));
           const seasonRankingRecordData = getComponentValue(WeeklyRecord, WeeklyRecordKey);
