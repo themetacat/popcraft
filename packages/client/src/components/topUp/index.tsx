@@ -621,9 +621,6 @@ export default function TopUp({
                     <div style={{ display: "flex" }} className={mobileStyle.btnPart}>
                       <img src={chainIcon} alt="" className={mobileStyle.imgICon} />
                       <button
-                        onClick={(event) => {
-                          openChainModal();
-                        }}
                         style={{
                           border: "none",
                           background: "none",
@@ -641,6 +638,11 @@ export default function TopUp({
                               handleCopy(address);
                             }}
                             onTouchStart={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleCopy(address);
+                            }}
+                            onTouchEnd={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
                               handleCopy(address);
@@ -706,6 +708,11 @@ export default function TopUp({
                             e.stopPropagation();
                             handleCopy(palyerAddress);
                           }}
+                          onTouchEnd={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleCopy(palyerAddress);
+                          }}
                           alt=""
                           className={mobileStyle.imgUnioncopyBtn}
                           style={{ width: "6.88rem", height: "6.88rem" }}
@@ -762,12 +769,17 @@ export default function TopUp({
                         className={mobileStyle.imginputConPassWordto}
                         onClick={(e) => {
                           e.preventDefault();
-                          e.stopPropagation();
+                          // e.stopPropagation();
                           handleTogglePassword(privateKey);
                         }}
                         onTouchStart={(e) => {
                           e.preventDefault();
-                          e.stopPropagation();
+                          // e.stopPropagation();
+                          handleTogglePassword(privateKey);
+                        }}
+                        onTouchEnd={(e) => {
+                          e.preventDefault();
+                          // e.stopPropagation();
                           handleTogglePassword(privateKey);
                         }}
                       />
