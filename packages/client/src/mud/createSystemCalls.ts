@@ -159,7 +159,7 @@ export function createSystemCalls(
 
   let waitTime = 13000;
   if(chainId === 177){
-    waitTime = 20000
+    waitTime = 30000
   }
 
   const registerDelegation = async () => {
@@ -817,7 +817,7 @@ export function createSystemCalls(
     } else {
       const [updatedMatrixArray, finalEliminateAmount] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0);
       eliminateAmount = finalEliminateAmount;
-      if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && eliminateAmount >= 5 && chainId != 177) {
+      if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && eliminateAmount >= 5) {
         const comboRewardGamesData = getComponentValue(ComboRewardGames, playerEntity);
         
         if(comboRewardGamesData && Number(comboRewardGamesData.games) > 3 && Number(comboRewardGamesData.addedTime) == getCurrentCommon(5)){
@@ -875,18 +875,15 @@ export function createSystemCalls(
         if (csd && Number(csd.dimension) > 0) {
           const dimension = Number(csd.dimension);
           const seasonTime = getComponentValue(SeasonTime, numToEntityID(dimension));
-
           if (seasonTime) {
             const startTime = Number(seasonTime.startTime);
             const duration = Number(seasonTime.duration);
             const currentTime = Math.floor(Date.now() / 1000);
-
-            if (currentTime > startTime) {
+            if (currentTime > startTime && startTime > 0) {
               season = Math.floor((currentTime - startTime) / duration) + 1;
             }
           }
         }
-
         if (season > 0) {
           const WeeklyRecordKey = addr2NumToEntityID(playerAddr, season, Number(csd?.dimension));
           const seasonRankingRecordData = getComponentValue(WeeklyRecord, WeeklyRecordKey);

@@ -30,6 +30,7 @@ import { getComponentValue } from "@latticexyz/recs";
 import substanceImg from "../../images/substance/substance.webp";
 import HowToPlay, { Rewards, CrossFlow } from "./HowToPlay";
 import mobileStyle from "../mobile/css/BoxPrompt/index.module.css";
+import GenesisNFTImg from "../../images/HowToPlay/GenesisNFT117.webp";
 
 interface Props {
   timeControl: any;
@@ -1029,6 +1030,30 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
             <img src={GithubLogo} className={GithubLogo} />
           </a>
         </div>
+        
+        <div className={howToPlayStyle.btnHtp}
+        style={{
+          bottom: "43%"
+        }}
+        onClick={async () => {
+          setShowCrossFlow(true);
+        }}
+      >
+        <img src={chainId === 177 ? KoalaImg : SimbaImg} alt=""/>
+        <span>{chainId === 177 ? 'Earn Morph Points' : 'Earn $HSK'}</span>
+      </div>
+
+      {chainId === 2818 && (
+        <div className={howToPlayStyle.btnHtp}
+          style={{
+            bottom: "55%"
+          }}
+          onClick={() => window.open("https://morpha.io/en/launchpad", "_blank")}
+        >
+          <img src={GenesisNFTImg} alt="" className={howToPlayStyle.genesisNFTAnimation}/>
+          <span>{'Genesis NFT'}</span>
+        </div>
+      )}
       </>
     );
   } else {
@@ -1309,4 +1334,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
       </>
     )
   }
-}
+     
+//     </>
+//   );
+// }
