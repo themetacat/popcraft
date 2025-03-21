@@ -374,3 +374,35 @@
       -1px 1px 0 rgba(59, 59, 59, 0.7),
       1px 1px 0 rgba(69, 69, 69, 0.7)
   }
+
+.crossFlowAnimation {
+    animation: bounce 1.5s ease-in-out infinite, bounce 1.5s ease-in-out infinite 4s;
+}
+
+.genesisNFTAnimation {
+    animation: bounce 1.5s ease-in-out infinite;
+}
+  
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+  
+    10% {
+        transform: translateY(2rem);
+    }
+  
+    20% {
+        transform: translateY(0);
+    }
+  
+    30% {
+        transform: translateY(2rem);
+    }
+  
+    40% {
+        transform: translateY(0);
+    }
+}
+  

@@ -40,7 +40,7 @@ export function useUtils() {
         const duration = Number(seasonTime.duration);
         const currentTime = Math.floor(Date.now() / 1000);
         let newSeason;
-        if (currentTime < startTime) {
+        if (currentTime < startTime || startTime === 0) {
             newSeason = 0;
         } else {
             newSeason = Math.floor((currentTime - startTime) / duration) + 1;
@@ -70,7 +70,7 @@ export function useUtils() {
         const duration = Number(seasonTime.duration);
         const currentTime = Math.floor(Date.now() / 1000);
         let day;
-        if (currentTime < startTime) {
+        if (currentTime < startTime || currentTime === 0) {
             day = 0;
         } else {
             day = Math.floor((currentTime - startTime) / duration) + 1;
