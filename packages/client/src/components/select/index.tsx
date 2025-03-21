@@ -176,7 +176,7 @@ export const useTopUp = () => {
     }else{
       setInputValue("0.002");
       setCurrencySymbol("GP")
-      setbalanceCheck('0.00002')
+      setbalanceCheck('0.0000002') //!!!!!!!
       setRewardInfo("100 GP");
       setMIN_SESSION_WALLET_BALANCE(parseEther("0.000002"));
       const defaultTokenAddresses = [
