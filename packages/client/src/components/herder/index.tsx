@@ -2282,7 +2282,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               value={tokenNotificationValue}
               isMobile={isMobile}
             />
-            {/* <MissionBonus
+            <MissionBonus
               checkTaskInProcess={checkTaskInProcess}
               handleErrorAll={handleErrorAll}
               isMobile={isMobile}
@@ -2292,7 +2292,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               checkTaskInProcess={checkTaskInProcess}
               handleErrorAll={handleErrorAll}
               isMobile={isMobile}
-            /> */}
+            />
           </>
 
         )}
