@@ -474,7 +474,7 @@ export default function TopUp({
   
                   <div className={style.prvkey}>
                     <p className={style.pqad}>PRIVATE KEY</p>
-                    <div style={{ display: "flex", gap: "2.66rem", marginTop: "1.6rem" }}>
+                    <div style={{ display: "flex", gap: "2.66rem", marginTop: "-1.4rem" }}>
                       <input
                         type={showPassword === true ? "text" : "password"}
                         value={privateKey}
