@@ -49,7 +49,7 @@ const config = getDefaultConfig({
   projectId: 'YOUR_PROJECT_ID',
   wallets: [{
     groupName: 'Recommended',
-    wallets: [metaMaskWallet, coinbaseWallet, okxWallet, trustWallet, coin98Wallet, rabbyWallet],
+    wallets: [metaMaskWallet, coinbaseWallet, okxWallet, trustWallet, bitgetWallet, coin98Wallet, rabbyWallet],
   }],
   chains: [
     morph,
