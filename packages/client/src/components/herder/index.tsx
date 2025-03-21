@@ -1902,6 +1902,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               onClick={() => window.open("https://taskon.xyz/quest/630902165", "_blank")}
               style={{
                 cursor: "pointer",
+                display: "none"
               }}
             >
               <img src={LuckyBagImg} alt="" />
