@@ -296,7 +296,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     height: document.documentElement.clientHeight,
   });
   const [loadingSquare, setLoadingSquare] = useState<{ x: number; y: number } | null>(null);
-  const overTime = 122; //控制顶部时间
+  const overTime = 1222222222; //控制顶部时间
 
   useEffect(() => {
     // 默认设置localStorage中的值为popCraft相关的值
@@ -659,7 +659,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
 
           // 绘制图像
-          if (!loadingSquare || !(loadingSquare.x === i && loadingSquare.y === j)) {
+          // if (!loadingSquare || !(loadingSquare.x === i && loadingSquare.y === j)) {
             if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
               const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1];
               const src = imageIconData[tokenAddress]?.src;
@@ -670,19 +670,19 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
                   img.onload = () => {
                     setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
                     // 重新绘制图像
-                    ctx.drawImage(img, currentX, currentY, GRID_SIZE * 0.8, GRID_SIZE * 0.8);
+                    ctx.drawImage(img, currentX, currentY, GRID_SIZE * 0.9, GRID_SIZE * 0.9);
                   };
                 } else {
                   // 调整图片大小
-                  const imageWidth = GRID_SIZE * 0.8; // 调整图片宽度
-                  const imageHeight = GRID_SIZE * 0.8; // 调整图片高度
+                  const imageWidth = GRID_SIZE * 0.9; // 调整图片宽度
+                  const imageHeight = GRID_SIZE * 0.9; // 调整图片高度
                   const imageX = currentX + (GRID_SIZE - imageWidth) / 2;
                   const imageY = currentY + (GRID_SIZE - imageHeight) / 2;
                   ctx.drawImage(imageCache[src], imageX, imageY, imageWidth, imageHeight);
                 }
               }
             }
-          }
+          // }
         }
       }
 
@@ -736,15 +736,15 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     [
       GRID_SIZE,
       coordinates,
-      numberData,
+      // numberData,
       TCMPopStarData,
       CANVAS_WIDTH,
       CANVAS_HEIGHT,
-      selectedColor,
-      scrollOffset,
-      loading,
-      loadingplay,
-      loadingSquare,
+      // selectedColor,
+      // scrollOffset,
+      // loading,
+      // loadingplay,
+      // loadingSquare,
       imageCache,
       isMobile,
       calcOffsetYValue
@@ -829,58 +829,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
           ctx.fillStyle = "#2f1643";
           ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-          // const entity = getEntityAtCoordinates(i, j) as any;
-          // if (entity) {
-          //   if (entity.value.owner !== undefined && tcmTokenAddrDict[entity.value.owner] === undefined) {
-          //     const TCMPopStarDataFun = getComponentValue(
-          //       TCMPopStar,
-          //       // addressToEntityID(entity.value.owner)
-          //     );
-          //     if (TCMPopStarDataFun?.tokenAddressArr !== undefined) {
-          //       tcmTokenAddrDict[entity.value.owner] = TCMPopStarDataFun?.tokenAddressArr
-          //     }
-          //   }
-          //   //渲染背景
-          //   if (entity.value.app !== "PopCraft") {
-          //     ctx.fillStyle = entity.value.color;
-          //     ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-          //   }
-          //   // entity.value.app === "PopCraft"
-          //   if (entity.value.app === "PopCraft" && entity.value.owner !== undefined && tcmTokenAddrDict[entity.value.owner] !== undefined) {
-
-          //     if (Number(entity?.value?.text) > 0) {
-          //       const img = new Image();
-          //       img.src =
-          //         imageIconData[
-          //           tcmTokenAddrDict[entity?.value.owner][Number(entity?.value?.text) - 1]
-          //         ]?.src;
-          //       if (img.src !== undefined) {
-          //         ctx.drawImage(img, currentX, currentY, GRID_SIZE, GRID_SIZE);
-          //       }
-          //     } else {
-          //       ctx.fillStyle = entity.value.color;
-          //       ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-          //     }
-          //   }
-          //   if (entity.value.text && entity.value.app !== "PopCraft") {
-          //     ctx.fillStyle = "#000";
-          //     ctx.textAlign = "center";
-          //     ctx.textBaseline = "middle";
-          //     if (
-          //       entity.value.text &&
-          //       /^U\+[0-9A-Fa-f]{4,}$/.test(entity.value.text)
-          //     ) {
-          //       pix_text = String.fromCodePoint(
-          //         parseInt(entity.value.text.substring(2), 16)
-          //       );
-          //     } else {
-          //       pix_text = entity.value.text;
-          //     }
-          //     const textX = currentX + GRID_SIZE / 2;
-          //     const textY = currentY + GRID_SIZE / 2;
-          //     ctx.fillText(pix_text, textX, textY);
-          //   }
-          // }
+          
         }
       }
 
