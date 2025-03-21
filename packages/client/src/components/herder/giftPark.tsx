@@ -196,7 +196,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                 <span style={{marginLeft: "5rem"}}>
                                     Starts on
                                     <br />
-                                    March 15 at 14:00 (UTC)
+                                    March 21 at 13:00 (UTC)
                                 </span>
                                     </>
                                 ) : (
