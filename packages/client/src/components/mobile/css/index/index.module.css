@@ -1,0 +1,620 @@
+.containerImg {
+  width: 68.51rem;
+  height: 21.51rem;
+  position: absolute;
+  left: 9.53rem;
+  top: 24.17rem;
+  z-index: 20;
+}
+
+.welcome{
+  height: 88.69rem;
+  width: 174.94rem;
+  position: absolute;
+  left: 50%;
+  top: 26%;
+  transform: translate(-50%, 29%);
+  font-size: 12.93rem;
+  color: #14B383;
+  line-height: 22.87rem;
+  letter-spacing: 1.15rem;
+  font-family: "AdobeHeitiStd-Regular";
+  text-align: center;
+  text-shadow:
+  -1rem -1rem 0 white,
+  1rem -1rem 0 white,
+  -1rem 1rem 0 white,
+  1rem 1rem 0 white,
+  1.1rem 1.1rem 4rem rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+
+.homeIGLO{
+  width: 33.26rem;
+  height: 29.93rem;
+  position: absolute;
+  right: 23.28rem;
+  bottom: 74.72rem;
+}
+
+.homeKOALA{
+  width: 70.06rem;
+  height: 71.17rem;
+  position: absolute;
+  left: 7.98;
+  bottom: 72.95rem;
+}
+
+.homeHOOT{
+  width: 41.68rem;
+  height: 51.44rem;
+  position: absolute;
+  bottom: 121.28rem;
+}
+
+.homeCLUK{
+  width: 39.96rem;
+  height: 56.32rem;
+  position: absolute;
+  bottom: 82.92rem;
+  right: 0;
+}
+
+.buttomBtn{
+  width: 100%;
+  position: absolute;
+  bottom: 18.5rem;
+  height: 40rem;
+  display: flex;
+}
+
+
+.canvasWrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.bodyCon {
+  position: absolute;
+}
+
+
+.topContainer{
+  position: absolute;
+  right: 7.1rem;
+  top: 23.72rem;
+  height: 21rem;
+  display: flex;
+  z-index: 20;
+}
+
+.menuBtn{
+  background-image: url("../../../../images/Mobile/Top/MenuBtn.webp");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 19.73rem;
+  height: 20.18rem;
+  border: none;
+  border-radius: 50%;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s ease;
+}
+
+.menuBtn:active {
+  transform: scale(1.2);
+}
+
+.BGMBtn{
+  background-image: url("../../../../images/Mobile/Top/BGMBtn.webp");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 19.51rem;
+  height: 19.96rem;
+  border: none;
+  border-radius: 50%;
+  margin-right: 15.74rem;
+  transition: transform 0.1s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.BGMBtn:active {
+  transform: scale(1.2);
+}
+
+.BGMOff{
+  background-image: url("../../../../images/Mobile/Top/BGMOffBtn.webp");
+}
+
+.chain {
+  height: 20rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15.74rem;
+  width: 36rem;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.Chainbutton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20rem;
+  height: 20rem;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s ease;
+}
+
+.iconimg {
+  width: 19.51rem;
+  height: 19.51rem;
+  border: 0.26rem solid rgba(34, 80, 92, 1);
+  border-radius: 50%;
+}
+
+.Chainbutton:active .iconimg {
+  transform: scale(1.2);
+}
+
+.arrow {
+  width: 8.43rem;
+  height: 5.99rem;
+  margin-left: 5.99rem;
+  background-color: transparent;
+}
+
+.menuContainerOut{
+  background-image: url("../../../../images/Mobile/Top/MenuBg.webp");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 162.97rem;
+  height: 292.45rem;
+  position: fixed;
+  right: 0;
+  z-index: 30;
+  transition: transform 0.1s ease, opacity 0.1s ease;
+  animation: slideIn 0.15s ease-out forwards;
+  transform-origin: top right;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(50%) scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(50%) scale(0.5);
+    opacity: 0;
+  }
+}
+
+.menuContainerOutHide {
+  animation: slideOut 0.2s ease forwards;
+}
+
+.menuContainerIn{
+  position: absolute;
+  background-color: rgba(255, 244, 199, 1);
+  width: 156.98rem;
+  height: 280.04rem;
+  margin-top: 5.99rem;
+  border-radius: 11.31rem 0 0 11.31rem;
+  margin-left: 5.99rem;
+  font-family: "Zihun-Buding";
+  font-size: 9.4rem;
+  color: #000;
+  line-height: 12.03rem;
+  font-weight: 400;
+  right: 0;
+}
+
+.dividingLineImg{
+  width: 134.81rem;
+  height: 1.11rem;
+}
+
+.menuUser{
+  height: 13rem;
+  display: flex;
+  align-items: center;
+  font-size: 9.15rem;
+  line-height: 11.72rem;
+  margin-top: 21.06rem;
+  margin-left: 4.21rem;
+}
+
+.menuUser img{
+  width: 13.75rem;
+  height: 13.75rem;
+}
+.menuUser span{
+  margin-left: 13.3rem;
+}
+
+.menuTopUp{
+  height: 10rem;
+  display: flex;
+  align-items: center;
+  margin-top: 13.08rem;
+  margin-left: 4.21rem;
+}
+
+.menuTopUp img{
+  width: 13.97rem;
+  height: 9.98rem;
+  transition: transform 0.1s ease-in-out;
+}
+.menuTopUp span{
+  margin-left: 13.08rem;
+  transition: text-shadow 0.1s ease-in-out, font-size 0.1s ease-in-out;
+}
+
+.menuTopUp:active img{
+  transform: scale(1.4);
+}
+
+.menuTopUp:active span {
+  font-size: 10.55rem;
+  text-shadow: 0.4rem 0.4rem 0.8rem rgba(0, 0, 0);
+}
+
+.menuBuy{
+  height: 12rem;
+  display: flex;
+  align-items: center;
+  margin-top: 11.53rem;
+  margin-left: 4.21rem;
+}
+
+.menuBuy img{
+  width: 13.97rem;
+  height: 11.75rem;
+  transition: transform 0.1s ease-in-out;
+}
+.menuBuy span{
+  margin-left: 13.08rem;
+  transition: text-shadow 0.1s ease-in-out, font-size 0.1s ease-in-out;
+}
+
+.menuBuy:active img{
+  transform: scale(1.4);
+}
+
+.menuBuy:active span {
+  font-size: 10.55rem;
+  text-shadow: 0.4rem 0.4rem 0.8rem rgba(0, 0, 0);
+}
+
+.menuDisconnect{
+  height: 14rem;
+  display: flex;
+  align-items: center;
+  margin-top: 10.42rem;
+  margin-left: 4.21rem;
+}
+
+.menuDisconnect img{
+  width: 13.75rem;
+  height: 13.97rem;
+  transition: transform 0.1s ease-in-out;
+}
+.menuDisconnect span{
+  margin-left: 13.3rem;
+  transition: text-shadow 0.1s ease-in-out, font-size 0.1s ease-in-out;
+}
+
+.menuDisconnect:active img{
+  transform: scale(1.4);
+}
+
+.menuDisconnect:active span {
+  font-size: 10.55rem;
+  text-shadow: 0.4rem 0.4rem 0.8rem rgba(0, 0, 0);
+}
+
+.mediaContainer{
+  position: absolute;
+  width: 86%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  gap: 31.81rem;
+  margin-top: 20.38rem;
+}
+
+.x{
+  width: 19.75rem;
+  height: 19.75rem;
+  transition: transform 0.1s ease-in-out;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.x:active{
+  transform: scale(1.4);
+}
+
+.tg{
+  width: 19.75rem;
+  height: 19.75rem;
+  transition: transform 0.1s ease-in-out;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tg:active{
+  transform: scale(1.4);
+}
+
+
+.github{
+  width: 19.75rem;
+  height: 19.75rem;
+  transition: transform 0.1s ease-in-out;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.github:active{
+  transform: scale(1.4);
+}
+
+.menuCloseBtn{
+  width: 110.2rem;
+  height: 26.16rem;
+  font-size: 10.16rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(47, 179, 131, 1);
+  font-weight: 400;
+  line-height: 13.01rem;
+  position: absolute;
+  bottom: 22.17rem;
+  left: 25.05rem;
+  background-color: transparent;
+  font-family: "Zihun-Buding";
+  border-image: linear-gradient(
+    to bottom, 
+    rgba(24, 168, 107, 1),
+    rgba(47, 179, 131, 1)
+  ) 1;
+  border-radius: 13.08rem;
+  border: 1.35rem solid;
+  transition: font-size 0.1s ease, text-shadow 0.1s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.menuCloseBtn:active{
+  text-shadow: 0.6rem 0.6rem 1rem rgba(0, 0, 0, 0.8);
+  font-size: 12.56rem;
+}
+
+.overlayPopStar {
+  background-image: url('../../../../images/Mobile/BG.webp');
+  background-size: 100% 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: calc(100%);
+  z-index: 10;
+  height: 100%;
+  pointer-events: auto !important;
+}
+
+.waitingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.waitingContainer {
+  width: 100%;
+  max-width: 213.08rem;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.waitingOverlayText {
+  align-items: center;
+  flex-direction: column;
+  width: 161.19rem;
+  height: 86.69rem;
+  height: auto;
+  font-family: "AdobeHeitiStd-Regular2";
+  src: url("/fonts/Langyuanti.woff2");
+  font-weight: 400;
+  font-size: 9.24rem;
+  color: #FFFFFF;
+  line-height: 25.59rem;
+  text-align: center;
+  background: none;
+  border-radius: 2.217rem;
+  padding: 4.434rem;
+  box-sizing: border-box;
+}
+
+.progressBar {
+  position: relative;
+  width: 200.08rem;
+  height: 17.52rem;
+  background: #0f82b0;
+  border-radius: 8.51rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  overflow: visible;
+  box-shadow: 0 0 1vw 0.5vw rgba(0, 255, 255, 0.5);
+}
+
+.progressFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  background: #CBFFFD;
+  border-radius: 8.51rem;
+  background-size: 100% 100%;
+  transition: width 0.1s ease;
+}
+
+.diamondIcon {
+  position: absolute;
+  width: 35.23rem;
+  height: 35.23rem;
+  top: 60%;
+  transform: translateX(-30%) translateY(-50%);
+  background-image: url('../../../../images/Diamond.webp');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.progressText {
+  position: absolute;
+  top: 30%;
+  transform: translateX(-50%) translateY(-50%);
+  font-size: 9.87rem;
+  font-weight: bold;
+  color: #0f82b0;
+  transition: left 0.1s ease; /* 平滑的动画效果 */
+  white-space: nowrap; /* 防止数字换行 */
+}
+
+
+/* ================out of stock============== */
+.modal {
+  width: 142rem;
+  background-image: url("../../../../images/substance/fail.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 18px;
+  border-radius: 8px;
+  position: absolute;
+  left: 50%;
+  top: 16%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+.failto {
+  width: 30px;
+  height: 30px;
+  float: left;
+}
+
+.colorto {
+  color: red;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "AdobeHeitiStd-Regular4";
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin-top: 4px;
+}
+
+/* ================INSUFFICIENT GASBALANCE============== */
+.popup {
+  width: 233.03rem;
+  height: 148.33rem;
+  border: none;
+  background-image: url("../../../../images/Mobile/InsufficientBg.webp");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* border-radius: 8px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.contentbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 400;
+  font-size: 15.49rem;
+  color: #ffffff;
+  font-family: "AdobeHeitiStd-Regular2";
+  letter-spacing: 2px;
+  margin-top: 30.91rem;
+  text-shadow: 0.4rem 0.4rem 2rem #494848;
+  line-height: 26.79rem;
+}
+
+
+.topupbtn {
+  width: 168rem;
+  height: 22.84rem;
+  background-color: transparent;
+  background-image: url("../../../../images/topup/Layerquestionback.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  margin-top: 8.07rem;
+  font-size: 13.86rem;
+  font-weight: bold;
+  line-height: 7.91rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+  color: #ffffff;
+  transition: font-size 0.1s ease;
+  text-transform: uppercase;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  text-shadow: -0.2rem -0.2rem 0 rgba(0, 0, 0, 0.20),
+  0.2rem -0.2rem 0 rgba(0, 0, 0, 0.20),
+    -0.2rem 0.2rem 0 rgba(0, 0, 0, 0.20),
+    0.2rem 0.2rem 0 rgba(0, 0, 0, 0.20);
+}
+
+.topupbtn:active {
+  font-size: 15.3rem;
+  text-shadow:
+    -0.4rem -0.4rem 0 rgba(56, 56, 56, 0.7),
+    0.4rem -0.4rem 0 rgba(71, 71, 71, 0.7),
+    -0.4rem 0.4rem 0 rgba(59, 59, 59, 0.7),
+    0.4rem 0.4rem 0 rgba(69, 69, 69, 0.7)
+}
+

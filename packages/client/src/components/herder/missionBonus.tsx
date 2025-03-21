@@ -17,13 +17,19 @@ import { useMUD } from "../../MUDContext";
 import { getComponentValue } from "@latticexyz/recs";
 import { useAccount } from 'wagmi';
 import { useUtils } from "./utils";
+import mobileStyle from "../mobile/css/index/missionBonus.module.css";
+import mobileBtnImg from "../../images/InDayBouns/mobile/Btn.webp";
+import mobileBGImg from "../../images/Mobile/InDayBonus/Background.webp";
+import mobileCloseBtnImg from "../../images/Mobile/InDayBonus/CloseBtn.webp";
 
 interface Props {
     checkTaskInProcess: any
     handleErrorAll: any
+    isMobile: boolean,
+    setShowMobileInDayBonus: any
 }
 
-export default function MissionBonus({ checkTaskInProcess, handleErrorAll }: Props) {
+export default function MissionBonus({ checkTaskInProcess, handleErrorAll, isMobile, setShowMobileInDayBonus }: Props) {
     const bouns: { plays: number; scores: number; status: string }[] = [];
 
     const {
@@ -42,16 +48,26 @@ export default function MissionBonus({ checkTaskInProcess, handleErrorAll }: Pro
     const [showAddScoresPopup, setShowAddScoresPopup] = useState(false);
     const [popupScores, setPopupScores] = useState(0);
     const [isCloseAnimating, setIsCloseAnimating] = useState(false);
+    const [timeOutCloseAnimating, setTimeOutCloseAnimating] = useState(300);
+
+    useEffect(() => {
+        if (isMobile) {
+            setContentVisible(false);
+            setTimeOutCloseAnimating(150);
+        }
+    }, [isMobile])
 
     const toggleContent = () => {
         if (!isContentVisible) {
             setContentVisible(!isContentVisible);
+            setShowMobileInDayBonus(!isContentVisible);
         } else {
             setIsCloseAnimating(true);
             setTimeout(() => {
                 setContentVisible(!isContentVisible);
                 setIsCloseAnimating(false);
-            }, 300);
+                setShowMobileInDayBonus(!isContentVisible);
+            }, timeOutCloseAnimating);
         }
     };
 
@@ -139,30 +155,120 @@ export default function MissionBonus({ checkTaskInProcess, handleErrorAll }: Pro
             });
         }
     }
+    if (!isMobile) {
+        return (
+            <>
+                {isContentVisible ? (
+                    <div className={`${missionBonus.bounsContainer} ${isCloseAnimating ? missionBonus.bounsContainerClose : ''}`} style={{ backgroundImage: `url(${BounsBackgroundImg})` }}>
+                        <span className={missionBonus.title}>Unlock In-Day Bonus</span>
+                        <div className={missionBonus.countdown}>
+                            <img src={HourClockImg} alt="" />
+                            <span>{formatSeasonCountDown(timeLeft)}</span>
+                        </div>
+                        <div className={missionBonus.playerGames}>
+                            <span className={missionBonus.playerGamesPlayText}>
+                                {thePlayDay === missionBonusDay ? playerGames : 0} {(thePlayDay != missionBonusDay || playerGames === 1) ? 'PLAY' : 'PLAYS'}
+                            </span>
+                            <img src={PlayQuestionsImg} alt="" />
+                            <span className={missionBonus.playQuestion}>Each play requires at least 200 scores.</span>
+                        </div>
+                        <div className={missionBonus.bounsList}>
+                            {bouns.map((b, index) => {
 
-    return (
-        <>
-            {isContentVisible ? (
-                <div className={`${missionBonus.bounsContainer} ${isCloseAnimating ? missionBonus.bounsContainerClose : ''}`} style={{ backgroundImage: `url(${BounsBackgroundImg})` }}>
-                    <span className={missionBonus.title}>Unlock In-Day Bonus</span>
-                    <div className={missionBonus.countdown}>
+                                const backgroundImage = b.status === 'pending' ? ButtonPendingImg : ButtonUnlockedAndClaimedImg;
+                                const cornerMark = b.status === 'unlocked' ? CornerMarkUnlockedImg : (b.status === 'claimed' ? CornerMarkClaimedImg : '');
+                                const ButtonMask = b.status === 'claimed' ? ClaimedMaskImg : '';
+                                const bounsCircleStyle = {
+                                    color: b.status === 'unlocked' ? '#327B8B' : (b.status === 'pending' ? '#FFFFFF' : "rgba(50, 123, 139, 1)"),
+                                    textShadow: b.status === 'unlocked' || b.status === 'claimed'
+                                        ? '-0.2rem -0.2rem 0 white, 0.2rem -0.2rem 0 white, -0.2rem 0.2rem 0 white, 0.2rem 0.2rem 0 white, 0.2rem 0.2rem 0.1rem rgba(0, 0, 0, 0.6)'
+                                        : '-0.1rem -0.1rem 0 #D57300, 0.1rem -0.1rem 0 #D57300, -0.1rem 0.1rem 0 #D57300, 0.1rem 0.1rem 0 #D57300, 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.6)',
+                                    backgroundImage: `url(${backgroundImage})`
+                                };
+
+                                return (
+                                    <div key={index}
+                                        className={`${missionBonus.bounsItem} ${b.status === 'pending' ? missionBonus.bounsItemPending : ''}`}
+                                        onClick={b.status === 'pending' ? () => callContract(b.plays) : undefined}
+                                    >
+                                        {ButtonMask && (
+                                            <div className={missionBonus.buttonMask}>
+                                                < img src={ButtonMask} alt="" />
+                                            </div>
+                                        )}
+                                        {callLoadingIndex === b.plays &&
+                                            <div className={missionBonus.loading}>
+                                                <img src={ClaimedMaskImg} className={missionBonus.loadingMask} />
+                                                <img src={CallLoadingImg} className={missionBonus.loadingMain} />
+                                            </div>
+                                        }
+
+                                        <div className={missionBonus.bounsCircle} style={bounsCircleStyle}>
+                                            {cornerMark && <img src={cornerMark} alt="" className={missionBonus.cornerMark} />}
+                                            <div>
+                                                <span style={{ display: "inline-block", transform: "scaleX(1.2)", marginLeft: "-0.5rem" }}>+{b.scores}</span>
+                                                <span style={{ fontSize: "1.4rem" }}> SCORES</span>
+                                            </div>
+
+                                        </div>
+
+                                        <div className={`${missionBonus.bounsText} ${b.status === 'claimed' ? missionBonus.bounsTextClaimed : (b.status === 'pending' ? missionBonus.bounsTextPending : missionBonus.bounsTextUnlocked)}`}>
+                                            {index == 0 ? null : thePlayDay === missionBonusDay && playerGames >= b.plays ? (
+                                                <img src={ConnectingStripImg} alt="" />
+                                            ) : (
+                                                <span className={missionBonus.connectionPoint}>...</span>
+                                            )}
+                                            <span>{b.plays} {b.plays === 1 ? 'PLAY' : 'PLAYS'}</span>
+
+                                        </div>
+
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        <div className={missionBonus.arrowLeft} onClick={toggleContent}>
+                            < img src={BounsArrowLeft} alt="" />
+                        </div>
+                        {showAddScoresPopup &&
+                            <div className={missionBonus.addedPoints}>
+                                + {popupScores} Scores!
+                            </div>
+                        }
+                    </div>
+                ) : (
+                    <div className={missionBonus.inDayBounsBtn} onClick={() => toggleContent()}>
+                        <img src={ButtonCloseImg} alt="" />
+                        <button>In-Day Bouns</button>
+                        {tips > 0 &&
+                            <div className={missionBonus.btnTips}>1</div>
+                        }
+                    </div>
+                )}
+            </>
+        )
+    } else {
+        return (
+            <>
+                {isContentVisible && <div className={`${mobileStyle.bounsContainer} ${isCloseAnimating ? mobileStyle.bounsContainerClose : ''}`} style={{ backgroundImage: `url(${mobileBGImg})` }}>
+                    <span className={mobileStyle.title}>Unlock In-Day Bonus</span>
+                    <div className={mobileStyle.countdown}>
                         <img src={HourClockImg} alt="" />
                         <span>{formatSeasonCountDown(timeLeft)}</span>
                     </div>
-                    <div className={missionBonus.playerGames}>
-                        <span className={missionBonus.playerGamesPlayText}>
+                    <div className={mobileStyle.playerGames}>
+                        <span className={mobileStyle.playerGamesPlayText}>
                             {thePlayDay === missionBonusDay ? playerGames : 0} {(thePlayDay != missionBonusDay || playerGames === 1) ? 'PLAY' : 'PLAYS'}
                         </span>
                         <img src={PlayQuestionsImg} alt="" />
-                        <span className={missionBonus.playQuestion}>Each play requires at least 200 scores.</span>
+                        <span className={mobileStyle.playQuestion}>Each play requires at least 200 scores.</span>
                     </div>
-                    <div className={missionBonus.bounsList}>
+                    <div className={mobileStyle.bounsList}>
                         {bouns.map((b, index) => {
 
                             const backgroundImage = b.status === 'pending' ? ButtonPendingImg : ButtonUnlockedAndClaimedImg;
                             const cornerMark = b.status === 'unlocked' ? CornerMarkUnlockedImg : (b.status === 'claimed' ? CornerMarkClaimedImg : '');
                             const ButtonMask = b.status === 'claimed' ? ClaimedMaskImg : '';
-                            const bounsCircleStyle = {
+                            const bonusCircleStyle = {
                                 color: b.status === 'unlocked' ? '#327B8B' : (b.status === 'pending' ? '#FFFFFF' : "rgba(50, 123, 139, 1)"),
                                 textShadow: b.status === 'unlocked' || b.status === 'claimed'
                                     ? '-0.2rem -0.2rem 0 white, 0.2rem -0.2rem 0 white, -0.2rem 0.2rem 0 white, 0.2rem 0.2rem 0 white, 0.2rem 0.2rem 0.1rem rgba(0, 0, 0, 0.6)'
@@ -172,35 +278,36 @@ export default function MissionBonus({ checkTaskInProcess, handleErrorAll }: Pro
 
                             return (
                                 <div key={index}
-                                    className={`${missionBonus.bounsItem} ${b.status === 'pending' ? missionBonus.bounsItemPending : ''}`}
+                                    className={`${mobileStyle.bounsItem} ${b.status === 'pending' ? mobileStyle.bonusItemPending : ''}`}
                                     onClick={b.status === 'pending' ? () => callContract(b.plays) : undefined}
                                 >
                                     {ButtonMask && (
-                                        <div className={missionBonus.buttonMask}>
+                                        <div className={mobileStyle.buttonMask}>
                                             < img src={ButtonMask} alt="" />
                                         </div>
                                     )}
                                     {callLoadingIndex === b.plays &&
-                                        <div className={missionBonus.loading}>
-                                            <img src={ClaimedMaskImg} className={missionBonus.loadingMask} />
-                                            <img src={CallLoadingImg} className={missionBonus.loadingMain} />
+                                        <div className={mobileStyle.loading}>
+                                            <img src={ClaimedMaskImg} className={mobileStyle.loadingMask} />
+                                            <img src={CallLoadingImg} className={mobileStyle.loadingMain} />
                                         </div>
                                     }
 
-                                    <div className={missionBonus.bounsCircle} style={bounsCircleStyle}>
-                                        {cornerMark && <img src={cornerMark} alt="" className={missionBonus.cornerMark} />}
+                                    <div className={mobileStyle.bounsCircle} style={bonusCircleStyle}>
+                                        {cornerMark && <img src={cornerMark} alt="" className={mobileStyle.cornerMark} />}
                                         <div>
-                                            <span style={{ display: "inline-block", transform: "scaleX(1.2)", marginLeft: "-0.5rem" }}>+{b.scores}</span>
-                                            <span style={{ fontSize: "1.4rem" }}> SCORES</span>
+                                            <span style={{ display: "inline-block", transform: "scaleX(1.4)", marginLeft: "-0.5rem" }}>+{b.scores}</span>
+                                            <br />
+                                            <span style={{ fontSize: "4.35rem" }}> SCORES</span>
                                         </div>
 
                                     </div>
 
-                                    <div className={`${missionBonus.bounsText} ${b.status === 'claimed' ? missionBonus.bounsTextClaimed : (b.status === 'pending' ? missionBonus.bounsTextPending : missionBonus.bounsTextUnlocked)}`}>
+                                    <div className={`${mobileStyle.bonusText} ${b.status === 'claimed' ? mobileStyle.bonusTextClaimed : (b.status === 'pending' ? mobileStyle.bonusTextPending : mobileStyle.bonusTextUnlocked)}`}>
                                         {index == 0 ? null : thePlayDay === missionBonusDay && playerGames >= b.plays ? (
                                             <img src={ConnectingStripImg} alt="" />
                                         ) : (
-                                            <span className={missionBonus.connectionPoint}>...</span>
+                                            <span className={mobileStyle.connectionPoint}>...</span>
                                         )}
                                         <span>{b.plays} {b.plays === 1 ? 'PLAY' : 'PLAYS'}</span>
 
@@ -210,25 +317,26 @@ export default function MissionBonus({ checkTaskInProcess, handleErrorAll }: Pro
                             );
                         })}
                     </div>
-                    <div className={missionBonus.arrowLeft} onClick={toggleContent}>
-                        < img src={BounsArrowLeft} alt="" />
+                    <div className={mobileStyle.closeBtn} onClick={toggleContent}>
+                        < img src={mobileCloseBtnImg} alt="" />
                     </div>
                     {showAddScoresPopup &&
-                        <div className={missionBonus.addedPoints}>
+                        <div className={mobileStyle.addedPoints}>
                             + {popupScores} Scores!
                         </div>
                     }
-                </div>
-            ) : (
-                <div className={missionBonus.inDayBounsBtn} onClick={() => toggleContent()}>
-                    <img src={ButtonCloseImg} alt="" />
+                </div>}
+
+                <div className={mobileStyle.inDayBonusBtn} onClick={() => toggleContent()}>
+                    <img src={mobileBtnImg} alt="" />
                     <button>In-Day Bouns</button>
                     {tips > 0 &&
-                        <div className={missionBonus.btnTips}>1</div>
+                        <div className={mobileStyle.btnTips}>1</div>
                     }
                 </div>
-            )}
-        </>
-    )
+            </>
+        )
+    }
+
 }
 

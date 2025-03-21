@@ -1,0 +1,88 @@
+.btn {
+    width: 173.83rem;
+    height: 29.05rem;
+    opacity: 0px;
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, 52%);
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.btn button {
+    background-size: 100% 100%;
+    background-position: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    font-size: 13.86rem;
+    font-weight: bold;
+    letter-spacing: 0.4rem;
+    text-align: center;
+    line-height: 7.91rem;
+}
+
+.btnPlay {
+    color: #FFFFFF;
+    background-image: url("../../../../images/Mobile/Connect.webp");
+    -webkit-text-stroke: 0.22px rgba(0, 0, 0, 0.60);
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    text-shadow:
+        -0.45rem -0.45rem 0.3rem rgba(255, 255, 255, 0.2),
+        0.45rem -0.45rem 0.3rem rgba(255, 255, 255, 0.2),
+        -0.45rem 0.45rem 0.3rem rgba(255, 255, 255, 0.2),
+        0.45rem 0.45rem 0.3rem rgba(255, 255, 255, 0.2);
+}
+
+.btnPlay:active {
+    transition: transform 0.1s ease, font-size 0.1s ease;
+    font-size: 15.5rem;
+    text-shadow:
+        -0.45rem -0.45rem 0.3rem rgba(255, 255, 255, 0.3),
+        0.45rem -0.45rem 0.3rem rgba(255, 255, 255, 0.3),
+        -0.45rem 0.45rem 0.3rem rgba(255, 255, 255, 0.3),
+        0.45rem 0.45rem 0.3rem rgba(255, 255, 255, 0.3),
+        0.5rem 0.5rem 0.4rem rgba(0, 0, 0, 0.5);
+}
+
+.btnPlay:focus {
+    outline: none;
+}
+
+.loading {
+    animation: spin 5s linear infinite;
+    -webkit-transform: rotate(3600deg);
+    transform: rotate(3600deg);
+    -webkit-transition: -webkit-transform 5s linear;
+    transition: transform 5s linear;
+    height: 100%;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.btnSpik{
+    width: 23.72rem;
+    height: 20.4rem;
+    position: absolute;
+    right: 7.76rem;
+    bottom: 25.5rem;
+}
+
+.cloudBg{
+    width: 100%;
+    height: 431.69rem;
+    position: absolute;
+    bottom: 0;
+}

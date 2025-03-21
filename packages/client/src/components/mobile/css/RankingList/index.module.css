@@ -1,0 +1,86 @@
+.btn {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    z-index: 30;
+    font-family: "Simplicity";
+    text-align: center;
+    transition: transform 0.1s ease;
+    cursor: pointer;
+    color: #EB5F8C;
+    width: 35rem;
+    height: 40rem;
+    margin-left: 11.96rem;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn img {
+    position: absolute;
+    width: 33.04rem;
+    height: 33.04rem;
+    object-fit: contain;
+    transition: transform 0.1s ease;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    top: 0;
+}
+
+.btn:active img {
+    transform: scale(1.4);
+}
+
+.btn:active button {
+    text-shadow:
+        -0.8rem -0.8rem 0 white,
+        0.8rem -0.8rem 0 white,
+        -0.8rem 0.8rem 0 white,
+        0.8rem 0.8rem 0 white,
+        2rem 2rem 1.5rem rgba(0, 0, 0, 0.8);
+}
+
+.btn button {
+    position: absolute;
+    width: 57rem;
+    height: 5.88rem;
+    background-color: transparent;
+    border: none;
+    font-family: "Simplicity";
+    color: #FFB14B;
+    transition: font-size 0.1s ease, text-shadow 0.1s ease;
+    font-size: 4.88rem;
+    font-weight: 400;
+    top: 32.15rem;
+    margin: 0;
+    line-height: 2.29rem;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    text-shadow:
+        -0.65rem -0.65rem 0 white,
+        0.65rem -0.65rem 0 white,
+        -0.65rem 0.65rem 0 white,
+        0.65rem 0.65rem 0 white,
+        0.5rem 1rem 1rem rgba(0, 0, 0, 0.8);
+}
+
+
+.formcontainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 125.75rem;
+    height: 112.125rem;
+    border: none;
+    background-image: url('../../../../images/RankingList/RankingListBackground.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: grid;
+    place-items: center;
+    z-index: 25;
+}

@@ -1,19 +1,30 @@
 import { useState, useEffect, useRef } from 'react';
 import style from "./tokenNotification.module.css";
 import { imageIconData } from "../imageIconData";
+import mobileStyle from "../mobile/css/index/tokenNotification.module.css";
 
 interface NotificationProps {
     value: {
         tokenAddr: string;
         amount: bigint;
     };
+    isMobile: boolean
 }
 
-export default function TokenNotification({ value }: NotificationProps) {
+export default function TokenNotification({ value, isMobile }: NotificationProps) {
     const [notification, setNotification] = useState<{ tokenAddr: string, amount: bigint, uniqueKey: string }[]>([]);
     const [notificationBonus, setNotificationBonus] = useState<{ tokenAddr: string, amount: bigint, uniqueKey: string }[]>([]);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const timerRefBonus = useRef<ReturnType<typeof setInterval> | null>(null);
+    const [notificationTime, setNotificationTime] = useState(3000);
+    const [notificationBonusTime, setNotificationBonusTime] = useState(1500);
+
+    useEffect(() => {
+        if(isMobile){
+            setNotificationTime(1500)
+            setNotificationBonusTime(1000)
+        }
+    }, [isMobile])
 
     useEffect(() => {
         if (notification.length === 0) {
@@ -27,10 +38,9 @@ export default function TokenNotification({ value }: NotificationProps) {
         if (!timerRef.current) {
             timerRef.current = setInterval(() => {
                 setNotification((prev) => prev.slice(1));
-            }, 3000);
+            }, notificationTime);
         }
-
-    }, [notification]);
+    }, [notification, notificationTime]);
 
     useEffect(() => {
         if (notificationBonus.length === 0) {
@@ -52,10 +62,10 @@ export default function TokenNotification({ value }: NotificationProps) {
                     ]);
                     return newBonus;
                 });
-            }, 1500);
+            }, notificationBonusTime);
         }
 
-    }, [notificationBonus]);
+    }, [notificationBonus, notificationBonusTime]);
 
     const addNotification = (value: { tokenAddr: string, amount: bigint }) => {
         const uniqueKey = `${Date.now()}-${Math.random()}`;
@@ -78,32 +88,62 @@ export default function TokenNotification({ value }: NotificationProps) {
     }, [value]);
 
     const getBigIntAbs = (amount: bigint) => amount < 0n ? -amount : amount;
-
-    return (
-        <>
-            <div className={style.container}>
-                {notification.map((nfc, index) => (
-                    <div key={nfc.uniqueKey} className={`${style.message} ${index == 0 && style.fadeUp}`}>
-                        <img src={imageIconData[nfc.tokenAddr].src} alt="" />
-                        <span>
-                            {nfc.amount > 0n ? `十${nfc.amount.toString()}` : `一${getBigIntAbs(nfc.amount).toString()}`}
-                        </span>
-                    </div>
-                ))}
-            </div>
-
-            <div className={style.containerBouns}>
-                {notificationBonus.map((nfc, index) => (
-                    <div key={nfc.uniqueKey + 1} className={`${style.messageBonus} ${index == 0 && style.fadeUpBonus}`} >
-                        <img src={imageIconData[nfc.tokenAddr].src} alt="" />
-                        <span>
-                            X {nfc.amount.toString()}
-                        </span>
-                    </div>
-                ))}
-
-            </div>
-        </>
-
-    );
+    if(!isMobile){
+        return (
+            <>
+                <div className={style.container}>
+                    {notification.map((nfc, index) => (
+                        <div key={nfc.uniqueKey} className={`${style.message} ${index == 0 && style.fadeUp}`}>
+                            <img src={imageIconData[nfc.tokenAddr].src} alt="" />
+                            <span>
+                                {nfc.amount > 0n ? `十${nfc.amount.toString()}` : `一${getBigIntAbs(nfc.amount).toString()}`}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+    
+                <div className={style.containerBouns}>
+                    {notificationBonus.map((nfc, index) => (
+                        <div key={nfc.uniqueKey + 1} className={`${style.messageBonus} ${index == 0 && style.fadeUpBonus}`} >
+                            <img src={imageIconData[nfc.tokenAddr].src} alt="" />
+                            <span>
+                                X {nfc.amount.toString()}
+                            </span>
+                        </div>
+                    ))}
+    
+                </div>
+            </>
+    
+        );
+    }else{
+        return (
+            <>
+                <div className={mobileStyle.container}>
+                    {notification.map((nfc, index) => (
+                        <div key={nfc.uniqueKey} className={`${mobileStyle.message} ${index == 0 && mobileStyle.fadeUp}`}>
+                            <img src={imageIconData[nfc.tokenAddr].src} alt="" />
+                            <span>
+                                {nfc.amount > 0n ? `十${nfc.amount.toString()}` : `一${getBigIntAbs(nfc.amount).toString()}`}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+    
+                <div className={mobileStyle.containerBouns}>
+                    {notificationBonus.map((nfc, index) => (
+                        <div key={nfc.uniqueKey + 1} className={`${mobileStyle.messageBonus} ${index == 0 && mobileStyle.fadeUpBonus}`} >
+                            <img src={imageIconData[nfc.tokenAddr].src} alt="" />
+                            <span>
+                                X {nfc.amount.toString()}
+                            </span>
+                        </div>
+                    ))}
+    
+                </div>
+            </>
+    
+        );
+    }
+    
 }

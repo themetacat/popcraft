@@ -19,10 +19,13 @@ import { useMUD } from "../../MUDContext";
 import { getComponentValue } from "@latticexyz/recs";
 import { useAccount } from 'wagmi';
 import { useUtils } from "./utils";
+import mobileStyle from "../mobile/css/index/giftPark.module.css";
+import mobileBtnImg from "../../images/Mobile/GiftPark/GiftParkBtn.webp";
 
 interface Props {
     checkTaskInProcess: any
     handleErrorAll: any
+    isMobile: boolean
 }
 
 interface BonusItem {
@@ -31,7 +34,7 @@ interface BonusItem {
     status: string;
 }
 
-export default function GiftPark({ checkTaskInProcess, handleErrorAll }: Props) {
+export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile }: Props) {
     const bouns: BonusItem[] = [];
     const {
         network: { palyerAddress, publicClient },
@@ -163,157 +166,311 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll }: Props) 
     const itemWidth = 22.5;
     const marginLeft = 1;
     const maxOffset = Math.max(0, bouns.length - visibleCount);
-
-    return (
-        <>
-            {
-                isShowGiftPark &&
-                <div className={`${style.container} ${isCloseAnimating ? style.containerClosed : ''}`} >
-                    <img className={style.stars} src={StarsImg} alt="" />
-                    <div className={style.header}>
-                        GIFT PARK
-                    </div>
-                    <div className={style.cornerImage}>
-                        <img src={CloseImg} onClick={() => { toggleContent() }} />
-                    </div>
-                    <div className={style.containerIn}>
-                        <div className={style.titleStreakDay}>
-                            Streak Days
-                            <img src={PlayQuestionsImg} alt="" />
-                            <span className={style.playQuestion}>Play at least one 200+ score game daily. Missing a day resets the reward calculation to DAY 1, and unclaimed rewards will be lost!</span>
+    if(!isMobile){
+        return (
+            <>
+                {
+                    isShowGiftPark &&
+                    <div className={`${style.container} ${isCloseAnimating ? style.containerClosed : ''}`} >
+                        <img className={style.stars} src={StarsImg} alt="" />
+                        <div className={style.header}>
+                            GIFT PARK
                         </div>
-                        <div className={style.dayCountDown}>
-                            {streakDayCycle === 0 ? (
-                                <>
-                                <span>
-                                Day 1
-                                <br />
-                                Current Day
-                            </span>
-                            <span style={{marginLeft: "5rem"}}>
-                                Starts on
-                                <br />
-                                March 15 at 14:00 (UTC)
-                            </span>
-                                </>
-                            ) : (
-                                <>
-                                <span>
-                                Day {dayInCycle}
-                                <br />
-                                Current Day
-                            </span>
-                            <span style={{marginLeft: "5rem"}}>
-                                {formatSeasonCountDown(timeLeft)}
-                                <br />
-                                Until next day starts
-                            </span>
-                                </>
-                            )}
-                            
+                        <div className={style.cornerImage}>
+                            <img src={CloseImg} onClick={() => { toggleContent() }} />
                         </div>
-                        <div className={style.carouselContainer}>
-                            <button
-                                className={`${style.arrowButton} ${offset === 0 ? style.disabled : style.enable}`}
-                                onClick={handlePrev}
-                                disabled={offset === 0}
-                            >
-                                <img
-                                    src={offset === 0 ? ArrowLeftImg : ArrowRightImg}
-                                    alt=""
-                                    className={`${style.arrowIcon} ${offset === 0 ? "" : style.rotated}`}
-                                />
-                            </button>
-
-                            <div className={style.carousel}>
-                                <div
-                                    className={style.carouselInner}
-                                    style={{ transform: `translateX(-${offset * (itemWidth)}rem)` }}
+                        <div className={style.containerIn}>
+                            <div className={style.titleStreakDay}>
+                                Streak Days
+                                <img src={PlayQuestionsImg} alt="" />
+                                <span className={style.playQuestion}>Play at least one 200+ score game daily. Missing a day resets the reward calculation to DAY 1, and unclaimed rewards will be lost!</span>
+                            </div>
+                            <div className={style.dayCountDown}>
+                                {streakDayCycle === 0 ? (
+                                    <>
+                                    <span>
+                                    Day 1
+                                    <br />
+                                    Current Day
+                                </span>
+                                <span style={{marginLeft: "5rem"}}>
+                                    Starts on
+                                    <br />
+                                    March 15 at 14:00 (UTC)
+                                </span>
+                                    </>
+                                ) : (
+                                    <>
+                                    <span>
+                                    Day {dayInCycle}
+                                    <br />
+                                    Current Day
+                                </span>
+                                <span style={{marginLeft: "5rem"}}>
+                                    {formatSeasonCountDown(timeLeft)}
+                                    <br />
+                                    Until next day starts
+                                </span>
+                                    </>
+                                )}
+                                
+                            </div>
+                            <div className={style.carouselContainer}>
+                                <button
+                                    className={`${style.arrowButton} ${offset === 0 ? style.disabled : style.enable}`}
+                                    onClick={handlePrev}
+                                    disabled={offset === 0}
                                 >
-                                    {bouns.map((item, index) => {
-
-                                        const backgroundImage = item.status === 'pending' ? ClaimedAndLockedBgImg : PendingImg;
-                                        const backgroundDayImage = item.status === 'pending' ? ClaimedDayBgImg : PendingDayImg;
-
-                                        const cornerMark = item.status === 'locked' ? LockedImg : (item.status === 'claimed' ? ClaimedImg : '');
-                                        const mask = item.status === 'claimed' ? MaskImg : '';
-                                        const circleStyle = {
-                                            textShadow: '0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.6)',
-                                            cursor: item.status === 'pending' && callLoadingIndex === 0 ? "pointer" : 'not-allowed',
-                                            width: `${itemWidth - marginLeft}rem`,
-                                            marginLeft: `${marginLeft}rem`,
-                                        };
-                                        return (
-                                            <div key={index} className={`${style.bonusItem} ${item.status === "pending" && callLoadingIndex === 0 ? style.hoverEffect : ""
-                                                }`} style={circleStyle} onClick={item.status === 'pending' ? () => callContract(item.days) : undefined}>
-                                                <div className={style.bonusItemUp}>
-                                                    {callLoadingIndex === item.days &&
-                                                        <div className={style.loading}>
-                                                            <img src={MaskImg} className={style.loadingMask} />
-                                                            <img src={CallLoadingImg} className={style.loadingMain} />
-                                                        </div>
-                                                    }
-                                                    {cornerMark && <img src={cornerMark} alt="" className={style.cornerMark} />}
-                                                    {mask && <img src={mask} alt="" className={style.mask} />}
-                                                    <img src={backgroundImage} className={style.streakDaysImg} alt="" />
-                                                    <span className={style.streakDaysContent}>
-                                                        +{item.scores}
-                                                        <br />
-                                                        scores
-                                                    </span>
+                                    <img
+                                        src={offset === 0 ? ArrowLeftImg : ArrowRightImg}
+                                        alt=""
+                                        className={`${style.arrowIcon} ${offset === 0 ? "" : style.rotated}`}
+                                    />
+                                </button>
+    
+                                <div className={style.carousel}>
+                                    <div
+                                        className={style.carouselInner}
+                                        style={{ transform: `translateX(-${offset * (itemWidth)}rem)` }}
+                                    >
+                                        {bouns.map((item, index) => {
+    
+                                            const backgroundImage = item.status === 'pending' ? ClaimedAndLockedBgImg : PendingImg;
+                                            const backgroundDayImage = item.status === 'pending' ? ClaimedDayBgImg : PendingDayImg;
+    
+                                            const cornerMark = item.status === 'locked' ? LockedImg : (item.status === 'claimed' ? ClaimedImg : '');
+                                            const mask = item.status === 'claimed' ? MaskImg : '';
+                                            const circleStyle = {
+                                                textShadow: '0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.6)',
+                                                cursor: item.status === 'pending' && callLoadingIndex === 0 ? "pointer" : 'not-allowed',
+                                                width: `${itemWidth - marginLeft}rem`,
+                                                marginLeft: `${marginLeft}rem`,
+                                            };
+                                            return (
+                                                <div key={index} className={`${style.bonusItem} ${item.status === "pending" && callLoadingIndex === 0 ? style.hoverEffect : ""
+                                                    }`} style={circleStyle} onClick={item.status === 'pending' ? () => callContract(item.days) : undefined}>
+                                                    <div className={style.bonusItemUp}>
+                                                        {callLoadingIndex === item.days &&
+                                                            <div className={style.loading}>
+                                                                <img src={MaskImg} className={style.loadingMask} />
+                                                                <img src={CallLoadingImg} className={style.loadingMain} />
+                                                            </div>
+                                                        }
+                                                        {cornerMark && <img src={cornerMark} alt="" className={style.cornerMark} />}
+                                                        {mask && <img src={mask} alt="" className={style.mask} />}
+                                                        <img src={backgroundImage} className={style.streakDaysImg} alt="" />
+                                                        <span className={style.streakDaysContent}>
+                                                            +{item.scores}
+                                                            <br />
+                                                            scores
+                                                        </span>
+                                                    </div>
+                                                    <div className={style.bonusItemDown}>
+                                                        <img src={backgroundDayImage} alt="" style={{ width: "15rem" }} />
+                                                        <span className={style.streakDaysContent}>
+                                                            Day {item.days}
+                                                        </span>
+                                                    </div>
+                                                    {index === 0 ? null : item.status === 'locked' ? (
+                                                        <div className={style.dayPoint}>...</div>
+                                                    ) : <div className={style.dayLine}></div>}
                                                 </div>
-                                                <div className={style.bonusItemDown}>
-                                                    <img src={backgroundDayImage} alt="" style={{ width: "15rem" }} />
-                                                    <span className={style.streakDaysContent}>
-                                                        Day {item.days}
-                                                    </span>
-                                                </div>
-                                                {index === 0 ? null : item.status === 'locked' ? (
-                                                    <div className={style.dayPoint}>...</div>
-                                                ) : <div className={style.dayLine}></div>}
-                                            </div>
-                                        )
-                                    }
-                                    )}
+                                            )
+                                        }
+                                        )}
+                                    </div>
                                 </div>
+                                <button
+                                    className={`${style.arrowButton} ${offset === maxOffset ? style.disabled : style.enable}`}
+                                    onClick={handleNext}
+                                    disabled={offset === maxOffset}
+                                >
+                                    <img
+                                        src={offset === maxOffset ? ArrowLeftImg : ArrowRightImg}
+                                        alt=""
+                                        className={`${style.arrowIcon} ${offset === maxOffset ? style.rotated : ""}`}
+                                    />
+                                </button>
+    
                             </div>
-                            <button
-                                className={`${style.arrowButton} ${offset === maxOffset ? style.disabled : style.enable}`}
-                                onClick={handleNext}
-                                disabled={offset === maxOffset}
-                            >
-                                <img
-                                    src={offset === maxOffset ? ArrowLeftImg : ArrowRightImg}
-                                    alt=""
-                                    className={`${style.arrowIcon} ${offset === maxOffset ? style.rotated : ""}`}
-                                />
-                            </button>
-
-                        </div>
-                        <div className={style.dividingLine}></div>
-                        <div className={style.otherGiftsTitle}>
-                            Other Gifts
-                        </div>
-                        <div className={style.otherGifts}>
-                            Comming Soon!
-                        </div>
-                        {showAddScoresPopup &&
-                            <div className={style.addedPoints}>
-                                + {popupScores} Scores!
+                            <div className={style.dividingLine}></div>
+                            <div className={style.otherGiftsTitle}>
+                                Other Gifts
                             </div>
-                        }
+                            <div className={style.otherGifts}>
+                                Comming Soon!
+                            </div>
+                            {showAddScoresPopup &&
+                                <div className={style.addedPoints}>
+                                    + {popupScores} Scores!
+                                </div>
+                            }
+                        </div>
                     </div>
-                </div>
-            }
-
-            <div className={style.giftsParkBtn} onClick={() => toggleContent()}>
-                <img src={GiftParkImg} alt="" />
-                <button>Daily Streak Bonus</button>
-                {tips > 0 &&
-                    <div className={style.btnTips}>1</div>
                 }
-            </div>
-        </>
-    )
+    
+                <div className={style.giftsParkBtn} onClick={() => toggleContent()}>
+                    <img src={GiftParkImg} alt="" />
+                    <button>Daily Streak Bonus</button>
+                    {tips > 0 &&
+                        <div className={style.btnTips}>1</div>
+                    }
+                </div>
+            </>
+        )
+    }else{
+        return (
+            <>
+                {
+                    isShowGiftPark &&
+                    <div className={`${style.container} ${isCloseAnimating ? style.containerClosed : ''}`} >
+                        <img className={style.stars} src={StarsImg} alt="" />
+                        <div className={style.header}>
+                            GIFT PARK
+                        </div>
+                        <div className={style.cornerImage}>
+                            <img src={CloseImg} onClick={() => { toggleContent() }} />
+                        </div>
+                        <div className={style.containerIn}>
+                            <div className={style.titleStreakDay}>
+                                Streak Days
+                                <img src={PlayQuestionsImg} alt="" />
+                                <span className={style.playQuestion}>Play at least one 200+ score game daily. Missing a day resets the reward calculation to DAY 1, and unclaimed rewards will be lost!</span>
+                            </div>
+                            <div className={style.dayCountDown}>
+                                {streakDayCycle === 0 ? (
+                                    <>
+                                    <span>
+                                    Day 1
+                                    <br />
+                                    Current Day
+                                </span>
+                                <span style={{marginLeft: "5rem"}}>
+                                    Starts on
+                                    <br />
+                                    March 21 at 13:00 (UTC)
+                                </span>
+                                    </>
+                                ) : (
+                                    <>
+                                    <span>
+                                    Day {dayInCycle}
+                                    <br />
+                                    Current Day
+                                </span>
+                                <span style={{marginLeft: "5rem"}}>
+                                    {formatSeasonCountDown(timeLeft)}
+                                    <br />
+                                    Until next day starts
+                                </span>
+                                    </>
+                                )}
+                                
+                            </div>
+                            <div className={style.carouselContainer}>
+                                <button
+                                    className={`${style.arrowButton} ${offset === 0 ? style.disabled : style.enable}`}
+                                    onClick={handlePrev}
+                                    disabled={offset === 0}
+                                >
+                                    <img
+                                        src={offset === 0 ? ArrowLeftImg : ArrowRightImg}
+                                        alt=""
+                                        className={`${style.arrowIcon} ${offset === 0 ? "" : style.rotated}`}
+                                    />
+                                </button>
+    
+                                <div className={style.carousel}>
+                                    <div
+                                        className={style.carouselInner}
+                                        style={{ transform: `translateX(-${offset * (itemWidth)}rem)` }}
+                                    >
+                                        {bouns.map((item, index) => {
+    
+                                            const backgroundImage = item.status === 'pending' ? ClaimedAndLockedBgImg : PendingImg;
+                                            const backgroundDayImage = item.status === 'pending' ? ClaimedDayBgImg : PendingDayImg;
+    
+                                            const cornerMark = item.status === 'locked' ? LockedImg : (item.status === 'claimed' ? ClaimedImg : '');
+                                            const mask = item.status === 'claimed' ? MaskImg : '';
+                                            const circleStyle = {
+                                                textShadow: '0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.6)',
+                                                cursor: item.status === 'pending' && callLoadingIndex === 0 ? "pointer" : 'not-allowed',
+                                                width: `${itemWidth - marginLeft}rem`,
+                                                marginLeft: `${marginLeft}rem`,
+                                            };
+                                            return (
+                                                <div key={index} className={`${style.bonusItem} ${item.status === "pending" && callLoadingIndex === 0 ? style.hoverEffect : ""
+                                                    }`} style={circleStyle} onClick={item.status === 'pending' ? () => callContract(item.days) : undefined}>
+                                                    <div className={style.bonusItemUp}>
+                                                        {callLoadingIndex === item.days &&
+                                                            <div className={style.loading}>
+                                                                <img src={MaskImg} className={style.loadingMask} />
+                                                                <img src={CallLoadingImg} className={style.loadingMain} />
+                                                            </div>
+                                                        }
+                                                        {cornerMark && <img src={cornerMark} alt="" className={style.cornerMark} />}
+                                                        {mask && <img src={mask} alt="" className={style.mask} />}
+                                                        <img src={backgroundImage} className={style.streakDaysImg} alt="" />
+                                                        <span className={style.streakDaysContent}>
+                                                            +{item.scores}
+                                                            <br />
+                                                            scores
+                                                        </span>
+                                                    </div>
+                                                    <div className={style.bonusItemDown}>
+                                                        <img src={backgroundDayImage} alt="" style={{ width: "15rem" }} />
+                                                        <span className={style.streakDaysContent}>
+                                                            Day {item.days}
+                                                        </span>
+                                                    </div>
+                                                    {index === 0 ? null : item.status === 'locked' ? (
+                                                        <div className={style.dayPoint}>...</div>
+                                                    ) : <div className={style.dayLine}></div>}
+                                                </div>
+                                            )
+                                        }
+                                        )}
+                                    </div>
+                                </div>
+                                <button
+                                    className={`${style.arrowButton} ${offset === maxOffset ? style.disabled : style.enable}`}
+                                    onClick={handleNext}
+                                    disabled={offset === maxOffset}
+                                >
+                                    <img
+                                        src={offset === maxOffset ? ArrowLeftImg : ArrowRightImg}
+                                        alt=""
+                                        className={`${style.arrowIcon} ${offset === maxOffset ? style.rotated : ""}`}
+                                    />
+                                </button>
+    
+                            </div>
+                            <div className={style.dividingLine}></div>
+                            <div className={style.otherGiftsTitle}>
+                                Other Gifts
+                            </div>
+                            <div className={style.otherGifts}>
+                                Comming Soon!
+                            </div>
+                            {showAddScoresPopup &&
+                                <div className={style.addedPoints}>
+                                    + {popupScores} Scores!
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+    
+                <div className={mobileStyle.giftsParkBtn} onClick={() => toggleContent()}>
+                    <img src={mobileBtnImg} alt="" />
+                    <button>Daily Streak Bonus</button>
+                    {tips > 0 &&
+                        <div className={mobileStyle.btnTips}>1</div>
+                    }
+                </div>
+            </>
+        )
+    }
+    
 }
 

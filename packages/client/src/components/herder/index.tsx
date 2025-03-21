@@ -16,6 +16,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useDisconnect, useBalance } from 'wagmi';
 import popcraftLogo from '../../images/popcraft_logo.webp';
+import PopcraftLogoMobile from '../../images/Mobile/Popcraft_logo.webp';
 import backgroundMusic from '../../audio/bgm.mp3';
 import effectSound from '../../audio/2.mp3';
 import failto from '../../images/substance/failto.png'
@@ -26,6 +27,7 @@ import UserImg from "../../images/User.webp"
 import RankingList from '../RankingList'
 import { useTopUp, COMMON_CHAIN_IDS, MISSION_BOUNS_CHAIN_IDS } from "../select";
 import Arrow from "../../images/Arrow.webp"
+import ArrowMobileImg from "../../images/Mobile/Top/ArrowDownChain.webp"
 import { addressToEntityID, addr2NumToEntityID } from "../rightPart";
 import BGMOn from "../../images/BGMOn.webp";
 import BGMOff from "../../images/BGMOff.webp";
@@ -40,16 +42,30 @@ import MissionBonus from "./missionBonus";
 import TokenNotification from "./tokenNotification";
 import GiftPark from "./giftPark"
 
+import mobileStyle from "../mobile/css/index/index.module.css";
+import UserMobileImg from "../../images/Mobile/Top/User.webp";
+import TopUpMobileImg from "../../images/Mobile/Top/TopUp.webp";
+import BuyMobileImg from "../../images/Mobile/Top/Buy.webp";
+import DisconnectMobileImg from "../../images/Mobile/Top/Disconnect.webp";
+import DividingLineMobileImg from "../../images/Mobile/Top/MenuDividingLine.webp";
+import XMobileImg from "../../images/Mobile/Top/x.webp";
+import GitHubMobileImg from "../../images/Mobile/Top/github.webp";
+import TGMobileImg from "../../images/Mobile/Top/tg.webp";
+
+import mobileTopBuyStyle from "../mobile/css/BoxPrompt/topBuy.module.css";
+
+
 interface Props {
   hoveredData: { x: number; y: number } | null;
   handleData: (data: { x: number; y: number }) => void;
+  isMobile: boolean
 }
 
 let sendCount = 0;
 let receiveCount = 0;
 
 localStorage.setItem('isShowWaitingMaskLayer', 'false')
-export default function Header({ hoveredData, handleData }: Props) {
+export default function Header({ hoveredData, handleData, isMobile }: Props) {
   // 得分气泡状态管理
   const [scoreBubble, setScoreBubble] = useState<{ visible: boolean; x: number; y: number; score: number }>({ visible: false, x: 0, y: 0, score: 0 });
 
@@ -82,11 +98,8 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [translateX, setTranslateX] = useState(0);
   const [translateY, setTranslateY] = useState(0);
   const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
-  const [emptyRegionNum, setEmptyRegionNum] = useState({ x: 0, y: 0 });
-  const [coordinatesData, setCoordinatesData] = useState({ x: 0, y: 0 });
   const [paramInputs, setParamInputs] = useState([]);
   const [convertedParamsData, setConvertedParamsData] = useState(null);
-  const [tCMPopStarTime, setTCMPopStarTime] = useState(null);
   const [updateAbiJson, setUpdate_abi_json] = useState("");
   const [updateAbiCommonJson, setUpdate_abi_Common_json] = useState([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -104,10 +117,8 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [GRID_SIZE, setGRID_SIZE] = useState(32);
   // const entities = useEntityQuery([Has(Pixel)]);
   const tcmPopStarEntities = useEntityQuery([Has(TCMPopStar)]);
-  const entities_app = useEntityQuery([Has(App)]);
   const [mainContent, setMainContent] = useState("MAINNET");
   const [TCMPopStarData, setTCMPopStarData] = useState(null);
-  const [matchedData, setMatchedData] = useState(null);
   const [addressModel, setAddressModel] = useState(false);
   const [enumValue, setEnumValue] = useState({});
   const [ownerData, setOwnerData] = useState(null);
@@ -130,10 +141,15 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [gasPrice, setGasPrice] = useState<string>("");
   const { getPlantsGp, getPlantsGpSeason } = usePlantsGp();
   const { csd, season } = useUtils();
+  const [calcOffsetYValue, setCalcOffsetYValue] = useState(10);
+  const [tokenImgScale, setTokenImgScale] = useState(0.8);
   const [tokenNotificationValue, setTokenNotificationValue] = useState<{ tokenAddr: string, amount: bigint }>({
     tokenAddr: "",
     amount: 0n,
   });
+  const [showMenu, setShowMenu] = useState(false);
+  const [isCloseAnimatingMenu, setIsCloseAnimatingMenu] = useState(false);
+  const [showMobileInDayBonus, setShowMobileInDayBonus] = useState(false);
 
   useEffect(() => {
     const fetchGasPrice = async () => {
@@ -330,10 +346,12 @@ export default function Header({ hoveredData, handleData }: Props) {
     } else {
       setBalance(0n);
     }
+    setShowMenu(false);
   }, [isConnected, palyerAddress, publicClient]);
 
   // 判断用户临时钱包有没有钱 
   useEffect(() => {
+
     if (isConnected && appName === "BASE/PopCraftSystem" && !hasExecutedRef.current) {
       if ((Number(balance) / 1e18) < balanceCheck) {
         // console.log(Number(balance));
@@ -381,6 +399,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       if (appName === "BASE/PopCraftSystem") {
         setPopStar(true);
         setTimeControl(false)
+        setShowTopElements(false);
       }
     }
   }, [isConnected, balance, hasExecutedRef.current]);
@@ -467,12 +486,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     audio.play();
   };
 
-  const getEoaContract = async () => {
-    const [account] = await window.ethereum!.request({
-      method: "eth_requestAccounts",
-    });
-    return account;
-  };
 
   const [hoveredSquare, setHoveredSquare] = useState<{
     x: number;
@@ -484,25 +497,15 @@ export default function Header({ hoveredData, handleData }: Props) {
   const [selectedColor, setSelectedColor] = useState(
     colorSession !== null ? colorSession : "#ffffff"
   );
-  const onHandleOwner = (data: any) => {
-
-    setOwnerData(data)
-  }
   const mouseXRef = useRef(0);
   const mouseYRef = useRef(0);
   const panningType = window.localStorage.getItem("panning");
-  const coorToEntityID = (x: number, y: number) =>
-    encodeEntity({ x: "uint32", y: "uint32" }, { x, y });
 
   const addressData =
     palyerAddress.substring(0, 4) +
     "..." +
     palyerAddress.substring(palyerAddress.length - 4);
-  const chainName = publicClient.chain.name;
 
-  const capitalizedString =
-    chainName.charAt(0).toUpperCase() + chainName?.slice(1).toLowerCase();
-  const natIve = publicClient.chain.nativeCurrency.decimals;
   const btnLower = () => {
     setNumberData(numberData - 5);
     setGRID_SIZE(GRID_SIZE - 6);
@@ -518,11 +521,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     setTranslateY(0);
   };
 
-  function handleColorOptionClick(color: any) {
-    setSelectedColor(color);
-    window.sessionStorage.setItem("selectedColorSign", color);
-  }
-
   const handleLeave = () => {
     setHoveredSquare(null);
     if (downTimerRef.current) {
@@ -532,110 +530,36 @@ export default function Header({ hoveredData, handleData }: Props) {
     setIsLongPress(false);
   };
 
-  // const entityData: { coordinates: { x: number; y: number }; value: any }[] =
-  //   [];
-  // if (entities.length !== 0) {
-  //   entities.forEach((entity) => {
-  //     const coordinates = decodeEntity({ x: "uint32", y: "uint32" }, entity);
-  //     const value = getComponentValueStrict(Pixel, entity);
-  //     if (value.text === "_none") {
-  //       value.text = "";
-  //     }
-  //     if (value.color === "0") {
-  //       value.color = "#2f1643";
-  //     }
-  //     entityData.push({ coordinates, value });
-  //   });
-  // }
-  // const getEntityAtCoordinates = (x: number, y: number) => {
-  //   return entityData.find(
-  //     (entity) => entity.coordinates.x === x && entity.coordinates.y === y
-  //   );
-  // };
-
   const appName = localStorage.getItem("manifest") as any;
-  const parts = appName?.split("/") as any;
-
-  // const findEmptyRegion = () => {
-  //   const gridSize = GRID_SIZE;
-  //   const checkSize = 10;
-  //   const isEmpty = (x, y) => {
-  //     const encodeEntityNum = coorToEntityID(x, y);
-  //     const value = getComponentValue(Pixel, encodeEntityNum);
-  //     return value === undefined;
-  //   };
-  //   let px = 0,
-  //     x = 0,
-  //     y = 0;
-  //   while (true) {
-  //     let res = isEmpty(x, y);
-
-  //     if (res) {
-  //       if (x - px >= 9) {
-  //         if (y === 9) {
-  //           break;
-  //         }
-  //         y++;
-  //         x = px;
-  //       } else {
-  //         x++;
-  //       }
-  //     } else {
-  //       px = x + 1;
-  //       x = px;
-  //       y = 0;
-  //     }
-  //   }
-  //   return px;
-  // };
 
   const findEmptyRegion = () => {
     const px = tcmPopStarEntities.length * 10;
     return px;
   };
 
-  const drawRotatingImage = (ctx: any, img: any, x: any, y: any, width: any, height: any, angle: any) => {
-    ctx.save();
-    ctx.translate(x + width / 2, y + height / 2);
-    ctx.rotate(angle * Math.PI / 180);
-    ctx.drawImage(img, -width / 2, -height / 2, width, height);
-    ctx.restore();
-  };
-
-  function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) {
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + width - radius, y);
-    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-    ctx.lineTo(x + width, y + height - radius);
-    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    ctx.lineTo(x + radius, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
-    ctx.closePath();
-    ctx.stroke();
-  }
-
-
-
   const drawGrid2 = useCallback(
     (
       ctx: CanvasRenderingContext2D,
       hoveredSquare: { x: number; y: number } | null,
-      playType: any
+      playType: boolean
     ) => {
-      const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
-      const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
       // 清空画布
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
       // 绘制最外层的立体圆角边框
-      const outerBorderRadius = 20; // 外部圆角半径
+      let outerBorderRadius = 20;
+      const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+      const offsetY = (CANVAS_HEIGHT - calcOffsetYValue * GRID_SIZE) / 2;
+      let scale = 1.2;
+      if (isMobile) {
+        outerBorderRadius = 10;
+        scale = 1.6
+      }
       const outerBorderX = offsetX - outerBorderRadius;
       const outerBorderY = offsetY - outerBorderRadius;
       const outerBorderWidth = 10 * GRID_SIZE + 2 * outerBorderRadius;
       const outerBorderHeight = 10 * GRID_SIZE + 2 * outerBorderRadius;
+
       // 绘制阴影
       ctx.beginPath();
       ctx.moveTo(outerBorderX + outerBorderRadius, outerBorderY);
@@ -665,7 +589,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       ctx.closePath();
       ctx.fillStyle = "#fff9c9"; // 高光颜色
       ctx.fill();
-
 
       ctx.beginPath();
       ctx.moveTo(outerBorderX + outerBorderRadius, outerBorderY);
@@ -704,7 +627,6 @@ export default function Header({ hoveredData, handleData }: Props) {
       ctx.strokeStyle = "#ffc974";
       ctx.stroke();
 
-
       // 绘制水平和垂直网格线
       for (let x = 0; x <= 10 * GRID_SIZE; x += GRID_SIZE) {
         ctx.beginPath();
@@ -730,13 +652,11 @@ export default function Header({ hoveredData, handleData }: Props) {
           ctx.fillStyle = color;
           ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
           ctx.lineWidth = 1;
-          // ctx.strokeStyle = "#2e1043";
           ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-          // ctx.fillStyle = "#2f1643";
           ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
 
           // 绘制图像
-          if (!loadingSquare || !(loadingSquare.x === i && loadingSquare.y === j)) {
+          // if (!loadingSquare || !(loadingSquare.x === i && loadingSquare.y === j)) {
             if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
               const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1];
               const src = imageIconData[tokenAddress]?.src;
@@ -747,47 +667,35 @@ export default function Header({ hoveredData, handleData }: Props) {
                   img.onload = () => {
                     setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
                     // 重新绘制图像
-                    ctx.drawImage(img, currentX, currentY, GRID_SIZE * 0.8, GRID_SIZE * 0.8);
+                    ctx.drawImage(img, currentX, currentY, GRID_SIZE * 0.9, GRID_SIZE * 0.9);
                   };
                 } else {
                   // 调整图片大小
-                  const imageWidth = GRID_SIZE * 0.8; // 调整图片宽度
-                  const imageHeight = GRID_SIZE * 0.8; // 调整图片高度
+                  const imageWidth = GRID_SIZE * tokenImgScale; // 调整图片宽度
+                  const imageHeight = GRID_SIZE * tokenImgScale; // 调整图片高度
                   const imageX = currentX + (GRID_SIZE - imageWidth) / 2;
                   const imageY = currentY + (GRID_SIZE - imageHeight) / 2;
                   ctx.drawImage(imageCache[src], imageX, imageY, imageWidth, imageHeight);
                 }
               }
             }
-          }
+          // }
         }
       }
-
-      const scale = 1.2;
-
       if (hoveredSquare && coordinates.x < 10) {
         const i = hoveredSquare.x;
         const j = hoveredSquare.y;
         const currentX = i * GRID_SIZE + offsetX;
         const currentY = j * GRID_SIZE + offsetY;
 
-        // 如果正在加载，则不放大并且只展示加载状态
-        // if (loadingSquare && loadingSquare.x === i && loadingSquare.y === j) {
-        //   const loadingImgElement = new Image();
-        //   loadingImgElement.src = loadingImg;
-        //   const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
-        // drawRotatingImage(ctx, loadingImgElement, currentX + GRID_SIZE * 0.1, currentY + GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8, angle);
-        //   ctx.canvas.style.cursor = "default";
-        // } else {
-        const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
         const drawY = currentY - (GRID_SIZE * (scale - 1)) / 2;
         const drawSize = GRID_SIZE * scale;
 
+        const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
         ctx.clearRect(drawX, drawY, drawSize, drawSize);
         ctx.lineWidth = 0.5;
         ctx.strokeRect(drawX, drawY, drawSize, drawSize);
         ctx.fillRect(drawX, drawY, drawSize, drawSize);
-
         if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
           const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1];
           const src = imageIconData[tokenAddress]?.src;
@@ -799,16 +707,16 @@ export default function Header({ hoveredData, handleData }: Props) {
               img.onload = () => {
                 setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
                 // 重新绘制图像
-                const imageWidth = drawSize * 0.8
-                const imageHeight = drawSize * 0.8;
+                const imageWidth = drawSize * tokenImgScale
+                const imageHeight = drawSize * tokenImgScale;
                 const imageX = drawX + (drawSize - imageWidth) / 2;
                 const imageY = drawY + (drawSize - imageHeight) / 2;
                 ctx.drawImage(img, imageX, imageY, imageWidth, imageHeight);
               };
             } else {
               // 调整图片大小
-              const imageWidth = drawSize * 0.8; // 调整图片宽度
-              const imageHeight = drawSize * 0.8; // 调整图片高度
+              const imageWidth = drawSize * tokenImgScale; // 调整图片宽度
+              const imageHeight = drawSize * tokenImgScale; // 调整图片高度
               const imageX = drawX + (drawSize - imageWidth) / 2;
               const imageY = drawY + (drawSize - imageHeight) / 2;
               ctx.drawImage(imageCache[src], imageX, imageY, imageWidth, imageHeight);
@@ -816,40 +724,34 @@ export default function Header({ hoveredData, handleData }: Props) {
           }
         }
         ctx.canvas.style.cursor = "pointer";
-        // }
       } else {
         ctx.canvas.style.cursor = "default";
       }
-
-      // if (loadingSquare && loadingSquare.x < 10 && loadingSquare.x >= 0 && loadingSquare.y < 10 && loadingSquare.y >= 0) {
-      //   const loadingImgElement = new Image();
-      //   loadingImgElement.src = loadingImg;
-      //   const angle = (performance.now() % 1000) / 1000 * 360; // 旋转角度，1秒转1圈
-      // drawRotatingImage(ctx, loadingImgElement, loadingSquare.x * GRID_SIZE + offsetX + GRID_SIZE * 0.1, loadingSquare.y * GRID_SIZE + offsetY + GRID_SIZE * 0.1, GRID_SIZE * 0.8, GRID_SIZE * 0.8, angle);
-      // }
     },
     [
       GRID_SIZE,
       coordinates,
-      numberData,
       TCMPopStarData,
       CANVAS_WIDTH,
-      // getEntityAtCoordinates,
       CANVAS_HEIGHT,
-      selectedColor,
-      scrollOffset,
-      loading,
-      loadingplay,
-      loadingSquare,
       imageCache,
+      isMobile,
+      calcOffsetYValue,
+      tokenImgScale
     ]
   );
-
+  
 
   useEffect(() => {
     if (appName === "BASE/PopCraftSystem") {
       setNumberData(30);
-      setGRID_SIZE(44);
+      if (!isMobile) {
+        setGRID_SIZE(44);
+      } else {
+        setCalcOffsetYValue(11);
+        setTokenImgScale(0.9)
+        setGRID_SIZE(33);
+      }
       setScrollOffset({ x: 0, y: 0 });
       setTranslateX(0);
       setTranslateY(0);
@@ -860,7 +762,7 @@ export default function Header({ hoveredData, handleData }: Props) {
       setTranslateX(0);
       setTranslateY(0);
     }
-  }, [appName]);
+  }, [appName, isMobile]);
 
 
   //第一层画布
@@ -919,58 +821,7 @@ export default function Header({ hoveredData, handleData }: Props) {
           ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
           ctx.fillStyle = "#2f1643";
           ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-          // const entity = getEntityAtCoordinates(i, j) as any;
-          // if (entity) {
-          //   if (entity.value.owner !== undefined && tcmTokenAddrDict[entity.value.owner] === undefined) {
-          //     const TCMPopStarDataFun = getComponentValue(
-          //       TCMPopStar,
-          //       // addressToEntityID(entity.value.owner)
-          //     );
-          //     if (TCMPopStarDataFun?.tokenAddressArr !== undefined) {
-          //       tcmTokenAddrDict[entity.value.owner] = TCMPopStarDataFun?.tokenAddressArr
-          //     }
-          //   }
-          //   //渲染背景
-          //   if (entity.value.app !== "PopCraft") {
-          //     ctx.fillStyle = entity.value.color;
-          //     ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-          //   }
-          //   // entity.value.app === "PopCraft"
-          //   if (entity.value.app === "PopCraft" && entity.value.owner !== undefined && tcmTokenAddrDict[entity.value.owner] !== undefined) {
-
-          //     if (Number(entity?.value?.text) > 0) {
-          //       const img = new Image();
-          //       img.src =
-          //         imageIconData[
-          //           tcmTokenAddrDict[entity?.value.owner][Number(entity?.value?.text) - 1]
-          //         ]?.src;
-          //       if (img.src !== undefined) {
-          //         ctx.drawImage(img, currentX, currentY, GRID_SIZE, GRID_SIZE);
-          //       }
-          //     } else {
-          //       ctx.fillStyle = entity.value.color;
-          //       ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-          //     }
-          //   }
-          //   if (entity.value.text && entity.value.app !== "PopCraft") {
-          //     ctx.fillStyle = "#000";
-          //     ctx.textAlign = "center";
-          //     ctx.textBaseline = "middle";
-          //     if (
-          //       entity.value.text &&
-          //       /^U\+[0-9A-Fa-f]{4,}$/.test(entity.value.text)
-          //     ) {
-          //       pix_text = String.fromCodePoint(
-          //         parseInt(entity.value.text.substring(2), 16)
-          //       );
-          //     } else {
-          //       pix_text = entity.value.text;
-          //     }
-          //     const textX = currentX + GRID_SIZE / 2;
-          //     const textY = currentY + GRID_SIZE / 2;
-          //     ctx.fillText(pix_text, textX, textY);
-          //   }
-          // }
+          
         }
       }
 
@@ -1002,59 +853,43 @@ export default function Header({ hoveredData, handleData }: Props) {
       scrollOffset,
     ]
   );
-  let timeout: NodeJS.Timeout;
   const [isDragging, setIsDragging] = useState(false);
   const [timeControl, setTimeControl] = useState(false);
   const downTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [isLongPress, setIsLongPress] = useState(false);
-  // const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  // const [lastDragEndX, setLastDragEndX] = useState(0);
-  const [fingerNum, setFingerNum] = useState(0);
-  // const coor_entity = coorToEntityID(coordinates.x, coordinates.y);
-  // const pixel_value = getComponentValue(Pixel, coor_entity) as any;
-  // const action =
-  //   pixel_value && pixel_value.action ? pixel_value.action : "interact";
   const action = "interact";
-
-  const ClickThreshold = 150;
-
-
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    if (appName === "BASE/PopCraftSystem") {
-      // drawGrid2 
-      if (coordinates.x < 10) {
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        drawGrid2(ctx, coordinates, false);
-      }
-    } else {
-      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      drawGrid(ctx, coordinates, false);
+    let newCoordinates = coordinates;
+    
+    if(isMobile){
+      const canvas = canvasRef.current as any;
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+
+      const CANVAS_WIDTH = document.documentElement.clientWidth;
+      const CANVAS_HEIGHT = document.documentElement.clientHeight;
+      const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+      const offsetY = (CANVAS_HEIGHT - calcOffsetYValue * GRID_SIZE) / 2;
+
+      const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
+      const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
+      newCoordinates = { x: gridX, y: gridY };
+      setHoveredSquare(newCoordinates);
+      setTimeout(() => {
+        setHoveredSquare(null);
+      }, 100);
     }
-    setFingerNum(event.buttons);
+    if (newCoordinates.x < 10) {   
+      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      drawGrid2(ctx, newCoordinates, false);
+    }
     if (pageClick === true) {
       return;
     }
-    if (appName === "BASE/PopCraftSystem") {
-    } else {
-      //禁止上下左右移动
-      setIsDragging(true);
-      setTranslateX(event.clientX);
-      setTranslateY(event.clientY);
-      downTimerRef.current = setTimeout(() => {
-        setIsLongPress(true);
-      }, ClickThreshold);
-    }
     get_function_param(action);
-  };
-
-  const handlePageClick = () => {
-    setPageClick(true);
-  };
-
-  const handlePageClickIs = () => {
-    setPageClick(false);
   };
 
   //点击方块触发事件
@@ -1084,82 +919,59 @@ export default function Header({ hoveredData, handleData }: Props) {
         const mouseX = event.clientX - rect.left;
         const mouseY = event.clientY - rect.top;
 
-        if (appName === "BASE/PopCraftSystem") {
-          const CANVAS_WIDTH = document.documentElement.clientWidth;
-          const CANVAS_HEIGHT = document.documentElement.clientHeight;
-          const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
-          const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+        const CANVAS_WIDTH = document.documentElement.clientWidth;
+        const CANVAS_HEIGHT = document.documentElement.clientHeight;
+        const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+        const offsetY = (CANVAS_HEIGHT - calcOffsetYValue * GRID_SIZE) / 2;
 
-          const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
-          const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
-          const newHoveredSquare = { x: gridX, y: gridY };
+        const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
+        const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
+        const newHoveredSquare = { x: gridX, y: gridY };
+        if(!isMobile){
           setHoveredSquare(newHoveredSquare);
-          // setLoadingSquare(newHoveredSquare); // 设置 loading 状态
-        } else {
-          const gridX = Math.floor(mouseX / GRID_SIZE);
-          const gridY = Math.floor(mouseY / GRID_SIZE);
-          setCoordinatesData({ x: gridX, y: gridY });
-          const newHoveredSquare = { x: gridX, y: gridY };
-          setHoveredSquare(newHoveredSquare);
-          // setLoadingSquare(newHoveredSquare);// 设置 loading 状态
         }
+        const upCoordinates = { x: gridX, y: gridY };
 
         if (isEmpty) {
-          if (selectedColor && coordinates) {
-            hoveredSquareRef.current = coordinates;
-            setIsDragging(false);
-            if (appName === "BASE/PopCraftSystem") {
-              // if (action === "pop") {
-              if (TCMPopStarData && coordinates.x < 10 && coordinates.x >= 0 && coordinates.y < 10 && coordinates.y >= 0) {
-                const new_coor = {
-                  x: coordinates.x + TCMPopStarData.x,
-                  y: coordinates.y + TCMPopStarData.y,
-                }
-                if (new_coor.x >= 0 && new_coor.y >= 0) {
-                  interactHandleTCM(
-                    new_coor,
-                    palyerAddress,
-                    selectedColor,
-                    'pop',
-                    null
-                  );
-                }
-              }
-            } else {
-              interactHandle(
-                coordinates,
+          // if (selectedColor && coordinates) {
+          hoveredSquareRef.current = upCoordinates;
+          setIsDragging(false);
+          // if (action === "pop") {
+          if (TCMPopStarData && upCoordinates.x < 10 && upCoordinates.x >= 0 && upCoordinates.y < 10 && upCoordinates.y >= 0) {
+            const new_coor = {
+              x: upCoordinates.x + TCMPopStarData.x,
+              y: upCoordinates.y + TCMPopStarData.y,
+            }
+            if (new_coor.x >= 0 && new_coor.y >= 0) {
+              interactHandleTCM(
+                new_coor,
                 palyerAddress,
                 selectedColor,
-                action,
+                'pop',
                 null
               );
             }
+          }
 
-            mouseXRef.current = mouseX;
-            mouseYRef.current = mouseY;
-            handleData(hoveredSquare as any);
-            const ctx = canvas.getContext("2d");
-            if (ctx) {
-              const { x, y } = coordinates;
-              ctx.fillStyle = selectedColor;
-              ctx.fillRect(
-                x * GRID_SIZE - scrollOffset.x,
-                y * GRID_SIZE - scrollOffset.y,
-                GRID_SIZE,
-                GRID_SIZE
-              );
-              if (appName === "BASE/PopCraftSystem") {
-                // drawGrid2
-                if (coordinates.x < 10 && coordinates.x >= 0 && coordinates.y < 10 && coordinates.y >= 0) {
-                  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                  drawGrid2(ctx, coordinates, true);
-                }
-              } else {
-                ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                drawGrid(ctx, coordinates, false);
-              }
+          mouseXRef.current = mouseX;
+          mouseYRef.current = mouseY;
+          handleData(hoveredSquare as any);
+          const ctx = canvas.getContext("2d");
+          if (ctx) {
+            const { x, y } = upCoordinates;
+            ctx.fillStyle = selectedColor;
+            ctx.fillRect(
+              x * GRID_SIZE - scrollOffset.x,
+              y * GRID_SIZE - scrollOffset.y,
+              GRID_SIZE,
+              GRID_SIZE
+            );
+            if (upCoordinates.x < 10 && upCoordinates.x >= 0 && upCoordinates.y < 10 && upCoordinates.y >= 0) {
+              ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+              drawGrid2(ctx, upCoordinates, true);
             }
           }
+          // }
         } else {
           setPopExhibit(true);
         }
@@ -1170,16 +982,6 @@ export default function Header({ hoveredData, handleData }: Props) {
         setTranslateY(0);
       }
     });
-
-    // 检查余额
-    if (isConnected) {
-      const balanceFN = publicClient.getBalance({ address: palyerAddress });
-      balanceFN.then((balance: any) => {
-        if ((Number(balance) / 1e18) < balanceCheck) {
-          setShowNewPopUp(true);
-        }
-      });
-    }
   };
 
   const interactHandle = (
@@ -1434,7 +1236,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     scoreBubbleDiv.innerText = `+${Number(score)}`; // 使用获得的分数
 
     const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
-    const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+    const offsetY = (CANVAS_HEIGHT - calcOffsetYValue * GRID_SIZE) / 2;
     // scoreBubbleDiv.style.left = `${coordinates.x * GRID_SIZE + offsetX}px`; // 加上偏移量
     // scoreBubbleDiv.style.top = `${coordinates.y * GRID_SIZE + offsetY}px`; // 加上偏移量
     scoreBubbleDiv.style.left = `${3.2 * GRID_SIZE + offsetX}px`; // 加上偏移量
@@ -1537,9 +1339,6 @@ export default function Header({ hoveredData, handleData }: Props) {
     if (TCMPopStarData === undefined) {
       const emptyRegion = findEmptyRegion();
       EmptyRegionNum = emptyRegion
-      setEmptyRegionNum({ x: emptyRegion, y: 0 });
-    } else {
-      setEmptyRegionNum({ x: 0, y: 0 });
     }
     const ctx = canvasRef?.current?.getContext("2d");
 
@@ -1818,18 +1617,7 @@ export default function Header({ hoveredData, handleData }: Props) {
     setLoadingpaly(true)
   };
 
-  const handleUpdateAbiJson = (data: any) => {
-    setUpdate_abi_json(data);
-  };
 
-  const handleUpdateAbiCommonJson = (data: any) => {
-    setUpdate_abi_Common_json(data);
-
-  };
-
-  const handleItemClick = (content) => {
-    setMainContent(content);
-  };
   const handleAddClick = (content: any) => {
     if (content === "topUp") {
       setTopUpType(true);
@@ -1857,29 +1645,18 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    // if (canvas && entityData.length > 0) {
     if (canvas) {
       const ctx = canvas.getContext("2d");
-      //   if (ctx && appName !== "BASE/PopCraftSystem") {
-      //     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      //     drawGrid(ctx, hoveredSquare, false);
-      //   } else {
       if (ctx) {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         drawGrid2(ctx, hoveredSquare, true);
       }
     }
-    // }
   }, [
-    appName,
-    drawGrid,
     drawGrid2,
     CANVAS_WIDTH,
     CANVAS_HEIGHT,
-    // entityData.length,
     hoveredSquare,
-    mouseX,
-    mouseY,
   ]);
 
   useEffect(() => {
@@ -1894,7 +1671,7 @@ export default function Header({ hoveredData, handleData }: Props) {
         const CANVAS_HEIGHT = document.documentElement.clientHeight;
 
         const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
-        const offsetY = (CANVAS_HEIGHT - 10 * GRID_SIZE) / 2;
+        const offsetY = (CANVAS_HEIGHT - calcOffsetYValue * GRID_SIZE) / 2;
 
         // 计算悬停的网格坐标
         const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
@@ -1953,6 +1730,18 @@ export default function Header({ hoveredData, handleData }: Props) {
 
   const topBuyTransports = () => {
     setShowTopBuy(true)
+  }
+
+  const menuTransports = () => {
+    if (!showMenu) {
+      setShowMenu(!showMenu)
+    } else {
+      setIsCloseAnimatingMenu(true);
+      setTimeout(() => {
+        setShowMenu(!showMenu)
+        setIsCloseAnimatingMenu(false);
+      }, 200);
+    }
   }
 
   // const toggleDropdown = () => {
@@ -2020,342 +1809,742 @@ export default function Header({ hoveredData, handleData }: Props) {
     }
   }
 
-  return (
-    <>
-      {/* 最后一个/一组棋盘元素被点击后，交易未处理完成时的蒙层 */}
-      {localStorage.getItem('isShowWaitingMaskLayer') === 'true' && (
-        <div className={style.waitingOverlay}>
-          <div className={style.waitingOverlayText}>
-            <div className={style.progressBar}>
-              <div
-                className={style.progressFill}
-                style={{
-                  width: sendCount > 0 ? `${((receiveCount / sendCount) * 100).toFixed(2)}%` : '0%',
-                }}
-              ></div>
-              <div
-                className={style.diamondIcon}
-                style={{
-                  left: sendCount > 0 ? `calc(${((receiveCount / sendCount) * 100).toFixed(2)}% - 3vw)` : '0%',
-                }}
-              ></div>
-              <span
-                className={style.progressText}
-                style={{
-                  left: `${Math.min(
-                    Math.max(
-                      sendCount > 0 ? (receiveCount / sendCount) * 100 : 0,
-                      0
-                    ),
-                    100
-                  )}%`,
-                  transform: `translate(-50%, -50%)`, // 确保文字居中
-                }}
-              >
-                {sendCount > 0 ? Math.floor((receiveCount / sendCount) * 100) : 0}%
-              </span>
-            </div>
-            This is a fully on-chain game.
-            <br />
-            Please wait while transactions are processed.
-          </div>
-        </div>
-      )}
-
-      <div className={style.container}>
-        <img className={style.containerImg} src={popcraftLogo} alt="PopCraft Logo" />
-        <div className={style.gasPriceContainer}>
-          L1 Gas:
-          <span id="spanGasTooltip">
-            <a href="https://etherscan.io/gastracker" target="_blank" rel="noopener noreferrer">
-              <span className={style.gasPricePlaceHolder}>{gasPrice || " "}</span> Gwei
-            </a>
-          </span>
-          <span className={style.tooltip}>Gaming costs less at ~5 Gwei.</span>
-        </div>
-        <div className={style.content}>
-          <button
-            className={numberData === 25 ? style.btnBoxY : style.btnBox}
-            disabled={numberData === 25}
-            onClick={btnLower}
-          >
-            −
-          </button>
-          <span className={style.spanData}>{numberData}%</span>
-          <button
-            className={numberData === 100 ? style.btnBoxY : style.btnBox}
-            disabled={numberData === 100}
-            onClick={btnAdd}
-          >
-            +
-          </button>
-        </div>
-
-        <div
-          className={style.addr}
-        >
-          <div
-            className={isConnected ? style.LuckyBagImg : style.LuckyBagImgNotConnected}
-            onClick={() => window.open("https://taskon.xyz/quest/630902165", "_blank")}
-            style={{
-              cursor: "pointer",
-            }}
-          >
-            <img src={LuckyBagImg} alt="" />
-            <span>500 USDC</span>
-          </div>
-          <div
-            className={isConnected ? style.RankingListimg : style.RankingListimgNotConnected}
-            onClick={() => rankTransports()}
-            style={{
-              cursor: "pointer",
-            }}
-          >
-            <img src={RankingListimg} alt="" />
-            <span>leaderboard</span>
-          </div>
-
-          <ConnectButton.Custom>
-            {({
-              account,
-              chain,
-              openAccountModal,
-              openChainModal,
-              openConnectModal,
-              authenticationStatus,
-              mounted,
-            }) => {
-              const ready = mounted && authenticationStatus !== "loading";
-              const connected =
-                ready &&
-                account &&
-                chain &&
-                (!authenticationStatus ||
-                  authenticationStatus === "authenticated");
-
-              return (
+  if (!isMobile) {
+    return (
+      <>
+        {/* 最后一个/一组棋盘元素被点击后，交易未处理完成时的蒙层 */}
+        {localStorage.getItem('isShowWaitingMaskLayer') === 'true' && (
+          <div className={style.waitingOverlay}>
+            <div className={style.waitingOverlayText}>
+              <div className={style.progressBar}>
                 <div
-                  {...(!ready && {
-                    "aria-hidden": true,
-                    style: {
-                      opacity: 0,
-                      pointerEvents: "none",
-                      userSelect: "none",
-                    },
-                  })}
+                  className={style.progressFill}
+                  style={{
+                    width: sendCount > 0 ? `${((receiveCount / sendCount) * 100).toFixed(2)}%` : '0%',
+                  }}
+                ></div>
+                <div
+                  className={style.diamondIcon}
+                  style={{
+                    left: sendCount > 0 ? `calc(${((receiveCount / sendCount) * 100).toFixed(2)}% - 3vw)` : '0%',
+                  }}
+                ></div>
+                <span
+                  className={style.progressText}
+                  style={{
+                    left: `${Math.min(
+                      Math.max(
+                        sendCount > 0 ? (receiveCount / sendCount) * 100 : 0,
+                        0
+                      ),
+                      100
+                    )}%`,
+                    transform: `translate(-50%, -50%)`, // 确保文字居中
+                  }}
                 >
-                  {(() => {
-                    if (!connected) {
+                  {sendCount > 0 ? Math.floor((receiveCount / sendCount) * 100) : 0}%
+                </span>
+              </div>
+              This is a fully on-chain game.
+              <br />
+              Please wait while transactions are processed.
+            </div>
+          </div>
+        )}
+
+        <div className={style.container}>
+          <img className={style.containerImg} src={popcraftLogo} alt="PopCraft Logo" />
+          <div className={style.gasPriceContainer}>
+            L1 Gas:
+            <span id="spanGasTooltip">
+              <a href="https://etherscan.io/gastracker" target="_blank" rel="noopener noreferrer">
+                <span className={style.gasPricePlaceHolder}>{gasPrice || " "}</span> Gwei
+              </a>
+            </span>
+            <span className={style.tooltip}>Gaming costs less at ~5 Gwei.</span>
+          </div>
+          <div className={style.content}>
+            <button
+              className={numberData === 25 ? style.btnBoxY : style.btnBox}
+              disabled={numberData === 25}
+              onClick={btnLower}
+            >
+              −
+            </button>
+            <span className={style.spanData}>{numberData}%</span>
+            <button
+              className={numberData === 100 ? style.btnBoxY : style.btnBox}
+              disabled={numberData === 100}
+              onClick={btnAdd}
+            >
+              +
+            </button>
+          </div>
+
+          <div
+            className={style.addr}
+          >
+            <div
+              className={isConnected ? style.LuckyBagImg : style.LuckyBagImgNotConnected}
+              onClick={() => window.open("https://taskon.xyz/quest/630902165", "_blank")}
+              style={{
+                cursor: "pointer",
+                display: "none"
+              }}
+            >
+              <img src={LuckyBagImg} alt="" />
+              <span>500 USDC</span>
+            </div>
+            <div
+              className={isConnected ? style.RankingListimg : style.RankingListimgNotConnected}
+              onClick={() => rankTransports()}
+              style={{
+                cursor: "pointer",
+              }}
+            >
+              <img src={RankingListimg} alt="" />
+              <span>leaderboard</span>
+            </div>
+
+            <ConnectButton.Custom>
+              {({
+                account,
+                chain,
+                openAccountModal,
+                openChainModal,
+                openConnectModal,
+                authenticationStatus,
+                mounted,
+              }) => {
+                const ready = mounted && authenticationStatus !== "loading";
+                const connected =
+                  ready &&
+                  account &&
+                  chain &&
+                  (!authenticationStatus ||
+                    authenticationStatus === "authenticated");
+
+                return (
+                  <div
+                    {...(!ready && {
+                      "aria-hidden": true,
+                      style: {
+                        opacity: 0,
+                        pointerEvents: "none",
+                        userSelect: "none",
+                      },
+                    })}
+                  >
+                    {(() => {
+                      if (!connected) {
+                        return (
+                          <div
+                            onClick={openConnectModal}
+                            className={style.btnConnectbox}
+                          >
+                            <img src={ConnectImg} alt="" />
+                            <span>CONNECT</span>
+                          </div>
+
+                        );
+                      }
+
+                      if (chain.unsupported) {
+                        return (
+                          <button
+                            onClick={openChainModal(chain)}
+                            type="button"
+                            className={style.btnConnect}
+                          >
+                            Wrong network
+                          </button>
+                        );
+                      }
+
                       return (
-                        <div
-                          onClick={openConnectModal}
-                          className={style.btnConnectbox}
-                        >
-                          <img src={ConnectImg} alt="" />
-                          <span>CONNECT</span>
-                        </div>
+                        // <div>
+                        <div className={style.chainbox}>
 
-                      );
-                    }
+                          <div
+                            className={style.buyButton}
+                            onClick={() => topBuyTransports()}
+                            style={{
+                              cursor: "pointer",
+                            }}
+                          >
+                            <img src={ShoppingCartImg} alt="" />
+                            <span>BUY</span>
+                          </div>
 
-                    if (chain.unsupported) {
-                      return (
-                        <button
-                          onClick={openChainModal(chain)}
-                          type="button"
-                          className={style.btnConnect}
-                        >
-                          Wrong network
-                        </button>
-                      );
-                    }
-
-                    return (
-                      // <div>
-                      <div className={style.chainbox}>
-
-                        <div
-                          className={style.buyButton}
-                          onClick={() => topBuyTransports()}
-                          style={{
-                            cursor: "pointer",
-                          }}
-                        >
-                          <img src={ShoppingCartImg} alt="" />
-                          <span>BUY</span>
-                        </div>
-
-                        <div className={style.chain}>
-                          <div className={style.chainsbox}>
-                            <button onClick={(event) => {
-                              openChainModal();
-                            }} className={style.Chainbutton}>
-                              {chain.iconUrl && (
+                          <div className={style.chain}>
+                            <div className={style.chainsbox}>
+                              <button onClick={(event) => {
+                                openChainModal();
+                              }} className={style.Chainbutton}>
+                                {chain.iconUrl && (
+                                  <img
+                                    alt={chain.name ?? 'Chain icon'}
+                                    src={chain.iconUrl}
+                                    className={style.iconimg}
+                                  />
+                                )}
                                 <img
-                                  alt={chain.name ?? 'Chain icon'}
-                                  src={chain.iconUrl}
-                                  className={style.iconimg}
+                                  src={Arrow}
+                                  className={`${style.arrow} ${isOpen ? style.arrowRotated : ''}`}
                                 />
-                              )}
+                              </button>
+
+                            </div>
+                          </div>
+
+                          <div className={style.addressbox}
+                            style={{
+                              gap: 12,
+                            }}
+                            onMouseEnter={() => {
+                              setAddressModel(true);
+                            }}
+                            onMouseLeave={() => {
+                              setAddressModel(false);
+                            }}
+                          >
+                            <img src={UserImg} className={style.addressboxUserImg} alt="" />
+                            <button
+                              type="button"
+                              className={style.boldAddress} // 添加这个类名
+                            >
+                              {account.displayName}
+                              {account.displayBalance
+                                ? ` (${formatBalance(balancover)}  ${currencySymbol})`
+                                : ""}
                               <img
                                 src={Arrow}
                                 className={`${style.arrow} ${isOpen ? style.arrowRotated : ''}`}
                               />
                             </button>
 
-                          </div>
-                        </div>
-
-                        <div className={style.addressbox}
-                          style={{
-                            gap: 12,
-                          }}
-                          onMouseEnter={() => {
-                            setAddressModel(true);
-                          }}
-                          onMouseLeave={() => {
-                            setAddressModel(false);
-                          }}
-                        >
-                          <img src={UserImg} className={style.addressboxUserImg} alt="" />
-                          <button
-                            type="button"
-                            className={style.boldAddress} // 添加这个类名
-                          >
-                            {account.displayName}
-                            {account.displayBalance
-                              ? ` (${formatBalance(balancover)}  ${currencySymbol})`
-                              : ""}
-                            <img
-                              src={Arrow}
-                              className={`${style.arrow} ${isOpen ? style.arrowRotated : ''}`}
-                            />
-                          </button>
-
-                          {addressModel && (
-                            <div className={style.downBox}>
-                              <div className={style.downBoxclocese}>
-                                {addressContent.length > 0 &&
-                                  addressContent.map((item, index) => (
-                                    <div
-                                      className={style.downBoxItem}
-                                      key={index}
-                                      onClick={() => handleAddClick(item.value)}
-                                    >
-                                      {item.name}
-                                    </div>
-                                  ))}
+                            {addressModel && (
+                              <div className={style.downBox}>
+                                <div className={style.downBoxclocese}>
+                                  {addressContent.length > 0 &&
+                                    addressContent.map((item, index) => (
+                                      <div
+                                        className={style.downBoxItem}
+                                        key={index}
+                                        onClick={() => handleAddClick(item.value)}
+                                      >
+                                        {item.name}
+                                      </div>
+                                    ))}
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            )}
+                          </div>
+                          {" "}
+                          <button onClick={toggleMusic} className={style.BGMButton}>
+                            <img src={musicEnabled ? BGMOn : BGMOff} alt={musicEnabled ? 'pause' : 'play'} />
+                          </button>
                         </div>
-                        {" "}
-                        <button onClick={toggleMusic} className={style.BGMButton}>
-                          <img src={musicEnabled ? BGMOn : BGMOff} alt={musicEnabled ? 'pause' : 'play'} />
-                        </button>
-                      </div>
-                    );
-                  })()}
-                </div>
-              );
-            }}
-          </ConnectButton.Custom>
+                      );
+                    })()}
+                  </div>
+                );
+              }}
+            </ConnectButton.Custom>
+          </div>
         </div>
-      </div>
 
-      <div style={{ display: "flex", height: "100vh", overflowY: "hidden" }}>
-        <div
-          style={{
-            width: `calc(100vw)`,
-            overflow: "hidden",
-            position: "relative",
-            display: "flex",
-          }}
-          className={style.bodyCon}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMoveData}
-          onMouseLeave={handleLeave}
-          onMouseEnter={handleMouseEnter}
-        >
-          <div ref={visibleAreaRef} className={style.canvasWrapper}>
-            <canvas
-              ref={canvasRef}
-              width={CANVAS_WIDTH}
-              height={CANVAS_WIDTH}
-            />
+        <div style={{ display: "flex", height: "100vh", overflowY: "hidden" }}>
+          <div
+            style={{
+              width: `calc(100vw)`,
+              overflow: "hidden",
+              position: "relative",
+              display: "flex",
+            }}
+            className={style.bodyCon}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
+            onMouseMove={handleMouseMoveData}
+            onMouseLeave={handleLeave}
+            onMouseEnter={handleMouseEnter}
+          >
+            <div ref={visibleAreaRef} className={style.canvasWrapper}>
+              <canvas
+                ref={canvasRef}
+                width={CANVAS_WIDTH}
+                height={CANVAS_WIDTH}
+              />
+            </div>
+
           </div>
 
+          <audio ref={audioRef} src={backgroundMusic} onEnded={handleEnded} loop />
         </div>
-
-        <audio ref={audioRef} src={backgroundMusic} onEnded={handleEnded} loop />
-      </div>
-      {popExhibit === true ? (
-        <>
-          {showOverlay && <div className={style.overlay} />}
-          <PopUpBox
-            addressData={addressData}
-            coordinates={coordinates}
-            onHandleExe={onHandleExe}
-            selectedColor={selectedColor}
-            interactHandle={interactHandle}
-            onHandleLoading={onHandleLoading}
-            onHandleLoadingFun={onHandleLoadingFun}
-            paramInputs={paramInputs}
-            convertedParamsData={convertedParamsData}
-            enumValue={enumValue}
-            action={action}
-          />
-        </>
-      ) : (
-        ""
-      )}
-      {topUpType ? (
-        <div
-          className={style.overlay}
-          onClick={(event) => {
-            if (
-              !event.target.classList.contains("topBox") &&
-              event.target.classList.contains(style.overlay)
-            ) {
-              setTopUpType(false);
+        {popExhibit === true ? (
+          <>
+            {showOverlay && <div className={style.overlay} />}
+            <PopUpBox
+              addressData={addressData}
+              coordinates={coordinates}
+              onHandleExe={onHandleExe}
+              selectedColor={selectedColor}
+              interactHandle={interactHandle}
+              onHandleLoading={onHandleLoading}
+              onHandleLoadingFun={onHandleLoadingFun}
+              paramInputs={paramInputs}
+              convertedParamsData={convertedParamsData}
+              enumValue={enumValue}
+              action={action}
+            />
+          </>
+        ) : (
+          ""
+        )}
+        {topUpType ? (
+          <div
+            className={style.overlay}
+            onClick={(event) => {
+              if (
+                !event.target.classList.contains("topBox") &&
+                event.target.classList.contains(style.overlay)
+              ) {
+                setTopUpType(false);
+              }
+            }}
+          >
+            <TopUpContent
+              setTopUpType={setTopUpType}
+              setTopUpTypeto={setTopUpTypeto}
+              mainContent={mainContent}
+              palyerAddress={palyerAddress}
+              onTopUpSuccess={handleTopupSuccess}
+              isMobile={isMobile}
+            />
+          </div>
+        ) : null}
+        {popStar === true && (playAction !== 'gameContinue' || !isConnected) ? (
+          <div
+            className={
+              panningType !== "false"
+                ? style.overlayPopStar
+                : style.overlayPopStarFl
             }
-          }}
-        >
-          <TopUpContent
-            setTopUpType={setTopUpType}
-            setTopUpTypeto={setTopUpTypeto}
-            mainContent={mainContent}
-            palyerAddress={palyerAddress}
-            onTopUpSuccess={handleTopupSuccess}
-          />
-        </div>
-      ) : null}
-      {popStar === true && (playAction !== 'gameContinue' || !isConnected) ? (
-        <div
-          className={
-            panningType !== "false"
-              ? style.overlayPopStar
-              : style.overlayPopStarFl
-          }
-          onClick={() => {
-            setBoxPrompt(true);
-          }}
-        >
-          <PopStar
-            setPopStar={setPopStar}
-            playFun={playFun}
-            playFuntop={playFuntop}
-            onTopUpClick={handleTopUpClick}
-            loadingplay={loadingplay}
-            setTopUpType={setTopUpType}
-          />
-        </div>
-      ) : null}
+            onClick={() => {
+              setBoxPrompt(true);
+            }}
+          >
+            <PopStar
+              setPopStar={setPopStar}
+              playFun={playFun}
+              playFuntop={playFuntop}
+              onTopUpClick={handleTopUpClick}
+              loadingplay={loadingplay}
+              setTopUpType={setTopUpType}
+              isMobile={isMobile}
+            />
+          </div>
+        ) : null}
 
-      {boxPrompt === true || appName === "BASE/PopCraftSystem" ? (
+        {boxPrompt === true || appName === "BASE/PopCraftSystem" ? (
+          <BoxPrompt
+            timeControl={timeControl}
+            showTopElements={showTopElements}
+            playFun={playFun}
+            handleEoaContractData={handleEoaContractData}
+            setPopStar={setPopStar}
+            interactTaskToExecute={interactTaskToExecute}
+            checkInteractTask={checkInteractTask}
+            isMobile={isMobile}
+            showMobileInDayBonus={showMobileInDayBonus}
+            popStar={popStar}
+          />
+        ) : null}
+
+        {showRankingList && (
+          <div className={style.overlay}>
+            <RankingList onClose={() => setShowRankingList(false)}
+              setShowRankingList={setShowRankingList}
+              showRankingList={showRankingList}
+              isMobile={isMobile}
+            />
+          </div>
+        )}
+
+        {showTopBuy && isConnected ? (
+          <div className={style.overlay}>
+            <TopBuy
+              setShowTopBuy={setShowTopBuy}
+              isMobile={isMobile}
+            />
+          </div>
+        ) : null}
+
+        {showNewPopUp && localStorage.getItem("isShowWaitingMaskLayer") === "false" && (
+          <div className={style.overlaybox}>
+            <div className={style.popup}>
+              <div className={style.contentbox}>
+                <p>INSUFFICIENT GASBALANCE</p><br />
+              </div>
+              <button className={style.topupbtn} onClick={() => {
+                setShowNewPopUp(false);
+                setTopUpType(true);
+              }}>TOP UP</button>
+            </div>
+          </div>
+        )}
+        {showSuccessModal && (
+          <div className={style.overlay}>
+            <div className={style.modal}>
+              <img src={failto} alt="" className={style.failto} />
+              <p className={style.colorto}>Out of stock, please buy!</p>
+            </div>
+          </div>
+        )}
+
+        {scoreBubble.visible && (
+          <div className="score-popup"
+            style={{
+              left: scoreBubble.x,
+              top: scoreBubble.y,
+            }}
+          >
+            +{scoreBubble.score} {/* 显示得分 */}
+          </div>
+        )}
+        <style>
+          {`
+                .score-popup {
+                    position: absolute;
+                    color: #00AB6B; /* 使用更亮的粉色 */
+                    font-size: 1.5vw; /* 使用视口宽度的百分比进行适配 */
+                    // font-weight: bold; /* 加粗字体 */
+                    font-family: 'Simplicity', sans-serif; /* 设置字体为 Simplicity */
+                    padding: 10px 15px; /* 内边距 */
+                    /* 去掉背景颜色 */
+                    box-shadow: none; /* 去掉阴影效果 */
+                    animation: moveUp 3s forwards;
+                    pointer-events: none;
+                    text-align: center; /* 文字居中 */
+                }
+  
+                @media (max-width: 600px) {
+                    .score-popup {
+                        font-size: 4vw; /* 小屏幕上的字体大小 */
+                    }
+                }
+  
+                @media (min-width: 601px) and (max-width: 1200px) {
+                    .score-popup {
+                        font-size: 3vw; /* 中等屏幕上的字体大小 */
+                    }
+                }
+  
+                @media (min-width: 1200px) {
+                    .score-popup {
+                        font-size: 2vw; /* 大屏幕上的字体大小 */
+                    }
+                }
+  
+                @media (min-width: 1600px) {
+                    .score-popup {
+                        font-size: 1.5vw; /* 更大屏幕上的字体大小 */
+                    }
+                }
+  
+                @keyframes moveUp {
+                    0% {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translateY(-320px);
+                        opacity: 0.1;
+                    }
+                }
+            `}
+        </style>
+        <BotInfo
+          sendCount={sendCount}
+          receiveCount={receiveCount}
+          botInfoTaskTips={botInfoTaskTips}
+        />
+        {(isConnected && address) && (
+          <PlantsIndex
+            checkTaskInProcess={checkTaskInProcess}
+            handleErrorAll={handleErrorAll}
+          />
+        )}
+
+        {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (
+          <>
+            <TokenNotification
+              value={tokenNotificationValue}
+              isMobile={isMobile}
+            />
+            <MissionBonus
+              checkTaskInProcess={checkTaskInProcess}
+              handleErrorAll={handleErrorAll}
+              isMobile={isMobile}
+              setShowMobileInDayBonus={setShowMobileInDayBonus}
+            />
+            <GiftPark
+              checkTaskInProcess={checkTaskInProcess}
+              handleErrorAll={handleErrorAll}
+              isMobile={isMobile}
+            />
+          </>
+
+        )}
+
+        {/* add new chain: chain here */}
+        {chainId !== null && COMMON_CHAIN_IDS.includes(chainId) && address && (
+          <NewUserBenefitsToken
+            checkTaskInProcess={checkTaskInProcess}
+            handleErrorAll={handleErrorAll}
+          />
+        )}
+
+      </>
+    );
+  } else {
+    return (
+      <>
+        {localStorage.getItem('isShowWaitingMaskLayer') === 'true' && (
+          <div className={mobileStyle.waitingOverlay}>
+            <div className={mobileStyle.waitingContainer}>
+              <div className={mobileStyle.progressBar}>
+                <div
+                  className={mobileStyle.progressFill}
+                  style={{
+                    width: sendCount > 0 ? `${((receiveCount / sendCount) * 100).toFixed(2)}%` : '0%',
+                  }}
+                ></div>
+                <div
+                  className={mobileStyle.diamondIcon}
+                  style={{
+                    left: sendCount > 0 ? `calc(${((receiveCount / sendCount) * 100).toFixed(2)}% - 3vw)` : '0%',
+                  }}
+                ></div>
+                <span
+                  className={mobileStyle.progressText}
+                  style={{
+                    left: `${Math.min(
+                      Math.max(
+                        sendCount > 0 ? (receiveCount / sendCount) * 100 : 0,
+                        0
+                      ),
+                      100
+                    )}%`,
+                    transform: `translate(-50%, -50%)`, // 确保文字居中
+                  }}
+                >
+                  {sendCount > 0 ? Math.floor((receiveCount / sendCount) * 100) : 0}%
+                </span>
+              </div>
+              <div className={mobileStyle.waitingOverlayText}>
+                This is a fully on-chain game, so please kindly wait while all on-chain interactions are being processed.
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div>
+          <img src={PopcraftLogoMobile} className={mobileStyle.containerImg} alt="" />
+        </div>
+        {popStar === true && (playAction !== 'gameContinue' || !isConnected) ? (
+          <div
+            className={
+              mobileStyle.overlayPopStar
+            }
+            onClick={() => {
+              setBoxPrompt(true);
+            }}
+          >
+            <PopStar
+              setPopStar={setPopStar}
+              playFun={playFun}
+              playFuntop={playFuntop}
+              onTopUpClick={handleTopUpClick}
+              loadingplay={loadingplay}
+              setTopUpType={setTopUpType}
+              isMobile={isMobile}
+            />
+          </div>
+        ) : null}
+        {isConnected &&
+          <>
+            <div className={mobileStyle.topContainer}>
+              <ConnectButton.Custom>
+                {({
+                  chain,
+                  openChainModal,
+                  authenticationStatus,
+                  mounted,
+                }) => {
+                  const ready = mounted && authenticationStatus !== "loading";
+                  return (
+                    <div
+                      {...(!ready && {
+                        "aria-hidden": true,
+                        style: {
+                          opacity: 0,
+                          pointerEvents: "none",
+                          userSelect: "none",
+                        },
+                      })}
+                    >
+                      {(() => {
+                        return (
+                          <div className={mobileStyle.chain}>
+                            <button onClick={(event) => {
+                              openChainModal();
+                            }} className={mobileStyle.Chainbutton}>
+                              {chain.iconUrl && (
+                                <img
+                                  alt={chain.name ?? 'Chain icon'}
+                                  src={chain.iconUrl}
+                                  className={mobileStyle.iconimg}
+                                />
+                              )}
+                              <img
+                                src={ArrowMobileImg}
+                                className={`${mobileStyle.arrow}`}
+                              />
+                            </button>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  );
+                }}
+              </ConnectButton.Custom>
+              <button
+                onClick={toggleMusic}
+                className={`${mobileStyle.BGMBtn} ${!musicEnabled ? mobileStyle.BGMOff : ''}`}
+              ></button>
+              <button className={mobileStyle.menuBtn} onClick={() => menuTransports()}></button>
+            </div>
+            {
+              showMenu && <div className={`${mobileStyle.menuContainerOut} ${isCloseAnimatingMenu ? mobileStyle.menuContainerOutHide : ""}`}>
+                <div className={mobileStyle.menuContainerIn}>
+                  <div style={{ marginLeft: "10.64rem" }}>
+                    <div className={mobileStyle.menuUser}>
+                      <img src={UserMobileImg} alt="" />
+                      <ConnectButton.Custom>
+                        {({
+                          account,
+                          authenticationStatus,
+                          mounted,
+                        }) => {
+                          const ready = mounted && authenticationStatus !== "loading";
+                          return (
+                            <div
+                              {...(!ready && {
+                                "aria-hidden": true,
+                                style: {
+                                  opacity: 0,
+                                  pointerEvents: "none",
+                                  userSelect: "none",
+                                },
+                              })}
+                            >
+                              {(() => {
+                                return (
+                                  <span>
+                                    {account.displayName}
+                                    {account.displayBalance
+                                      ? ` (${formatBalance(balancover)}  ${currencySymbol})`
+                                      : ""}
+                                  </span>
+                                );
+                              })()}
+                            </div>
+                          );
+                        }}
+                      </ConnectButton.Custom>
+                    </div>
+
+                    <img src={DividingLineMobileImg} style={{ marginTop: "12.64rem" }} className={mobileStyle.dividingLineImg} alt="" />
+                    <div className={mobileStyle.menuTopUp} onClick={() => handleAddClick("topUp")}>
+                      <img src={TopUpMobileImg} alt="" />
+                      <span>
+                        TOP UP
+                      </span>
+                    </div>
+                    <img src={DividingLineMobileImg} style={{ marginTop: "12.64rem" }} className={mobileStyle.dividingLineImg} alt="" />
+                    <div className={mobileStyle.menuBuy} onClick={() => topBuyTransports()}>
+                      <img src={BuyMobileImg} alt="" />
+                      <span>
+                        BUY
+                      </span>
+                    </div>
+                    <img src={DividingLineMobileImg} style={{ marginTop: "12.64rem" }} className={mobileStyle.dividingLineImg} alt="" />
+                    <div className={mobileStyle.menuDisconnect} onClick={() => handleAddClick("")}>
+                      <img src={DisconnectMobileImg} alt="" />
+                      <span>
+                        DISCONNECT
+                      </span>
+                    </div>
+                    <img src={DividingLineMobileImg} style={{ marginTop: "12.64rem" }} className={mobileStyle.dividingLineImg} alt="" />
+                    <div className={mobileStyle.mediaContainer}>
+                      <a href="https://x.com/popcraftonchain" target="_blank" rel="noopener noreferrer">
+                        <img src={XMobileImg} className={mobileStyle.x} />
+                      </a>
+                      <a href="https://t.me/+R8NfZkneQYZkYWE1" target="_blank" rel="noopener noreferrer">
+                        <img src={TGMobileImg} className={mobileStyle.tg} />
+                      </a>
+                      <a href="https://github.com/themetacat/popcraft" target="_blank" rel="noopener noreferrer">
+                        <img src={GitHubMobileImg} className={mobileStyle.github} />
+                      </a>
+                    </div>
+                    <button className={mobileStyle.menuCloseBtn} onClick={() => menuTransports()} >CLOSE</button>
+                  </div>
+                </div>
+
+              </div>
+            }
+
+            <div
+              className={mobileStyle.bodyCon}
+              onMouseDown={handleMouseDown}
+              onMouseUp={handleMouseUp}
+              // onMouseMove={handleMouseMoveData}
+              // onMouseLeave={handleLeave}
+              // onMouseEnter={handleMouseEnter}
+            >
+              <canvas
+                ref={canvasRef}
+                width={CANVAS_WIDTH}
+                height={CANVAS_HEIGHT}
+              />
+            </div>
+          </>}
+
+        {topUpType ? (
+          <div
+            className={style.overlay}
+            onClick={(event) => {
+              if (
+                !event.target.classList.contains("topBox") &&
+                event.target.classList.contains(style.overlay)
+              ) {
+                setTopUpType(false);
+              }
+            }}
+          >
+            <TopUpContent
+              setTopUpType={setTopUpType}
+              setTopUpTypeto={setTopUpTypeto}
+              mainContent={mainContent}
+              palyerAddress={palyerAddress}
+              onTopUpSuccess={handleTopupSuccess}
+              isMobile={isMobile}
+            />
+          </div>
+        ) : null}
+
         <BoxPrompt
-          coordinates={coordinates}
           timeControl={timeControl}
           showTopElements={showTopElements}
           playFun={playFun}
@@ -2363,145 +2552,73 @@ export default function Header({ hoveredData, handleData }: Props) {
           setPopStar={setPopStar}
           interactTaskToExecute={interactTaskToExecute}
           checkInteractTask={checkInteractTask}
+          isMobile={isMobile}
+          showMobileInDayBonus={showMobileInDayBonus}
           popStar={popStar}
         />
-      ) : null}
 
-      {showRankingList && (
-        <div className={style.overlay}>
-          <RankingList onClose={() => setShowRankingList(false)}
-            setShowRankingList={setShowRankingList}
-          />
-        </div>
-      )}
+        <audio ref={audioRef} src={backgroundMusic} onEnded={handleEnded} loop />
 
-      {showTopBuy && isConnected ? (
-        <div className={style.overlay}>
-          <TopBuy
-            setShowTopBuy={setShowTopBuy}
-          />
-        </div>
-      ) : null}
-
-      {showNewPopUp && localStorage.getItem("isShowWaitingMaskLayer") === "false" && (
-        <div className={style.overlaybox}>
-          <div className={style.popup}>
-            <div className={style.contentbox}>
-              <p>INSUFFICIENT GASBALANCE</p><br />
+        {showTopBuy && isConnected ? (
+          <div className={mobileTopBuyStyle.overlayBuy}>
+            <TopBuy
+              setShowTopBuy={setShowTopBuy}
+              isMobile={isMobile}
+            />
+          </div>
+        ) : null}
+        {showNewPopUp && localStorage.getItem("isShowWaitingMaskLayer") === "false" && (
+          <div className={style.overlaybox}>
+            <div className={mobileStyle.popup}>
+              <div className={mobileStyle.contentbox}>
+                <p>INSUFFICIENT GASBALANCE</p><br />
+              </div>
+              <button className={mobileStyle.topupbtn} onClick={() => {
+                setShowNewPopUp(false);
+                setTopUpType(true);
+              }}>TOP UP</button>
             </div>
-            <button className={style.topupbtn} onClick={() => {
-              setShowNewPopUp(false);
-              setTopUpType(true);
-            }}>TOP UP</button>
           </div>
-        </div>
-      )}
-      {showSuccessModal && (
-        <div className={style.overlay}>
-          <div className={style.modal}>
-            <img src={failto} alt="" className={style.failto} />
-            <p className={style.colorto}>Out of stock, please buy!</p>
-          </div>
-        </div>
-      )}
+        )}
 
-      {scoreBubble.visible && (
-        <div className="score-popup"
-          style={{
-            left: scoreBubble.x,
-            top: scoreBubble.y,
-          }}
-        >
-          +{scoreBubble.score} {/* 显示得分 */}
-        </div>
-      )}
-      <style>
-        {`
-              .score-popup {
-                  position: absolute;
-                  color: #00AB6B; /* 使用更亮的粉色 */
-                  font-size: 1.5vw; /* 使用视口宽度的百分比进行适配 */
-                  // font-weight: bold; /* 加粗字体 */
-                  font-family: 'Simplicity', sans-serif; /* 设置字体为 Simplicity */
-                  padding: 10px 15px; /* 内边距 */
-                  /* 去掉背景颜色 */
-                  box-shadow: none; /* 去掉阴影效果 */
-                  animation: moveUp 3s forwards;
-                  pointer-events: none;
-                  text-align: center; /* 文字居中 */
-              }
+        {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (<TokenNotification
+          value={tokenNotificationValue}
+          isMobile={isMobile}
+        />)}
 
-              @media (max-width: 600px) {
-                  .score-popup {
-                      font-size: 4vw; /* 小屏幕上的字体大小 */
-                  }
-              }
-
-              @media (min-width: 601px) and (max-width: 1200px) {
-                  .score-popup {
-                      font-size: 3vw; /* 中等屏幕上的字体大小 */
-                  }
-              }
-
-              @media (min-width: 1200px) {
-                  .score-popup {
-                      font-size: 2vw; /* 大屏幕上的字体大小 */
-                  }
-              }
-
-              @media (min-width: 1600px) {
-                  .score-popup {
-                      font-size: 1.5vw; /* 更大屏幕上的字体大小 */
-                  }
-              }
-
-              @keyframes moveUp {
-                  0% {
-                      transform: translateY(0);
-                      opacity: 1;
-                  }
-                  100% {
-                      transform: translateY(-320px);
-                      opacity: 0.1;
-                  }
-              }
-          `}
-      </style>
-      <BotInfo
-        sendCount={sendCount}
-        receiveCount={receiveCount}
-        botInfoTaskTips={botInfoTaskTips}
-      />
-      {(isConnected && address) && (
-        <PlantsIndex
-          checkTaskInProcess={checkTaskInProcess}
-          handleErrorAll={handleErrorAll}
-        />
-      )}
-
-      {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (
-        <>
-          <TokenNotification value={tokenNotificationValue} />
-          {/* <MissionBonus
-            checkTaskInProcess={checkTaskInProcess}
-            handleErrorAll={handleErrorAll}
+        <div className={mobileStyle.buttomBtn}>
+          <RankingList
+            setShowRankingList={setShowRankingList}
+            showRankingList={showRankingList}
+            isMobile={isMobile}
           />
-          <GiftPark
-            checkTaskInProcess={checkTaskInProcess}
-            handleErrorAll={handleErrorAll}
-          /> */}
-        </>
+          {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (
+            <>
 
-      )}
+              <MissionBonus
+                checkTaskInProcess={checkTaskInProcess}
+                handleErrorAll={handleErrorAll}
+                isMobile={isMobile}
+                setShowMobileInDayBonus={setShowMobileInDayBonus}
+              />
+              <GiftPark
+                checkTaskInProcess={checkTaskInProcess}
+                handleErrorAll={handleErrorAll}
+                isMobile={isMobile}
+              />
+            </>
+          )}
+        </div>
 
-      {/* add new chain: chain here */}
-      {chainId !== null && COMMON_CHAIN_IDS.includes(chainId) && address && (
-        <NewUserBenefitsToken
-          checkTaskInProcess={checkTaskInProcess}
-          handleErrorAll={handleErrorAll}
-        />
-      )}
+        {showSuccessModal && (
+          <div className={mobileStyle.modal}>
+            <img src={failto} alt="" className={mobileStyle.failto} />
+            <p className={mobileStyle.colorto}>Out of stock, please buy!</p>
+          </div>
+        )}
 
-    </>
-  );
+      </>
+    );
+  }
+
 }
