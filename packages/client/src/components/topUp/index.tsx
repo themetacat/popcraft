@@ -66,7 +66,7 @@ export default function TopUp({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
-  const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE, bridgeUrl, chainIcon, nativeToken } = useTopUp();
+  const { inputValue, setInputValue, MIN_SESSION_WALLET_BALANCE, bridgeUrl, chainIcon, nativeToken, chainId } = useTopUp();
 
   async function withDraw() {
     const balance_eth = balance / 1e18;
@@ -105,7 +105,12 @@ export default function TopUp({
     });
   }, []);
 
-  // const [inputValue, setInputValue] = useState("10");
+  useEffect(() => {
+    if (isMobile && chainId === 2818) {
+      setInputValue('0.001');
+    }
+  }, [isMobile, chainId]);
+
   const {
     data: hash,
     error,
@@ -820,7 +825,7 @@ export default function TopUp({
 
                 <div className={mobileStyle.partFour}>
                   <p className={mobileStyle.partFourFont}>
-                    Every onchain interaction uses gas. Top up any amount to your session wallet.
+                    Every onchain operation requires gas. Top up a tiny amount of ETH to your session wallet.
                   </p>
                   <div className={mobileStyle.partImo}>
                     <div
