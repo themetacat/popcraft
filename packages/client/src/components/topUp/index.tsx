@@ -188,6 +188,55 @@ export default function TopUp({
     );
   };
 
+  const handleToggleCopyTextMoblie = (copyText) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      // 使用现代 Clipboard API
+      navigator.clipboard.writeText(copyText)
+        .then(() => {
+          setModalMessage("Copied!");
+          setShowSuccessModal(true);
+          setTimeout(() => setShowSuccessModal(false), 3000);
+        })
+        .catch((err) => {
+          console.error("Clipboard copy failed:", err);
+          fallbackCopyTextMobile(copyText);
+        });
+    } else {
+      // 兜底方案：使用 `document.execCommand('copy')`
+      fallbackCopyTextMobile(copyText);
+    }
+  };
+  
+  // 兼容旧浏览器的兜底方法
+  const fallbackCopyTextMobile = (text) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "absolute";
+    textArea.style.left = "-9999px";
+    document.body.appendChild(textArea);
+    textArea.select();
+  
+    try {
+      const successful = document.execCommand("copy");
+      if (successful) {
+        setModalMessage("Copied!");
+        setShowSuccessModal(true);
+      } else {
+        setModalMessage("Failed to copy. Please copy manually.");
+        setShowModal(true);
+      }
+    } catch (err) {
+      setModalMessage("Failed to copy. Please copy manually.");
+      setShowModal(true);
+    }
+  
+    document.body.removeChild(textArea);
+    setTimeout(() => {
+      setShowModal(false);
+      setShowSuccessModal(false);
+    }, 3000);
+  };
+
   const handleCopy = (addressToCopy) => {
     navigator.clipboard.writeText(addressToCopy).then(
       function () {
@@ -621,9 +670,6 @@ export default function TopUp({
                     <div style={{ display: "flex" }} className={mobileStyle.btnPart}>
                       <img src={chainIcon} alt="" className={mobileStyle.imgICon} />
                       <button
-                        onClick={(event) => {
-                          openChainModal();
-                        }}
                         style={{
                           border: "none",
                           background: "none",
@@ -635,15 +681,11 @@ export default function TopUp({
                           <span>{account.displayName}</span>
                           <img
                             src={UnioncopyBtn}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              handleCopy(address);
+                            onTouchEnd={() => {
+                              handleToggleCopyTextMoblie(address);
                             }}
-                            onTouchStart={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              handleCopy(address);
+                            onClick={() => {
+                              handleToggleCopyTextMoblie(address);
                             }}
                             alt=""
                             className={mobileStyle.imgUnionCopyBtn}
@@ -696,15 +738,11 @@ export default function TopUp({
                         />
                         <img
                           src={UnioncopyBtn}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            handleCopy(palyerAddress);
+                          onTouchEnd={() => {
+                            handleToggleCopyTextMoblie(palyerAddress);
                           }}
-                          onTouchStart={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            handleCopy(palyerAddress);
+                          onClick={() => {
+                            handleToggleCopyTextMoblie(palyerAddress);
                           }}
                           alt=""
                           className={mobileStyle.imgUnioncopyBtn}
@@ -760,15 +798,11 @@ export default function TopUp({
                         src={UnioncopyBtn}
                         alt=""
                         className={mobileStyle.imginputConPassWordto}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          handleTogglePassword(privateKey);
+                        onTouchEnd={() => {
+                          handleToggleCopyTextMoblie(privateKey);
                         }}
-                        onTouchStart={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          handleTogglePassword(privateKey);
+                        onClick={() => {
+                          handleToggleCopyTextMoblie(privateKey);
                         }}
                       />
                     </div>
