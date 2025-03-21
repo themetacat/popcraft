@@ -86,7 +86,7 @@ export default function PopStar({ setPopStar, playFun, onTopUpClick, setTopUpTyp
                 {MISSION_BOUNS_CHAIN_IDS.includes(chainId) ? (
                   <a
                     href={chainId === 2818
-                      ? "https://morph.ghost.io/play-to-earn-with-popcraft/"
+                      ? "https://x.com/MorphLayer/status/1903106369462604060"
                       : ""}
                     target="_blank"
                     style={{ color: '#FF7A00', textDecoration: 'underline', textDecorationColor: '#E64C00' }}
