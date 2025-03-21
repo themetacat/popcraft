@@ -142,6 +142,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const { getPlantsGp, getPlantsGpSeason } = usePlantsGp();
   const { csd, season } = useUtils();
   const [calcOffsetYValue, setCalcOffsetYValue] = useState(10);
+  const [tokenImgScale, setTokenImgScale] = useState(0.8);
   const [tokenNotificationValue, setTokenNotificationValue] = useState<{ tokenAddr: string, amount: bigint }>({
     tokenAddr: "",
     amount: 0n,
@@ -553,13 +554,15 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       let scale = 1.2;
       if (isMobile) {
         outerBorderRadius = 10;
-        scale = 1.4
+        scale = 1.6
       }
       const outerBorderX = offsetX - outerBorderRadius;
       const outerBorderY = offsetY - outerBorderRadius;
       const outerBorderWidth = 10 * GRID_SIZE + 2 * outerBorderRadius;
       const outerBorderHeight = 10 * GRID_SIZE + 2 * outerBorderRadius;
+
       // 绘制阴影
+      ctx.shadowBlur = 0;
       ctx.beginPath();
       ctx.moveTo(outerBorderX + outerBorderRadius, outerBorderY);
       ctx.lineTo(outerBorderX + outerBorderWidth - outerBorderRadius, outerBorderY);
@@ -588,7 +591,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       ctx.closePath();
       ctx.fillStyle = "#fff9c9"; // 高光颜色
       ctx.fill();
-
 
       ctx.beginPath();
       ctx.moveTo(outerBorderX + outerBorderRadius, outerBorderY);
@@ -674,8 +676,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
                   };
                 } else {
                   // 调整图片大小
-                  const imageWidth = GRID_SIZE * 0.9; // 调整图片宽度
-                  const imageHeight = GRID_SIZE * 0.9; // 调整图片高度
+                  const imageWidth = GRID_SIZE * tokenImgScale; // 调整图片宽度
+                  const imageHeight = GRID_SIZE * tokenImgScale; // 调整图片高度
                   const imageX = currentX + (GRID_SIZE - imageWidth) / 2;
                   const imageY = currentY + (GRID_SIZE - imageHeight) / 2;
                   ctx.drawImage(imageCache[src], imageX, imageY, imageWidth, imageHeight);
@@ -685,8 +687,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           // }
         }
       }
-
-      if (hoveredSquare && coordinates.x < 10 && !isMobile) {
+      
+      if (hoveredSquare && coordinates.x < 10) {
         const i = hoveredSquare.x;
         const j = hoveredSquare.y;
         const currentX = i * GRID_SIZE + offsetX;
@@ -698,9 +700,15 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
         ctx.clearRect(drawX, drawY, drawSize, drawSize);
         ctx.lineWidth = 0.5;
+
+        if(isMobile){
+          ctx.shadowColor = "rgba(128, 150, 107, 0.5)";
+          ctx.shadowBlur = 5;
+          ctx.strokeStyle = "#999";
+        }
+
         ctx.strokeRect(drawX, drawY, drawSize, drawSize);
         ctx.fillRect(drawX, drawY, drawSize, drawSize);
-
         if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
           const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1];
           const src = imageIconData[tokenAddress]?.src;
@@ -712,16 +720,16 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               img.onload = () => {
                 setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
                 // 重新绘制图像
-                const imageWidth = drawSize * 0.8
-                const imageHeight = drawSize * 0.8;
+                const imageWidth = drawSize * tokenImgScale
+                const imageHeight = drawSize * tokenImgScale;
                 const imageX = drawX + (drawSize - imageWidth) / 2;
                 const imageY = drawY + (drawSize - imageHeight) / 2;
                 ctx.drawImage(img, imageX, imageY, imageWidth, imageHeight);
               };
             } else {
               // 调整图片大小
-              const imageWidth = drawSize * 0.8; // 调整图片宽度
-              const imageHeight = drawSize * 0.8; // 调整图片高度
+              const imageWidth = drawSize * tokenImgScale; // 调整图片宽度
+              const imageHeight = drawSize * tokenImgScale; // 调整图片高度
               const imageX = drawX + (drawSize - imageWidth) / 2;
               const imageY = drawY + (drawSize - imageHeight) / 2;
               ctx.drawImage(imageCache[src], imageX, imageY, imageWidth, imageHeight);
@@ -736,20 +744,15 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     [
       GRID_SIZE,
       coordinates,
-      // numberData,
       TCMPopStarData,
       CANVAS_WIDTH,
       CANVAS_HEIGHT,
-      // selectedColor,
-      // scrollOffset,
-      // loading,
-      // loadingplay,
-      // loadingSquare,
       imageCache,
       isMobile,
       calcOffsetYValue
     ]
   );
+  
 
   useEffect(() => {
     if (appName === "BASE/PopCraftSystem") {
@@ -758,6 +761,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         setGRID_SIZE(44);
       } else {
         setCalcOffsetYValue(11);
+        setTokenImgScale(0.9)
         setGRID_SIZE(33);
       }
       setScrollOffset({ x: 0, y: 0 });
@@ -867,12 +871,33 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [isLongPress, setIsLongPress] = useState(false);
   const action = "interact";
 
-  const handleMouseDown = () => {
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    if (coordinates.x < 10) {
+    let newCoordinates = coordinates;
+    
+    if(isMobile){
+      const canvas = canvasRef.current as any;
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+
+      const CANVAS_WIDTH = document.documentElement.clientWidth;
+      const CANVAS_HEIGHT = document.documentElement.clientHeight;
+      const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+      const offsetY = (CANVAS_HEIGHT - calcOffsetYValue * GRID_SIZE) / 2;
+
+      const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
+      const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
+      newCoordinates = { x: gridX, y: gridY };
+      setHoveredSquare(newCoordinates);
+      setTimeout(() => {
+        setHoveredSquare(null);
+      }, 150);
+    }
+    if (newCoordinates.x < 10) {   
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      drawGrid2(ctx, coordinates, false);
+      drawGrid2(ctx, newCoordinates, false);
     }
     if (pageClick === true) {
       return;
@@ -915,7 +940,9 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
         const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
         const newHoveredSquare = { x: gridX, y: gridY };
-        setHoveredSquare(newHoveredSquare);
+        if(!isMobile){
+          setHoveredSquare(newHoveredSquare);
+        }
         const upCoordinates = { x: gridX, y: gridY };
 
         if (isEmpty) {
@@ -929,13 +956,13 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               y: upCoordinates.y + TCMPopStarData.y,
             }
             if (new_coor.x >= 0 && new_coor.y >= 0) {
-              interactHandleTCM(
-                new_coor,
-                palyerAddress,
-                selectedColor,
-                'pop',
-                null
-              );
+              // interactHandleTCM(
+              //   new_coor,
+              //   palyerAddress,
+              //   selectedColor,
+              //   'pop',
+              //   null
+              // );
             }
           }
 
@@ -1639,15 +1666,10 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       }
     }
   }, [
-    appName,
-    drawGrid,
     drawGrid2,
     CANVAS_WIDTH,
     CANVAS_HEIGHT,
-    // entityData.length,
     hoveredSquare,
-    mouseX,
-    mouseY,
   ]);
 
   useEffect(() => {
