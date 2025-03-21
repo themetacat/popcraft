@@ -562,7 +562,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       const outerBorderHeight = 10 * GRID_SIZE + 2 * outerBorderRadius;
 
       // 绘制阴影
-      ctx.shadowBlur = 0;
+      // ctx.shadowBlur = 0;
       ctx.beginPath();
       ctx.moveTo(outerBorderX + outerBorderRadius, outerBorderY);
       ctx.lineTo(outerBorderX + outerBorderWidth - outerBorderRadius, outerBorderY);
@@ -701,11 +701,11 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         ctx.clearRect(drawX, drawY, drawSize, drawSize);
         ctx.lineWidth = 0.5;
 
-        if(isMobile){
-          ctx.shadowColor = "rgba(128, 150, 107, 0.5)";
-          ctx.shadowBlur = 5;
-          ctx.strokeStyle = "#999";
-        }
+        // if(isMobile){
+        //   ctx.shadowColor = "rgba(128, 150, 107, 0.5)";
+        //   ctx.shadowBlur = 5;
+        //   ctx.strokeStyle = "#999";
+        // }
 
         ctx.strokeRect(drawX, drawY, drawSize, drawSize);
         ctx.fillRect(drawX, drawY, drawSize, drawSize);
@@ -893,7 +893,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       setHoveredSquare(newCoordinates);
       setTimeout(() => {
         setHoveredSquare(null);
-      }, 150);
+      }, 250);
     }
     if (newCoordinates.x < 10) {   
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
