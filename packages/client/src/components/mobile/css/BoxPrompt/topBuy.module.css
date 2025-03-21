@@ -404,12 +404,22 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-left: -3.55rem;
+        margin-left: -13rem;
+        margin-top: -3.44rem;
+    }
+
+    .subtractbox {
+        width: 12.42rem;
+        height: 12.42rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 2.45rem;
         margin-top: -3.44rem;
     }
 
     .numData {
-        width: 11.1rem;
+        width: 28.1rem;
         height: 8.65rem;
         max-width: 100%;
         box-sizing: border-box;

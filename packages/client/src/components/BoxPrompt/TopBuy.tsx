@@ -597,7 +597,7 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                                             cursor: numberData[key] <= 0 || loadingPrices[key] ? "not-allowed" : "pointer"
                                         }}
                                     >
-                                        <img src={reduce} className={mobileTopBuyStyle.addbox} alt="" />
+                                        <img src={reduce} className={mobileTopBuyStyle.subtractbox} alt="" />
                                     </button>
 
                                     <input
