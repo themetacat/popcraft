@@ -57,7 +57,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
     network: { palyerAddress },
     systemCalls: { payFunction },
   } = useMUD();
-  const overTime = 1222222222;
+  const overTime = 122;
   const [timeLeft, setTimeLeft] = useState(overTime);
   const [warnBox, setWarnBox] = useState(false);
   const [dataq, setdataq] = useState(false);

@@ -297,7 +297,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     height: document.documentElement.clientHeight,
   });
   const [loadingSquare, setLoadingSquare] = useState<{ x: number; y: number } | null>(null);
-  const overTime = 1222222222; //控制顶部时间
+  const overTime = 122; //控制顶部时间
 
   useEffect(() => {
     // 默认设置localStorage中的值为popCraft相关的值
@@ -543,7 +543,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       hoveredSquare: { x: number; y: number } | null,
       playType: boolean
     ) => {
-
       // 清空画布
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
@@ -562,7 +561,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       const outerBorderHeight = 10 * GRID_SIZE + 2 * outerBorderRadius;
 
       // 绘制阴影
-      // ctx.shadowBlur = 0;
       ctx.beginPath();
       ctx.moveTo(outerBorderX + outerBorderRadius, outerBorderY);
       ctx.lineTo(outerBorderX + outerBorderWidth - outerBorderRadius, outerBorderY);
@@ -629,7 +627,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       ctx.strokeStyle = "#ffc974";
       ctx.stroke();
 
-
       // 绘制水平和垂直网格线
       for (let x = 0; x <= 10 * GRID_SIZE; x += GRID_SIZE) {
         ctx.beginPath();
@@ -655,9 +652,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           ctx.fillStyle = color;
           ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
           ctx.lineWidth = 1;
-          // ctx.strokeStyle = "#2e1043";
           ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-          // ctx.fillStyle = "#2f1643";
           ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
 
           // 绘制图像
@@ -687,7 +682,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           // }
         }
       }
-      
       if (hoveredSquare && coordinates.x < 10) {
         const i = hoveredSquare.x;
         const j = hoveredSquare.y;
@@ -700,13 +694,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         const drawX = currentX - (GRID_SIZE * (scale - 1)) / 2;
         ctx.clearRect(drawX, drawY, drawSize, drawSize);
         ctx.lineWidth = 0.5;
-
-        // if(isMobile){
-        //   ctx.shadowColor = "rgba(128, 150, 107, 0.5)";
-        //   ctx.shadowBlur = 5;
-        //   ctx.strokeStyle = "#999";
-        // }
-
         ctx.strokeRect(drawX, drawY, drawSize, drawSize);
         ctx.fillRect(drawX, drawY, drawSize, drawSize);
         if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
@@ -749,7 +736,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       CANVAS_HEIGHT,
       imageCache,
       isMobile,
-      calcOffsetYValue
+      calcOffsetYValue,
+      tokenImgScale
     ]
   );
   
@@ -870,7 +858,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const downTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [isLongPress, setIsLongPress] = useState(false);
   const action = "interact";
-
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -893,7 +880,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       setHoveredSquare(newCoordinates);
       setTimeout(() => {
         setHoveredSquare(null);
-      }, 250);
+      }, 100);
     }
     if (newCoordinates.x < 10) {   
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -956,13 +943,13 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               y: upCoordinates.y + TCMPopStarData.y,
             }
             if (new_coor.x >= 0 && new_coor.y >= 0) {
-              // interactHandleTCM(
-              //   new_coor,
-              //   palyerAddress,
-              //   selectedColor,
-              //   'pop',
-              //   null
-              // );
+              interactHandleTCM(
+                new_coor,
+                palyerAddress,
+                selectedColor,
+                'pop',
+                null
+              );
             }
           }
 
@@ -2522,9 +2509,9 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               className={mobileStyle.bodyCon}
               onMouseDown={handleMouseDown}
               onMouseUp={handleMouseUp}
-              onMouseMove={handleMouseMoveData}
-              onMouseLeave={handleLeave}
-              onMouseEnter={handleMouseEnter}
+              // onMouseMove={handleMouseMoveData}
+              // onMouseLeave={handleLeave}
+              // onMouseEnter={handleMouseEnter}
             >
               <canvas
                 ref={canvasRef}
