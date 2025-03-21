@@ -1334,7 +1334,4 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
       </>
     )
   }
-     
-//     </>
-//   );
-// }
+}
