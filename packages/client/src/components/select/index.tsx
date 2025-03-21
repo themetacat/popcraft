@@ -226,7 +226,7 @@ export const useTopUp = () => {
         setTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
         setPriTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
         setRewardInfo("150 Scores");
-        setPrizePool("1,000 Morph Points");
+        setPrizePool("1,300 Morph Points");
         setMIN_SESSION_WALLET_BALANCE(parseEther("0.000008"));
       }
     }
