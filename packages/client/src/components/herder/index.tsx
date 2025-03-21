@@ -897,6 +897,11 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     if (pageClick === true) {
       return;
     }
+
+    if ("ontouchstart" in window) {
+      return;
+    }
+
     setIsLongPress(false);
     setIsDragging(false);
     setPopExhibit(false);
