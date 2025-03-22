@@ -385,46 +385,23 @@
     margin-left: 2rem;
     overflow: hidden;
     box-sizing: border-box;
+}
 
-    .pp {
-        height: auto;
-    }
-
-    button {
-        color: #ffffff;
-        width: 12.19rem;
-        height: 12.19rem;
-        border: none;
-        background-size: 100% 100%;
-        background-position: center;
-        background-repeat: no-repeat;
-        background: none;
-        /* 设置背景透明 */
-        border-radius: 1rem;
-        justify-content: center;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .addbox {
-        width: 12.42rem;
-        height: 12.42rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: -13rem;
-        margin-top: -3.44rem;
-    }
-
-    .subtractbox {
-        width: 12.42rem;
-        height: 12.42rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: 2.45rem;
-        margin-top: -3.44rem;
-    }
+.dataIcon button {
+    color: #ffffff;
+    width: 12.19rem;
+    height: 12.19rem;
+    max-width: 100%;
+    border: none;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background: none;
+    /* 设置背景透明 */
+    border-radius: 1rem;
+    justify-content: center;
+    text-align: center;
+    justify-content: center;
 }
 
 .numData {
@@ -449,6 +426,26 @@
 
 .numData:focus {
     outline: none;
+}
+
+.addbox {
+    width: 12.42rem;
+    height: 12.42rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: -13rem;
+    margin-top: -3.44rem;
+}
+
+.subtractbox {
+    width: 12.42rem;
+    height: 12.42rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 2.45rem;
+    margin-top: -3.44rem;
 }
 
 .twoBuy {

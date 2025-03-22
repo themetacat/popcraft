@@ -897,6 +897,11 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     if (pageClick === true) {
       return;
     }
+
+    if ("ontouchstart" in window) { 
+      setHoveredSquare(null); // 移除 hover 状态 
+    }
+
     setIsLongPress(false);
     setIsDragging(false);
     setPopExhibit(false);
