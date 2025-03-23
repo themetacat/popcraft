@@ -133,7 +133,7 @@ export const App = () => {
     <div className={isMobile ? style.pageMobile : style.page}>
       {syncProgress ? (
         syncProgress.step !== SyncStep.LIVE ? (
-          <div className={style.GameBoard}>
+          <div className={style.GameBoard} style={isMobile ? { fontSize: "10rem" } : {}}>
             {syncProgress.message} ({Math.floor(syncProgress.percentage)}%)
           </div>
         ) : (
