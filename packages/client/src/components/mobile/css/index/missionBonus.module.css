@@ -57,12 +57,12 @@
 }
 
 .playerGamesPlayText{
-    color: #ffffff;
+    color: #EB5F8C;
     text-shadow:
-        0.15rem 0.15rem 0 #E1AD0B,
-        -0.15rem -0.15rem 0 #E1AD0B,
-        0.15rem -0.15rem 0 #E1AD0B,
-        -0.15rem 0.15rem 0 #E1AD0B,
+        0.15rem 0.15rem 0 #ffffff,
+        -0.15rem -0.15rem 0 #ffffff,
+        0.15rem -0.15rem 0 #ffffff,
+        -0.15rem 0.15rem 0 #ffffff,
         0.15rem 0.15rem 0.2rem #000;
 }
 

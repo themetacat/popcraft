@@ -62,7 +62,7 @@
 }
 
 .firstBuy:active {
-    background-image: url("../../../../../images/substance/111.png");
+    background-image: url("../../../../images/substance/111.png");
 }
 
 .itemImage {
@@ -90,7 +90,7 @@
     align-items: center;
     border-radius: 50%;
     
-    background-color: #ffb739;
+    background-color: #ff749f;
 
     right: 130rem;
     top: 27rem;
