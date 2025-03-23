@@ -1,3 +1,24 @@
+@font-face {
+    font-family: "MyriadPro";
+    src: url("/fonts/MYRIADPRO-BOLD.OTF");
+}
+
+@font-face {
+    font-family: "AdobeHeitiStd-Regular";
+    src: url("/fonts/BRLNSR.woff2");
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 40;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: auto !important;
+}
+
 .btn {
     background-size: contain;
     background-repeat: no-repeat;
@@ -67,20 +88,338 @@
         0.5rem 1rem 1rem rgba(0, 0, 0, 0.8);
 }
 
-
 .formcontainer {
     position: fixed;
+
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 125.75rem;
-    height: 112.125rem;
+
+    width: 249.45rem;
+    height: 357.87rem;
     border: none;
-    background-image: url('../../../../images/RankingList/RankingListBackground.webp');
+    border-radius: 3rem;
+    background-image: url('../../../../images/RankingList/mobile/ContainerBg.webp');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     display: grid;
     place-items: center;
-    z-index: 25;
+    z-index: 40;
+}
+
+.title {
+    width: 211.75rem;
+    height: 13.3rem;
+    font-family: MyriadPro;
+    font-weight: bold;
+    font-size: 12.53rem;
+    color: #FFFFFF;
+    line-height: 5.92rem;
+    text-shadow: 0rem 0.8rem 0.8rem rgba(0, 0, 0, 0.71);
+    letter-spacing: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25rem;
+    background-image: url('../../../../images/RankingList/mobile/TitleBgStar.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.imgOff {
+    width: 15.3rem;
+    height: 15.3rem;
+    position: absolute;
+    left: 228.16rem;
+    top: 12rem;
+}
+
+.seasonCountdownDiv {
+    width: 192.33rem;
+    height: 23.51rem;
+    font-weight: 900;
+    font-size: 7.93rem;
+    color: #3F9615;
+    -webkit-text-stroke: 0.2rem #FFFFFF;
+    line-height: 12rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 280rem;
+    display: flex;
+    text-shadow:
+        -0.5rem -0.5rem 0 #ffffff,
+        0.5rem -0.5rem 0 #ffffff,
+        -0.5rem 0.5rem 0 #ffffff,
+        0.5rem 0.5rem 0 #ffffff;
+    font-family: MyriadPro;
+    text-align: center;
+}
+
+.tablecontainer {
+    width: 220.45rem;
+    height: 230.13rem;
+    overflow-x: auto;
+    overflow-y: auto;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 20rem;
+    border-radius: 3rem;
+}
+
+.tablecontainer::-webkit-scrollbar {
+    width: 3rem;  /* 滚动条宽度 */
+}
+
+.tablecontainer::-webkit-scrollbar-track {
+    background: #f5f5f5;  /* 滚动条轨道颜色，可自行调整 */
+    border-radius: 4rem;
+}
+
+.tablecontainer::-webkit-scrollbar-thumb {
+    background: #E28764;  /* 滚动条颜色 */
+    border-radius: 4rem;  /* 圆角 */
+}
+
+.tablecontainer::-webkit-scrollbar-thumb:hover {
+    background: #d67556;  /* 鼠标悬浮时的颜色 */
+}
+
+.table {
+    width: 210rem;
+    max-height: 181.15rem;
+    overflow-y: auto;
+    border-collapse: collapse;
+    font-family: "AdobeHeitiStd-Regular";
+    table-layout: fixed;
+    border-radius: 1rem;
+}
+
+.thead {
+    height: 8.4375rem;
+    background-color: #faae69;
+    text-align: center;
+    color: #b13200;
+    font-size: 2.5rem;
+    letter-spacing: 0.3rem;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.thead::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8.4375rem;
+    border: 2rem solid #fff1c8;
+    border-radius: 4rem 4rem 0 0;
+    border-bottom: none;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.tbody {
+    border-left: none;
+    border-right: none;
+    padding: 8px;
+    text-align: center;
+    font-size: 2rem;
+    letter-spacing: 0.2rem;
+    font-weight: 600;
+    border: none !important;
+    /* 取消所有边框 */
+}
+
+.trbox {
+    border: none !important;
+}
+
+.trbox td {
+    /* height: 2.55rem; */
+    border: none !important;
+    padding: 1.6rem;
+}
+
+.dropdown {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 241, 200, 0.3);
+    border: 0.125rem solid #b13200;
+    padding: 0.125rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(178, 50, 0, 0.1);
+    border-radius: 3rem;
+    white-space: nowrap;
+    min-width: 20.5rem;
+    height: 4rem;
+}
+
+.dropdownArrow {
+    font-size: 2rem;
+}
+
+.dropdownMenu {
+    position: absolute;
+    background-color: #fcc285;
+    border: 0.125rem solid #df9c56;
+    z-index: 1000;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+    border-radius: 3rem;
+    width: 20.8rem;
+    font-size: 2.1rem;
+}
+
+.dropdownItem {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    text-align: left;
+}
+
+.dropdownItem:hover {
+    background-color: #fcad69;
+}
+
+.rankCell {
+    width: 15rem;
+    height: 2.55rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-left: 2rem;
+}
+
+.rankCell img {
+    width: 3rem;
+    margin-right: 4rem;
+    margin-left: -7rem;
+}
+
+.youSpan {
+    margin-right: -6.5rem;
+    margin-left: 1rem;
+}
+
+.noLinkStyle {
+    color: inherit;
+    /* 继承父元素的颜色 */
+}
+
+.totalContainerBox {
+    display: none;
+    width: 200.45rem;
+    height: 16rem;
+    margin-top: -77.6rem;
+
+    background-image: url('../../../../images/RankingList/mobile/TotalBg.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: none;
+}
+
+.totalContainerTableBox {
+    width: 113rem;
+    height: 6rem;
+    border: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #000000;
+
+    font-family: "AdobeHeitiStd-Regular";
+    font-weight: 400;
+    font-size: 7.4rem;
+    letter-spacing: 0.3rem;
+    line-height: 16.81rem;
+}
+
+.totalLengthBox {
+    width: 32rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+.totalLengthBox span {
+    justify-content: center;
+    align-items: center;
+}
+
+.totalScoreBox {
+    display: flex;
+    align-items: center;
+    width: 77rem;
+    margin-left: -1rem;
+    gap: 1rem;
+}
+
+.totalScoreItem {
+    width: 18rem;
+    /* margin-left: 0.1rem; */
+}
+
+.tablecontainerbox {
+    width: 220.45rem;
+    height: 16rem;
+    margin-top: -70rem;
+
+    background-image: url('../../../../images/RankingList/mobile/YouScoreBg.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border: none;
+    font-family: "AdobeHeitiStd-Regular";
+}
+
+.tableBox {
+    width: 200.45rem;
+    height: 16rem;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 3.5rem;
+    text-align: center;
+    font-size: 3.4rem;
+    color: #ffffff;
+    letter-spacing: 0.3rem;
+    font-weight: 400;
+    line-height: 16.81rem;
+}
+
+.YouBox {
+    width: 120rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+.YouBox span {
+    justify-content: center;
+    align-items: center;
+    margin-left: 2.8rem;
+}
+
+.scoreBox {
+    display: flex;
+    align-items: center;
+    width: 207rem;
+    gap: 1rem;
+    margin-left: 10rem;
+}
+
+.scoreItem {
+    width: 18rem;
+    margin-left: 5rem;
 }
