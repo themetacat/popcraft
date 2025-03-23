@@ -103,6 +103,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                     entity: address.address,
                     totalScore: 0,
                     totalPoints: seasonPlantsGpSeason,
+                    bestScore: 0,
                     shortestTime: 0,
                     totalGames: 0,
                     wins: 0,
@@ -126,6 +127,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                     entity: address.address,
                     totalScore: Number(value.totalScore),
                     totalPoints: totalPoints,
+                    bestScore: Number(value.highestScore),
                     shortestTime: Number(value.shortestTime),
                     totalGames,
                     wins,
@@ -300,6 +302,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                         <table className={style.table}>
                             <colgroup>
                                 <col style={{ width: "21rem" }} />
+                                <col style={{ width: "16rem" }} />
                             </colgroup>
                             <thead className={style.thead}>
                                 <tr>
@@ -341,6 +344,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                         <>
                                             <th>Scores</th>
                                             <th>GP</th>
+                                            <th>Best Score</th>
                                         </>
                                     ) : (chainId === 31338 || chainId === 185 || chainId === 690) ? (
                                         <>
@@ -353,8 +357,8 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                             <th>Scores</th>
                                         </>
                                     )}
-                                    <th>Fastest Time</th>
-                                    <th>Wins/Losses</th>
+                                    <th>Best Time</th>
+                                    <th>Win/Loss</th>
                                     <th>Win Rate</th>
                                 </tr>
                             </thead>
@@ -394,6 +398,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                                 <>
                                                     <td>{item.totalScore}</td>
                                                     <td>{item?.totalPoints}</td>
+                                                    <td>{item.bestScore}</td>
                                                 </> :
                                                 (chainId === 31338 || chainId === 690 || chainId === 185) ?
                                                     <>
@@ -426,6 +431,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                     <>
                                         <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalScore).reduce((sum, score) => sum + score, 0)}</span>
                                         <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalPoints).reduce((sum, score) => sum + score, 0)}</span>
+                                        <span className={style.totalScoreItem}>{Math.max(...sortedRankingRecords.map(record => record.bestScore))}</span>
                                         <span className={style.totalScoreItem}>{formatTime(Math.min(...sortedRankingRecords.map(record => record.shortestTime).filter(time => time > 0)))}</span>
                                         <span className={style.totalScoreItem}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
                                         <span className={style.totalScoreItem}>{Math.floor((sortedRankingRecords.reduce((w, r) => w + (r.wins || 0), 0) / sortedRankingRecords.reduce((w, r) => w + ((r.wins || 0) + (r.losses || 0)), 0) * 100) || 100)}%</span>
@@ -465,6 +471,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                             <>
                                                 <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
                                                 <span className={style.scoreItem}>{totalPoints ? totalPoints : 0}</span>
+                                                <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
                                             </>
                                             :
                                             (chainId === 31338 || chainId === 185 || chainId === 690) ?
@@ -522,6 +529,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                             <table className={style.table}>
                                 <colgroup>
                                     <col style={{ width: "21rem" }} />
+                                    <col style={{ width: "16rem" }} />
                                 </colgroup>
                                 <thead className={style.thead}>
                                     <tr>
@@ -563,6 +571,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                             <>
                                                 <th>Scores</th>
                                                 <th>GP</th>
+                                                <th>Best Score</th>
                                             </>
                                         ) : (chainId === 31338 || chainId === 185 || chainId === 690) ? (
                                             <>
@@ -575,8 +584,8 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                                 <th>Scores</th>
                                             </>
                                         )}
-                                        <th>Fastest Time</th>
-                                        <th>Wins/Losses</th>
+                                        <th>Best Time</th>
+                                        <th>Win/Loss</th>
                                         <th>Win Rate</th>
                                     </tr>
                                 </thead>
@@ -616,6 +625,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                                     <>
                                                         <td>{item.totalScore}</td>
                                                         <td>{item?.totalPoints}</td>
+                                                        <td>{item.bestScore}</td>
                                                     </> :
                                                     (chainId === 31338 || chainId === 690 || chainId === 185) ?
                                                         <>
@@ -648,6 +658,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                         <>
                                             <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalScore).reduce((sum, score) => sum + score, 0)}</span>
                                             <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalPoints).reduce((sum, score) => sum + score, 0)}</span>
+                                            <span className={style.totalScoreItem}>{Math.max(...sortedRankingRecords.map(record => record.bestScore))}</span>
                                             <span className={style.totalScoreItem}>{formatTime(Math.min(...sortedRankingRecords.map(record => record.shortestTime).filter(time => time > 0)))}</span>
                                             <span className={style.totalScoreItem}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
                                             <span className={style.totalScoreItem}>{Math.floor((sortedRankingRecords.reduce((w, r) => w + (r.wins || 0), 0) / sortedRankingRecords.reduce((w, r) => w + ((r.wins || 0) + (r.losses || 0)), 0) * 100) || 100)}%</span>
@@ -687,6 +698,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                                 <>
                                                     <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
                                                     <span className={style.scoreItem}>{totalPoints ? totalPoints : 0}</span>
+                                                    <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
                                                 </>
                                                 :
                                                 (chainId === 31338 || chainId === 185 || chainId === 690) ?
