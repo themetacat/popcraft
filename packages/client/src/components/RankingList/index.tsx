@@ -505,12 +505,12 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
         return (
             <>
                 {showRankingList && (
-                    <div>
+                    <div className={mobileStyle.overlay}>
                         <div className={mobileStyle.formcontainer}>
-                            <div className={style.title}>
+                            <div className={mobileStyle.title}>
                                 <span>LEADERBOARD</span>
                                 <img
-                                    className={style.imgOff}
+                                    className={mobileStyle.imgOff}
                                     src={trunOff}
                                     alt=""
                                     onClick={() => {
@@ -518,31 +518,32 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                     }}
                                 />
                             </div>
-                            <div className={style.seasonCountdownDiv}>
+                            <div className={mobileStyle.seasonCountdownDiv}>
                                 {season > 0 && selectSeason == season && csd > 0 && timeLeft > 0 &&
                                     <span>
-                                        {formatSeasonCountDown(timeLeft)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRIZE POOL: {prizePool}
+                                        {formatSeasonCountDown(timeLeft)}<br/>
+                                        PRIZE POOL: {prizePool}
                                     </span>
                                 }
                             </div>
-                            <div className={style.tablecontainer}>
-                                <table className={style.table}>
+                            <div className={mobileStyle.tablecontainer}>
+                                <table className={mobileStyle.table}>
                                     <colgroup>
                                         <col style={{ width: "21rem" }} />
                                         <col style={{ width: "16rem" }} />
                                     </colgroup>
-                                    <thead className={style.thead}>
+                                    <thead className={mobileStyle.thead}>
                                         <tr>
                                             <th>
-                                                <div onClick={toggleDropdown} className={style.dropdown}>
+                                                <div onClick={toggleDropdown} className={mobileStyle.dropdown}>
                                                     {selectSeason > 0 ? "Event Rank: " + selectSeason : "Global Rank"}
-                                                    <span className={style.dropdownArrow}>{isDropdownOpen ? '▲' : '▼'}</span>
+                                                    <span className={mobileStyle.dropdownArrow}>{isDropdownOpen ? '▲' : '▼'}</span>
                                                 </div>
 
                                                 {isDropdownOpen && (
-                                                    <div className={style.dropdownMenu}>
+                                                    <div className={mobileStyle.dropdownMenu}>
                                                         <div
-                                                            className={style.dropdownItem}
+                                                            className={mobileStyle.dropdownItem}
                                                             onClick={() => handleRankSelect(0)}
                                                         >
                                                             Global Rank {selectSeason === 0 && '✔️'}
@@ -553,7 +554,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
 
                                                                 <div
                                                                     key={index}
-                                                                    className={style.dropdownItem}
+                                                                    className={mobileStyle.dropdownItem}
                                                                     onClick={() => handleRankSelect(index + 1)}
                                                                 >
                                                                     Event Rank: {index + 1}{selectSeason === index + 1 && '✔️'}
@@ -589,10 +590,10 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                             <th>Win Rate</th>
                                         </tr>
                                     </thead>
-                                    <tbody className={style.tbody}>
+                                    <tbody className={mobileStyle.tbody}>
                                         {sortedRankingRecords.map((item, index) => (
                                             <tr
-                                                className={style.trbox}
+                                                className={mobileStyle.trbox}
                                                 key={item.entity}
                                                 style={{
                                                     backgroundColor: index % 2 === 0 ? '#fff1c8' : '#f5cca6',
@@ -600,21 +601,21 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                                 }}
                                             >
 
-                                                <td className={style.rankCell}>
+                                                <td className={mobileStyle.rankCell}>
                                                     {index < 3 && (
                                                         <img
                                                             src={index === 0 ? Gold : index === 1 ? Silver : Copper}
                                                             alt={`Rank ${index + 1}`}
                                                         />
                                                     )}
-                                                    <span className={style.rankNumber}>{index + 1}</span>
+                                                    <span className={mobileStyle.rankNumber}>{index + 1}</span>
                                                     {item.entity === address && (
-                                                        <span className={style.youSpan}>(You)</span>
+                                                        <span className={mobileStyle.youSpan}>(You)</span>
                                                     )}
                                                 </td>
                                                 <td>
                                                     {/* add new chain: change here */}
-                                                    <a className={style.noLinkStyle} href={`https://${publicClient.chain.id === 185 ? 'explorer.mintchain.io' : publicClient.chain.id === 690 ? 'explorer.redstone.xyz' : publicClient.chain.id === 2818 ? 'explorer.morphl2.io' : publicClient.chain.id === 8333 ? 'explorer.b3.fun' : publicClient.chain.id === 177 ? 'hashkey.blockscout.com' : 'etherscan.io'}/address/${item.entity}`} target="_blank">
+                                                    <a className={mobileStyle.noLinkStyle} href={`https://${publicClient.chain.id === 185 ? 'explorer.mintchain.io' : publicClient.chain.id === 690 ? 'explorer.redstone.xyz' : publicClient.chain.id === 2818 ? 'explorer.morphl2.io' : publicClient.chain.id === 8333 ? 'explorer.b3.fun' : publicClient.chain.id === 177 ? 'hashkey.blockscout.com' : 'etherscan.io'}/address/${item.entity}`} target="_blank">
                                                         {formatAddress(item.entity)}
                                                     </a>
                                                 </td>
@@ -647,80 +648,80 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                     </tbody>
                                 </table>
                             </div>
-                            <div className={style.totalContainerBox}>
-                                <div className={style.totalContainerTableBox}>
-                                    <div className={style.totalLengthBox}>
+                            <div className={mobileStyle.totalContainerBox}>
+                                <div className={mobileStyle.totalContainerTableBox}>
+                                    <div className={mobileStyle.totalLengthBox}>
                                         <span style={{ width: "13rem", marginLeft: "-1.3rem" }}>Total</span>
                                         <span style={{ marginLeft: "5.9rem" }}>{sortedRankingRecords.length}</span>
                                     </div>
-                                    <div className={style.totalScoreBox}>
+                                    <div className={mobileStyle.totalScoreBox}>
                                         {MISSION_BOUNS_CHAIN_IDS.includes(chainId) ? (
                                             <>
-                                                <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalScore).reduce((sum, score) => sum + score, 0)}</span>
-                                                <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalPoints).reduce((sum, score) => sum + score, 0)}</span>
-                                                <span className={style.totalScoreItem}>{Math.max(...sortedRankingRecords.map(record => record.bestScore))}</span>
-                                                <span className={style.totalScoreItem}>{formatTime(Math.min(...sortedRankingRecords.map(record => record.shortestTime).filter(time => time > 0)))}</span>
-                                                <span className={style.totalScoreItem}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
-                                                <span className={style.totalScoreItem}>{Math.floor((sortedRankingRecords.reduce((w, r) => w + (r.wins || 0), 0) / sortedRankingRecords.reduce((w, r) => w + ((r.wins || 0) + (r.losses || 0)), 0) * 100) || 100)}%</span>
+                                                <span className={mobileStyle.totalScoreItem}>{sortedRankingRecords.map(record => record.totalScore).reduce((sum, score) => sum + score, 0)}</span>
+                                                <span className={mobileStyle.totalScoreItem}>{sortedRankingRecords.map(record => record.totalPoints).reduce((sum, score) => sum + score, 0)}</span>
+                                                <span className={mobileStyle.totalScoreItem}>{Math.max(...sortedRankingRecords.map(record => record.bestScore))}</span>
+                                                <span className={mobileStyle.totalScoreItem}>{formatTime(Math.min(...sortedRankingRecords.map(record => record.shortestTime).filter(time => time > 0)))}</span>
+                                                <span className={mobileStyle.totalScoreItem}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
+                                                <span className={mobileStyle.totalScoreItem}>{Math.floor((sortedRankingRecords.reduce((w, r) => w + (r.wins || 0), 0) / sortedRankingRecords.reduce((w, r) => w + ((r.wins || 0) + (r.losses || 0)), 0) * 100) || 100)}%</span>
                                             </>
                                         ) : (chainId === 31338 || chainId === 185 || chainId === 690) ? (
                                             <>
-                                                <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalScore).reduce((sum, score) => sum + score, 0)}</span>
-                                                <span className={style.totalScoreItem}>{Math.max(...sortedRankingRecords.map(record => record.bestScore))}</span>
-                                                <span className={style.totalScoreItem}>{formatTime(Math.min(...sortedRankingRecords.map(record => record.shortestTime).filter(time => time > 0)))}</span>
-                                                <span className={style.totalScoreItem}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
-                                                <span className={style.totalScoreItem}>{Math.floor((sortedRankingRecords.reduce((w, r) => w + (r.wins || 0), 0) / sortedRankingRecords.reduce((w, r) => w + ((r.wins || 0) + (r.losses || 0)), 0) * 100) || 100)}%</span>
+                                                <span className={mobileStyle.totalScoreItem}>{sortedRankingRecords.map(record => record.totalScore).reduce((sum, score) => sum + score, 0)}</span>
+                                                <span className={mobileStyle.totalScoreItem}>{Math.max(...sortedRankingRecords.map(record => record.bestScore))}</span>
+                                                <span className={mobileStyle.totalScoreItem}>{formatTime(Math.min(...sortedRankingRecords.map(record => record.shortestTime).filter(time => time > 0)))}</span>
+                                                <span className={mobileStyle.totalScoreItem}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
+                                                <span className={mobileStyle.totalScoreItem}>{Math.floor((sortedRankingRecords.reduce((w, r) => w + (r.wins || 0), 0) / sortedRankingRecords.reduce((w, r) => w + ((r.wins || 0) + (r.losses || 0)), 0) * 100) || 100)}%</span>
                                             </>
                                         ) : (
                                             <>
-                                                <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalPoints).reduce((sum, score) => sum + score, 0)}</span>
-                                                <span className={style.totalScoreItem}>{sortedRankingRecords.map(record => record.totalScore).reduce((sum, score) => sum + score, 0)}</span>
-                                                <span className={style.totalScoreItem}>{formatTime(Math.min(...sortedRankingRecords.map(record => record.shortestTime).filter(time => time > 0)))}</span>
-                                                <span className={style.totalScoreItem}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
-                                                <span className={style.totalScoreItem}>{Math.floor((sortedRankingRecords.reduce((w, r) => w + (r.wins || 0), 0) / sortedRankingRecords.reduce((w, r) => w + ((r.wins || 0) + (r.losses || 0)), 0) * 100) || 100)}%</span>
+                                                <span className={mobileStyle.totalScoreItem}>{sortedRankingRecords.map(record => record.totalPoints).reduce((sum, score) => sum + score, 0)}</span>
+                                                <span className={mobileStyle.totalScoreItem}>{sortedRankingRecords.map(record => record.totalScore).reduce((sum, score) => sum + score, 0)}</span>
+                                                <span className={mobileStyle.totalScoreItem}>{formatTime(Math.min(...sortedRankingRecords.map(record => record.shortestTime).filter(time => time > 0)))}</span>
+                                                <span className={mobileStyle.totalScoreItem}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
+                                                <span className={mobileStyle.totalScoreItem}>{Math.floor((sortedRankingRecords.reduce((w, r) => w + (r.wins || 0), 0) / sortedRankingRecords.reduce((w, r) => w + ((r.wins || 0) + (r.losses || 0)), 0) * 100) || 100)}%</span>
                                             </>
                                         )}
                                     </div>
                                 </div>
                             </div>
-                            <div className={style.tablecontainerbox}>
-                                <div className={style.tableBox}>
+                            <div className={mobileStyle.tablecontainerbox}>
+                                <div className={mobileStyle.tableBox}>
                                     {isConnected ? (
                                         <>
-                                            <div className={style.YouBox}>
-                                                <span style={{ width: "13rem" }}>{userRank ? `${userRank} (You)` : 'N/A'}</span>
-                                                <span style={{ marginLeft: "1rem" }}>{formatAddress(address)}</span>
+                                            <div className={mobileStyle.YouBox}>
+                                                <span>{userRank ? `${userRank} (You)` : 'N/A'}</span>
+                                                <span>{formatAddress(address)}</span>
                                             </div>
-                                            <div className={style.scoreBox}>
+                                            <div className={mobileStyle.scoreBox}>
 
                                                 {/* add new chain: change here */}
                                                 {MISSION_BOUNS_CHAIN_IDS.includes(chainId) ?
                                                     <>
-                                                        <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
-                                                        <span className={style.scoreItem}>{totalPoints ? totalPoints : 0}</span>
-                                                        <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
+                                                        <span className={mobileStyle.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
+                                                        <span className={mobileStyle.scoreItem}>{totalPoints ? totalPoints : 0}</span>
+                                                        <span className={mobileStyle.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
                                                     </>
                                                     :
                                                     (chainId === 31338 || chainId === 185 || chainId === 690) ?
                                                         <>
-                                                            <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
-                                                            <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
+                                                            <span className={mobileStyle.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
+                                                            <span className={mobileStyle.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
                                                         </>
                                                         :
                                                         <>
-                                                            <span className={style.scoreItem}>{totalPoints ? totalPoints : 0}</span>
-                                                            <span className={style.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
+                                                            <span className={mobileStyle.scoreItem}>{totalPoints ? totalPoints : 0}</span>
+                                                            <span className={mobileStyle.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
                                                         </>
                                                 }
-                                                <span className={style.scoreItem}>{rankRecord ? formatTime(Number(rankRecord.shortestTime)) : '00:00'}</span>
-                                                <span className={style.scoreItem}>{wins}/{losses}</span>
-                                                <span className={style.scoreItem}>{winRate}%</span>
+                                                <span className={mobileStyle.scoreItem}>{rankRecord ? formatTime(Number(rankRecord.shortestTime)) : '00:00'}</span>
+                                                <span className={mobileStyle.scoreItem}>{wins}/{losses}</span>
+                                                <span className={mobileStyle.scoreItem}>{winRate}%</span>
                                             </div>
                                         </>
                                     ) : (
                                         <>
-                                            <div className={style.YouBox}></div>
-                                            <div className={style.scoreBox}></div>
+                                            <div className={mobileStyle.YouBox}></div>
+                                            <div className={mobileStyle.scoreBox}></div>
                                         </>
                                     )}
                                 </div>
