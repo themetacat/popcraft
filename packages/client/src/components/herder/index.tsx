@@ -2191,10 +2191,18 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               <div className={style.contentbox}>
                 <p>INSUFFICIENT GASBALANCE</p><br />
               </div>
-              <button className={style.topupbtn} onClick={() => {
-                setShowNewPopUp(false);
-                setTopUpType(true);
-              }}>TOP UP</button>
+              <button className={style.topupbtn} 
+                onClick={() => {
+                  setShowNewPopUp(false);
+                  setTopUpType(true);
+                }}
+                onTouchEnd={() => {
+                  setShowNewPopUp(false);
+                  setTopUpType(true);
+                }}
+              >
+                TOP UP
+              </button>
             </div>
           </div>
         )}
@@ -2578,10 +2586,18 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               <div className={mobileStyle.contentbox}>
                 <p>INSUFFICIENT GASBALANCE</p><br />
               </div>
-              <button className={mobileStyle.topupbtn} onClick={() => {
-                setShowNewPopUp(false);
-                setTopUpType(true);
-              }}>TOP UP</button>
+              <button className={mobileStyle.topupbtn} 
+                onClick={() => {
+                  setShowNewPopUp(false);
+                  setTopUpType(true);
+                }}
+                onTouchEnd={() => {
+                  setShowNewPopUp(false);
+                  setTopUpType(true);
+                }}
+              >
+                TOP UP
+              </button>
             </div>
           </div>
         )}
