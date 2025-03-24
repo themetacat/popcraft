@@ -1,3 +1,27 @@
+@font-face {
+  font-family: "AdobeHeitiStd-Regular";
+  src: url("/fonts/BRLNSR.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Simplicity";
+  src: url("/fonts/Simplicity.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Alibaba-PuHuiTi-Bold";
+  src: url("/fonts/Alibaba-PuHuiTi-Bold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 .container {
   width: 100%;
   position: absolute;
@@ -38,7 +62,6 @@
   line-height: 2.2rem;
   margin-top: 5.32rem;
 }
-
 
 .rewardsPart {
   width: 71.06rem;
@@ -146,7 +169,7 @@
   background-color: #ff749f;
   width: 8.87rem;
   height: 8.2rem;
-  font-family: "Alibaba-PuHuiTi-TIMESBD";
+  font-family: "Alibaba-PuHuiTi-Bold";
   font-size: 5.99rem;
   line-height: 7.74rem;
   font-weight: 400;
@@ -189,60 +212,58 @@
   justify-content: center;
   gap: 40px;
   text-transform: uppercase;
-  font-family: "Alibaba-PuHuiTi-TIMESBD";
-
-  p {
-    text-transform: uppercase;
-    font-size: 19.22rem;
-    font-weight: 400;
-    line-height: 23.66rem;
-    color: #ffffff;
-    text-align: center;
-    top: 96.01rem;
-    font-family: "AdobeHeitiStd-Regular4";
-    text-shadow: 0.5rem 0.5rem 3rem rgba(0, 0, 0, 0.6);
-    position: fixed;
-  }
-
-  button {
-    text-transform: uppercase;
-    background-image: url("../../../../images/Mobile/GameOver/PlayBtn.webp");
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    border: none;
-    background-color: transparent;
-    width: 168.51rem;
-    height: 22.84rem;
-    font-size: 13.86rem;
-    line-height: 7.91rem;
-    letter-spacing: 1.2rem;
-    text-align: center;
-    color: #ffffff;
-    transition: font-size 0.1s ease;
-    text-transform: uppercase;
-    position: fixed;
-    bottom: 34.81rem;
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
-    text-shadow:
-      -0.5rem -0.5rem 0 rgba(163, 162, 162, 0.7),
-      0.5rem -0.5rem 0 rgba(180, 179, 179, 0.7),
-      -0.5rem 0.5rem 0 rgba(165, 164, 164, 0.7),
-      0.5rem 0.5rem 0 rgba(206, 206, 206, 0.7);
-      
-  }
-
-  button:active {
-    font-size: 15rem;
-    text-shadow:
-      -0.7rem -0.7rem 0 rgba(56, 56, 56, 0.7),
-      0.7rem -0.7rem 0 rgba(71, 71, 71, 0.7),
-      -0.7rem 0.7rem 0 rgba(59, 59, 59, 0.7),
-      0.7rem 0.7rem 0 rgba(69, 69, 69, 0.7);
-  }
+  font-family: "Alibaba-PuHuiTi-Bold";
 }
 
+.gameOver p {
+  text-transform: uppercase;
+  font-size: 19.22rem;
+  font-weight: 400;
+  line-height: 23.66rem;
+  color: #ffffff;
+  text-align: center;
+  top: 96.01rem;
+  font-family: "AdobeHeitiStd-Regular";
+  text-shadow: 0.5rem 0.5rem 3rem rgba(0, 0, 0, 0.6);
+  position: fixed;
+}
+
+.gameOver button {
+  background-image: url("../../../../images/Mobile/GameOver/PlayBtn.webp");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  width: 168.51rem;
+  height: 22.84rem;
+  font-size: 13.86rem;
+  line-height: 7.91rem;
+  letter-spacing: 1.2rem;
+  text-align: center;
+  color: #ffffff;
+  transition: font-size 0.1s ease;
+  text-transform: uppercase;
+  position: fixed;
+  bottom: 34.81rem;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  text-shadow:
+    -0.5rem -0.5rem 0 rgba(163, 162, 162, 0.7),
+    0.5rem -0.5rem 0 rgba(180, 179, 179, 0.7),
+    -0.5rem 0.5rem 0 rgba(165, 164, 164, 0.7),
+    0.5rem 0.5rem 0 rgba(206, 206, 206, 0.7);
+    
+}
+
+.gameOver button:active {
+  font-size: 15rem;
+  text-shadow:
+    -0.7rem -0.7rem 0 rgba(56, 56, 56, 0.7),
+    0.7rem -0.7rem 0 rgba(71, 71, 71, 0.7),
+    -0.7rem 0.7rem 0 rgba(59, 59, 59, 0.7),
+    0.7rem 0.7rem 0 rgba(69, 69, 69, 0.7);
+}
 
 .loading {
   animation: spin 5s linear infinite;
@@ -264,7 +285,6 @@
   }
 }
 
-
 .overlay {
   position: fixed;
   top: 0;
@@ -273,7 +293,6 @@
   z-index: 20;
   height: 100%;
 }
-
 
 .congrats {
   position: absolute;
@@ -295,71 +314,70 @@
   justify-content: center;
   text-transform: uppercase;
   color: #ffffff;
+}
 
-  p:nth-child(1) {
-    text-transform: uppercase;
-    font-size: 19.23rem;
-    font-weight: 400;
-    letter-spacing: 1.2rem;
-    text-align: center;
-    position: fixed;
-    top: 70.6rem;
-    font-family: "AdobeHeitiStd-Regular4";
-    text-shadow: 0.6rem 0.6rem 1.5rem #4d4c4c;
-  }
+.congrats p:nth-child(1) {
+  text-transform: uppercase;
+  font-size: 19.23rem;
+  font-weight: 400;
+  letter-spacing: 1.2rem;
+  text-align: center;
+  position: fixed;
+  top: 70.6rem;
+  font-family: "AdobeHeitiStd-Regular";
+  text-shadow: 0.6rem 0.6rem 1.5rem #4d4c4c;
+}
 
-  p:nth-child(2) {
-    text-transform: uppercase;
-    font-size: 20.64rem;
-    font-weight: 500;
-    line-height: 35.2rem;
-    letter-spacing: 2rem;
-    color: #f16999;
-    text-align: center;
-    font-family: "AdobeHeitiStd-Regular";
-    position: fixed;
-    top: 97.87rem;
-    text-shadow:
-      1px 1px 2px #585858,
-      0 0 1px #747373,
-      1px 1px 1px #b3b3b3,
-      0 0 1px rgba(131, 131, 131, 0.5);
-  }
+.congrats p:nth-child(2) {
+  text-transform: uppercase;
+  font-size: 20.64rem;
+  font-weight: 500;
+  line-height: 35.2rem;
+  letter-spacing: 2rem;
+  color: #f16999;
+  text-align: center;
+  font-family: "AdobeHeitiStd-Regular";
+  position: fixed;
+  top: 97.87rem;
+  text-shadow:
+    1px 1px 2px #585858,
+    0 0 1px #747373,
+    1px 1px 1px #b3b3b3,
+    0 0 1px rgba(131, 131, 131, 0.5);
+}
 
-  button {
-    text-transform: uppercase;
-    background-image: url("../../../../images/gameover/succeedpay.webp");
-    background-size: 100% 100%;
-    background-position: center;
-    border: none;
-    background-color: transparent;
-    width: 168.51rem;
-    height: 22.84rem;
-    font-size: 13.86rem;
-    font-weight: bold;
-    line-height: 7.91rem;
-    letter-spacing: 1.2rem;
-    text-align: center;
-    transition: font-size 0.1s ease;
-    text-transform: uppercase;
-    position: fixed;
-    top: 140.13rem;
-    color: #ffffff;
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
-    text-shadow:
-      -0.5rem -0.5rem 0 rgba(163, 162, 162, 0.7),
-      0.5rem -0.5rem 0 rgba(180, 179, 179, 0.7),
-      -0.5rem 0.5rem 0 rgba(165, 164, 164, 0.7),
-      0.5rem 0.5rem 0 rgba(206, 206, 206, 0.7);
-  }
+.congrats button {
+  background-image: url("../../../../images/gameover/succeedpay.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  border: none;
+  background-color: transparent;
+  width: 168.51rem;
+  height: 22.84rem;
+  font-size: 13.86rem;
+  font-weight: bold;
+  line-height: 7.91rem;
+  letter-spacing: 1.2rem;
+  text-align: center;
+  transition: font-size 0.1s ease;
+  text-transform: uppercase;
+  position: fixed;
+  top: 140.13rem;
+  color: #ffffff;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  text-shadow:
+    -0.5rem -0.5rem 0 rgba(163, 162, 162, 0.7),
+    0.5rem -0.5rem 0 rgba(180, 179, 179, 0.7),
+    -0.5rem 0.5rem 0 rgba(165, 164, 164, 0.7),
+    0.5rem 0.5rem 0 rgba(206, 206, 206, 0.7);
+}
 
-  button:active {
-    font-size: 15rem;
-    text-shadow:
-      -0.7rem -0.7rem 0 rgba(56, 56, 56, 0.7),
-      0.7rem -0.7rem 0 rgba(71, 71, 71, 0.7),
-      -0.7rem 0.7rem 0 rgba(59, 59, 59, 0.7),
-      0.7rem 0.7rem 0 rgba(69, 69, 69, 0.7);
-  }
+.congrats button:active {
+  font-size: 15rem;
+  text-shadow:
+    -0.7rem -0.7rem 0 rgba(56, 56, 56, 0.7),
+    0.7rem -0.7rem 0 rgba(71, 71, 71, 0.7),
+    -0.7rem 0.7rem 0 rgba(59, 59, 59, 0.7),
+    0.7rem 0.7rem 0 rgba(69, 69, 69, 0.7);
 }
