@@ -8,6 +8,7 @@ import LockedImg from "../../images/GiftPark/Locked.webp";
 import PendingDayImg from "../../images/GiftPark/PendingDay.webp";
 import PendingImg from "../../images/GiftPark/Pending.webp";
 import StarsImg from "../../images/GiftPark/Stars.webp";
+import mobileStarsImg from "../../images/Mobile/GiftPark/GiftParkStar.webp";
 import CloseImg from "../../images/GiftPark/Close.webp";
 import GiftParkImg from "../../images/GiftPark/GiftParkBtn.webp";
 import CallLoadingImg from "../../images/InDayBouns/CallLoading.webp";
@@ -323,140 +324,147 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
             <>
                 {
                     isShowGiftPark &&
-                    <div className={`${style.container} ${isCloseAnimating ? style.containerClosed : ''}`} >
-                        <img className={style.stars} src={StarsImg} alt="" />
-                        <div className={style.header}>
-                            GIFT PARK
-                        </div>
-                        <div className={style.cornerImage}>
-                            <img src={CloseImg} onClick={() => { toggleContent() }} />
-                        </div>
-                        <div className={style.containerIn}>
-                            <div className={style.titleStreakDay}>
-                                Streak Days
-                                <img src={PlayQuestionsImg} alt="" />
-                                <span className={style.playQuestion}>Play at least one 200+ score game daily. Missing a day resets the reward calculation to DAY 1, and unclaimed rewards will be lost!</span>
+                    <div className={mobileStyle.overlay}>
+                        <div className={`${mobileStyle.container} ${isCloseAnimating ? mobileStyle.containerClosed : ''}`} >
+                            <img className={mobileStyle.stars} src={mobileStarsImg} alt="" />
+                            <div className={mobileStyle.title}>
+                                GIFT PARK
                             </div>
-                            <div className={style.dayCountDown}>
-                                {streakDayCycle === 0 ? (
-                                    <>
-                                    <span>
-                                    Day 1
-                                    <br />
-                                    Current Day
-                                </span>
-                                <span style={{marginLeft: "5rem"}}>
-                                    Starts on
-                                    <br />
-                                    March 21 at 13:00 (UTC)
-                                </span>
-                                    </>
-                                ) : (
-                                    <>
-                                    <span>
-                                    Day {dayInCycle}
-                                    <br />
-                                    Current Day
-                                </span>
-                                <span style={{marginLeft: "5rem"}}>
-                                    {formatSeasonCountDown(timeLeft)}
-                                    <br />
-                                    Until next day starts
-                                </span>
-                                    </>
-                                )}
-                                
+                            <div className={mobileStyle.closeImage}>
+                                <img 
+                                    src={CloseImg} 
+                                    onClick={() => { toggleContent() }} 
+                                    onTouchEnd={() => { toggleContent() }} 
+                                />
                             </div>
-                            <div className={style.carouselContainer}>
-                                <button
-                                    className={`${style.arrowButton} ${offset === 0 ? style.disabled : style.enable}`}
-                                    onClick={handlePrev}
-                                    disabled={offset === 0}
-                                >
-                                    <img
-                                        src={offset === 0 ? ArrowLeftImg : ArrowRightImg}
-                                        alt=""
-                                        className={`${style.arrowIcon} ${offset === 0 ? "" : style.rotated}`}
-                                    />
-                                </button>
-    
-                                <div className={style.carousel}>
-                                    <div
-                                        className={style.carouselInner}
-                                        style={{ transform: `translateX(-${offset * (itemWidth)}rem)` }}
+                            <div className={mobileStyle.containerIn}>
+                                <div className={mobileStyle.titleStreakDay}>
+                                    Streak Days
+                                    <img src={PlayQuestionsImg} alt="" />
+                                    <span className={mobileStyle.playQuestion}>Play at least one 200+ score game daily. Missing a day resets the reward calculation to DAY 1, and unclaimed rewards will be lost!</span>
+                                </div>
+                                <div className={mobileStyle.dayCountDown}>
+                                    {streakDayCycle === 0 ? (
+                                        <>
+                                        <span>
+                                        Day 1
+                                        <br />
+                                        Current Day
+                                    </span>
+                                    <span style={{marginLeft: "5rem"}}>
+                                        Starts on
+                                        <br />
+                                        March 21 at 13:00 (UTC)
+                                    </span>
+                                        </>
+                                    ) : (
+                                        <>
+                                        <span>
+                                        Day {dayInCycle}
+                                        <br />
+                                        Current Day
+                                    </span>
+                                    <span style={{marginLeft: "5rem"}}>
+                                        {formatSeasonCountDown(timeLeft)}
+                                        <br />
+                                        Until next day starts
+                                    </span>
+                                        </>
+                                    )}
+                                </div>
+                                <div className={mobileStyle.carouselContainer}>
+                                    <button
+                                        className={`${mobileStyle.arrowButton} ${offset === 0 ? mobileStyle.disabled : mobileStyle.enable}`}
+                                        onClick={handlePrev}
+                                        onTouchEnd={handlePrev}
+                                        disabled={offset === 0}
                                     >
-                                        {bouns.map((item, index) => {
-    
-                                            const backgroundImage = item.status === 'pending' ? ClaimedAndLockedBgImg : PendingImg;
-                                            const backgroundDayImage = item.status === 'pending' ? ClaimedDayBgImg : PendingDayImg;
-    
-                                            const cornerMark = item.status === 'locked' ? LockedImg : (item.status === 'claimed' ? ClaimedImg : '');
-                                            const mask = item.status === 'claimed' ? MaskImg : '';
-                                            const circleStyle = {
-                                                textShadow: '0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.6)',
-                                                cursor: item.status === 'pending' && callLoadingIndex === 0 ? "pointer" : 'not-allowed',
-                                                width: `${itemWidth - marginLeft}rem`,
-                                                marginLeft: `${marginLeft}rem`,
-                                            };
-                                            return (
-                                                <div key={index} className={`${style.bonusItem} ${item.status === "pending" && callLoadingIndex === 0 ? style.hoverEffect : ""
-                                                    }`} style={circleStyle} onClick={item.status === 'pending' ? () => callContract(item.days) : undefined}>
-                                                    <div className={style.bonusItemUp}>
-                                                        {callLoadingIndex === item.days &&
-                                                            <div className={style.loading}>
-                                                                <img src={MaskImg} className={style.loadingMask} />
-                                                                <img src={CallLoadingImg} className={style.loadingMain} />
-                                                            </div>
-                                                        }
-                                                        {cornerMark && <img src={cornerMark} alt="" className={style.cornerMark} />}
-                                                        {mask && <img src={mask} alt="" className={style.mask} />}
-                                                        <img src={backgroundImage} className={style.streakDaysImg} alt="" />
-                                                        <span className={style.streakDaysContent}>
-                                                            +{item.scores}
-                                                            <br />
-                                                            scores
-                                                        </span>
+                                        <img
+                                            src={offset === 0 ? ArrowLeftImg : ArrowRightImg}
+                                            alt=""
+                                            className={`${mobileStyle.arrowIcon} ${offset === 0 ? "" : mobileStyle.rotated}`}
+                                        />
+                                    </button>
+
+                                    <div className={mobileStyle.carousel}>
+                                        <div
+                                            className={mobileStyle.carouselInner}
+                                            style={{ transform: `translateX(-${offset * (itemWidth)}rem)` }}
+                                        >
+                                            {bouns.map((item, index) => {
+
+                                                const backgroundImage = item.status === 'pending' ? ClaimedAndLockedBgImg : PendingImg;
+                                                const backgroundDayImage = item.status === 'pending' ? ClaimedDayBgImg : PendingDayImg;
+
+                                                const cornerMark = item.status === 'locked' ? LockedImg : (item.status === 'claimed' ? ClaimedImg : '');
+                                                const mask = item.status === 'claimed' ? MaskImg : '';
+                                                const circleStyle = {
+                                                    textShadow: '0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.6)',
+                                                    cursor: item.status === 'pending' && callLoadingIndex === 0 ? "pointer" : 'not-allowed',
+                                                    width: `${itemWidth - marginLeft}rem`,
+                                                    marginLeft: `${marginLeft}rem`,
+                                                };
+                                                return (
+                                                    <div key={index} className={`${mobileStyle.bonusItem} ${item.status === "pending" && callLoadingIndex === 0 ? mobileStyle.hoverEffect : ""
+                                                        }`} style={circleStyle} onClick={item.status === 'pending' ? () => callContract(item.days) : undefined}>
+                                                        <div className={mobileStyle.bonusItemUp}>
+                                                            {callLoadingIndex === item.days &&
+                                                                <div className={mobileStyle.loading}>
+                                                                    <img src={MaskImg} className={mobileStyle.loadingMask} />
+                                                                    <img src={CallLoadingImg} className={mobileStyle.loadingMain} />
+                                                                </div>
+                                                            }
+                                                            {cornerMark && <img src={cornerMark} alt="" className={mobileStyle.cornerMark} />}
+                                                            {mask && <img src={mask} alt="" className={mobileStyle.mask} />}
+                                                            <img src={backgroundImage} className={mobileStyle.streakDaysImg} alt="" />
+                                                            <span className={mobileStyle.streakDaysContent}>
+                                                                +{item.scores}
+                                                                <br />
+                                                                scores
+                                                            </span>
+                                                        </div>
+                                                        <div className={mobileStyle.bonusItemDown}>
+                                                            <img src={backgroundDayImage} alt="" style={{ width: "15rem" }} />
+                                                            <span className={mobileStyle.streakDaysContent}>
+                                                                Day {item.days}
+                                                            </span>
+                                                        </div>
+                                                        {index === 0 ? null : item.status === 'locked' ? (
+                                                            <div className={mobileStyle.dayPoint}>...</div>
+                                                        ) : <div className={mobileStyle.dayLine}></div>}
                                                     </div>
-                                                    <div className={style.bonusItemDown}>
-                                                        <img src={backgroundDayImage} alt="" style={{ width: "15rem" }} />
-                                                        <span className={style.streakDaysContent}>
-                                                            Day {item.days}
-                                                        </span>
-                                                    </div>
-                                                    {index === 0 ? null : item.status === 'locked' ? (
-                                                        <div className={style.dayPoint}>...</div>
-                                                    ) : <div className={style.dayLine}></div>}
-                                                </div>
-                                            )
-                                        }
-                                        )}
+                                                )
+                                            }
+                                            )}
+                                        </div>
                                     </div>
+                                    <button
+                                        className={`${mobileStyle.arrowButton} ${offset === maxOffset ? mobileStyle.disabled : mobileStyle.enable}`}
+                                        onClick={handleNext}
+                                        onTouchEnd={handleNext}
+                                        disabled={offset === maxOffset}
+                                    >
+                                        <img
+                                            src={offset === maxOffset ? ArrowLeftImg : ArrowRightImg}
+                                            alt=""
+                                            className={`${mobileStyle.arrowIcon} ${offset === maxOffset ? style.rotated : ""}`}
+                                        />
+                                    </button>
+
                                 </div>
-                                <button
-                                    className={`${style.arrowButton} ${offset === maxOffset ? style.disabled : style.enable}`}
-                                    onClick={handleNext}
-                                    disabled={offset === maxOffset}
-                                >
-                                    <img
-                                        src={offset === maxOffset ? ArrowLeftImg : ArrowRightImg}
-                                        alt=""
-                                        className={`${style.arrowIcon} ${offset === maxOffset ? style.rotated : ""}`}
-                                    />
-                                </button>
-    
-                            </div>
-                            <div className={style.dividingLine}></div>
-                            <div className={style.otherGiftsTitle}>
-                                Other Gifts
-                            </div>
-                            <div className={style.otherGifts}>
-                                Comming Soon!
-                            </div>
-                            {showAddScoresPopup &&
-                                <div className={style.addedPoints}>
-                                    + {popupScores} Scores!
+                                <div className={mobileStyle.dividingLine}></div>
+                                <div className={mobileStyle.otherGiftsTitle}>
+                                    Other Gifts
                                 </div>
-                            }
+                                <div className={mobileStyle.otherGifts}>
+                                    Comming Soon!
+                                </div>
+                                {showAddScoresPopup &&
+                                    <div className={mobileStyle.addedPoints}>
+                                        + {popupScores} Scores!
+                                    </div>
+                                }
+                            </div>
                         </div>
                     </div>
                 }
@@ -473,4 +481,3 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
     }
     
 }
-
