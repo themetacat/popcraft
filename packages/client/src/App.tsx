@@ -133,14 +133,14 @@ export const App = () => {
     <div className={isMobile ? style.pageMobile : style.page}>
       {syncProgress ? (
         syncProgress.step !== SyncStep.LIVE ? (
-          <div className={style.GameBoard}>
+          <div className={style.GameBoard} style={isMobile ? {fontSize: "10rem", width: "80%", color: "#14B383", fontFamily: "AdobeHeitiStd-Regular"} : {color: "#000"}}>
             {syncProgress.message} ({Math.floor(syncProgress.percentage)}%)
           </div>
         ) : (
           <Header hoveredData={hoveredData} handleData={handleMouseDown} isMobile={isMobile} />
         )
       ) : (
-        <div style={{ color: "#000" }}>HYDRATING FROM RPC &nbsp;&nbsp;(0)</div>
+        <div style={isMobile ? {fontSize: "10rem", width: "80%", color: "#14B383", fontFamily: "AdobeHeitiStd-Regular"} : {color: "#000"}}>HYDRATING FROM RPC &nbsp;&nbsp;(0)</div>
       )}
       <Toaster
         toastOptions={{
