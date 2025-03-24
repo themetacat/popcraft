@@ -2289,7 +2289,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           />
         )}
 
-        {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (
+        {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && chainId != 177 && (
           <>
             <TokenNotification
               value={tokenNotificationValue}
@@ -2613,9 +2613,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             showRankingList={showRankingList}
             isMobile={isMobile}
           />
-          {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && (
+          {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && chainId != 177 && (
             <>
-
               <MissionBonus
                 checkTaskInProcess={checkTaskInProcess}
                 handleErrorAll={handleErrorAll}
