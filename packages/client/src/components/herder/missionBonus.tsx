@@ -328,6 +328,14 @@ export default function MissionBonus({ checkTaskInProcess, handleErrorAll, isMob
                 </div>}
 
                 <div className={mobileStyle.inDayBonusBtn} onClick={() => toggleContent()}>
+                    {!isContentVisible && <div className={mobileStyle.playersAndCountdown}>
+                        <span>
+                            {thePlayDay === missionBonusDay ? playerGames : 0} {(thePlayDay != missionBonusDay || playerGames === 1) ? 'PLAY' : 'PLAYS'}
+                        </span>
+                        <span>
+                            {formatSeasonCountDown(timeLeft)}
+                        </span>
+                    </div>}
                     <img src={mobileBtnImg} alt="" />
                     <button>In-Day Bouns</button>
                     {tips > 0 &&

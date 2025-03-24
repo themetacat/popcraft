@@ -509,3 +509,27 @@
         opacity: 1;
     }
 }
+
+.playersAndCountdown {
+    width: 44.34rem;
+    height: 4.88rem;
+    margin-bottom: 48rem;
+
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    justify-content: center;
+
+    font-family: Simplicity;
+    font-weight: 400;
+    font-size: 4.88rem;
+    color: #24A0D4;
+    line-height: 6.47rem;
+    text-shadow:
+        -0.65rem -0.65rem 0 white,
+        0.65rem -0.65rem 0 white,
+        -0.65rem 0.65rem 0 white,
+        0.65rem 0.65rem 0 white,
+        0.5rem 1rem 1rem rgba(0, 0, 0, 1);
+    white-space: nowrap;
+}
