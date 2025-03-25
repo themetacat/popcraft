@@ -242,8 +242,8 @@
 
 .titleStreakDay img {
     margin-top: 0.3rem;
-    margin-left: 0.5rem;
-    width: 3rem;
+    margin-left: 2.5rem;
+    width: 10rem;
     cursor: pointer;
 }
 
@@ -473,14 +473,14 @@
 }
 
 .dayLine {
-    width: 10rem;
+    width: 28rem;
     height: 6rem;
     background-color: #E28764;
     border-radius: 2rem;
     position: absolute;
     box-shadow: 0 0.1rem 0.4rem rgba(0, 0, 0, 0.67);
     bottom: 2.5rem;
-    left: -5.5rem;
+    left: -14.5rem;
 }
 
 .dividingLine {
