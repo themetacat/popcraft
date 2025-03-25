@@ -493,7 +493,7 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                         {formatAmount(totalPrice)} {nativeToken}
                     </span>
                 </div>
-                <div className={style.totalAmount} style={{ color: "#F391AC" }}>
+                <div className={style.totalAmount} style={{ color: "#f16394" }}>
                     <span className={style.leftSpan}>
                         NFT(-{discount}%):
                     </span>
@@ -672,7 +672,7 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                             {formatAmount(totalPrice)} {nativeToken}
                         </span>
                     </div>
-                    <div className={mobileTopBuyStyle.totalAmount} style={{ color: "#F391AC"}}>
+                    <div className={mobileTopBuyStyle.totalAmount} style={{ color: "#f16394"}}>
                         <span className={mobileTopBuyStyle.leftSpan}>
                             NFT(-{discount}%):
                         </span>
