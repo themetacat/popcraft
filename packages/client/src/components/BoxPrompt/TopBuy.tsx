@@ -380,7 +380,7 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
         
         const payFunctionTwo = payFunction(
             methodParametersArray,
-            discount > 0 ? totalPrice * ((100 - discount) / 100) * 10 **18 : 0
+            discount > 0 ? (BigInt(totalPrice* 10 **18 )* BigInt(100 - discount) / 100n) : 0n
         );
         setcresa(true);
         payFunctionTwo.then((result) => {
