@@ -345,8 +345,6 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                             <div className={mobileStyle.containerIn}>
                                 <div className={mobileStyle.titleStreakDay}>
                                     Streak Days
-                                    <img src={PlayQuestionsImg} alt="" />
-                                    <span className={mobileStyle.playQuestion}>Play at least one 200+ score game daily. Missing a day resets the reward calculation to DAY 1, and unclaimed rewards will be lost!</span>
                                 </div>
                                 <div className={mobileStyle.dayCountDown}>
                                     {streakDayCycle === 0 ? (
