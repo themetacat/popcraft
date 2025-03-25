@@ -677,12 +677,12 @@ export function createSystemCalls(
     }
   }
 
-  const payFunction = async (methodParametersArray: any[]) => {
+  const payFunction = async (methodParametersArray: any[], totalValue = 0) => {
     const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
 
     let hashValpublic;
-    const payArgs = await getPayArgs(methodParametersArray)
+    const payArgs = await getPayArgs(methodParametersArray, totalValue)
 
     const nonce = await getAccountNonce();
     const encodeData = encodeFunctionData({
@@ -727,7 +727,7 @@ export function createSystemCalls(
     return hashValpublic;
   };
 
-  const getPayArgs = async (methodParametersArray: any[]) => {
+  const getPayArgs = async (methodParametersArray: any[], theTotalValue = 0) => {
     const args = [];
     let totalValue = BigInt(0);
     let abi = popCraftRedstoneBuyAbi
@@ -767,6 +767,9 @@ export function createSystemCalls(
         args.push(arg_single);
       }
       abi = popCraftMintChainBuyAbi;
+      if(theTotalValue > 0){
+        totalValue = BigInt(theTotalValue)
+      }
     }
 
     return { "totalValue": totalValue, "args": args, "abi": abi }

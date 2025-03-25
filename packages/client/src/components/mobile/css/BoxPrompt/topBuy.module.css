@@ -17,14 +17,11 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
     pointer-events: auto !important;
-  }
+}
 
 .buyBoxContainer {
-    /* width: calc(100%); */
-    /* pointer-events: auto !important;
-    z-index: 50; */
     width: 230.23rem;
-    height: 301.4rem;
+    height: 342.4rem;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -89,7 +86,7 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    
+
     background-color: #ff749f;
 
     right: 130rem;
@@ -104,29 +101,32 @@
     margin-left: 0.67rem;
     overflow-y: auto;
     left: 50%;
-    top: 43%;
+    top: 40%;
     transform: translate(-50%, -50%);
     overflow-x: hidden;
 }
 
 .totalAmount {
-    position: absolute;
-    width: 115.96rem;
-    height: 7.1rem;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     white-space: nowrap;
+    height: 13.5rem;
+}
 
-    left: 50%;
-    top: 250rem;
-    transform: translateX(-50%);
-
-    font-family: AdobeHeitiStd-Regular;
+.priceInfo {
+    position: absolute;
+    top: 253rem;
+    width: 79%;
+    font-family: "AdobeHeitiStd-Regular2";
     font-weight: 400;
-    font-size: 9.03rem;
+    font-size: 7.03rem;
     color: #467999;
-    line-height: 11.11rem;
+}
+
+.leftSpan {
+    text-align: right;
+    width: 89rem;
 }
 
 .payBtnBox {
@@ -136,7 +136,7 @@
     align-items: center;
 
     left: 50%;
-    top: 248rem;
+    top: 301rem;
     transform: translateX(-50%);
 }
 
@@ -151,7 +151,6 @@
     background-position: center;
 
     align-items: center;
-    margin-top: 15.76rem;
     border-radius: 10rem;
 
     font-family: AdobeHeitiStd-Regular;
@@ -368,7 +367,7 @@
     line-height: 12.31rem;
 }
 
-.dataIcon > * {
+.dataIcon>* {
     max-width: 100%;
     max-height: 100%;
 }

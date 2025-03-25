@@ -212,6 +212,14 @@ export default mudConfig({
         scores: "uint256"
       }
     },
+    NFTToTokenDiscount: {
+      keySchema: {
+        balance: "uint256",
+      },
+      valueSchema: {
+        discount: "uint256"
+      }
+    },
     //    ------------- Plants ---------------
     // add Plants, update TotalPlants
     Plants: {
