@@ -167,6 +167,11 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
     const itemWidth = 22.5;
     const marginLeft = 1;
     const maxOffset = Math.max(0, bouns.length - visibleCount);
+
+    const visibleCountMobile = 3;
+    const itemWidthMobile = 54.85;
+    const marginLeftMobile = 1;
+    const maxOffsetMobile = Math.max(0, bouns.length - visibleCountMobile);
     if(!isMobile){
         return (
             <>
@@ -389,7 +394,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                     <div className={mobileStyle.carousel}>
                                         <div
                                             className={mobileStyle.carouselInner}
-                                            style={{ transform: `translateX(-${offset * (itemWidth)}rem)` }}
+                                            style={{ transform: `translateX(-${offset * (itemWidthMobile)}rem)` }}
                                         >
                                             {bouns.map((item, index) => {
 
@@ -401,12 +406,16 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                                 const circleStyle = {
                                                     textShadow: '0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.6)',
                                                     cursor: item.status === 'pending' && callLoadingIndex === 0 ? "pointer" : 'not-allowed',
-                                                    width: `${itemWidth - marginLeft}rem`,
-                                                    marginLeft: `${marginLeft}rem`,
+                                                    width: `${itemWidthMobile - marginLeftMobile}rem`,
+                                                    marginLeft: `${marginLeftMobile}rem`,
                                                 };
                                                 return (
-                                                    <div key={index} className={`${mobileStyle.bonusItem} ${item.status === "pending" && callLoadingIndex === 0 ? mobileStyle.hoverEffect : ""
-                                                        }`} style={circleStyle} onClick={item.status === 'pending' ? () => callContract(item.days) : undefined}>
+                                                    <div key={index} 
+                                                        className={`${mobileStyle.bonusItem} ${item.status === "pending" && callLoadingIndex === 0 ? mobileStyle.hoverEffect : ""}`}
+                                                        style={circleStyle}
+                                                        onClick={item.status === 'pending' ? () => callContract(item.days) : undefined}
+                                                        onTouchEnd={item.status === 'pending' ? () => callContract(item.days) : undefined}
+                                                    >
                                                         <div className={mobileStyle.bonusItemUp}>
                                                             {callLoadingIndex === item.days &&
                                                                 <div className={mobileStyle.loading}>
@@ -424,7 +433,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                                             </span>
                                                         </div>
                                                         <div className={mobileStyle.bonusItemDown}>
-                                                            <img src={backgroundDayImage} alt="" style={{ width: "15rem" }} />
+                                                            <img src={backgroundDayImage} alt="" style={{ width: "30rem" }} />
                                                             <span className={mobileStyle.streakDaysContent}>
                                                                 Day {item.days}
                                                             </span>
@@ -438,19 +447,19 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                             )}
                                         </div>
                                     </div>
+
                                     <button
-                                        className={`${mobileStyle.arrowButton} ${offset === maxOffset ? mobileStyle.disabled : mobileStyle.enable}`}
+                                        className={`${mobileStyle.arrowButton} ${offset === maxOffsetMobile ? mobileStyle.disabled : mobileStyle.enable}`}
                                         onClick={handleNext}
                                         onTouchEnd={handleNext}
-                                        disabled={offset === maxOffset}
+                                        disabled={offset === maxOffsetMobile}
                                     >
                                         <img
-                                            src={offset === maxOffset ? ArrowLeftImg : ArrowRightImg}
+                                            src={offset === maxOffsetMobile ? ArrowLeftImg : ArrowRightImg}
                                             alt=""
-                                            className={`${mobileStyle.arrowIcon} ${offset === maxOffset ? style.rotated : ""}`}
+                                            className={`${mobileStyle.arrowIcon} ${offset === maxOffsetMobile ? style.rotated : ""}`}
                                         />
                                     </button>
-
                                 </div>
                                 <div className={mobileStyle.dividingLine}></div>
                                 <div className={mobileStyle.otherGiftsTitle}>

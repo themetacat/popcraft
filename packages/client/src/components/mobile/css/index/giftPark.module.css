@@ -14,6 +14,14 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: "Zihun-Buding";
+    src: url("/fonts/ZIHUN27BUDING.TTF") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 .giftsParkBtn {
     background-size: contain;
     background-repeat: no-repeat;
@@ -127,8 +135,8 @@
 }
 
 .container {
-    width: 100vw;
-    height: 50vh;
+    width: 249.44rem;
+    height: 254.76rem;
     border: none;
 
     position: fixed;
@@ -152,15 +160,15 @@
 
 .stars {
     position: absolute;
-    top: 10.5%;
+    top: 10%;
     left: 50%;
     transform: translateX(-50%);
-    width: 80%;
+    width: 70%;
 }
 
 .title {
     position: absolute;
-    top: 12.5%;
+    top: 12%;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -175,8 +183,8 @@
 
 .closeImage {
     position: absolute;
-    right: 3%;
-    top: 8%;
+    left: 235.15rem;
+    top: 15rem;
     width: 8rem;
     height: 8rem;
     cursor: pointer;
@@ -227,7 +235,7 @@
 
     color: #B13200;
 
-    margin-top: 25rem;
+    margin-top: 20rem;
     left: 7.5rem;
     height: 8rem;
 }
@@ -274,19 +282,21 @@
 
 .dayCountDown {
     position: fixed;
-    width: 44rem;
-    height: 13rem;
-    right: 6.5rem;
-    font-size: 3.5rem;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-    margin-top: 21rem;
+    width: 86rem;
+    height: 20rem;
+    right: 7.5rem;
+    margin-top: 17rem;
+
+    font-size: 5.5rem;
     font-family: "AdobeHeitiStd-Regular";
     color: #B13200;
-    /* letter-spacing: 0.2rem !important; */
-    border: 0.2rem solid #B13200;
+    text-align: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 0.4rem solid #B13200;
     border-radius: 3.5rem;
 }
 
@@ -307,7 +317,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 47rem;
+    margin-top: 25rem;
 }
 
 .arrowButton.enable:active {
@@ -334,11 +344,10 @@
     position: relative;
     height: 54rem;
     padding-top: 3rem;
-    margin-top: 20rem;
+    margin-top: 37rem;
 }
 
 .carouselInner {
-    margin-top: 25rem;
     display: flex;
     transition: transform 0.3s ease-in-out;
 }
@@ -373,7 +382,7 @@
     position: relative;
     font-family: "Zihun-Buding";
     color: #fff;
-    font-size: 3rem;
+    font-size: 7rem;
 }
 
 .loading {
@@ -413,21 +422,21 @@
 }
 
 .cornerMark {
-    width: 4.5rem;
-    height: 4.5rem;
+    width: 10.5rem;
+    height: 10.5rem;
     position: absolute;
-    top: -19%;
+    top: -13%;
     right: -9%;
     z-index: 2;
 }
 
 .mask {
-    width: 19rem;
+    width: 38rem;
     position: absolute;
 }
 
 .streakDaysImg {
-    width: 18.5rem;
+    width: 38.5rem;
 }
 
 .streakDaysContent {
@@ -443,18 +452,18 @@
     position: relative;
     font-family: "Zihun-Buding";
     color: #fff;
-    font-size: 2.3rem;
+    font-size: 5.87rem;
     margin-top: 2rem;
     z-index: 2;
 }
 
 .dayPoint {
     width: 10rem;
-    height: 1rem;
+    height: 6rem;
     position: absolute;
     bottom: 4rem;
     left: -5.5rem;
-    font-size: 3.5rem;
+    font-size: 8.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -465,7 +474,7 @@
 
 .dayLine {
     width: 10rem;
-    height: 1rem;
+    height: 6rem;
     background-color: #E28764;
     border-radius: 2rem;
     position: absolute;
@@ -476,21 +485,21 @@
 
 .dividingLine {
     width: 95%;
-    height: 1rem;
+    height: 1.5rem;
 
     background-color: #E7AB86;
     border-radius: 2rem;
     box-shadow: 0 0.1rem 0.4rem rgba(0, 0, 0, 0.67);
 
     position: absolute;
-    top: 56%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
 .otherGiftsTitle {
     left: 10%;
-    top: 60%;
+    top: 61%;
     position: fixed;
     width: 20rem;
     height: 8rem;
@@ -518,9 +527,9 @@
 
 .addedPoints {
     position: fixed;
-    top: 5.5rem;
+    top: 26rem;
     right: 45%;
-    font-size: 5rem;
+    font-size: 8rem;
     color: #B13200;
 
     opacity: 1;
