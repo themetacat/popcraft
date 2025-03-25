@@ -236,6 +236,9 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
               {
                 tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "UserBenefitsToken" }),
               },
+              {
+                tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "NFTToTokenDiscount" }),
+              },
               ...(networkConfig.chain.id === 2818 || networkConfig.chain.id === 31337 || networkConfig.chain.id === 177 
                 ? [
                   { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "SeasonTime" }) },
