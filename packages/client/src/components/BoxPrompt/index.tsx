@@ -990,7 +990,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
         ) : null}
 
 
-        <div className={howToPlayStyle.btnHtp}
+        {/* <div className={howToPlayStyle.btnHtp}
           style={{
             display: "none",
             bottom: "43%"
@@ -1001,7 +1001,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
         >
           <img src={chainId === 177 ? KoalaImg : SimbaImg} alt="" />
           <span>{chainId === 177 ? 'Earn Morph Points' : 'Earn $HSK'}</span>
-        </div>
+        </div> */}
         <div className={howToPlayStyle.btnHtp}
           style={{
             bottom: "30%"
@@ -1051,7 +1051,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
           </a>
         </div>
 
-        <div className={howToPlayStyle.btnHtp}
+        {/* <div className={howToPlayStyle.btnHtp}
           style={{
             bottom: "43%"
           }}
@@ -1061,12 +1061,12 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
         >
           <img src={chainId === 177 ? KoalaImg : SimbaImg} alt="" />
           <span>{chainId === 177 ? 'Earn Morph Points' : 'Earn $HSK'}</span>
-        </div>
+        </div> */}
 
         {chainId === 2818 && (
           <div className={howToPlayStyle.btnHtp}
             style={{
-              bottom: "55%"
+              bottom: "43%"
             }}
             onClick={() => window.open("https://morpha.io/en/launchpad", "_blank")}
           >
