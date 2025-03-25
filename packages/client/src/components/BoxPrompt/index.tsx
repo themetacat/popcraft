@@ -31,6 +31,7 @@ import substanceImg from "../../images/substance/substance.webp";
 import HowToPlay, { Rewards, CrossFlow } from "./HowToPlay";
 import mobileStyle from "../mobile/css/BoxPrompt/index.module.css";
 import GenesisNFTImg from "../../images/HowToPlay/GenesisNFT117.webp";
+import { useNFTDiscount } from "../Utils/ERC721Utils";
 
 interface Props {
   timeControl: any;
@@ -84,6 +85,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
   const [showRewards, setShowRewards] = useState(false);
   const [showCrossFlow, setShowCrossFlow] = useState(false);
   const default_buy_token_num = 5;
+  const discount = useNFTDiscount(chainId, address);
 
   useEffect(() => {
     const rankRecord = address ? getComponentValue(
@@ -283,7 +285,8 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
     }
     const methodParametersArray = itemsToPay.map(item => prices[item.key]?.methodParameters);
     const payFunctionTwo = payFunction(
-      methodParametersArray
+      methodParametersArray,
+      discount > 0 ? totalPrice * ((100 - discount) / 100) * 10 ** 18 : 0
     );
     setcresa(true);
     payFunctionTwo.then((result) => {
@@ -749,11 +752,29 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                 ))}
               </div>
               <div className={style.totalAmount}>
-                <span className={style.fontNumyo}>
-                  TOTAL: {formatAmount(totalPrice)} {nativeToken}
+                <span className={style.leftSpan}>
+                  Original Total:
+                </span>
+                <span>
+                  {formatAmount(totalPrice)} {nativeToken}
                 </span>
               </div>
-
+              <div className={style.totalAmount} style={{ color: "#F391AC" }}>
+                <span className={style.leftSpan}>
+                  NFT(-{discount}%):
+                </span>
+                <span>
+                  -{formatAmount(totalPrice * (discount / 100))} {nativeToken}
+                </span>
+              </div>
+              <div className={style.totalAmount}>
+                <span className={style.leftSpan}>
+                  Final TOTAL:
+                </span>
+                <span style={{ fontSize: "19px" }}>
+                  {formatAmount(totalPrice * ((100 - discount) / 100))} {nativeToken}
+                </span>
+              </div>
               <div className={style.payBtnBox}>
                 <ConnectButton.Custom>
                   {({
@@ -1029,30 +1050,30 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
             <img src={GithubLogo} className={GithubLogo} />
           </a>
         </div>
-        
-        <div className={howToPlayStyle.btnHtp}
-        style={{
-          bottom: "43%"
-        }}
-        onClick={async () => {
-          setShowCrossFlow(true);
-        }}
-      >
-        <img src={chainId === 177 ? KoalaImg : SimbaImg} alt=""/>
-        <span>{chainId === 177 ? 'Earn Morph Points' : 'Earn $HSK'}</span>
-      </div>
 
-      {chainId === 2818 && (
         <div className={howToPlayStyle.btnHtp}
           style={{
-            bottom: "55%"
+            bottom: "43%"
           }}
-          onClick={() => window.open("https://morpha.io/en/launchpad", "_blank")}
+          onClick={async () => {
+            setShowCrossFlow(true);
+          }}
         >
-          <img src={GenesisNFTImg} alt="" className={howToPlayStyle.genesisNFTAnimation}/>
-          <span>{'Genesis NFT'}</span>
+          <img src={chainId === 177 ? KoalaImg : SimbaImg} alt="" />
+          <span>{chainId === 177 ? 'Earn Morph Points' : 'Earn $HSK'}</span>
         </div>
-      )}
+
+        {chainId === 2818 && (
+          <div className={howToPlayStyle.btnHtp}
+            style={{
+              bottom: "55%"
+            }}
+            onClick={() => window.open("https://morpha.io/en/launchpad", "_blank")}
+          >
+            <img src={GenesisNFTImg} alt="" className={howToPlayStyle.genesisNFTAnimation} />
+            <span>{'Genesis NFT'}</span>
+          </div>
+        )}
       </>
     );
   } else {
@@ -1183,11 +1204,33 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                   </div>
                 ))}
               </div>
-              <div className={mobileTopBuyStyle.totalAmount}>
-                <span className={mobileTopBuyStyle.fontNumyo}>
-                  TOTAL: {formatAmount(totalPrice)} {nativeToken}
-                </span>
+              <div className={mobileTopBuyStyle.priceInfo}>
+                <div className={mobileTopBuyStyle.totalAmount}>
+                  <span className={mobileTopBuyStyle.leftSpan}>
+                    Original Total:
+                  </span>
+                  <span>
+                    {formatAmount(totalPrice)} {nativeToken}
+                  </span>
+                </div>
+                <div className={mobileTopBuyStyle.totalAmount} style={{ color: "#F391AC" }}>
+                  <span className={mobileTopBuyStyle.leftSpan}>
+                    NFT(-{discount}%):
+                  </span>
+                  <span>
+                    -{formatAmount(totalPrice * (discount / 100))} {nativeToken}
+                  </span>
+                </div>
+                <div className={mobileTopBuyStyle.totalAmount}>
+                  <span className={mobileTopBuyStyle.leftSpan}>
+                    Final TOTAL:
+                  </span>
+                  <span style={{ fontSize: "19px" }}>
+                    {formatAmount(totalPrice * ((100 - discount) / 100))} {nativeToken}
+                  </span>
+                </div>
               </div>
+
 
               <div className={mobileTopBuyStyle.payBtnBox}>
                 <ConnectButton.Custom>
@@ -1279,48 +1322,20 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
         {
           timeLeft === 0 && localStorage.getItem('showGameOver') === 'true' && !gameSuccess
             ? (
-        
-                <div className={mobileStyle.gameOver}>
-                  <p>Game Over!</p>
-                  <button
-                    onClick={handlePlayAgain}
-                    disabled={loading}
-                    style={{
-                      cursor: loading ? "not-allowed" : "pointer",
-                      pointerEvents: loading ? "none" : "auto"
-                    }}
-                  >
-                    {loading ? (
-                      <img
-                        src={loadingImg}
-                        className={`${mobileStyle.loading}`}
-                      />
-                    ) : (
-                      "Play Again"
-                    )}
-                  </button>
-                </div>
-            ) : null}
 
-
-        {gameSuccess === true
-          && localStorage.getItem('showGameOver') === 'true'
-          ? (
-      
-              <div className={mobileStyle.congrats}>
-                <p>Congrats!</p>
-                {rewardInfo ? <p>+{rewardInfo}!</p> : <p></p>}
+              <div className={mobileStyle.gameOver}>
+                <p>Game Over!</p>
                 <button
-                  onClick={handlePlayAgaintow}
-                  disabled={loadingPlayAgain}
+                  onClick={handlePlayAgain}
+                  disabled={loading}
                   style={{
-                    cursor: loadingPlayAgain ? "not-allowed" : "pointer",
-                    pointerEvents: loadingPlayAgain ? "none" : "auto"
+                    cursor: loading ? "not-allowed" : "pointer",
+                    pointerEvents: loading ? "none" : "auto"
                   }}
                 >
-                  {loadingPlayAgain ? (
+                  {loading ? (
                     <img
-                      src={LoadingMobileImg}
+                      src={loadingImg}
                       className={`${mobileStyle.loading}`}
                     />
                   ) : (
@@ -1328,6 +1343,34 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                   )}
                 </button>
               </div>
+            ) : null}
+
+
+        {gameSuccess === true
+          && localStorage.getItem('showGameOver') === 'true'
+          ? (
+
+            <div className={mobileStyle.congrats}>
+              <p>Congrats!</p>
+              {rewardInfo ? <p>+{rewardInfo}!</p> : <p></p>}
+              <button
+                onClick={handlePlayAgaintow}
+                disabled={loadingPlayAgain}
+                style={{
+                  cursor: loadingPlayAgain ? "not-allowed" : "pointer",
+                  pointerEvents: loadingPlayAgain ? "none" : "auto"
+                }}
+              >
+                {loadingPlayAgain ? (
+                  <img
+                    src={LoadingMobileImg}
+                    className={`${mobileStyle.loading}`}
+                  />
+                ) : (
+                  "Play Again"
+                )}
+              </button>
+            </div>
           ) : null
         }
       </>

@@ -649,7 +649,7 @@ p {
 
 .buYBox {
   width: 410px;
-  height: 550px;
+  height: 608px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -815,12 +815,6 @@ p {
   -webkit-transition: -webkit-transform 5s linear;
   transition: transform 5s linear;
   height: 100%;
-}
-
-.totalAmount {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .payBtnBox {
@@ -1004,16 +998,15 @@ p {
 
 .totalAmount {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   font-family: "AdobeHeitiStd-Regular2";
-  font-size: 20px;
-}
-
-.fontNumyo {
-  font-size: 20px;
-  color: #47799a;
+  width: 85%;
+  margin-left: 4%;
+  font-size: 13px;
   letter-spacing: 1.5px;
+  line-height: 28px;
+  color: #47799a;
   text-shadow:
     0 0 5px rgba(147, 211, 246, 0.8),
     0 0 10px rgba(147, 211, 246, 0.6),
@@ -1021,6 +1014,12 @@ p {
   border-radius: 10px;
   border: none;
 }
+
+.leftSpan {
+  text-align: right;
+  width: 145px;
+}
+
 
 .overlay {
   position: fixed;

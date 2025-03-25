@@ -22,6 +22,7 @@ import failto from '../../images/substance/failto.png'
 import { encodeEntity } from "@latticexyz/store-sync/recs";
 import { Hex } from "viem";
 import { useAccount } from 'wagmi';
+import { useNFTDiscount } from "../Utils/ERC721Utils";
 
 interface PriceDetails {
     price: string | number;
@@ -59,6 +60,8 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
     const [tokenBalance, setTokenBalance] = useState<{ [key: string]: string }>({});
     const default_buy_token_num = 5;
 
+    const discount = useNFTDiscount(chainId, address);
+    
     useEffect(() => {
         // const token = getComponentValue(Token, numToEntityID(0));
         // if (token && token.tokenAddress) {
@@ -374,8 +377,10 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
             return;
         }
         const methodParametersArray = itemsToPay.map(item => prices[item.key]?.methodParameters);
+        
         const payFunctionTwo = payFunction(
-            methodParametersArray
+            methodParametersArray,
+            discount > 0 ? totalPrice * ((100 - discount) / 100) * 10 **18 : 0
         );
         setcresa(true);
         payFunctionTwo.then((result) => {
@@ -481,8 +486,27 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                     ))}
                 </div>
                 <div className={style.totalAmount}>
-                    <span className={style.fontNumyo}>
-                        TOTAL: {formatAmount(totalPrice)} {nativeToken}
+                    <span className={style.leftSpan}>
+                        Original Total:
+                    </span>
+                    <span>
+                        {formatAmount(totalPrice)} {nativeToken}
+                    </span>
+                </div>
+                <div className={style.totalAmount} style={{ color: "#F391AC" }}>
+                    <span className={style.leftSpan}>
+                        NFT(-{discount}%):
+                    </span>
+                    <span>
+                        -{formatAmount(totalPrice * (discount / 100))} {nativeToken}
+                    </span>
+                </div>
+                <div className={style.totalAmount}>
+                    <span className={style.leftSpan}>
+                        Final TOTAL:
+                    </span>
+                    <span style={{ fontSize: "19px" }}>
+                        {formatAmount(totalPrice * ((100 - discount) / 100))} {nativeToken}
                     </span>
                 </div>
 
@@ -639,10 +663,31 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                         </div>
                     ))}
                 </div>
-                <div className={mobileTopBuyStyle.totalAmount}>
-                    <span className={mobileTopBuyStyle.fontNumyo}>
-                        TOTAL: {formatAmount(totalPrice)} {nativeToken}
-                    </span>
+                <div className={mobileTopBuyStyle.priceInfo}>
+                    <div className={mobileTopBuyStyle.totalAmount}>
+                        <span className={mobileTopBuyStyle.leftSpan}>
+                            Original Total:
+                        </span>
+                        <span>
+                            {formatAmount(totalPrice)} {nativeToken}
+                        </span>
+                    </div>
+                    <div className={mobileTopBuyStyle.totalAmount} style={{ color: "#F391AC"}}>
+                        <span className={mobileTopBuyStyle.leftSpan}>
+                            NFT(-{discount}%):
+                        </span>
+                        <span>
+                            -{formatAmount(totalPrice * (discount / 100))} {nativeToken}
+                        </span>
+                    </div>
+                    <div className={mobileTopBuyStyle.totalAmount}>
+                        <span className={mobileTopBuyStyle.leftSpan}>
+                            Final TOTAL:
+                        </span>
+                        <span style={{ fontSize: "19px" }}>
+                            {formatAmount(totalPrice * ((100 - discount) / 100))} {nativeToken}
+                        </span>
+                    </div>
                 </div>
 
                 <div className={mobileTopBuyStyle.payBtnBox}>
