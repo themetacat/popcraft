@@ -23,6 +23,7 @@ import { encodeEntity } from "@latticexyz/store-sync/recs";
 import { Hex } from "viem";
 import { useAccount } from 'wagmi';
 import { useNFTDiscount } from "../Utils/ERC721Utils";
+import discountTipsImg from "../../images/substance/NFTDiscountTips.jpg";
 
 interface PriceDetails {
     price: string | number;
@@ -495,7 +496,17 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                 </div>
                 <div className={style.totalAmount} style={{ color: "#f16394" }}>
                     <span className={style.leftSpan}>
-                        NFT(-{discount}%):
+                        NFT(-{discount}%)
+                        <span className={style.discountWrapper}>
+                            <img src={discountTipsImg} className={style.discountTipsImg} />
+                            <div className={style.discountTipsText}>
+                                <p>1 NFT → 10% OFF</p>
+                                <p>2 NFTs → 20% OFF</p>
+                                <p>3 NFTs → 30% OFF</p>
+                                <p>4+ NFTs → 40% OFF</p>
+                            </div>
+                        </span>
+                        :
                     </span>
                     <span>
                         -{formatAmount(totalPrice * (discount / 100))} {nativeToken}
