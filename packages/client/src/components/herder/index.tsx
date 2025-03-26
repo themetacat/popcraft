@@ -41,6 +41,7 @@ import { useUtils } from "./utils";
 import MissionBonus from "./missionBonus";
 import TokenNotification from "./tokenNotification";
 import GiftPark from "./giftPark"
+import Invite from "../InviteFriends/index";
 
 import mobileStyle from "../mobile/css/index/index.module.css";
 import UserMobileImg from "../../images/Mobile/Top/User.webp";
@@ -2318,6 +2319,11 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           />
         )}
 
+        {(isConnected && address) && (
+          <Invite
+            isMobile={isMobile}
+          />
+        )}
       </>
     );
   } else {
