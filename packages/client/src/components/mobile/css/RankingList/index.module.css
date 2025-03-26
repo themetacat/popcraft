@@ -216,7 +216,6 @@
     height: 20.4375rem;
     border: 1.5rem solid #fff1c8;
     border-radius: 5rem 5rem 0 0;
-    border-bottom: none;
     z-index: 2;
     pointer-events: none;
 }
@@ -254,6 +253,8 @@
     white-space: nowrap;
     min-width: 20.5rem;
     height: 18rem;
+    margin-left: 3rem;
+    letter-spacing: -0.3rem;
 }
 
 .dropdownArrow {
@@ -267,9 +268,10 @@
     z-index: 1000;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
     border-radius: 3rem;
-    width: 55.8rem;
+    width: 63rem;
     font-size: 7rem;
-    line-height: 10rem;
+    line-height: 12rem;
+    white-space: nowrap; 
 }
 
 .dropdownItem {
@@ -309,7 +311,7 @@
 }
 
 .totalContainerBox {
-    width: 412rem;
+    width: 408rem;
     height: 18rem;
     background-image: url('../../../../images/RankingList/mobile/TotalBg.webp');
     background-size: cover;
@@ -317,6 +319,7 @@
     background-repeat: no-repeat;
     border: none;
     border-radius: 0rem 0 6rem 6rem;
+    margin-left: 2rem;
 }
 
 .totalContainerTableBox {
@@ -358,7 +361,7 @@
 }
 
 .totalScoreItem {
-    width: 54rem;
+    width: 53rem;
 }
 
 .tablecontainerbox {
@@ -389,7 +392,7 @@
 }
 
 .YouBox {
-    width: 103rem;
+    width: 106rem;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -400,7 +403,6 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    /* margin-left: 18rem; */
     width: 50%;
 }
 
@@ -413,9 +415,8 @@
 }
 
 .scoreItem {
-    width: 63rem;
+    width: 60rem;
     text-align: center;
-    margin-left: 4rem;
 }
 
 .bodyContainer{
@@ -425,6 +426,7 @@
     width: 216rem;
     position: absolute;
     overflow: auto;
+    scrollbar-color: #FFF1C8;
 }
 
 

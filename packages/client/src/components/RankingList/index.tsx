@@ -665,7 +665,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                                 <span className={mobileStyle.totalScoreItem}>{sortedRankingRecords.map(record => record.totalPoints).reduce((sum, score) => sum + score, 0)}</span>
                                                 <span className={mobileStyle.totalScoreItem}>{Math.max(...sortedRankingRecords.map(record => record.bestScore))}</span>
                                                 <span className={mobileStyle.totalScoreItem} style={{width: '36rem'}}>{formatTime(Math.min(...sortedRankingRecords.map(record => record.shortestTime).filter(time => time > 0)))}</span>
-                                                <span className={mobileStyle.totalScoreItem} style={{width: '33rem', marginLeft: "10rem"}}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
+                                                <span className={mobileStyle.totalScoreItem} style={{width: '33rem', marginLeft: "12rem"}}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
                                                 <span className={mobileStyle.totalScoreItem} style={{width: '61rem'}}>{Math.floor((sortedRankingRecords.reduce((w, r) => w + (r.wins || 0), 0) / sortedRankingRecords.reduce((w, r) => w + ((r.wins || 0) + (r.losses || 0)), 0) * 100) || 100)}%</span>
                                             </>
                                         ) : (chainId === 31338 || chainId === 185 || chainId === 690) ? (
@@ -703,7 +703,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                                     <>
                                                         <span className={mobileStyle.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
                                                         <span className={mobileStyle.scoreItem}>{totalPoints ? totalPoints : 0}</span>
-                                                        <span className={mobileStyle.scoreItem} style={{width: "53rem"}}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
+                                                        <span className={mobileStyle.scoreItem} style={{width: "53rem", marginLeft: "2rem"}}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
                                                     </>
                                                     :
                                                     (chainId === 31338 || chainId === 185 || chainId === 690) ?
