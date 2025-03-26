@@ -526,11 +526,15 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                     </span>
                                 }
                             </div>
+                            
+                            <div className={mobileStyle.bodyContainer}>
                             <div className={mobileStyle.tablecontainer}>
                                 <table className={mobileStyle.table}>
                                     <colgroup>
-                                        <col style={{ width: "21rem" }} />
-                                        <col style={{ width: "16rem" }} />
+                                        <col style={{ width: "55rem" }} />
+                                        <col style={{ width: "53rem" }} />
+                                        <col style={{ width: "56rem" }} />
+                                        <col style={{ width: "56rem" }} />
                                     </colgroup>
                                     <thead className={mobileStyle.thead}>
                                         <tr>
@@ -651,8 +655,8 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                             <div className={mobileStyle.totalContainerBox}>
                                 <div className={mobileStyle.totalContainerTableBox}>
                                     <div className={mobileStyle.totalLengthBox}>
-                                        <span style={{ width: "13rem", marginLeft: "-1.3rem" }}>Total</span>
-                                        <span style={{ marginLeft: "5.9rem" }}>{sortedRankingRecords.length}</span>
+                                        <span style={{ width: "68rem"}}>Total</span>
+                                        <span style={{ width: "55rem", marginLeft: "-11rem"}}>{sortedRankingRecords.length}</span>
                                     </div>
                                     <div className={mobileStyle.totalScoreBox}>
                                         {MISSION_BOUNS_CHAIN_IDS.includes(chainId) ? (
@@ -660,9 +664,9 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                                 <span className={mobileStyle.totalScoreItem}>{sortedRankingRecords.map(record => record.totalScore).reduce((sum, score) => sum + score, 0)}</span>
                                                 <span className={mobileStyle.totalScoreItem}>{sortedRankingRecords.map(record => record.totalPoints).reduce((sum, score) => sum + score, 0)}</span>
                                                 <span className={mobileStyle.totalScoreItem}>{Math.max(...sortedRankingRecords.map(record => record.bestScore))}</span>
-                                                <span className={mobileStyle.totalScoreItem}>{formatTime(Math.min(...sortedRankingRecords.map(record => record.shortestTime).filter(time => time > 0)))}</span>
-                                                <span className={mobileStyle.totalScoreItem}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
-                                                <span className={mobileStyle.totalScoreItem}>{Math.floor((sortedRankingRecords.reduce((w, r) => w + (r.wins || 0), 0) / sortedRankingRecords.reduce((w, r) => w + ((r.wins || 0) + (r.losses || 0)), 0) * 100) || 100)}%</span>
+                                                <span className={mobileStyle.totalScoreItem} style={{width: '36rem'}}>{formatTime(Math.min(...sortedRankingRecords.map(record => record.shortestTime).filter(time => time > 0)))}</span>
+                                                <span className={mobileStyle.totalScoreItem} style={{width: '33rem', marginLeft: "10rem"}}>{sortedRankingRecords.reduce((sum, record) => sum + (record.wins || 0), 0) + sortedRankingRecords.reduce((sum, record) => sum + (record.losses || 0), 0)}</span>
+                                                <span className={mobileStyle.totalScoreItem} style={{width: '61rem'}}>{Math.floor((sortedRankingRecords.reduce((w, r) => w + (r.wins || 0), 0) / sortedRankingRecords.reduce((w, r) => w + ((r.wins || 0) + (r.losses || 0)), 0) * 100) || 100)}%</span>
                                             </>
                                         ) : (chainId === 31338 || chainId === 185 || chainId === 690) ? (
                                             <>
@@ -699,7 +703,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                                     <>
                                                         <span className={mobileStyle.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
                                                         <span className={mobileStyle.scoreItem}>{totalPoints ? totalPoints : 0}</span>
-                                                        <span className={mobileStyle.scoreItem}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
+                                                        <span className={mobileStyle.scoreItem} style={{width: "53rem"}}>{rankRecord ? Number(rankRecord.highestScore) : 0}</span>
                                                     </>
                                                     :
                                                     (chainId === 31338 || chainId === 185 || chainId === 690) ?
@@ -713,9 +717,9 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                                             <span className={mobileStyle.scoreItem}>{rankRecord ? Number(rankRecord.totalScore) : 0}</span>
                                                         </>
                                                 }
-                                                <span className={mobileStyle.scoreItem}>{rankRecord ? formatTime(Number(rankRecord.shortestTime)) : '00:00'}</span>
-                                                <span className={mobileStyle.scoreItem}>{wins}/{losses}</span>
-                                                <span className={mobileStyle.scoreItem}>{winRate}%</span>
+                                                <span className={mobileStyle.scoreItem} style={{width: "50rem", marginRight: "1rem"}}>{rankRecord ? formatTime(Number(rankRecord.shortestTime)) : '00:00'}</span>
+                                                <span className={mobileStyle.scoreItem} style={{width: "50rem", marginRight: "1rem"}}>{wins}/{losses}</span>
+                                                <span className={mobileStyle.scoreItem} style={{width: "50rem", marginRight: "-11rem"}}>{winRate}%</span>
                                             </div>
                                         </>
                                     ) : (
@@ -726,6 +730,9 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                     )}
                                 </div>
                             </div>
+                            </div>
+
+                            
                         </div>
                     </div>
                 )}
