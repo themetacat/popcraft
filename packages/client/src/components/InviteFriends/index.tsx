@@ -76,7 +76,7 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                     <button>Invite</button>
                 </div>
 
-                {true && (
+                {isShowInviteModal && (
                     <div className={style.overlay}>
                         <div className={style.modalContainer}>
                             <div className={style.title}>

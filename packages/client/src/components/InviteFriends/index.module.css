@@ -159,6 +159,7 @@
     position: absolute;
     left: 121rem;
     top: -2rem;
+    cursor: pointer;
 }
 
 .contentsWrap {
