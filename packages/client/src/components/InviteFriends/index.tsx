@@ -63,7 +63,7 @@ export default function InviteFriends({ isMobile }: InviteProps) {
     const handleTwitterBtnClick = (InviteCode) => {
         const text = encodeURIComponent(
             `🚀 Join me in PopCraft, a fully on-chain match-3 game! Click the link to start playing: http://popcraft.pixelaw.xyz/invite/${InviteCode} #PopCraft #Web3Gaming #FOCG`
-          );
+        );
         const url = `https://x.com/intent/tweet?text=${text}`;
         window.open(url, "_blank");
     };
@@ -143,14 +143,24 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {invitedList.map((item, index) => (
-                                                    <tr key={index}>
-                                                        <td>{item.rank}</td>
-                                                        <td>{item.address}</td>
-                                                        <td>{item.scores}</td>
-                                                        <td>{item.rewards}</td>
-                                                    </tr>
-                                                ))}
+                                                {invitedList.length > 0
+                                                    ? invitedList.map((item, index) => (
+                                                        <tr key={index}>
+                                                            <td>{item.rank}</td>
+                                                            <td>{item.address}</td>
+                                                            <td>{item.scores}</td>
+                                                            <td>{item.rewards}</td>
+                                                        </tr>
+                                                    ))
+                                                    : Array.from({ length: 4 }).map((_, index) => (
+                                                        <tr key={index}>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                        </tr>
+                                                    ))
+                                                }
                                             </tbody>
                                             <tfoot>
                                                 <tr>
