@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useState } from 'react'
 import style from './index.module.css'
-import trunOff from "../../images/InviteFriends/turnOffBtn.webp"
-import InviteImg from "../../images/InviteFriends/InviteIcon.webp";
-import InviteMobileImg from "../../images/Mobile/InviteFriends/InviteIcon.webp";
-import CopyBtnImg from "../../images/InviteFriends/CopyBtn.webp";
-import CopyBtnClickImg from "../../images/InviteFriends/CopyBtnClick.webp";
-import TwitterImg from "../../images/InviteFriends/TwitterBtn.webp"
-import TwitterClickImg from "../../images/InviteFriends/TwitterBtnClick.webp"
-import succssImg from '../../images/substance/successto.png';
+import styleMoblie from '../mobile/css/index/inviteFriends.module.css'
+import trunOff from '../../images/InviteFriends/turnOffBtn.webp'
+import InviteImg from '../../images/InviteFriends/InviteIcon.webp'
+import InviteMobileImg from '../../images/Mobile/InviteFriends/InviteIcon.webp'
+import CopyBtnImg from '../../images/InviteFriends/CopyBtn.webp'
+import CopyBtnClickImg from '../../images/InviteFriends/CopyBtnClick.webp'
+import TwitterImg from '../../images/InviteFriends/TwitterBtn.webp'
+import TwitterClickImg from '../../images/InviteFriends/TwitterBtnClick.webp'
+import succssImg from '../../images/substance/successto.png'
 
 interface InviteProps {
     isMobile: boolean
@@ -189,7 +190,12 @@ export default function InviteFriends({ isMobile }: InviteProps) {
         );
     } else {
         return (
-            <></>
+            <>
+                <div className={styleMoblie.InviteImgBtn} onClick={() => toggleInviteModal()}>
+                    <img src={InviteMobileImg} alt="" />
+                    <button>Invite</button>
+                </div>
+            </>
         );
     }
 }

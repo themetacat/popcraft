@@ -2634,6 +2634,11 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               />
             </>
           )}
+          {(isConnected && address) && (
+            <Invite
+              isMobile={isMobile}
+            />
+          )}
         </div>
 
         {showSuccessModal && (
