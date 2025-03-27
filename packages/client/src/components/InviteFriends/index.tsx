@@ -20,6 +20,16 @@ export default function InviteFriends({ isMobile }: InviteProps) {
 
     const InviteCode = "04E5RGH";
 
+    const invitedList = [
+        { rank: 1, address: "0X12...3ASd", scores: 24000, rewards: 2400 },
+        { rank: 2, address: "0X12...3ASd", scores: 24000, rewards: 2400 },
+        { rank: 3, address: "0X12...3ASd", scores: 24000, rewards: 2400 },
+        { rank: 4, address: "0X12...3ASd", scores: 24000, rewards: 2400 },
+        { rank: 5, address: "0X12...3ASd", scores: 24000, rewards: 2400 },
+        { rank: 6, address: "0X12...3ASd", scores: 24000, rewards: 2400 },
+        { rank: 7, address: "0X12...3ASd", scores: 24000, rewards: 2400 },
+    ];
+
     const [toastMsg, setToastMsg] = useState("");
     const [showSuccessToast, setShowSuccessModal] = useState(false);
     const [showErrorToast, setShowErrorToast] = useState(false);
@@ -136,6 +146,39 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                     <p className={style.inviteRule}>You'll get 10% of your friends' scores from the project team.</p>
                                 </div>
                                 <div className={style.dividingLine}></div>
+                                <div className={style.invitedRecordWrap}>
+                                    <div className={style.invitedRecordTitle}>Friends Invited and Rewards</div>
+                                    <div className={style.invitedListTableWrap}>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Rank</th>
+                                                    <th>Address</th>
+                                                    <th>Scores</th>
+                                                    <th>Your Rewards</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {invitedList.map((item, index) => (
+                                                    <tr key={index}>
+                                                        <td>{item.rank}</td>
+                                                        <td>{item.address}</td>
+                                                        <td>{item.scores}</td>
+                                                        <td>{item.rewards}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td>Total</td>
+                                                    <td>15</td>
+                                                    <td>100000</td>
+                                                    <td>1000</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

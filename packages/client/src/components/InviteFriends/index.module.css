@@ -128,7 +128,7 @@
     display: grid;
     place-items: center;
     align-content: center;
-    margin-top: 3.3rem;
+    margin-top: 2.6rem;
 
     width: 92.29rem;
     height: 6.67rem;
@@ -263,8 +263,8 @@
     text-align: center;
 
     position: absolute;
-    top: 30%;
-    left: 50%;
+    top: 38%;
+    left: 48%;
     transform: translate(-50%, -50%);
 }
 
@@ -361,8 +361,117 @@
 
 .dividingLine {
     width: 106.6rem;
-    height: 0.22rem;
+    height: 0.12rem;
     background: linear-gradient(0deg, #2FB383, #18A86B);
     border-radius: 2rem;
-    margin: 8rem auto;
+    margin: 8rem auto 2rem;
+}
+
+.invitedRecordWrap {
+    width: 106.6rem;
+    height: 30rem;
+    margin: 0 auto;
+}
+
+.invitedRecordTitle {
+    width: 57.53rem;
+    font-family: "Berlin Sans FB";
+    font-weight: 400;
+    font-size: 4.92rem;
+    color: #000000;
+    white-space: nowrap;
+    background: linear-gradient(0deg, #2FB383 0%, #18A86B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    margin-left: 0.62rem;
+    margin-bottom: 2rem;
+}
+
+.invitedListTableWrap {
+    max-height: 35rem;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    position: relative;
+}
+
+.invitedListTableWrap table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: transparent;
+}
+
+.invitedListTableWrap thead,
+.invitedListTableWrap tfoot {
+    position: sticky;
+    height: 2.9rem;
+    background-color: #f5f2c5;
+    z-index: 2;
+}
+
+.invitedListTableWrap thead {
+    top: 0;
+}
+
+.invitedListTableWrap tfoot {
+    bottom: 0;
+}
+
+.invitedListTableWrap tbody {
+    display: block;
+    max-height: 30rem;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.invitedListTableWrap tbody::-webkit-scrollbar {
+    width: 0.77rem;
+}
+
+.invitedListTableWrap tbody::-webkit-scrollbar-thumb {
+    background-color: #72C132;
+    border-radius: 0.5rem;
+}
+
+.invitedListTableWrap tbody::-webkit-scrollbar-track {
+    background-color: #FFF4C7;
+    border-radius: 0.5rem;
+}
+
+.invitedListTableWrap tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    height: 2.7rem;
+}
+
+.invitedListTableWrap thead tr,
+.invitedListTableWrap tfoot tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.invitedListTableWrap th,
+.invitedListTableWrap tbody td {
+    height: 2.7rem;
+    font-family: "Berlin Sans FB";
+    font-weight: 400;
+    font-size: 1.9rem;
+    color: #000000;
+    line-height: 5.07rem;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.invitedListTableWrap tfoot td {
+    width: 2.2rem;
+    height: 2.1rem;
+    font-family: "Berlin Sans FB";
+    font-weight: 400;
+    font-size: 2rem;
+    color: #000000;
+    line-height: 5.07rem;
+    text-align: center;
+    vertical-align: middle;
 }
