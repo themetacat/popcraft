@@ -34,7 +34,6 @@ export default function InviteFriends({ isMobile }: InviteProps) {
 
     const [toastMsg, setToastMsg] = useState("");
     const [showSuccessToast, setShowSuccessModal] = useState(false);
-    const [showErrorToast, setShowErrorToast] = useState(false);
 
     const [isCopyBtnClicked, setIsCopyBtnClicked] = useState(false);
     const handleCopyBtnClick = (InviteCode) => {
@@ -61,13 +60,36 @@ export default function InviteFriends({ isMobile }: InviteProps) {
         );
     };
 
+    const tweetTextTemplate =
+        "🚀 Join me in PopCraft, a fully on-chain match-3 game! Click the link to start playing: http://popcraft.pixelaw.xyz/invite/{InviteCode} #PopCraft #Web3Gaming #FOCG";
+
     const [isTwitterBtnClicked, setIsTwitterBtnClicked] = useState(false);
     const handleTwitterBtnClick = (InviteCode) => {
-        const text = encodeURIComponent(
-            `🚀 Join me in PopCraft, a fully on-chain match-3 game! Click the link to start playing: http://popcraft.pixelaw.xyz/invite/${InviteCode} #PopCraft #Web3Gaming #FOCG`
-        );
+        setIsTwitterBtnClicked(true);
+        setTimeout(() => {
+            setIsTwitterBtnClicked(false);
+        }, 1000);
+
+        const text = encodeURIComponent(tweetTextTemplate.replace("{InviteCode}", InviteCode));
         const url = `https://x.com/intent/tweet?text=${text}`;
         window.open(url, "_blank");
+    };
+
+    const handleTwitterBtnClickMobile = (InviteCode) => {
+        setIsTwitterBtnClicked(true);
+        setTimeout(() => {
+            setIsTwitterBtnClicked(false);
+        }, 1000);
+
+        const text = encodeURIComponent(tweetTextTemplate.replace("{InviteCode}", InviteCode));
+        const twitterAppUrl = `twitter://post?message=${text}`;
+        const twitterWebUrl = `https://twitter.com/intent/tweet?text=${text}`;
+
+        window.location.href = twitterAppUrl;
+
+        setTimeout(() => {
+            window.open(twitterWebUrl, "_blank");
+        }, 1000);
     };
 
     if (!isMobile) {
@@ -191,12 +213,12 @@ export default function InviteFriends({ isMobile }: InviteProps) {
     } else {
         return (
             <>
-                <div className={styleMoblie.InviteImgBtn} onClick={() => toggleInviteModal()}>
+                <div className={styleMoblie.InviteImgBtn} onTouchEnd={() => toggleInviteModal()}>
                     <img src={InviteMobileImg} alt="" />
                     <button>Invite</button>
                 </div>
 
-                {true && (
+                {isShowInviteModal && (
                     <div className={styleMoblie.overlay}>
                         <div className={styleMoblie.modalContainer}>
                             <div className={styleMoblie.title}>
@@ -206,7 +228,7 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                 className={styleMoblie.imgOff}
                                 src={trunOff}
                                 alt=""
-                                onClick={() => {
+                                onTouchEnd={() => {
                                     setShowInviteModal(false)
                                 }}
                             />
@@ -219,7 +241,7 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                             <div className={styleMoblie.copyInviteContainer}>
                                                 <button
                                                     className={styleMoblie.copyInviteBtn}
-                                                    onClick={() => {
+                                                    onTouchEnd={() => {
                                                         handleCopyBtnClick(InviteCode);
                                                     }}
                                                 >
@@ -233,8 +255,8 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                             <div className={styleMoblie.inviteShareXContainer}>
                                                 <button
                                                     className={styleMoblie.shareXBtn}
-                                                    onClick={() => {
-                                                        handleTwitterBtnClick(InviteCode);
+                                                    onTouchEnd={() => {
+                                                        handleTwitterBtnClickMobile(InviteCode);
                                                     }}
                                                 >
                                                     <img
@@ -299,7 +321,7 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                         {showSuccessToast && (
                             <div className={styleMoblie.copyToast} >
                                 <img src={succssImg} alt="" className={styleMoblie.copyToastImg} />
-                                <p className={styleMoblie.copyToastColor}>{toastMsg}</p>
+                                <p className={styleMoblie.copyToastText}>{toastMsg}</p>
                             </div>
                         )}
                     </div>
