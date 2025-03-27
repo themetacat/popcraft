@@ -1,7 +1,8 @@
 import { useState } from "react";
 import style from './index.module.css'
 import trunOff from "../../images/InviteFriends/turnOffBtn.webp"
-import InviteImg from "../../images/InviteFriends/InviteBtn.webp";
+import InviteImg from "../../images/InviteFriends/InviteIcon.webp";
+import InviteMobileImg from "../../images/Mobile/InviteFriends/InviteIcon.webp";
 import CopyBtnImg from "../../images/InviteFriends/CopyBtn.webp";
 import CopyBtnClickImg from "../../images/InviteFriends/CopyBtnClick.webp";
 import TwitterImg from "../../images/InviteFriends/TwitterBtn.webp"
