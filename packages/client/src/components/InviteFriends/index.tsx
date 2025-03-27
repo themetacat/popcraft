@@ -61,27 +61,11 @@ export default function InviteFriends({ isMobile }: InviteProps) {
 
     const [isTwitterBtnClicked, setIsTwitterBtnClicked] = useState(false);
     const handleTwitterBtnClick = (InviteCode) => {
-        setIsTwitterBtnClicked(true);
-        setTimeout(() => {
-            setIsTwitterBtnClicked(false);
-        }, 1000);
-
-        navigator.clipboard.writeText(InviteCode).then(
-            function () {
-                setToastMsg("Invite Code Copied!");
-                setShowSuccessModal(true);
-                setTimeout(() => {
-                    setShowSuccessModal(false);
-                }, 1000);
-            },
-            function (err) {
-                setToastMsg("Share failed, retry!");
-                setShowErrorToast(true);
-                setTimeout(() => {
-                    setShowErrorToast(false);
-                }, 2000);
-            }
-        );
+        const text = encodeURIComponent(
+            `🚀 Join me in PopCraft, a fully on-chain match-3 game! Click the link to start playing: http://popcraft.pixelaw.xyz/invite/${InviteCode} #PopCraft #Web3Gaming #FOCG`
+          );
+        const url = `https://x.com/intent/tweet?text=${text}`;
+        window.open(url, "_blank");
     };
 
     if (!isMobile) {
@@ -137,8 +121,8 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                                         src={isTwitterBtnClicked ? TwitterClickImg : TwitterImg}
                                                         alt="Invitation Code Share Twitter"
                                                     />
+                                                    <span className={style.shareXInviteWord}>Share X(Twitter)</span>
                                                 </button>
-                                                <span className={style.shareXInviteWord}>Share X(Twitter)</span>
                                             </div>
                                         </div>
                                         <p className={style.inviteNote}>Each chain's invitation is a separate link and calculated individually.</p>

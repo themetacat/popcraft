@@ -233,6 +233,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    cursor: pointer;
 }
 
 .copyInviteBtn img {
@@ -294,7 +295,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 12rem;
+    margin-left: 9rem;
 }
 
 .shareXBtn {
@@ -305,6 +306,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    cursor: pointer;
 }
 
 .shareXBtn img {
