@@ -158,16 +158,14 @@
 }
 
 .tablecontainer {
-    width: 220.45rem;
-    height: 230.13rem;
+    width: 414rem;
+    height: 204.13rem;
     overflow-x: auto;
     overflow-y: auto;
-    position: absolute;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    margin-top: 20rem;
-    border-radius: 3rem;
+    border-radius: 4rem;
 }
 
 .tablecontainer::-webkit-scrollbar {
@@ -189,21 +187,20 @@
 }
 
 .table {
-    width: 210rem;
+    width: 408rem;
     max-height: 181.15rem;
     overflow-y: auto;
     border-collapse: collapse;
     font-family: "AdobeHeitiStd-Regular";
     table-layout: fixed;
-    border-radius: 1rem;
 }
 
 .thead {
-    height: 8.4375rem;
+    height: 22.62rem;
     background-color: #faae69;
     text-align: center;
     color: #b13200;
-    font-size: 2.5rem;
+    font-size: 7.4rem;
     letter-spacing: 0.3rem;
     position: sticky;
     top: 0;
@@ -216,10 +213,9 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 8.4375rem;
-    border: 2rem solid #fff1c8;
-    border-radius: 4rem 4rem 0 0;
-    border-bottom: none;
+    height: 20.4375rem;
+    border: 1.5rem solid #fff1c8;
+    border-radius: 5rem 5rem 0 0;
     z-index: 2;
     pointer-events: none;
 }
@@ -229,7 +225,7 @@
     border-right: none;
     padding: 8px;
     text-align: center;
-    font-size: 2rem;
+    font-size: 7.4rem;
     letter-spacing: 0.2rem;
     font-weight: 600;
     border: none !important;
@@ -251,18 +247,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 241, 200, 0.3);
-    border: 0.125rem solid #b13200;
+    border: none;
     padding: 0.125rem;
-    box-shadow: 0 0.25rem 0.5rem rgba(178, 50, 0, 0.1);
     border-radius: 3rem;
     white-space: nowrap;
     min-width: 20.5rem;
-    height: 4rem;
+    height: 18rem;
+    margin-left: 3rem;
+    letter-spacing: -0.3rem;
 }
 
 .dropdownArrow {
-    font-size: 2rem;
+    font-size: 5rem;
 }
 
 .dropdownMenu {
@@ -272,8 +268,10 @@
     z-index: 1000;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
     border-radius: 3rem;
-    width: 20.8rem;
-    font-size: 2.1rem;
+    width: 63rem;
+    font-size: 7rem;
+    line-height: 12rem;
+    white-space: nowrap; 
 }
 
 .dropdownItem {
@@ -287,8 +285,8 @@
 }
 
 .rankCell {
-    width: 15rem;
-    height: 2.55rem;
+    width: 55rem;
+    height: 15rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -297,13 +295,13 @@
 }
 
 .rankCell img {
-    width: 3rem;
-    margin-right: 4rem;
-    margin-left: -7rem;
+    width: 9rem;
+    margin-right: 7rem;
+    margin-left: -18rem;
 }
 
 .youSpan {
-    margin-right: -6.5rem;
+    margin-right: -19.5rem;
     margin-left: 1rem;
 }
 
@@ -313,27 +311,25 @@
 }
 
 .totalContainerBox {
-    display: none;
-    width: 200.45rem;
-    height: 16rem;
-    margin-top: -77.6rem;
-
+    width: 408rem;
+    height: 18rem;
     background-image: url('../../../../images/RankingList/mobile/TotalBg.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     border: none;
+    border-radius: 0rem 0 6rem 6rem;
+    margin-left: 3rem;
 }
 
 .totalContainerTableBox {
-    width: 113rem;
-    height: 6rem;
+    width: 408rem;
+    height: 18rem;
     border: none;
 
     display: flex;
-    justify-content: center;
     align-items: center;
-    text-align: center;
+    
     color: #000000;
 
     font-family: "AdobeHeitiStd-Regular";
@@ -344,7 +340,8 @@
 }
 
 .totalLengthBox {
-    width: 32rem;
+    text-align: center;
+    width: 110rem;
     display: flex;
     align-items: center;
     gap: 3rem;
@@ -358,68 +355,90 @@
 .totalScoreBox {
     display: flex;
     align-items: center;
-    width: 77rem;
-    margin-left: -1rem;
+    text-align: center;
+    width: 390rem;
     gap: 1rem;
 }
 
 .totalScoreItem {
-    width: 18rem;
-    /* margin-left: 0.1rem; */
+    width: 53rem;
 }
 
 .tablecontainerbox {
-    width: 220.45rem;
-    height: 16rem;
-    margin-top: -70rem;
-
+    width: 414rem;
+    height: 17rem;
     background-image: url('../../../../images/RankingList/mobile/YouScoreBg.webp');
-    background-size: cover;
+    background-size: 100% 126%;
     background-position: center;
-    background-repeat: no-repeat;
+    margin-top: 4rem;
 
     border: none;
     font-family: "AdobeHeitiStd-Regular";
 }
 
 .tableBox {
-    width: 200.45rem;
-    height: 16rem;
+    width: 404rem;
+    height: 18rem;
     border: none;
     display: flex;
-    justify-content: center;
     align-items: center;
     margin-left: 3.5rem;
-    text-align: center;
     font-size: 3.4rem;
     color: #ffffff;
     letter-spacing: 0.3rem;
     font-weight: 400;
     line-height: 16.81rem;
+    font-size: 7.4rem;
 }
 
 .YouBox {
-    width: 120rem;
+    width: 106rem;
     display: flex;
     align-items: center;
-    gap: 3rem;
+    gap: 1rem;
+    justify-content: center;
 }
 
 .YouBox span {
     justify-content: center;
     align-items: center;
-    margin-left: 2.8rem;
+    text-align: center;
+    width: 50%;
 }
 
 .scoreBox {
     display: flex;
     align-items: center;
-    width: 207rem;
+    width: 290rem;
     gap: 1rem;
-    margin-left: 10rem;
+    text-align: center;
 }
 
 .scoreItem {
-    width: 18rem;
-    margin-left: 5rem;
+    width: 60rem;
+    text-align: center;
+}
+
+.bodyContainer{
+    top: 76rem;
+    left: 16rem;
+    height: 250rem;
+    width: 216rem;
+    position: absolute;
+    overflow: auto;
+    scrollbar-color: #FFF1C8;
+}
+
+
+.bodyContainer::-webkit-scrollbar {
+    height: 3rem;
+}
+
+.bodyContainer::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.bodyContainer::-webkit-scrollbar-thumb {
+    background: #FFF1C8;
+    border-radius: 4rem;
 }
