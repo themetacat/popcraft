@@ -195,6 +195,115 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                     <img src={InviteMobileImg} alt="" />
                     <button>Invite</button>
                 </div>
+
+                {true && (
+                    <div className={styleMoblie.overlay}>
+                        <div className={styleMoblie.modalContainer}>
+                            <div className={styleMoblie.title}>
+                                <span>Invite Friends</span>
+                            </div>
+                            <img
+                                className={styleMoblie.imgOff}
+                                src={trunOff}
+                                alt=""
+                                onClick={() => {
+                                    setShowInviteModal(false)
+                                }}
+                            />
+                            <div className={styleMoblie.contentsWrap}>
+                                <div className={styleMoblie.contentsTitle}>Your Invitation Code</div>
+                                <div className={styleMoblie.middlePart}>
+                                    <div className={styleMoblie.inviteSection}>
+                                        <span className={styleMoblie.inviteCode}>{InviteCode}</span>
+                                        <div className={styleMoblie.shareInviteWarp}>
+                                            <div className={styleMoblie.copyInviteContainer}>
+                                                <button
+                                                    className={styleMoblie.copyInviteBtn}
+                                                    onClick={() => {
+                                                        handleCopyBtnClick(InviteCode);
+                                                    }}
+                                                >
+                                                    <img
+                                                        src={isCopyBtnClicked ? CopyBtnClickImg : CopyBtnImg}
+                                                        alt="Copy Invitation Code"
+                                                    />
+                                                    <span className={styleMoblie.copyInviteWord}>Copy Link</span>
+                                                </button>
+                                            </div>
+                                            <div className={styleMoblie.inviteShareXContainer}>
+                                                <button
+                                                    className={styleMoblie.shareXBtn}
+                                                    onClick={() => {
+                                                        handleTwitterBtnClick(InviteCode);
+                                                    }}
+                                                >
+                                                    <img
+                                                        src={isTwitterBtnClicked ? TwitterClickImg : TwitterImg}
+                                                        alt="Invitation Code Share Twitter"
+                                                    />
+                                                    <span className={styleMoblie.shareXInviteWord}>Share X(Twitter)</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <p className={styleMoblie.inviteNote}>Each chain's invitation is a separate link and calculated individually.</p>
+                                    </div>
+                                    <p className={styleMoblie.inviteRule}>You'll get 10% of your friends' scores from the project team.</p>
+                                </div>
+                                <div className={styleMoblie.dividingLine}></div>
+                                <div className={styleMoblie.invitedRecordWrap}>
+                                    <div className={styleMoblie.invitedRecordTitle}>Friends Invited and Rewards</div>
+                                    <div className={styleMoblie.invitedListTableWrap}>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Rank</th>
+                                                    <th>Address</th>
+                                                    <th>Scores</th>
+                                                    <th>Your Rewards</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {invitedList.length > 0
+                                                    ? invitedList.map((item, index) => (
+                                                        <tr key={index}>
+                                                            <td>{item.rank}</td>
+                                                            <td>{item.address}</td>
+                                                            <td>{item.scores}</td>
+                                                            <td>{item.rewards}</td>
+                                                        </tr>
+                                                    ))
+                                                    : Array.from({ length: 4 }).map((_, index) => (
+                                                        <tr key={index}>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                        </tr>
+                                                    ))
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td>Total</td>
+                                                    <td>15</td>
+                                                    <td>100000</td>
+                                                    <td>1000</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {showSuccessToast && (
+                            <div className={styleMoblie.copyToast} >
+                                <img src={succssImg} alt="" className={styleMoblie.copyToastImg} />
+                                <p className={styleMoblie.copyToastColor}>{toastMsg}</p>
+                            </div>
+                        )}
+                    </div>
+                )}
             </>
         );
     }
