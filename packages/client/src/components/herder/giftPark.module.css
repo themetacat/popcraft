@@ -1,3 +1,11 @@
+@font-face {
+    font-family: "LuckiestGuy-Regular";
+    src: url("/fonts/LuckiestGuy-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 .container {
     position: fixed;
     top: 50%;
@@ -485,10 +493,10 @@
 
 .nftRewardsAmount{
     left: -3rem;
-    font-size: 4rem;
+    font-size: 3rem;
     position: relative;
     top: -1rem;
-    font-family: "MyriadPro";
+    font-family: "LuckiestGuy-Regular";
     letter-spacing: -0.2rem;
     color: #FFE775;
     -webkit-text-stroke: 1.5px #B13200;
