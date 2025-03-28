@@ -1,0 +1,14 @@
+[{
+  "type": "function",
+  "name": "getNFTRewardsToken",
+  "inputs": [],
+  "outputs": [],
+  "stateMutability": "nonpayable"
+},
+{
+  "type": "function",
+  "name": "getUserBenefitsToken",
+  "inputs": [],
+  "outputs": [],
+  "stateMutability": "nonpayable"
+}]

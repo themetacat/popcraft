@@ -220,6 +220,15 @@ export default mudConfig({
         discount: "uint256"
       }
     },
+    NFTRewards: {
+      keySchema: {
+        tokenId: "uint256",
+      },
+      valueSchema: {
+        recevied: "bool",
+        receiver: "address"
+      }
+    },
     //    ------------- Plants ---------------
     // add Plants, update TotalPlants
     Plants: {
