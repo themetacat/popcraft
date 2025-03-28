@@ -380,7 +380,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                         src={NFTHolderGiftsImg}
                                         className={`${style.nftRewardsImg} ${noRecivedGiftsToken.length > 0 ? callNFTRewards ? style.nftRewardsCallLoading : style.nftRewardsImgHover : ''}`}
                                         alt=""
-                                        onClick={noRecivedGiftsToken.length > 0 ? () => callContractNFTGifts() : undefined}
+                                        onClick={noRecivedGiftsToken.length > 0 && !callNFTRewards ? () => callContractNFTGifts() : undefined}
                                     />
                                     {(!ownedTokens?.length || !NFTReceived) && (
                                         <img src={LockedImg} alt="" className={style.nftRewardsCornerMark} />
@@ -575,7 +575,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                             src={NFTHolderGiftsImg}
                                             className={`${mobileStyle.nftRewardsImg} ${noRecivedGiftsToken.length > 0 ? callNFTRewards ? mobileStyle.nftRewardsCallLoading : mobileStyle.nftRewardsImgHover : ''}`}
                                             alt=""
-                                            onClick={noRecivedGiftsToken.length > 0 ? () => callContractNFTGifts() : undefined}
+                                            onClick={noRecivedGiftsToken.length > 0 && !callNFTRewards ? () => callContractNFTGifts() : undefined}
                                         />
                                         {(!ownedTokens?.length || !NFTReceived) && (
                                             <img src={LockedImg} alt="" className={mobileStyle.nftRewardsCornerMark} />
