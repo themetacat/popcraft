@@ -17,8 +17,9 @@ import toast from "react-hot-toast";
 let args_index: number = -1;
 import { Payments } from "@uniswap/v3-sdk"
 import { MISSION_BOUNS_CHAIN_IDS } from "../components/select";
-import PlantsSystemAbi from "./PlantsSystem.abi.json";
-import MissionSystemAbi from "./MissionSystem.abi.json";
+import PlantsSystemAbi from "./abi/PlantsSystem.abi.json";
+import MissionSystemAbi from "./abi/MissionSystem.abi.json";
+import BonusSystemAbi from "./abi/BonusSystem.abi.json";
 import { numToEntityID, addr2NumToEntityID } from "../components/rightPart"
 export const update_app_value = (index: number) => {
   args_index = index;
@@ -504,6 +505,7 @@ export function createSystemCalls(
       "type": "function"
     }
   ]
+
   let firstGameOver = true;
   const interactTCM = async (
     coordinates: any,
@@ -1268,7 +1270,50 @@ export function createSystemCalls(
           functionName: 'callFrom',
           args: [
             account,
-            popcraftResourceHex,
+            bonusResourceHex,
+            encodeData,
+          ],
+        })
+      }
+    } catch (error) {
+      return { error: error.message };
+    }
+    return hashValpublic;
+  };
+
+  const getNFTRewardsToken = async (
+    account: any,
+    nonce: number
+  ): Promise<CallResponse> => {
+    let hashValpublic: any;
+    const encodeData = encodeFunctionData({
+      abi: BonusSystemAbi,
+      functionName: "getNFTRewardsToken",
+      args: [],
+    });
+    try {
+      const txData = await worldContract.write.callFrom([
+        account,
+        bonusResourceHex,
+        encodeData,
+      ], {
+        gas: 5000000n,
+        nonce,
+        ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+        ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
+      });
+      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
+      await waitForTransaction(txData);
+      
+      if (hashValpublic.status === "reverted") {
+        const { simulateContractRequest } = await publicClient.simulateContract({
+          account: palyerAddress,
+          address: worldContract.address,
+          abi: worldContract.abi,
+          functionName: 'callFrom',
+          args: [
+            account,
+            bonusResourceHex,
             encodeData,
           ],
         })
@@ -1391,6 +1436,7 @@ export function createSystemCalls(
     grow,
     getBenefitsToken,
     getDailyGamesRewards,
-    getStreakDaysRewards
+    getStreakDaysRewards,
+    getNFTRewardsToken
   };
 }

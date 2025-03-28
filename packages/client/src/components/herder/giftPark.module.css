@@ -338,12 +338,197 @@
 }
 
 .otherGifts {
-    margin-top: 14rem;
-    font-size: 4rem;
-    height: 20rem;
+    margin-top: 13rem;
     font-family: "Simplicity";
     color: #B13200;
+    display: flex;
+    width: 83%;
 }
+
+/* ===========PopCraft NFT Gifts============= */
+
+.nftRewards{
+    width: 19rem;
+    font-size: 2rem;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    color: #000;
+    font-family: "AdobeHeitiStd-Regular";
+    white-space: nowrap;
+    position: relative;
+}
+
+.nftRewardsImg{
+    width: 13rem;
+    cursor: not-allowed;
+    transition: transform 0.15s ease;
+}
+
+.nftRewardsImgHover{
+    cursor: pointer;
+    animation: bounce 1.5s ease-in-out infinite, bounce 1.5s ease-in-out infinite 4s;
+}
+
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    10% {
+        transform: translateY(2rem);
+    }
+
+    20% {
+        transform: translateY(0);
+    }
+
+    30% {
+        transform: translateY(2rem);
+    }
+
+    40% {
+        transform: translateY(0);
+    }
+}
+
+.nftRewardsImgHover:hover{
+    transform: scale(1.06) !important;
+}
+
+.nftRewardsImgHover:hover ~ .nftRewardsBottom span{
+    text-shadow: 0.1rem 0.1rem 0.2rem #bf6037;
+}
+
+.nftRewardsCallLoading {
+    animation: shake 0.75s ease-in-out infinite, shake 0.75s ease-in-out infinite 1.5s;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+    20% {
+        transform: translateX(-0.5rem) rotate(-5deg);
+    }
+    40% {
+        transform: translateX(0.5rem) rotate(5deg);
+    }
+    60% {
+        transform: translateX(-0.25rem) rotate(-3deg);
+    }
+    80% {
+        transform: translateX(0.25rem) rotate(3deg);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.nftRewardsCornerMark {
+    width: 4.5rem;
+    height: 4.5rem;
+    z-index: 2;
+    position: relative;
+    left: -3rem;
+    cursor: not-allowed;
+}
+
+.nftRewardsBottom{
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    cursor: not-allowed;
+}
+
+.nftRewardsBottom img{
+    width: 2.5rem;
+    margin-left: 1rem;
+    transition: transform 0.1s ease;
+    cursor: pointer;
+}
+
+.nftRewardsBottomHover{
+    cursor: pointer;
+}
+
+.nftRewardsBottom img:hover{
+    transform: scale(1.2);
+}
+
+.nftRewardsBottom img:hover ~ .nftRewardsQuestion {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nftRewardsQuestion {
+    position: absolute;
+    font-size: 2.2rem;
+    letter-spacing: 0.1rem;
+    visibility: hidden;
+    opacity: 1;
+    left: -9rem;
+    bottom: 4rem;
+    background-color: #FFF3A5;
+    border: 3px solid #E7AB86;
+    color: #B13200;
+    text-align: left;
+    border-radius: 1.5rem;
+    box-shadow: 0.25rem 0.25rem 1rem rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    z-index: 2;
+}
+
+.nftRewardsAmount{
+    left: -3rem;
+    font-size: 4rem;
+    position: relative;
+    top: -1rem;
+    font-family: "MyriadPro";
+    letter-spacing: -0.2rem;
+    color: #FFE775;
+    -webkit-text-stroke: 1.5px #B13200;
+}
+
+.addedNFTRewardsAmount {
+    position: absolute;
+    top: 61%;
+    left: 30%;
+    font-size: 4rem;
+    color: #B13200;
+    opacity: 1;
+    font-family: "Simplicity";
+    animation: fadeUp 3s ease-in-out forwards;
+}
+
+
+@keyframes fadeUp {
+    0% {
+        transform: translateY(4rem);
+        opacity: 0;
+    }
+
+    20% {
+        transform: translateY(0rem);
+        opacity: 1;
+    }
+
+    80% {
+        transform: translateY(0rem);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-3.5rem);
+        opacity: 0;
+    }
+}
+/* ===========PopCraft NFT Gifts============= */
+
 
 .giftsParkBtn {
     position: absolute;

@@ -6,7 +6,8 @@ import { getComponentValue } from "@latticexyz/recs";
 
 
 const erc721Abi = parseAbi([
-    "function balanceOf(address owner) external view returns (uint256 balance)"
+    "function balanceOf(address owner) external view returns (uint256 balance)",
+    "function tokenOfOwnerByIndex(address owner, uint256 index) external view returns (uint256 tokenId)"
 ]);
 
 const chainToContract: Record<number, `0x${string}`> = {
@@ -84,3 +85,44 @@ export const useNFTDiscount = (chainId: number, userAddress?: `0x${string}`) => 
 };
 
 
+export const useOwnedTokens = (chainId: number, userAddress?: `0x${string}`) => {
+    const NFTBalance = useERC721Balance(chainId, userAddress);
+    const [ownedTokens, setOwnedTokens] = useState<number[]>([]);
+    
+    const {
+        network: { publicClient },
+    } = useMUD();
+
+    useEffect(() => {
+        const fetchTokenId = async () => {
+            try {
+                for (let index = 0; index < NFTBalance; index++) {
+                    const result = await publicClient.readContract({
+                        address: chainToContract[chainId],
+                        abi: erc721Abi,
+                        functionName: "tokenOfOwnerByIndex",
+                        args: [userAddress, index],
+                    });
+                    setOwnedTokens((prev) => 
+                        prev.includes(Number(result)) ? prev : [...prev, Number(result)]
+                    );
+                }
+            } catch (error) {
+                console.error("Error fetching ERC721 balance:", error);
+            }
+        };
+        
+        if (!chainToContract[chainId] || !userAddress) {
+            setOwnedTokens([]);
+            return;
+        }
+
+        fetchTokenId();
+    }, [chainId, userAddress, publicClient, NFTBalance]);
+
+    useEffect(() => {
+        setOwnedTokens([]);
+    }, [chainId, userAddress])
+
+    return ownedTokens;
+};

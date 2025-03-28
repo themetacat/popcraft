@@ -13,6 +13,8 @@ import CloseImg from "../../images/GiftPark/Close.webp";
 import GiftParkImg from "../../images/GiftPark/GiftParkBtn.webp";
 import CallLoadingImg from "../../images/InDayBouns/CallLoading.webp";
 import PlayQuestionsImg from "../../images/GiftPark/PlayQuestions.webp"
+import NFTHolderGiftsImg from "../../images/GiftPark/NFTRewards.webp";
+import NFTCallLoadingImg from "../../images/GiftPark/NFTRewardsLoading.webp";
 import style from "./giftPark.module.css";
 import { addressToEntityID, twoNumToEntityID } from "../rightPart/index";
 import { useEffect, useState } from "react";
@@ -22,6 +24,9 @@ import { useAccount } from 'wagmi';
 import { useUtils } from "./utils";
 import mobileStyle from "../mobile/css/index/giftPark.module.css";
 import mobileBtnImg from "../../images/Mobile/GiftPark/GiftParkBtn.webp";
+import { useOwnedTokens } from "../Utils/ERC721Utils";
+import { COMMON_CHAIN_IDS, useTopUp } from "../select";
+import { numToEntityID } from "../Utils/toEntityId";
 
 interface Props {
     checkTaskInProcess: any
@@ -42,8 +47,9 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
         components: {
             StreakDays,
             GamesRewardsScores,
+            NFTRewards
         },
-        systemCalls: { getStreakDaysRewards },
+        systemCalls: { getStreakDaysRewards, getNFTRewardsToken, registerDelegation },
     } = useMUD();
     const [isShowGiftPark, setShowGiftPark] = useState(false);
     const { address, } = useAccount();
@@ -54,7 +60,14 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
     const [popupScores, setPopupScores] = useState(0);
     const [isCloseAnimating, setIsCloseAnimating] = useState(false);
     const [offset, setOffset] = useState(0);
-    
+    const { chainId } = useTopUp();
+    const ownedTokens = useOwnedTokens(chainId, address);
+    const [noRecivedGiftsToken, setNoRecivedGiftsToken] = useState<number[]>([]);
+    const [showAddNFTRewardsPop, setShowAddNFTRewardsPop] = useState(false);
+    const [callNFTRewards, setCallNFTRewards] = useState(false);
+    const [popupNFTRewardsAmount, setPopupNFTRewardsAmount] = useState(0);
+    const [NFTReceived, setNFTReceived] = useState(false);
+
     const handleNext = () => {
         setOffset((prev) => Math.min(prev + 1, maxOffset));
     };
@@ -131,6 +144,61 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
         setCallLoadingIndex(0);
     }
 
+    const callContractNFTGifts = async () => {
+        if (checkTaskInProcess()) {
+            return;
+        }
+        setCallNFTRewards(true)
+
+        const deldata = localStorage.getItem('deleGeData')
+        if (deldata == "undefined") {
+            const delegationData = await registerDelegation();
+            if (!delegationData || delegationData.status != "success") {
+                setCallNFTRewards(false);
+                handleErrorAll('')
+                return;
+            }
+        }
+        setPopupNFTRewardsAmount(noRecivedGiftsToken.length);
+        const nonce = await publicClient.getTransactionCount({ address: palyerAddress })
+        const callRes = await getNFTRewardsToken(address, nonce);
+
+        if (callRes && callRes.error) {
+            console.error(callRes.error);
+            handleErrorAll(callRes.error)
+        } else {
+            setNoRecivedGiftsToken([]);
+            setShowAddNFTRewardsPop(true)
+            setTimeout(() => {
+                setShowAddNFTRewardsPop(false);
+                setPopupNFTRewardsAmount(0);
+            }, 3000);
+        }
+        setCallNFTRewards(false);
+    }
+
+    useEffect(() => {
+        setNFTReceived(false);
+    }, [address, chainId])
+
+    useEffect(() => {
+        setNoRecivedGiftsToken([]);
+        if (NFTRewards && ownedTokens) {
+            for (let index = 0; index < ownedTokens.length; index++) {
+                const NFTRewardsData = getComponentValue(NFTRewards, numToEntityID(ownedTokens[index]));
+                if ((!NFTRewardsData || NFTRewardsData.receiver === address) && !NFTReceived) {
+                    setNFTReceived(true);
+                }
+
+                if (!NFTRewardsData?.recevied) {
+                    setNoRecivedGiftsToken((prev) =>
+                        prev.includes(ownedTokens[index]) ? prev : [...prev, ownedTokens[index]]
+                    );
+                }
+            }
+        }
+    }, [NFTRewards, ownedTokens, address, chainId, NFTReceived])
+
     let playDays = 0;
     let theCycle = 0;
     let received = 0;
@@ -163,6 +231,9 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
             });
         }
     }
+    if (noRecivedGiftsToken.length > 0) {
+        tips += 1;
+    }
     const visibleCount = 5;
     const itemWidth = 22.5;
     const marginLeft = 1;
@@ -172,7 +243,8 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
     const itemWidthMobile = 54.85;
     const marginLeftMobile = 1;
     const maxOffsetMobile = Math.max(0, bouns.length - visibleCountMobile);
-    if(!isMobile){
+
+    if (!isMobile) {
         return (
             <>
                 {
@@ -194,32 +266,32 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                             <div className={style.dayCountDown}>
                                 {streakDayCycle === 0 ? (
                                     <>
-                                    <span>
-                                    Day 1
-                                    <br />
-                                    Current Day
-                                </span>
-                                <span style={{marginLeft: "5rem"}}>
-                                    Starts on
-                                    <br />
-                                    March 21 at 13:00 (UTC)
-                                </span>
+                                        <span>
+                                            Day 1
+                                            <br />
+                                            Current Day
+                                        </span>
+                                        <span style={{ marginLeft: "5rem" }}>
+                                            Starts on
+                                            <br />
+                                            March 21 at 13:00 (UTC)
+                                        </span>
                                     </>
                                 ) : (
                                     <>
-                                    <span>
-                                    Day {dayInCycle}
-                                    <br />
-                                    Current Day
-                                </span>
-                                <span style={{marginLeft: "5rem"}}>
-                                    {formatSeasonCountDown(timeLeft)}
-                                    <br />
-                                    Until next day starts
-                                </span>
+                                        <span>
+                                            Day {dayInCycle}
+                                            <br />
+                                            Current Day
+                                        </span>
+                                        <span style={{ marginLeft: "5rem" }}>
+                                            {formatSeasonCountDown(timeLeft)}
+                                            <br />
+                                            Until next day starts
+                                        </span>
                                     </>
                                 )}
-                                
+
                             </div>
                             <div className={style.carouselContainer}>
                                 <button
@@ -233,17 +305,17 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                         className={`${style.arrowIcon} ${offset === 0 ? "" : style.rotated}`}
                                     />
                                 </button>
-    
+
                                 <div className={style.carousel}>
                                     <div
                                         className={style.carouselInner}
                                         style={{ transform: `translateX(-${offset * (itemWidth)}rem)` }}
                                     >
                                         {bouns.map((item, index) => {
-    
+
                                             const backgroundImage = item.status === 'pending' ? ClaimedAndLockedBgImg : PendingImg;
                                             const backgroundDayImage = item.status === 'pending' ? ClaimedDayBgImg : PendingDayImg;
-    
+
                                             const cornerMark = item.status === 'locked' ? LockedImg : (item.status === 'claimed' ? ClaimedImg : '');
                                             const mask = item.status === 'claimed' ? MaskImg : '';
                                             const circleStyle = {
@@ -297,24 +369,57 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                         className={`${style.arrowIcon} ${offset === maxOffset ? style.rotated : ""}`}
                                     />
                                 </button>
-    
                             </div>
                             <div className={style.dividingLine}></div>
                             <div className={style.otherGiftsTitle}>
                                 Other Gifts
                             </div>
                             <div className={style.otherGifts}>
-                                Comming Soon!
+                                <div className={style.nftRewards}>
+                                    <img
+                                        src={NFTHolderGiftsImg}
+                                        className={`${style.nftRewardsImg} ${noRecivedGiftsToken.length > 0 ? callNFTRewards ? style.nftRewardsCallLoading : style.nftRewardsImgHover : ''}`}
+                                        alt=""
+                                        onClick={noRecivedGiftsToken.length > 0 ? () => callContractNFTGifts() : undefined}
+                                    />
+                                    {(!ownedTokens?.length || !NFTReceived) && (
+                                        <img src={LockedImg} alt="" className={style.nftRewardsCornerMark} />
+                                    )}
+
+                                    {ownedTokens?.length > 0 && noRecivedGiftsToken.length === 0 && NFTReceived && (
+                                        <img src={ClaimedImg} alt="" className={style.nftRewardsCornerMark} />
+                                    )}
+                                    {noRecivedGiftsToken.length > 0 && <span className={style.nftRewardsAmount}>x {15 * noRecivedGiftsToken.length}</span>}
+                                    <div className={style.nftRewardsBottom}>
+                                        <span
+                                            className={`${noRecivedGiftsToken.length > 0 ? style.nftRewardsBottomHover : ''}`}
+                                        >
+                                            NFT Holder Gifts
+                                        </span>
+                                        <img src={PlayQuestionsImg} alt="" />
+                                        <div className={style.nftRewardsQuestion}>
+                                            <span>NFT Holder Gifts:</span>
+                                            <p>One NFT can claim 15 Lucky bags (150 items).</p>
+                                            <p>One Lucky bag = 10 items, one of each type.</p>
+                                            <p>Stack benefits with multiple NFTs.</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             {showAddScoresPopup &&
                                 <div className={style.addedPoints}>
                                     + {popupScores} Scores!
                                 </div>
                             }
+                            {showAddNFTRewardsPop &&
+                                <div className={style.addedNFTRewardsAmount}>
+                                    Claimed {15 * popupNFTRewardsAmount}*10={15 * popupNFTRewardsAmount * 10} Items!
+                                </div>
+                            }
                         </div>
                     </div>
                 }
-    
+
                 <div className={style.giftsParkBtn} onClick={() => toggleContent()}>
                     <img src={GiftParkImg} alt="" />
                     <button>Daily Streak Bonus</button>
@@ -324,7 +429,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                 </div>
             </>
         )
-    }else{
+    } else {
         return (
             <>
                 {
@@ -336,10 +441,10 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                 GIFT PARK
                             </div>
                             <div className={mobileStyle.closeImage}>
-                                <img 
-                                    src={CloseImg} 
-                                    onClick={() => { toggleContent() }} 
-                                    onTouchEnd={() => { toggleContent() }} 
+                                <img
+                                    src={CloseImg}
+                                    onClick={() => { toggleContent() }}
+                                    onTouchEnd={() => { toggleContent() }}
                                 />
                             </div>
                             <div className={mobileStyle.containerIn}>
@@ -349,29 +454,29 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                 <div className={mobileStyle.dayCountDown}>
                                     {streakDayCycle === 0 ? (
                                         <>
-                                        <span>
-                                        Day 1
-                                        <br />
-                                        Current Day
-                                    </span>
-                                    <span style={{marginLeft: "5rem"}}>
-                                        Starts on
-                                        <br />
-                                        March 21 at 13:00 (UTC)
-                                    </span>
+                                            <span>
+                                                Day 1
+                                                <br />
+                                                Current Day
+                                            </span>
+                                            <span style={{ marginLeft: "5rem" }}>
+                                                Starts on
+                                                <br />
+                                                March 21 at 13:00 (UTC)
+                                            </span>
                                         </>
                                     ) : (
                                         <>
-                                        <span>
-                                        Day {dayInCycle}
-                                        <br />
-                                        Current Day
-                                    </span>
-                                    <span style={{marginLeft: "5rem"}}>
-                                        {formatSeasonCountDown(timeLeft)}
-                                        <br />
-                                        Until next day starts
-                                    </span>
+                                            <span>
+                                                Day {dayInCycle}
+                                                <br />
+                                                Current Day
+                                            </span>
+                                            <span style={{ marginLeft: "5rem" }}>
+                                                {formatSeasonCountDown(timeLeft)}
+                                                <br />
+                                                Until next day starts
+                                            </span>
                                         </>
                                     )}
                                 </div>
@@ -408,7 +513,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                                     marginLeft: `${marginLeftMobile}rem`,
                                                 };
                                                 return (
-                                                    <div key={index} 
+                                                    <div key={index}
                                                         className={`${mobileStyle.bonusItem} ${item.status === "pending" && callLoadingIndex === 0 ? mobileStyle.hoverEffect : ""}`}
                                                         style={circleStyle}
                                                         onClick={item.status === 'pending' ? () => callContract(item.days) : undefined}
@@ -463,19 +568,54 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                 <div className={mobileStyle.otherGiftsTitle}>
                                     Other Gifts
                                 </div>
+
                                 <div className={mobileStyle.otherGifts}>
-                                    Comming Soon!
+                                    <div className={mobileStyle.nftRewards}>
+                                        <img
+                                            src={NFTHolderGiftsImg}
+                                            className={`${mobileStyle.nftRewardsImg} ${noRecivedGiftsToken.length > 0 ? callNFTRewards ? mobileStyle.nftRewardsCallLoading : mobileStyle.nftRewardsImgHover : ''}`}
+                                            alt=""
+                                            onClick={noRecivedGiftsToken.length > 0 ? () => callContractNFTGifts() : undefined}
+                                        />
+                                        {(!ownedTokens?.length || !NFTReceived) && (
+                                            <img src={LockedImg} alt="" className={mobileStyle.nftRewardsCornerMark} />
+                                        )}
+
+                                        {ownedTokens?.length > 0 && noRecivedGiftsToken.length === 0 && NFTReceived && (
+                                            <img src={ClaimedImg} alt="" className={mobileStyle.nftRewardsCornerMark} />
+                                        )}
+                                        {noRecivedGiftsToken.length > 0 && <span className={mobileStyle.nftRewardsAmount}>x {15 * noRecivedGiftsToken.length}</span>}
+                                        <div className={mobileStyle.nftRewardsBottom}>
+                                            <span
+                                                className={`${noRecivedGiftsToken.length > 0 ? mobileStyle.nftRewardsBottomHover : ''}`}
+                                            >
+                                                NFT Holder Gifts
+                                            </span>
+                                            <img src={PlayQuestionsImg} alt="" />
+                                            <div className={mobileStyle.nftRewardsQuestion}>
+                                                <span>NFT Holder Gifts:</span>
+                                                <p>One NFT can claim 15 Lucky bags (150 items).</p>
+                                                <p>One Lucky bag = 10 items, one of each type.</p>
+                                                <p>Stack benefits with multiple NFTs.</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 {showAddScoresPopup &&
                                     <div className={mobileStyle.addedPoints}>
                                         + {popupScores} Scores!
                                     </div>
                                 }
+                                {showAddNFTRewardsPop &&
+                                    <div className={mobileStyle.addedNFTRewardsAmount}>
+                                        Claimed {15 * popupNFTRewardsAmount}*10={15 * popupNFTRewardsAmount * 10} Items!
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
                 }
-    
+
                 <div className={mobileStyle.giftsParkBtn} onClick={() => toggleContent()}>
                     <img src={mobileBtnImg} alt="" />
                     <button>Daily Streak Bonus</button>
@@ -486,5 +626,5 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
             </>
         )
     }
-    
+
 }
