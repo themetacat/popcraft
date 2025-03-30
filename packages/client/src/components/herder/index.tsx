@@ -1868,23 +1868,25 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             </span>
             <span className={style.tooltip}>Gaming costs less at ~5 Gwei.</span>
           </div>
-          <div className={style.content}>
-            <button
-              className={numberData === 25 ? style.btnBoxY : style.btnBox}
-              disabled={numberData === 25}
-              onClick={btnLower}
-            >
-              −
-            </button>
-            <span className={style.spanData}>{numberData}%</span>
-            <button
-              className={numberData === 100 ? style.btnBoxY : style.btnBox}
-              disabled={numberData === 100}
-              onClick={btnAdd}
-            >
-              +
-            </button>
-          </div>
+          {isConnected && 
+            <div className={style.content}>
+              <button
+                className={numberData === 25 ? style.btnBoxY : style.btnBox}
+                disabled={numberData === 25}
+                onClick={btnLower}
+              >
+                −
+              </button>
+                <span className={style.spanData}>{numberData}%</span>
+              <button
+                className={numberData === 100 ? style.btnBoxY : style.btnBox}
+                disabled={numberData === 100}
+                onClick={btnAdd}
+              >
+                +
+              </button>
+          </div>}
+          
 
           <div
             className={style.addr}
