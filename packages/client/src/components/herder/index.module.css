@@ -318,19 +318,18 @@ canvas {
 }
 
 .content {
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 47.8125rem;
   height: 6.875rem;
-  position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  margin: auto;
+  margin-right: 21rem;
   background-image: url('../../images/PinkButtonheader.webp');
-  background-size: contain;
+  background-size: 23rem 6rem;
   background-position: center;
   background-repeat: no-repeat;
   font-size: 3rem;
@@ -342,6 +341,7 @@ canvas {
   color: #ffffff;
   text-align: center;
   font-weight: bold;
+  padding: 1rem;
 }
 
 :root {
@@ -357,7 +357,8 @@ canvas {
 }
 
 .btnBox {
-  width: 23rem;
+  width: 5rem;
+  height: 6.875rem;
   color: #fefefe;
   border: none;
   outline: none;
@@ -371,7 +372,6 @@ canvas {
   font-weight: bold;
   color: #f8f8f8;
   font-size: 4.5rem;
-  padding: 0;
   flex-direction: column;
   opacity: 1;
   font-family: "your-emoji-font", sans-serif !important;
@@ -379,7 +379,8 @@ canvas {
 }
 
 .btnBoxY {
-  width: 23rem;
+  width: 5rem;
+  height: 6.875rem;
   color: #fefefe;
   border: none;
   outline: none;
@@ -393,7 +394,6 @@ canvas {
   font-weight: bold;
   color: #f8f8f8;
   font-size: 4.5rem;
-  padding: 0;
   flex-direction: column;
   opacity: 1;
   font-family: "your-emoji-font", sans-serif !important;
