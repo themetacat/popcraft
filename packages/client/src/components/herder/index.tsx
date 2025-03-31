@@ -1866,7 +1866,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
                 <span className={style.gasPricePlaceHolder}>{gasPrice || " "}</span> Gwei
               </a>
             </span>
-            <span className={style.tooltip}>Gaming costs less at ~5 Gwei.</span>
           </div>
           {isConnected && 
             <div className={style.content}>
