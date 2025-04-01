@@ -398,7 +398,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                         <span
                                             className={`${noRecivedGiftsToken.length > 0 ? style.nftRewardsBottomHover : ''}`}
                                         >
-                                            NFT Holder Gifts
+                                            <a href="https://morpha.io/en/launchpad" target="_blank">PopCraft NFT</a> Gifts
                                         </span>
                                         <img src={PlayQuestionsImg} alt="" />
                                         <div className={style.nftRewardsQuestion}>
@@ -426,7 +426,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
 
                 <div className={style.giftsParkBtn} onClick={() => toggleContent()}>
                     <img src={GiftParkImg} alt="" />
-                    <button>Daily Streak Bonus</button>
+                    <button>Gift Park</button>
                     {tips > 0 &&
                         <div className={style.btnTips}>1</div>
                     }
@@ -593,7 +593,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                             <span
                                                 className={`${noRecivedGiftsToken.length > 0 ? mobileStyle.nftRewardsBottomHover : ''}`}
                                             >
-                                                NFT Holder Gifts
+                                                <a href="https://morpha.io/en/launchpad" target="_blank">PopCraft NFT</a> Gifts
                                             </span>
                                             <img src={PlayQuestionsImg} alt="" />
                                             <div className={mobileStyle.nftRewardsQuestion}>
@@ -622,7 +622,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
 
                 <div className={mobileStyle.giftsParkBtn} onClick={() => toggleContent()}>
                     <img src={mobileBtnImg} alt="" />
-                    <button>Daily Streak Bonus</button>
+                    <button>Gift Park</button>
                     {tips > 0 &&
                         <div className={mobileStyle.btnTips}>1</div>
                     }
