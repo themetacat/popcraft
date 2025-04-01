@@ -500,6 +500,7 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                         <span className={style.discountWrapper}>
                             <img src={discountTipsImg} className={style.discountTipsImg} />
                             <div className={style.discountTipsText}>
+                                <p>PopCraft Genesis NFT</p>
                                 <p>1 NFT → 10% OFF</p>
                                 <p>2 NFTs → 20% OFF</p>
                                 <p>3 NFTs → 30% OFF</p>
