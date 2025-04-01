@@ -651,7 +651,7 @@
     transform: scale(1.6);
 }
 
-.nftRewardsBottom img:active ~ .nftRewardsQuestion {
+.nftRewardsQuestion.visible {
     opacity: 1;
     visibility: visible;
 }

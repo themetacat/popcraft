@@ -203,6 +203,15 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
         }
     }, [NFTRewards, ownedTokens, address, chainId, NFTReceived])
 
+    const [isNFTRewardsTipsVisible, setIsNFTRewardsTipsVisible] = useState(false);
+
+    const handleNFTRewardsTipsClick = () => {
+        setIsNFTRewardsTipsVisible(true);
+        setTimeout(() => {
+            setIsNFTRewardsTipsVisible(false);
+        }, 2000);
+    };
+
     let playDays = 0;
     let theCycle = 0;
     let received = 0;
@@ -595,8 +604,8 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                             >
                                                 <a href="https://morpha.io/en/launchpad" target="_blank">PopCraft NFT</a> Gifts
                                             </span>
-                                            <img src={PlayQuestionsImg} alt="" />
-                                            <div className={mobileStyle.nftRewardsQuestion}>
+                                            <img src={PlayQuestionsImg} alt="" onClick={handleNFTRewardsTipsClick}/>
+                                            <div className={`${mobileStyle.nftRewardsQuestion} ${isNFTRewardsTipsVisible ? mobileStyle.visible : ""}`}>
                                                 <p>1. One NFT can claim 15 Lucky bags (150 items).</p>
                                                 <p>2. One Lucky bag = 10 items, one of each type.</p>
                                                 <p>3. Stack benefits with multiple NFTs.</p>
