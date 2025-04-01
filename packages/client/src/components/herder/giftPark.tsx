@@ -407,7 +407,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                         <span
                                             className={`${noRecivedGiftsToken.length > 0 ? style.nftRewardsBottomHover : ''}`}
                                         >
-                                            <a href="https://morpha.io/en/launchpad" target="_blank">PopCraft NFT</a> Gifts
+                                            <a href="https://morpha.io/en/launchpad" target="_blank" style={{ color: "rgb(255, 122, 0)", textDecoration: "underline", textDecorationColor: "rgb(230, 76, 0)" }}>PopCraft NFT</a> Gifts
                                         </span>
                                         <img src={PlayQuestionsImg} alt="" />
                                         <div className={style.nftRewardsQuestion}>
@@ -602,7 +602,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                             <span
                                                 className={`${noRecivedGiftsToken.length > 0 ? mobileStyle.nftRewardsBottomHover : ''}`}
                                             >
-                                                <a href="https://morpha.io/en/launchpad" target="_blank">PopCraft NFT</a> Gifts
+                                                <a href="https://morpha.io/en/launchpad" target="_blank" style={{ color: "rgb(255, 122, 0)", textDecoration: "underline", textDecorationColor: "rgb(230, 76, 0)" }}>PopCraft NFT</a> Gifts
                                             </span>
                                             <img src={PlayQuestionsImg} alt="" onClick={handleNFTRewardsTipsClick}/>
                                             <div className={`${mobileStyle.nftRewardsQuestion} ${isNFTRewardsTipsVisible ? mobileStyle.visible : ""}`}>
