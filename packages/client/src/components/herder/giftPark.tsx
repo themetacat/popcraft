@@ -72,6 +72,10 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
         setOffset((prev) => Math.min(prev + 1, maxOffset));
     };
 
+    const handleNextMobile = () => {
+        setOffset((prev) => Math.min(prev + 1, maxOffsetMobile));
+    };
+
     const handlePrev = () => {
         setOffset((prev) => Math.max(prev - 1, 0));
     };
@@ -198,6 +202,15 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
             }
         }
     }, [NFTRewards, ownedTokens, address, chainId, NFTReceived])
+
+    const [isNFTRewardsTipsVisible, setIsNFTRewardsTipsVisible] = useState(false);
+
+    const handleNFTRewardsTipsClick = () => {
+        setIsNFTRewardsTipsVisible(true);
+        setTimeout(() => {
+            setIsNFTRewardsTipsVisible(false);
+        }, 2000);
+    };
 
     let playDays = 0;
     let theCycle = 0;
@@ -394,14 +407,14 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                         <span
                                             className={`${noRecivedGiftsToken.length > 0 ? style.nftRewardsBottomHover : ''}`}
                                         >
-                                            NFT Holder Gifts
+                                            <a href="https://morpha.io/en/launchpad" target="_blank" style={{ color: "rgb(255, 122, 0)", textDecoration: "underline", textDecorationColor: "rgb(230, 76, 0)" }}>PopCraft NFT</a> Gifts
                                         </span>
                                         <img src={PlayQuestionsImg} alt="" />
                                         <div className={style.nftRewardsQuestion}>
-                                            <span>NFT Holder Gifts:</span>
-                                            <p>One NFT can claim 15 Lucky bags (150 items).</p>
-                                            <p>One Lucky bag = 10 items, one of each type.</p>
-                                            <p>Stack benefits with multiple NFTs.</p>
+                                            <p>1. One NFT can claim 15 Lucky bags (150 items).</p>
+                                            <p>2. One Lucky bag = 10 items, one of each type.</p>
+                                            <p>3. Stack benefits with multiple NFTs.</p>
+                                            <p>4. An NFT can only be claimed once.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -422,7 +435,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
 
                 <div className={style.giftsParkBtn} onClick={() => toggleContent()}>
                     <img src={GiftParkImg} alt="" />
-                    <button>Daily Streak Bonus</button>
+                    <button>Gift Park</button>
                     {tips > 0 &&
                         <div className={style.btnTips}>1</div>
                     }
@@ -553,8 +566,8 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
 
                                     <button
                                         className={`${mobileStyle.arrowButton} ${offset === maxOffsetMobile ? mobileStyle.disabled : mobileStyle.enable}`}
-                                        onClick={handleNext}
-                                        onTouchEnd={handleNext}
+                                        onClick={handleNextMobile}
+                                        onTouchEnd={handleNextMobile}
                                         disabled={offset === maxOffsetMobile}
                                     >
                                         <img
@@ -589,14 +602,14 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                             <span
                                                 className={`${noRecivedGiftsToken.length > 0 ? mobileStyle.nftRewardsBottomHover : ''}`}
                                             >
-                                                NFT Holder Gifts
+                                                <a href="https://morpha.io/en/launchpad" target="_blank" style={{ color: "rgb(255, 122, 0)", textDecoration: "underline", textDecorationColor: "rgb(230, 76, 0)" }}>PopCraft NFT</a> Gifts
                                             </span>
-                                            <img src={PlayQuestionsImg} alt="" />
-                                            <div className={mobileStyle.nftRewardsQuestion}>
-                                                <span>NFT Holder Gifts:</span>
-                                                <p>One NFT can claim 15 Lucky bags (150 items).</p>
-                                                <p>One Lucky bag = 10 items, one of each type.</p>
-                                                <p>Stack benefits with multiple NFTs.</p>
+                                            <img src={PlayQuestionsImg} alt="" onClick={handleNFTRewardsTipsClick}/>
+                                            <div className={`${mobileStyle.nftRewardsQuestion} ${isNFTRewardsTipsVisible ? mobileStyle.visible : ""}`}>
+                                                <p>1. One NFT can claim 15 Lucky bags (150 items).</p>
+                                                <p>2. One Lucky bag = 10 items, one of each type.</p>
+                                                <p>3. Stack benefits with multiple NFTs.</p>
+                                                <p>4. An NFT can only be claimed once.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -618,7 +631,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
 
                 <div className={mobileStyle.giftsParkBtn} onClick={() => toggleContent()}>
                     <img src={mobileBtnImg} alt="" />
-                    <button>Daily Streak Bonus</button>
+                    <button>Gift Park</button>
                     {tips > 0 &&
                         <div className={mobileStyle.btnTips}>1</div>
                     }
