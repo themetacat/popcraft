@@ -1,0 +1,549 @@
+@font-face {
+    font-family: "MyriadPro";
+    src: url("/fonts/MYRIADPRO-BOLD.OTF") format("opentype");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Simplicity";
+    src: url("/fonts/Simplicity.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Berlin Sans FB";
+    src: url("/fonts/BRLNSR.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Alibaba-PuHuiTi-Bold";
+    src: url("/fonts/Alibaba-PuHuiTi-Bold.woff2") format("woff2");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+.InviteImgBtn {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    z-index: 10;
+    font-family: "Simplicity";
+    text-align: center;
+    transition: transform 0.1s ease;
+    cursor: pointer;
+    width: 35rem;
+    height: 40rem;
+    margin-left: 13.97rem;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.InviteImgBtn img {
+    position: absolute;
+    width: 33.04rem;
+    height: 33.26rem;
+    object-fit: contain;
+    transition: transform 0.1s ease;
+    top: 0;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.InviteImgBtn:active img {
+    transform: scale(1.4);
+}
+
+.InviteImgBtn:active button {
+    text-shadow:
+        -0.8rem -0.8rem 0 white,
+        0.8rem -0.8rem 0 white,
+        -0.8rem 0.8rem 0 white,
+        0.8rem 0.8rem 0 white,
+        2rem 2rem 1.5rem rgba(0, 0, 0, 0.8);
+}
+
+.InviteImgBtn button {
+    transition: text-shadow 0.1s ease;
+    position: absolute;
+    width: 57rem;
+    background-color: transparent;
+    border: none;
+    font-family: "Simplicity";
+    color: #EB5F8C;
+    transition: font-size 0.1s ease;
+    font-size: 4.88rem;
+    font-weight: 400;
+    top: 30.5rem;
+    margin: 0;
+    line-height: 5.7rem;
+    height: 8rem;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    text-shadow:
+        -0.65rem -0.65rem 0 white,
+        0.65rem -0.65rem 0 white,
+        -0.65rem 0.65rem 0 white,
+        0.65rem 0.65rem 0 white,
+        0.5rem 1rem 1rem rgba(0, 0, 0, 1);
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10000000;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: auto !important;
+}
+
+.modalContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+
+    width: 249.44rem;
+    height: 345.44rem;
+
+    border: none;
+
+    background-image: url('../../../../images/Mobile/InviteFriends/InviteModalBg.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.title {
+    display: grid;
+    place-items: center;
+    align-content: center;
+
+    width: 211.75rem;
+    height: 13.3rem;
+    margin-bottom: -37rem;
+
+    background-image: url('../../../../images/Mobile/InviteFriends/InviteModalBgStar.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    font-family: MyriadPro;
+    font-weight: bold;
+    font-size: 12.53rem;
+
+    color: #FFFFFF;
+    text-shadow: 0 0 1rem rgba(0, 0, 0, 0.71);
+    letter-spacing: 0.6rem;
+    text-transform: uppercase;
+}
+
+.title span {
+    display: block;
+    line-height: 6.67rem;
+    margin-top: 1.5rem;
+}
+
+.imgOff {
+    width: 15rem;
+    height: 15rem;
+    position: absolute;
+    left: 230.37rem;
+    margin-bottom: 309rem;
+    cursor: pointer;
+}
+
+.contentsWrap {
+    width: 209.97rem;
+    height: 264.74rem;
+    margin-bottom: 18rem;
+    border-radius: 8.43rem;
+    background-color: #FFF4C7;
+
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.contentsTitle {
+    width: 94.21rem;
+    margin: 7.97rem 0 0 5.65rem;
+    font-family: "Berlin Sans FB", "Simplicity";
+    font-size: 10.16rem;
+    font-weight: 400;
+    color: transparent;
+    background: linear-gradient(0deg, #2FB383 0%, #18A86B 100%);
+    -webkit-background-clip: text;
+}
+
+.inviteSection {
+    width: 89.2rem;
+    height: 61.29rem;
+    margin: 4rem 0 0 0.1rem;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12.19rem;
+}
+
+.inviteCode {
+    width: 72.06rem;
+    height: 13.36rem;
+    font-family: Alibaba-PuHuiTi-Bold;
+    font-weight: 400;
+    font-size: 13.36rem;
+    letter-spacing: 0.3rem;
+    color: #0B8F58;
+
+    text-shadow: 0rem 0.2rem 0rem rgba(0, 0, 0, 0.68);
+    -webkit-text-stroke: 1.1px #FFFFFF;
+}
+
+.shareInviteWarp {
+    margin-left: -3rem;
+    width: 46rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.copyInviteContainer {
+    width: 3.9rem;
+    height: 3.84rem;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 4rem;
+}
+
+.copyInviteBtn {
+    width: 12rem;
+    height: 3.84rem;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.copyInviteBtn:active{
+    transform: scale(1.2);
+}
+
+.copyInviteBtn img {
+    width: 9.76rem;
+    height: 9.98rem;
+    margin-right: 0.8rem;
+}
+
+.copyInviteWord {
+    font-family: "Berlin Sans FB";
+    font-weight: 400;
+    font-size: 4.24rem;
+    color: #000000;
+    line-height: 15.76rem;
+    opacity: 0.66;
+    white-space: nowrap;
+}
+
+.copyToast {
+    width: 60.7rem;
+    height: 13.4rem;
+    background-image: url("../../../../images/substance/success.webp");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 1rem;
+    border-radius: 3rem;
+    text-align: center;
+
+    position: absolute;
+    top: 30%;
+    left: 48%;
+    transform: translate(-50%, -50%);
+}
+
+.copyToastImg {
+    width: 9rem;
+    height: 9rem;
+    float: left;
+    margin-top: 1.5rem;
+    margin-left: 2.8rem;
+}
+
+.copyToastText {
+    color: #03b243;
+    font-size: 4.3rem;
+    font-weight: 500;
+    line-height: 3.5rem;
+    font-family: "MyriadPro";
+    letter-spacing: 0.1em;
+    margin-top: 4.8rem;
+    white-space: nowrap;
+}
+
+.inviteShareXContainer {
+    width: 40rem;
+    height: 4rem;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 36rem;
+}
+
+.shareXBtn {
+    width: 12rem;
+    height: 3.84rem;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+}
+
+.shareXBtn img {
+    width: 9.76rem;
+    height: 9.53rem;
+    margin-right: 0.8rem;
+}
+
+.shareXInviteWord {
+    font-family: "Berlin Sans FB";
+    font-weight: 400;
+    font-size: 4.24rem;
+    color: #000000;
+    line-height: 15.76rem;
+    opacity: 0.66;
+    white-space: nowrap;
+}
+
+.middlePart {
+    margin-right: 6rem;
+    height: 57rem;
+    margin-left: 6.07rem;
+    justify-content: space-between;
+    display: flex;
+    align-items: flex-start;
+}
+
+.inviteNote {
+    width: 154.98rem;
+    font-family: "Berlin Sans FB";
+    font-weight: 400;
+    font-size: 5.54rem;
+    color: #000000;
+    white-space: nowrap;
+    margin-left: 0.5rem;
+}
+
+.inviteRule {
+    width: 88.02rem;
+    font-weight: 400;
+    font-family: "Berlin Sans FB";
+    font-size: 7.32rem;
+    color: #000000;
+    line-height: 15.64rem;
+    background-color: #F8DFA9;
+    background-size: 113.97rem 42.13rem;
+    margin-top: 8rem;
+    margin-right: 4rem;
+    padding: 4rem 6.62rem;
+    border-radius: 2rem;
+}
+
+.dividingLine {
+    width: 194.89rem;
+    height: 0.5rem;
+    background: linear-gradient(0deg, #2FB383, #18A86B);
+    border-radius: 2rem;
+    margin: 16rem auto 13rem;
+}
+
+.invitedRecordWrap {
+    width: 194.89rem;
+    height: 149rem;
+    margin: 0 auto;
+}
+
+.invitedRecordTitle {
+    width: 118.84rem;
+    font-family: "Berlin Sans FB";
+    font-weight: 400;
+    font-size: 10.16rem;
+    color: #000000;
+    white-space: nowrap;
+    background: linear-gradient(0deg, #2FB383 0%, #18A86B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    margin-left: 0.62rem;
+    margin-bottom: 11rem;
+}
+
+.invitedListTableWrap {
+    max-height: 137rem;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    position: relative;
+}
+
+.invitedListTableWrap table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: transparent;
+}
+
+.invitedListTableWrap thead,
+.invitedListTableWrap tfoot {
+    position: sticky;
+    height: 2.9rem;
+    background-color: #f5f2c5;
+    z-index: 2;
+}
+
+.invitedListTableWrap thead {
+    top: 0;
+}
+
+.invitedListTableWrap tfoot {
+    bottom: 0;
+}
+
+.invitedListTableWrap tbody {
+    display: block;
+    max-height: 86rem;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.invitedListTableWrap tbody::-webkit-scrollbar {
+    width: 1.77rem;
+}
+
+.invitedListTableWrap tbody::-webkit-scrollbar-thumb {
+    background-color: #72C132;
+    border-radius: 0.9rem;
+}
+
+.invitedListTableWrap tbody::-webkit-scrollbar-track {
+    background-color: #FFF4C7;
+    border-radius: 0.9rem;
+}
+
+.invitedListTableWrap tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    height: 20rem;
+}
+
+.invitedListTableWrap thead tr,
+.invitedListTableWrap tfoot tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    height: 20rem;
+}
+
+.invitedListTableWrap th,
+.invitedListTableWrap tbody td {
+    height: 20rem;
+    font-family: "Berlin Sans FB";
+    font-weight: 400;
+    font-size: 7.32rem;
+    color: #000000;
+    line-height: 5.07rem;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.invitedListTableWrap tfoot td {
+    width: 2.2rem;
+    height: 2.1rem;
+    font-family: "Berlin Sans FB";
+    font-weight: 400;
+    font-size: 7.32rem;
+    color: #000000;
+    line-height: 5.07rem;
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+.genCodeBtn {
+    width: 49rem;
+    height: 18.84rem;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: not-allowed;
+    background-color: #549A1E;
+    color: #fff;
+    border-radius: 3rem;
+    margin-left: 10rem;
+    margin-top: 2rem;
+    text-align: center;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.genCodeBtn span{
+    font-size: 8.5rem;
+    font-family: "Berlin Sans FB", "Simplicity";
+    letter-spacing: 0.1rem;
+}
+
+.genCodeBtnHover{
+    cursor: pointer;
+}
+
+.genCodeBtnHover:active{
+    transform: scale(1.2);
+}
+
+.genCodeBtnHover:active span{
+    text-shadow: 2rem 2rem 3rem #763434;
+}
+
+
+.loading {
+    animation: spin 5s linear infinite;
+    transform: rotate(3600deg);
+    transition: transform 5s linear;
+    height: 78%;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -9,10 +9,10 @@ export default mudConfig({
   namespace: "popCraft",
   tables: {
     TCMPopStar: {
-      keySchema:{
+      keySchema: {
         owner: "address"
       },
-      valueSchema:{
+      valueSchema: {
         x: "uint32",
         y: "uint32",
         startTime: "uint256",
@@ -22,42 +22,42 @@ export default mudConfig({
       }
     },
     TokenBalance: {
-      keySchema:{
+      keySchema: {
         owner: "address",
         tokenAddress: "address",
       },
-      valueSchema:{
+      valueSchema: {
         balance: "uint256",
       }
     },
-    TokenSold:{
-      keySchema:{
+    TokenSold: {
+      keySchema: {
         tokenAddress: "address",
       },
-      valueSchema:{
+      valueSchema: {
         soldNow: "uint256",
         soldAll: "uint256"
       }
     },
     GameRecord: {
-      keySchema:{
+      keySchema: {
         owner: "address",
       },
-      valueSchema:{
+      valueSchema: {
         times: "uint256",
         successTimes: "uint256",
         unissuedRewards: "uint256",
         // add new chain: change here
         ...(COMMON_CHAIN_IDS.includes(chainId)
           ? {
-              totalPoints: "uint256",
-            }
+            totalPoints: "uint256",
+          }
           : {}),
       }
     },
     StarToScore: {
       keySchema: {
-        amount: "uint256" 
+        amount: "uint256"
       },
       valueSchema: {
         score: "uint256",
@@ -65,14 +65,14 @@ export default mudConfig({
     },
     DayToScore: {
       keySchema: {
-        day: "uint256" 
+        day: "uint256"
       },
       valueSchema: {
         score: "uint256",
       }
     },
     RankingRecord: {
-      keySchema:{
+      keySchema: {
         owner: "address",
       },
       valueSchema: {
@@ -84,7 +84,7 @@ export default mudConfig({
     },
     Token: {
       keySchema: {
-        index: "uint256" 
+        index: "uint256"
       },
       valueSchema: {
         tokenAddress: "address[]",
@@ -100,7 +100,7 @@ export default mudConfig({
     },
     OverTime: {
       keySchema: {
-        level: "uint256" 
+        level: "uint256"
       },
       valueSchema: {
         time: "uint256",
@@ -143,7 +143,7 @@ export default mudConfig({
     },
     // gamerecord && rankingrecord
     WeeklyRecord: {
-      keySchema:{
+      keySchema: {
         owner: "address",
         season: "uint256",
         dimension: "uint256"
@@ -159,7 +159,7 @@ export default mudConfig({
       }
     },
     SeasonPlantsRecord: {
-      keySchema:{
+      keySchema: {
         owner: "address",
         season: "uint256",
         dimension: "uint256",
@@ -171,7 +171,7 @@ export default mudConfig({
     },
     DailyGames: {
       keySchema: {
-        player: "address" 
+        player: "address"
       },
       valueSchema: {
         games: "uint256",
@@ -182,7 +182,7 @@ export default mudConfig({
     },
     StreakDays: {
       keySchema: {
-        player: "address" 
+        player: "address"
       },
       valueSchema: {
         times: "uint256",
@@ -227,6 +227,41 @@ export default mudConfig({
       valueSchema: {
         recevied: "bool",
         receiver: "address"
+      }
+    },
+     // --------------- Invite ---------------
+     Inviter: {
+      keySchema: {
+        inviter: "address",
+      },
+      valueSchema: {
+        code: "string",
+        player: "address[]",
+      }
+    },
+    InviteCodeToInviter: {
+      keySchema: {
+        code: "bytes32",
+      },
+      valueSchema: {
+        inviter: "address"
+      }
+    },
+    PlayerToInvite: {
+      keySchema: {
+        player: "address",
+      },
+      valueSchema: {
+        code: "string"
+      }
+    },
+    InvitationScoreRecord: {
+      keySchema: {
+        player: "address",
+      },
+      valueSchema: {
+        remainingScores: "uint256",
+        totalScores: "uint256"
       }
     },
     //    ------------- Plants ---------------

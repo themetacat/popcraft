@@ -250,6 +250,10 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
                   { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "StreakDays" }) },
                   { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "ComboRewardGames" }) },
                   { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "NFTRewards" }) },
+                  { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "Inviter" }) },
+                  { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "InviteCodeToInviter" }) },
+                  { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "PlayerToInvite" }) },
+                  { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "InvitationScoreRecord" }) },
                 ]
                 : [])
             ],

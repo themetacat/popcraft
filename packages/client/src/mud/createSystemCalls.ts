@@ -20,6 +20,7 @@ import { MISSION_BOUNS_CHAIN_IDS } from "../components/select";
 import PlantsSystemAbi from "./abi/PlantsSystem.abi.json";
 import MissionSystemAbi from "./abi/MissionSystem.abi.json";
 import BonusSystemAbi from "./abi/BonusSystem.abi.json";
+import InviteSystemAbi from "./abi/InviteSystem.abi.json";
 import { numToEntityID, addr2NumToEntityID } from "../components/rightPart"
 export const update_app_value = (index: number) => {
   args_index = index;
@@ -680,9 +681,14 @@ export function createSystemCalls(
   }
 
   const payFunction = async (methodParametersArray: any[], totalValue = 0n) => {
-    const system_name = window.localStorage.getItem("system_name") as string;
+    // const system_name = window.localStorage.getItem("system_name") as string;
     const namespace = window.localStorage.getItem("namespace") as string;
+    let system_name = "PopCraftSystem";
 
+    // add new chain: change here
+    if(chainId === 31337 || chainId === 2818){
+      system_name = "BuySystem"
+    }
     let hashValpublic;
     const payArgs = await getPayArgs(methodParametersArray, totalValue)
 
@@ -1153,6 +1159,12 @@ export function createSystemCalls(
     name: "BonusSystem",
   })
 
+  const InviteResourceHex = resourceToHex({
+    type: "system",
+    namespace: "popCraft",
+    name: "InviteSystem",
+  })
+
   const collectSeed = async (
     account: any,
     nonce: number
@@ -1424,6 +1436,92 @@ export function createSystemCalls(
     return hashValpublic;
   };
 
+  const genInviteCode = async (
+    account: any,
+    nonce: number
+  ): Promise<CallResponse> => {
+    let hashValpublic: any;
+    const encodeData = encodeFunctionData({
+      abi: InviteSystemAbi,
+      functionName: "genInviteCode",
+      args: [],
+    });
+    try {
+      const txData = await worldContract.write.callFrom([
+        account,
+        InviteResourceHex,
+        encodeData,
+      ], {
+        gas: 5000000n,
+        nonce,
+        ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+        ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
+      });
+      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
+      await waitForTransaction(txData);
+      if (hashValpublic.status === "reverted") {
+        const { simulateContractRequest } = await publicClient.simulateContract({
+          account: palyerAddress,
+          address: worldContract.address,
+          abi: worldContract.abi,
+          functionName: 'callFrom',
+          args: [
+            account,
+            InviteResourceHex,
+            encodeData,
+          ],
+        })
+      }
+    } catch (error) {
+      return { error: error.message };
+    }
+    return hashValpublic;
+  };
+
+  const acceptInvitation = async (
+    account: any,
+    nonce: number,
+    code: string
+  ): Promise<CallResponse> => {
+    let hashValpublic: any;
+    const encodeData = encodeFunctionData({
+      abi: InviteSystemAbi,
+      functionName: "acceptInvitation",
+      args: [code],
+    });
+    try {
+      const txData = await worldContract.write.callFrom([
+        account,
+        InviteResourceHex,
+        encodeData,
+      ], {
+        gas: 5000000n,
+        nonce,
+        ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+        ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
+      });
+      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
+      await waitForTransaction(txData);
+      
+      if (hashValpublic.status === "reverted") {
+        const { simulateContractRequest } = await publicClient.simulateContract({
+          account: palyerAddress,
+          address: worldContract.address,
+          abi: worldContract.abi,
+          functionName: 'callFrom',
+          args: [
+            account,
+            InviteResourceHex,
+            encodeData,
+          ],
+        })
+      }
+    } catch (error) {
+      return { error: error.message };
+    }
+    return hashValpublic;
+  };
+
   return {
     update_abi,
     interact,
@@ -1437,6 +1535,8 @@ export function createSystemCalls(
     getBenefitsToken,
     getDailyGamesRewards,
     getStreakDaysRewards,
-    getNFTRewardsToken
+    getNFTRewardsToken,
+    genInviteCode,
+    acceptInvitation
   };
 }
