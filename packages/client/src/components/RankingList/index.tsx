@@ -176,11 +176,11 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                         GameRecord,
                         entity,
                     );
-                    const totalGames = Number(gameRecord.times);
-                    const wins = Number(gameRecord.successTimes);
+                    const totalGames = Number(gameRecord?.times ?? 0);
+                    const wins = Number(gameRecord?.successTimes ?? 0);
                     const losses = totalGames - wins;
                     const winRate = totalGames > 0 ? Math.floor((wins / totalGames) * 100) : 0;
-                    let totalPoints = Number(gameRecord.totalPoints);
+                    let totalPoints = Number(gameRecord?.totalPoints ?? 0);
                     let sortValue;
                     // add new chain: change here
                     if (chainId === 185 || chainId == 690 || chainId == 31338) {
