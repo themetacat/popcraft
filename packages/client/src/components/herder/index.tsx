@@ -2336,11 +2336,11 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               handleErrorAll={handleErrorAll}
               isMobile={isMobile}
             />
-            <Invite
+            {/* <Invite
               isMobile={isMobile}
               checkTaskInProcess={checkTaskInProcess}
               handleErrorAll={handleErrorAll}
-            />
+            /> */}
           </>
 
         )}
@@ -2660,11 +2660,11 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
                 handleErrorAll={handleErrorAll}
                 isMobile={isMobile}
               />
-              <Invite
+              {/* <Invite
                 isMobile={isMobile}
                 checkTaskInProcess={checkTaskInProcess}
                 handleErrorAll={handleErrorAll}
-              />
+              /> */}
             </>
           )}
         </div>
