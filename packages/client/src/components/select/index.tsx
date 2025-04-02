@@ -221,7 +221,7 @@ export const useTopUp = () => {
       }else if(chainId != 0){
         setRewardDescInfo("Morph Points for each game, along with additional rewards for the top 250 players every week.");
         setRecipient("0x784844480280ca865ac8ef89bb554283dddff737");
-        setBridgeUrl("https://www.morphl2.io/points/greattoken_migration/bridge")
+        setBridgeUrl("https://owlto.finance/?to=Morph")
         setChianIcon("https://poster-phi.vercel.app/Morphl2_Logo_Circle.webp");
         setTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
         setPriTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
