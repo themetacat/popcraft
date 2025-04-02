@@ -33,7 +33,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
     const {
         network: { palyerAddress, publicClient },
         components: {
-            Inviter,
+            InviterV2,
             InvitationScoreRecord
         },
         systemCalls: { registerDelegation, genInviteCode },
@@ -78,7 +78,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
 
     }
 
-    const InviteInfo = getComponentValue(Inviter, addressToEntityID(address)) as unknown as InviteInfoType;
+    const InviteInfo = getComponentValue(InviterV2, addressToEntityID(address)) as unknown as InviteInfoType;
     let InviteCode = "";
     let totalScores = 0;
     let totalRewards = 0;

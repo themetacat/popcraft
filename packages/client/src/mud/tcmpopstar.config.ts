@@ -229,12 +229,13 @@ export default mudConfig({
         receiver: "address"
       }
     },
-     // --------------- Invite ---------------
-     Inviter: {
+    // --------------- Invite ---------------
+    InviterV2: {
       keySchema: {
         inviter: "address",
       },
       valueSchema: {
+        value: "uint256",
         code: "string",
         player: "address[]",
       }
@@ -247,11 +248,12 @@ export default mudConfig({
         inviter: "address"
       }
     },
-    PlayerToInvite: {
+    PlayerToInviteV2: {
       keySchema: {
         player: "address",
       },
       valueSchema: {
+        value: "uint256",
         code: "string"
       }
     },
