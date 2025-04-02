@@ -186,8 +186,8 @@
 
 .inviteSection {
     width: 43.2rem;
-    height: 15.29rem;
-    margin: 2rem 0 0 0.1rem;
+    height: 20.29rem;
+    margin: 5rem 0 0 0.1rem;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
@@ -422,7 +422,7 @@
 
 .invitedListTableWrap tbody {
     display: block;
-    max-height: 30rem;
+    height: 25rem;
     overflow-y: auto;
     width: 100%;
 }
@@ -477,4 +477,58 @@
     line-height: 5.07rem;
     text-align: center;
     vertical-align: middle;
+}
+
+
+.genCodeBtn {
+    width: 17rem;
+    height: 5.84rem;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: not-allowed;
+    background-color: #549A1E;
+    color: #fff;
+    border-radius: 1rem;
+    margin-left: 10rem;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.genCodeBtn span{
+    font-size: 2.5rem;
+    font-family: "Berlin Sans FB", "Simplicity";
+    letter-spacing: 0.1rem;
+}
+
+.genCodeBtnHover{
+    cursor: pointer;
+}
+
+.genCodeBtnHover:hover{
+    transform: scale(1.06);
+}
+
+.genCodeBtnHover:hover span{
+    text-shadow: 0.3rem 0.3rem 0.4rem #763434;
+}
+
+
+.loading {
+    animation: spin 5s linear infinite;
+    transform: rotate(3600deg);
+    transition: transform 5s linear;
+    height: 78%;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }

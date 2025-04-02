@@ -192,13 +192,13 @@
 }
 
 .inviteSection {
-    width: 43.2rem;
-    height: 15.29rem;
-    margin: 2rem 0 0 0.1rem;
+    width: 89.2rem;
+    height: 61.29rem;
+    margin: 4rem 0 0 0.1rem;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    gap: 16.19rem;
+    gap: 12.19rem;
 }
 
 .inviteCode {
@@ -242,6 +242,12 @@
     justify-content: flex-start;
     align-items: center;
     cursor: pointer;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.copyInviteBtn:active{
+    transform: scale(1.2);
 }
 
 .copyInviteBtn img {
@@ -484,4 +490,60 @@
     line-height: 5.07rem;
     text-align: center;
     vertical-align: middle;
+}
+
+
+.genCodeBtn {
+    width: 49rem;
+    height: 18.84rem;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: not-allowed;
+    background-color: #549A1E;
+    color: #fff;
+    border-radius: 3rem;
+    margin-left: 10rem;
+    margin-top: 2rem;
+    text-align: center;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.genCodeBtn span{
+    font-size: 8.5rem;
+    font-family: "Berlin Sans FB", "Simplicity";
+    letter-spacing: 0.1rem;
+}
+
+.genCodeBtnHover{
+    cursor: pointer;
+}
+
+.genCodeBtnHover:active{
+    transform: scale(1.2);
+}
+
+.genCodeBtnHover:active span{
+    text-shadow: 2rem 2rem 3rem #763434;
+}
+
+
+.loading {
+    animation: spin 5s linear infinite;
+    transform: rotate(3600deg);
+    transition: transform 5s linear;
+    height: 78%;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
