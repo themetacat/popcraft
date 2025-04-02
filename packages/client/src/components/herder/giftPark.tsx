@@ -604,7 +604,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                             >
                                                 <a href="https://morpha.io/en/launchpad" target="_blank" style={{ color: "rgb(255, 122, 0)", textDecoration: "underline", textDecorationColor: "rgb(230, 76, 0)" }}>PopCraft NFT</a> Gifts
                                             </span>
-                                            <img src={PlayQuestionsImg} alt="" onClick={handleNFTRewardsTipsClick}/>
+                                            <img src={PlayQuestionsImg} alt="" onTouchEnd={handleNFTRewardsTipsClick}/>
                                             <div className={`${mobileStyle.nftRewardsQuestion} ${isNFTRewardsTipsVisible ? mobileStyle.visible : ""}`}>
                                                 <p>1. One NFT can claim 15 Lucky bags (150 items).</p>
                                                 <p>2. One Lucky bag = 10 items, one of each type.</p>

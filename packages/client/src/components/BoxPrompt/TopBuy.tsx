@@ -413,6 +413,15 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
             });
     };
 
+    const [isDiscountTipsVisible, setIsDiscountTipsVisible] = useState(false);
+
+    const handleDiscountTipsClick = () => {
+        setIsDiscountTipsVisible(true);
+        setTimeout(() => {
+            setIsDiscountTipsVisible(false);
+        }, 1500);
+    };
+
     if (!isMobile) {
         return (
             <div className={style.buYBox} style={{ backgroundImage: `url(${substanceImg})` }}>
@@ -686,7 +695,18 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                     </div>
                     <div className={mobileTopBuyStyle.totalAmount} style={{ color: "#f16394"}}>
                         <span className={mobileTopBuyStyle.leftSpan}>
-                            NFT(-{discount}%):
+                            NFT(-{discount}%)
+                            <span className={mobileTopBuyStyle.discountWrapper}>
+                                <img src={discountTipsImg} className={mobileTopBuyStyle.discountTipsImg} onTouchEnd={handleDiscountTipsClick}/>
+                                <div className={`${mobileTopBuyStyle.discountTipsText} ${isDiscountTipsVisible ? mobileTopBuyStyle.visible : ""}`}>
+                                    <p>PopCraft Genesis NFT</p>
+                                    <p>1 NFT → 10% OFF</p>
+                                    <p>2 NFTs → 20% OFF</p>
+                                    <p>3 NFTs → 30% OFF</p>
+                                    <p>4+ NFTs → 40% OFF</p>
+                                </div>
+                            </span>
+                            :
                         </span>
                         <span>
                             -{formatAmount(totalPrice * (discount / 100))} {nativeToken}
