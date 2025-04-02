@@ -99,7 +99,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 10000000;
+    z-index: 999998;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     pointer-events: auto !important;
