@@ -121,7 +121,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
             setIsCopyBtnClicked(false);
         }, 1000);
 
-        navigator.clipboard.writeText("http://popcraft.pixelaw.xyz/" + getNetworkName(chainId) + "?invite=" + InviteCode).then(
+        navigator.clipboard.writeText("https://popcraft.pixelaw.xyz/" + getNetworkName(chainId) + "?invite=" + InviteCode).then(
             function () {
                 setToastMsg("Invite Code Copied!");
                 setShowSuccessModal(true);
@@ -136,7 +136,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
     };
 
     const tweetTextTemplate =
-        "🚀 Join me in PopCraft, a fully on-chain match-3 game! Click the link to start playing: http://popcraft.pixelaw.xyz/" + getNetworkName(chainId) + "?invite={InviteCode} #PopCraft #Web3Gaming #FOCG";
+        "🚀 Join me in PopCraft, a fully on-chain match-3 game! Click the link to start playing: https://popcraft.pixelaw.xyz/" + getNetworkName(chainId) + "?invite={InviteCode} #PopCraft #Web3Gaming #FOCG";
 
     const [isTwitterBtnClicked, setIsTwitterBtnClicked] = useState(false);
     const handleTwitterBtnClick = (InviteCode: string) => {
