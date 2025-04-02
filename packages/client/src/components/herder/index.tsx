@@ -1356,17 +1356,17 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           setLoadingpaly(false);
           return;
         }
-        if (inviter.inviter != address) {
-          const nonce = await publicClient.getTransactionCount({ address: palyerAddress });
-          const callRes = await acceptInvitation(address, nonce, inviteCode)
-          if (callRes && callRes.error) {
-            console.error(callRes.error);
-            handleErrorAll(callRes.error);
-            setLoading(false);
-            setLoadingpaly(false);
-            return;
-          }
-        }
+        // if (inviter.inviter != address) {
+        //   const nonce = await publicClient.getTransactionCount({ address: palyerAddress });
+        //   const callRes = await acceptInvitation(address, nonce, inviteCode)
+        //   if (callRes && callRes.error) {
+        //     console.error(callRes.error);
+        //     handleErrorAll(callRes.error);
+        //     setLoading(false);
+        //     setLoadingpaly(false);
+        //     return;
+        //   }
+        // }
       }
     }
 
