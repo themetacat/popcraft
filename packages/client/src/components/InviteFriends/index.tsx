@@ -136,7 +136,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
     };
 
     const tweetTextTemplate =
-        "🚀 Join me in PopCraft, a fully on-chain match-3 game! Click the link to start playing: https://popcraft.pixelaw.xyz/" + getNetworkName(chainId) + "?invite={InviteCode} #PopCraft #Web3Gaming #FOCG";
+        "🚀 @PopCraftOnChain , the first fully on-chain match-3 game on @MorphLayer!\n🔥 Climb the leaderboard, test your skills, and rack up rewards in @PopCraftOnChain!\n💡 Fully on-chain games can take Web3 mainstream—let’s go!\n🎮 Join now: https://popcraft.pixelaw.xyz/" + getNetworkName(chainId) + "?invite={InviteCode}\n#PopCraft #FOCG "
 
     const [isTwitterBtnClicked, setIsTwitterBtnClicked] = useState(false);
     const handleTwitterBtnClick = (InviteCode: string) => {
