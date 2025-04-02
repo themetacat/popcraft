@@ -19,6 +19,7 @@ import LoadingImg from "../../images/loadingto.webp"
 import { useTopUp } from "../select";
 import topupbackImg from "../../images/topup/topupback.webp";
 import mobileTopUpBgImg from "../../images/Mobile/TopUp/TopUpBg.webp";
+import rightHandGrestureImg from "../../images/topup/rightHandGresture.webp";
 
 import {
   type BaseError,
@@ -370,7 +371,7 @@ export default function TopUp({
                         <img src={chainIcon} alt="" className={style.imgICon} />
                         <button
                           onClick={(event) => {
-                            openChainModal();
+                            // openChainModal();
                           }}
                           style={{
                             border: "none",
