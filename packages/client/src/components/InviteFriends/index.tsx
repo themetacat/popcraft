@@ -256,7 +256,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
                                             <br />
                                             Each chain's invitation is a separate link and calculated individually.</p>
                                     </div>
-                                    <p className={style.inviteRule}>You'll get 10% of your friends' scores from the project team.</p>
+                                    <p className={style.inviteRule}>You'll get a 10% bonus on friends' scores from PopCraft!</p>
                                 </div>
                                 <div className={style.dividingLine}></div>
                                 <div className={style.invitedRecordWrap}>
@@ -268,7 +268,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
                                                     <th>Rank</th>
                                                     <th>Address</th>
                                                     <th>Scores</th>
-                                                    <th>Your Rewards</th>
+                                                    <th>Earned Rewards</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -404,7 +404,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
                                             Each chain's invitation is a separate link and calculated individually.
                                         </p>
                                     </div>
-                                    <p className={styleMoblie.inviteRule}>You'll get 10% of your friends' scores from the project team.</p>
+                                    <p className={styleMoblie.inviteRule}>You'll get a 10% bonus on friends' scores from PopCraft!</p>
                                 </div>
                                 <div className={styleMoblie.dividingLine}></div>
                                 <div className={styleMoblie.invitedRecordWrap}>
@@ -416,7 +416,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
                                                     <th>Rank</th>
                                                     <th>Address</th>
                                                     <th>Scores</th>
-                                                    <th>Your Rewards</th>
+                                                    <th>Earned Rewards</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
