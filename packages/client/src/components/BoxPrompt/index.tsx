@@ -11,6 +11,7 @@ import { useAccount, useBalance } from 'wagmi';
 import { addressToEntityID } from "../rightPart";
 import loadingImg from "../../images/loadingto.webp";
 import LoadingMobileImg from "../../images/Mobile/GameOver/Loading.webp";
+import QAImg from '../../images/QA.png';
 import xLogo from '../../images/xLogo.png';
 import TelegramLogo from '../../images/TelegramLogo.png'
 import GithubLogo from '../../images/GithubLogo.webp'
@@ -1061,6 +1062,9 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
           </div>
         )}
         <div className={style.buttonBox}>
+          <a href="https://well-van-64a.notion.site/Q-A-PopCraft-1c9d5656f3d980388728fb99275dcac2" target="_blank" rel="noopener noreferrer">
+            <img src={QAImg}/>
+          </a>
           <a href="https://x.com/popcraftonchain" target="_blank" rel="noopener noreferrer">
             <img src={xLogo} className={xLogo} />
           </a>
