@@ -256,6 +256,12 @@
     margin-right: 0.8rem;
 }
 
+.copyInviteBtn[aria-disabled="true"] {
+    pointer-events: none;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .copyInviteWord {
     font-family: "Berlin Sans FB";
     font-weight: 400;
@@ -328,6 +334,12 @@
     width: 9.76rem;
     height: 9.53rem;
     margin-right: 0.8rem;
+}
+
+.shareXBtn[aria-disabled="true"] {
+    pointer-events: none;
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .shareXInviteWord {
