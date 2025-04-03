@@ -243,6 +243,11 @@
     margin-right: 0.8rem;
 }
 
+.copyInviteBtn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
 .copyInviteWord {
     font-family: "Berlin Sans FB";
     font-weight: 400;
@@ -314,6 +319,11 @@
     width: 3.57rem;
     height: 3.51rem;
     margin-right: 0.8rem;
+}
+
+.shareXBtn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .shareXInviteWord {
