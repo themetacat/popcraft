@@ -593,7 +593,7 @@ canvas {
   justify-content: center;
   align-items: center;
   width: 100%;
-  z-index: 999999;
+  z-index: 1000000;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   pointer-events: auto !important;
