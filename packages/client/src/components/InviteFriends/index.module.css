@@ -187,11 +187,11 @@
 .inviteSection {
     width: 43.2rem;
     height: 20.29rem;
-    margin: 5rem 0 0 0.1rem;
+    margin: 7rem 0 0 0.1rem;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2rem;
 }
 
 .inviteCode {
@@ -251,7 +251,7 @@
 .copyInviteWord {
     font-family: "Berlin Sans FB";
     font-weight: 400;
-    font-size: 1.54rem;
+    font-size: 2.1rem;
     color: #000000;
     line-height: 5.72rem;
     opacity: 0.66;
@@ -329,7 +329,7 @@
 .shareXInviteWord {
     font-family: "Berlin Sans FB";
     font-weight: 400;
-    font-size: 1.54rem;
+    font-size: 2.1rem;
     color: #000000;
     line-height: 5.72rem;
     opacity: 0.66;
@@ -348,7 +348,7 @@
     width: 43.2rem;
     font-family: "Berlin Sans FB";
     font-weight: 400;
-    font-size: 1.54rem;
+    font-size: 2.1rem;
     color: #000000;
     white-space: nowrap;
     margin-left: 0.5rem;
@@ -359,15 +359,15 @@
 
     font-weight: 400;
     font-family: "Berlin Sans FB";
-    font-size: 2.65rem;
+    font-size: 2.9rem;
     color: #000000;
     line-height: 5.95rem;
 
     background-color: #F8DFA9;
     background-size: 47.56rem 15.29rem;
 
-    margin-top: 9rem;
-    margin-right: 4rem;
+    margin-top: 6rem;
+    margin-right: 2rem;
     padding: 2rem 3.62rem;
     border-radius: 3rem;
 }
@@ -470,7 +470,7 @@
     height: 2.7rem;
     font-family: "Berlin Sans FB";
     font-weight: 400;
-    font-size: 1.9rem;
+    font-size: 2.5rem;
     color: #000000;
     line-height: 5.07rem;
     text-align: center;
@@ -482,7 +482,7 @@
     height: 2.1rem;
     font-family: "Berlin Sans FB";
     font-weight: 400;
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: #000000;
     line-height: 5.07rem;
     text-align: center;
