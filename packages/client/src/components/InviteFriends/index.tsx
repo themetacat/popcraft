@@ -104,7 +104,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
                 rewards: rewards
             });
         });
-        if (invitedList.length > 1) {
+        if (invitedList.length > 0) {
             invitedList.sort((a, b) => b.scores - a.scores);
             invitedList.forEach((item, idx) => item.rank = idx + 1);
         }
