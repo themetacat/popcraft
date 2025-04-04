@@ -9,40 +9,119 @@ import CopyBtnClickImg from '../../images/InviteFriends/CopyBtnClick.webp'
 import TwitterImg from '../../images/InviteFriends/TwitterBtn.webp'
 import TwitterClickImg from '../../images/InviteFriends/TwitterBtnClick.webp'
 import succssImg from '../../images/substance/successto.png'
+import { useMUD } from "../../MUDContext";
+import { getComponentValue } from "@latticexyz/recs";
+import { addressToEntityID } from "../Utils/toEntityId";
+import { useAccount } from 'wagmi';
+import loadingImg from "../../images/loadingto.webp"
+import { useTopUp, getNetworkName } from "../select";
 
 interface InviteProps {
-    isMobile: boolean
+    isMobile: boolean,
+    checkTaskInProcess: any,
+    handleErrorAll: any
 }
 
-export default function InviteFriends({ isMobile }: InviteProps) {
+interface InviteInfoType {
+    code: string;
+    player: string[];
+}
+
+
+export default function InviteFriends({ isMobile, checkTaskInProcess, handleErrorAll }: InviteProps) {
+
+    const {
+        network: { palyerAddress, publicClient },
+        components: {
+            InviterV2,
+            InvitationScoreRecord
+        },
+        systemCalls: { registerDelegation, genInviteCode },
+    } = useMUD();
     const [isShowInviteModal, setShowInviteModal] = useState(false);
+    const [callGenInviteCodeLoading, setCallGenInviteCodeLoading] = useState(false);
+    const { address, } = useAccount();
+    const [toastMsg, setToastMsg] = useState("");
+    const [showSuccessToast, setShowSuccessModal] = useState(false);
+    const [isCopyBtnClicked, setIsCopyBtnClicked] = useState(false);
+    const { chainId } = useTopUp();
+
     const toggleInviteModal = () => {
         setShowInviteModal(true)
     };
 
-    const InviteCode = "04E5RGH";
+    const callGenInviteCode = async () => {
+        if (checkTaskInProcess()) {
+            return;
+        }
 
-    const invitedList = [
-        { rank: 1, address: "0X12...3ASd", scores: 24000, rewards: 2400 },
-        { rank: 2, address: "0X12...3ASd", scores: 24000, rewards: 2400 },
-        { rank: 3, address: "0X12...3ASd", scores: 24000, rewards: 2400 },
-        { rank: 4, address: "0X12...3ASd", scores: 24000, rewards: 2400 },
-        { rank: 5, address: "0X12...3ASd", scores: 24000, rewards: 2400 },
-        { rank: 6, address: "0X12...3ASd", scores: 24000, rewards: 2400 },
-        { rank: 7, address: "0X12...3ASd", scores: 24000, rewards: 2400 },
-    ];
+        setCallGenInviteCodeLoading(true);
 
-    const [toastMsg, setToastMsg] = useState("");
-    const [showSuccessToast, setShowSuccessModal] = useState(false);
+        const deldata = localStorage.getItem('deleGeData')
+        if (deldata == "undefined") {
+            const delegationData = await registerDelegation();
+            if (!delegationData || delegationData.status != "success") {
+                setCallGenInviteCodeLoading(false);
+                handleErrorAll('')
+                return;
+            }
+        }
 
-    const [isCopyBtnClicked, setIsCopyBtnClicked] = useState(false);
-    const handleCopyBtnClick = (InviteCode) => {
+        const nonce = await publicClient.getTransactionCount({ address: palyerAddress })
+        const callRes = await genInviteCode(address, nonce);
+
+        if (callRes && callRes.error) {
+            console.error(callRes.error);
+            handleErrorAll(callRes.error)
+        }
+        setCallGenInviteCodeLoading(false);
+
+    }
+
+    const InviteInfo = getComponentValue(InviterV2, addressToEntityID(address)) as unknown as InviteInfoType;
+    let InviteCode = "";
+    let totalScores = 0;
+    let totalRewards = 0;
+    const invitedList: { rank: number; address: string; scores: number; rewards: number }[] = [];
+
+    if (InviteInfo && InviteInfo.code) {
+        InviteCode = InviteInfo.code.toString();
+        InviteInfo.player.forEach((player, index) => {
+            const invitationScoreRecordData = getComponentValue(InvitationScoreRecord, addressToEntityID(player));
+            if (!invitationScoreRecordData) return;
+
+            const scores = Number(invitationScoreRecordData.totalScores);
+            if (scores <= 0) return;
+            const rewards = (scores - Number(invitationScoreRecordData.remainingScores)) * 0.1;
+
+            totalScores += scores;
+            totalRewards += rewards;
+
+            invitedList.push({
+                rank: index,
+                address: player,
+                scores,
+                rewards: rewards
+            });
+        });
+        if (invitedList.length > 0) {
+            invitedList.sort((a, b) => b.scores - a.scores);
+            invitedList.forEach((item, idx) => item.rank = idx + 1);
+        }
+    }
+
+    const formatAddress = (address: string | undefined | null): string => {
+        if (!address) return '';
+        return `${address.slice(0, 4)}...${address.slice(-4)}`;
+    };
+
+    const handleCopyBtnClick = (InviteCode: string) => {
         setIsCopyBtnClicked(true);
         setTimeout(() => {
             setIsCopyBtnClicked(false);
         }, 1000);
 
-        navigator.clipboard.writeText(InviteCode).then(
+        navigator.clipboard.writeText("https://popcraft.pixelaw.xyz/" + getNetworkName(chainId) + "?invite=" + InviteCode).then(
             function () {
                 setToastMsg("Invite Code Copied!");
                 setShowSuccessModal(true);
@@ -52,19 +131,15 @@ export default function InviteFriends({ isMobile }: InviteProps) {
             },
             function (err) {
                 setToastMsg("Copy failed, retry!");
-                setShowErrorToast(true);
-                setTimeout(() => {
-                    setShowErrorToast(false);
-                }, 2000);
             }
         );
     };
 
     const tweetTextTemplate =
-        "🚀 Join me in PopCraft, a fully on-chain match-3 game! Click the link to start playing: http://popcraft.pixelaw.xyz/invite/{InviteCode} #PopCraft #Web3Gaming #FOCG";
+        "🚀 PopCraft, the first fully on-chain match-3 game on @MorphLayer!\n🔥 Climb the leaderboard, test your skills, and rack up rewards in @PopCraftOnChain!\n💡 Fully on-chain games can take Web3 mainstream—let’s go!\n🎮 Join now: https://popcraft.pixelaw.xyz/" + getNetworkName(chainId) + "?invite={InviteCode}\n#PopCraft #FOCG "
 
     const [isTwitterBtnClicked, setIsTwitterBtnClicked] = useState(false);
-    const handleTwitterBtnClick = (InviteCode) => {
+    const handleTwitterBtnClick = (InviteCode: string) => {
         setIsTwitterBtnClicked(true);
         setTimeout(() => {
             setIsTwitterBtnClicked(false);
@@ -75,7 +150,7 @@ export default function InviteFriends({ isMobile }: InviteProps) {
         window.open(url, "_blank");
     };
 
-    const handleTwitterBtnClickMobile = (InviteCode) => {
+    const handleTwitterBtnClickMobile = (InviteCode: string) => {
         setIsTwitterBtnClicked(true);
         setTimeout(() => {
             setIsTwitterBtnClicked(false);
@@ -118,14 +193,38 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                 <div className={style.contentsTitle}>Your Invitation Code</div>
                                 <div className={style.middlePart}>
                                     <div className={style.inviteSection}>
-                                        <span className={style.inviteCode}>{InviteCode}</span>
+                                        {InviteCode ?
+                                            <span className={style.inviteCode}>{InviteCode}</span>
+                                            :
+                                            <button
+                                                className={`${style.genCodeBtn} ${!callGenInviteCodeLoading ? style.genCodeBtnHover : ''}`}
+                                                onClick={() => {
+                                                    !callGenInviteCodeLoading ? callGenInviteCode() : undefined;
+                                                }}
+                                            >
+                                                {
+                                                    callGenInviteCodeLoading === true ? (
+                                                        <img
+                                                            src={loadingImg}
+                                                            alt=""
+                                                            className={`${style.loading}`}
+                                                        />
+                                                    ) : (
+                                                        <span>Get Code</span>
+                                                    )
+                                                }
+
+                                            </button>}
                                         <div className={style.shareInviteWarp}>
                                             <div className={style.copyInviteContainer}>
                                                 <button
                                                     className={style.copyInviteBtn}
                                                     onClick={() => {
-                                                        handleCopyBtnClick(InviteCode);
+                                                        if (InviteCode) {
+                                                            handleCopyBtnClick(InviteCode);
+                                                        }
                                                     }}
+                                                    disabled={!InviteCode}
                                                 >
                                                     <img
                                                         src={isCopyBtnClicked ? CopyBtnClickImg : CopyBtnImg}
@@ -138,8 +237,11 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                                 <button
                                                     className={style.shareXBtn}
                                                     onClick={() => {
-                                                        handleTwitterBtnClick(InviteCode);
+                                                        if (InviteCode) {
+                                                            handleTwitterBtnClick(InviteCode);
+                                                        }
                                                     }}
+                                                    disabled={!InviteCode}
                                                 >
                                                     <img
                                                         src={isTwitterBtnClicked ? TwitterClickImg : TwitterImg}
@@ -149,9 +251,12 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                                 </button>
                                             </div>
                                         </div>
-                                        <p className={style.inviteNote}>Each chain's invitation is a separate link and calculated individually.</p>
+                                        <p className={style.inviteNote}>
+                                            Only new users can be invited.
+                                            <br />
+                                            Each chain's invitation is a separate link and calculated individually.</p>
                                     </div>
-                                    <p className={style.inviteRule}>You'll get 10% of your friends' scores from the project team.</p>
+                                    <p className={style.inviteRule}>You'll get a 10% bonus on friends' scores from PopCraft!</p>
                                 </div>
                                 <div className={style.dividingLine}></div>
                                 <div className={style.invitedRecordWrap}>
@@ -163,7 +268,7 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                                     <th>Rank</th>
                                                     <th>Address</th>
                                                     <th>Scores</th>
-                                                    <th>Your Rewards</th>
+                                                    <th>Earned Rewards</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -171,7 +276,7 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                                     ? invitedList.map((item, index) => (
                                                         <tr key={index}>
                                                             <td>{item.rank}</td>
-                                                            <td>{item.address}</td>
+                                                            <td>{formatAddress(item.address)}</td>
                                                             <td>{item.scores}</td>
                                                             <td>{item.rewards}</td>
                                                         </tr>
@@ -189,9 +294,9 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                             <tfoot>
                                                 <tr>
                                                     <td>Total</td>
-                                                    <td>15</td>
-                                                    <td>100000</td>
-                                                    <td>1000</td>
+                                                    <td>{invitedList.length}</td>
+                                                    <td>{totalScores}</td>
+                                                    <td>{totalRewards}</td>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -236,14 +341,37 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                 <div className={styleMoblie.contentsTitle}>Your Invitation Code</div>
                                 <div className={styleMoblie.middlePart}>
                                     <div className={styleMoblie.inviteSection}>
-                                        <span className={styleMoblie.inviteCode}>{InviteCode}</span>
+                                        {InviteCode ?
+                                            <span className={styleMoblie.inviteCode}>{InviteCode}</span>
+                                            :
+                                            <button
+                                                className={`${styleMoblie.genCodeBtn} ${!callGenInviteCodeLoading ? styleMoblie.genCodeBtnHover : ''}`}
+                                                onTouchEnd={() => {
+                                                    !callGenInviteCodeLoading ? callGenInviteCode() : undefined;
+                                                }}
+                                            >
+                                                {
+                                                    callGenInviteCodeLoading === true ? (
+                                                        <img
+                                                            src={loadingImg}
+                                                            alt=""
+                                                            className={`${styleMoblie.loading}`}
+                                                        />
+                                                    ) : (
+                                                        <span>Get Code</span>
+                                                    )
+                                                }
+                                            </button>}
                                         <div className={styleMoblie.shareInviteWarp}>
                                             <div className={styleMoblie.copyInviteContainer}>
                                                 <button
                                                     className={styleMoblie.copyInviteBtn}
                                                     onTouchEnd={() => {
-                                                        handleCopyBtnClick(InviteCode);
+                                                        if (InviteCode) {
+                                                            handleCopyBtnClick(InviteCode);
+                                                        }
                                                     }}
+                                                    aria-disabled={!InviteCode}
                                                 >
                                                     <img
                                                         src={isCopyBtnClicked ? CopyBtnClickImg : CopyBtnImg}
@@ -256,8 +384,11 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                                 <button
                                                     className={styleMoblie.shareXBtn}
                                                     onTouchEnd={() => {
-                                                        handleTwitterBtnClickMobile(InviteCode);
+                                                        if (InviteCode) {
+                                                            handleTwitterBtnClickMobile(InviteCode);
+                                                        }
                                                     }}
+                                                    aria-disabled={!InviteCode}
                                                 >
                                                     <img
                                                         src={isTwitterBtnClicked ? TwitterClickImg : TwitterImg}
@@ -267,9 +398,13 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                                 </button>
                                             </div>
                                         </div>
-                                        <p className={styleMoblie.inviteNote}>Each chain's invitation is a separate link and calculated individually.</p>
+                                        <p className={styleMoblie.inviteNote}>
+                                            Only new users can be invited.
+                                            <br />
+                                            Each chain's invitation is a separate link and calculated individually.
+                                        </p>
                                     </div>
-                                    <p className={styleMoblie.inviteRule}>You'll get 10% of your friends' scores from the project team.</p>
+                                    <p className={styleMoblie.inviteRule}>You'll get a 10% bonus on friends' scores from PopCraft!</p>
                                 </div>
                                 <div className={styleMoblie.dividingLine}></div>
                                 <div className={styleMoblie.invitedRecordWrap}>
@@ -281,7 +416,7 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                                     <th>Rank</th>
                                                     <th>Address</th>
                                                     <th>Scores</th>
-                                                    <th>Your Rewards</th>
+                                                    <th>Earned Rewards</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -289,7 +424,7 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                                     ? invitedList.map((item, index) => (
                                                         <tr key={index}>
                                                             <td>{item.rank}</td>
-                                                            <td>{item.address}</td>
+                                                            <td>{formatAddress(item.address)}</td>
                                                             <td>{item.scores}</td>
                                                             <td>{item.rewards}</td>
                                                         </tr>
@@ -307,9 +442,9 @@ export default function InviteFriends({ isMobile }: InviteProps) {
                                             <tfoot>
                                                 <tr>
                                                     <td>Total</td>
-                                                    <td>15</td>
-                                                    <td>100000</td>
-                                                    <td>1000</td>
+                                                    <td>{invitedList.length}</td>
+                                                    <td>{totalScores}</td>
+                                                    <td>{totalRewards}</td>
                                                 </tr>
                                             </tfoot>
                                         </table>

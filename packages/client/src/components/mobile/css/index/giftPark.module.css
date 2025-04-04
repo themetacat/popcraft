@@ -401,8 +401,8 @@
 .loadingMask {
     margin-top: 0.815rem;
     margin-left: -0.01rem;
-    width: 18.6rem;
-    height: 11.8rem;
+    width: 38.5rem;
+    height: 26.8rem;
 }
 
 
@@ -413,10 +413,10 @@
     -webkit-transition: -webkit-transform 5s linear;
     transition: transform 5s linear;
     position: absolute;
-    margin-left: -12.4rem;
-    margin-top: 3.2rem;
-    height: 7rem;
-    width: 7rem;
+    margin-left: -26.4rem;
+    margin-top: 8.2rem;
+    height: 14rem;
+    width: 14rem;
 }
 
 @keyframes spin {
@@ -637,7 +637,7 @@
 }
 
 .nftRewardsBottom img{
-    width: 7rem;
+    width: 9rem;
     margin-left: 1rem;
     transition: transform 0.1s ease;
     cursor: pointer;
@@ -651,7 +651,7 @@
     transform: scale(1.6);
 }
 
-.nftRewardsBottom img:active ~ .nftRewardsQuestion {
+.nftRewardsQuestion.visible {
     opacity: 1;
     visibility: visible;
 }

@@ -145,7 +145,7 @@ export const App = () => {
       <Toaster
         toastOptions={{
           duration: 2000,
-          className: style.toasterStyle
+          className: !isMobile ? style.toasterStyle : style.mobileToasterStyle,
         }}
         containerStyle={{
           zIndex: 99999999,

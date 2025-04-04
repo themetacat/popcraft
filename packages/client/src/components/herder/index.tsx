@@ -52,9 +52,10 @@ import DividingLineMobileImg from "../../images/Mobile/Top/MenuDividingLine.webp
 import XMobileImg from "../../images/Mobile/Top/x.webp";
 import GitHubMobileImg from "../../images/Mobile/Top/github.webp";
 import TGMobileImg from "../../images/Mobile/Top/tg.webp";
-
+import { useSearchParams } from "react-router-dom";
 import mobileTopBuyStyle from "../mobile/css/BoxPrompt/topBuy.module.css";
 
+import { keccak256, toBytes } from "viem";
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -79,14 +80,14 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
 
   const {
     components: {
-      App,
-      Pixel,
       TCMPopStar,
       GameRecord,
-      WeeklyRecord
+      WeeklyRecord,
+      PlayerToInviteV2,
+      InviteCodeToInviter,
     },
     network: { publicClient, palyerAddress },
-    systemCalls: { interact, interactTCM, registerDelegation, opRendering },
+    systemCalls: { interact, interactTCM, registerDelegation, opRendering, acceptInvitation },
   } = useMUD();
 
   const { isConnected, address } = useAccount();
@@ -151,6 +152,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [showMenu, setShowMenu] = useState(false);
   const [isCloseAnimatingMenu, setIsCloseAnimatingMenu] = useState(false);
   const [showMobileInDayBonus, setShowMobileInDayBonus] = useState(false);
+  const [searchParams] = useSearchParams();
+  const inviteCode = searchParams.get("invite");
 
   useEffect(() => {
     const fetchGasPrice = async () => {
@@ -658,28 +661,28 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
 
           // 绘制图像
           // if (!loadingSquare || !(loadingSquare.x === i && loadingSquare.y === j)) {
-            if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
-              const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1];
-              const src = imageIconData[tokenAddress]?.src;
-              if (tokenAddress !== undefined && src !== undefined) {
-                if (!imageCache[src]) {
-                  const img = new Image();
-                  img.src = src;
-                  img.onload = () => {
-                    setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
-                    // 重新绘制图像
-                    ctx.drawImage(img, currentX, currentY, GRID_SIZE * 0.9, GRID_SIZE * 0.9);
-                  };
-                } else {
-                  // 调整图片大小
-                  const imageWidth = GRID_SIZE * tokenImgScale; // 调整图片宽度
-                  const imageHeight = GRID_SIZE * tokenImgScale; // 调整图片高度
-                  const imageX = currentX + (GRID_SIZE - imageWidth) / 2;
-                  const imageY = currentY + (GRID_SIZE - imageHeight) / 2;
-                  ctx.drawImage(imageCache[src], imageX, imageY, imageWidth, imageHeight);
-                }
+          if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
+            const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1];
+            const src = imageIconData[tokenAddress]?.src;
+            if (tokenAddress !== undefined && src !== undefined) {
+              if (!imageCache[src]) {
+                const img = new Image();
+                img.src = src;
+                img.onload = () => {
+                  setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
+                  // 重新绘制图像
+                  ctx.drawImage(img, currentX, currentY, GRID_SIZE * 0.9, GRID_SIZE * 0.9);
+                };
+              } else {
+                // 调整图片大小
+                const imageWidth = GRID_SIZE * tokenImgScale; // 调整图片宽度
+                const imageHeight = GRID_SIZE * tokenImgScale; // 调整图片高度
+                const imageX = currentX + (GRID_SIZE - imageWidth) / 2;
+                const imageY = currentY + (GRID_SIZE - imageHeight) / 2;
+                ctx.drawImage(imageCache[src], imageX, imageY, imageWidth, imageHeight);
               }
             }
+          }
           // }
         }
       }
@@ -741,7 +744,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       tokenImgScale
     ]
   );
-  
+
 
   useEffect(() => {
     if (appName === "BASE/PopCraftSystem") {
@@ -822,7 +825,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
           ctx.fillStyle = "#2f1643";
           ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-          
+
         }
       }
 
@@ -863,8 +866,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let newCoordinates = coordinates;
-    
-    if(isMobile){
+
+    if (isMobile) {
       const canvas = canvasRef.current as any;
       const rect = canvas.getBoundingClientRect();
       const mouseX = event.clientX - rect.left;
@@ -883,7 +886,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         setHoveredSquare(null);
       }, 100);
     }
-    if (newCoordinates.x < 10) {   
+    if (newCoordinates.x < 10) {
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
       drawGrid2(ctx, newCoordinates, false);
     }
@@ -899,7 +902,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       return;
     }
 
-    if ("ontouchstart" in window) { 
+    if ("ontouchstart" in window) {
       setHoveredSquare(null); // 移除 hover 状态 
     }
 
@@ -933,7 +936,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
         const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
         const newHoveredSquare = { x: gridX, y: gridY };
-        if(!isMobile){
+        if (!isMobile) {
           setHoveredSquare(newHoveredSquare);
         }
         const upCoordinates = { x: gridX, y: gridY };
@@ -1340,12 +1343,33 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     // localStorage.setItem('playAction', 'play'); // 设置 playAction 为 play
   };
 
-  const playData = () => {
+  const playData = async () => {
     let EmptyRegionNum = 0
     if (TCMPopStarData === undefined) {
       const emptyRegion = findEmptyRegion();
       EmptyRegionNum = emptyRegion
+      if (address && inviteCode && !getComponentValue(PlayerToInviteV2, addressToEntityID(address))) {
+        const inviter = getComponentValue(InviteCodeToInviter, keccak256(toBytes(inviteCode)));
+        if (!inviter) {
+          handleErrorAll("Invalid code");
+          setLoading(false);
+          setLoadingpaly(false);
+          return;
+        }
+        if (inviter.inviter != address) {
+          const nonce = await publicClient.getTransactionCount({ address: palyerAddress });
+          const callRes = await acceptInvitation(address, nonce, inviteCode)
+          if (callRes && callRes.error) {
+            console.error(callRes.error);
+            handleErrorAll(callRes.error);
+            setLoading(false);
+            setLoadingpaly(false);
+            return;
+          }
+        }
+      }
     }
+
     const ctx = canvasRef?.current?.getContext("2d");
 
     if (ctx && canvasRef) {
@@ -1804,6 +1828,10 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       } else if (errMessage.includes("Error: World_ResourceNotFound(bytes32 resourceId, string resourceIdString)")) {
         // Error: World_ResourceNotFound(bytes32 resourceId, string resourceIdString)
         toastError = "Unknow Error";
+      } else if (errMessage.includes("Not reproducible")) {
+        toastError = "Not reproducible!";
+      } else if (errMessage.includes("Invalid code")) {
+        toastError = "Invalid invitation code. Please check!";
       } else {
         toastError = "Unknow Error";
       }
@@ -2193,7 +2221,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               <div className={style.contentbox}>
                 <p>INSUFFICIENT GASBALANCE</p><br />
               </div>
-              <button className={style.topupbtn} 
+              <button className={style.topupbtn}
                 onClick={() => {
                   setShowNewPopUp(false);
                   setTopUpType(true);
@@ -2308,6 +2336,11 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               handleErrorAll={handleErrorAll}
               isMobile={isMobile}
             />
+            <Invite
+              isMobile={isMobile}
+              checkTaskInProcess={checkTaskInProcess}
+              handleErrorAll={handleErrorAll}
+            />
           </>
 
         )}
@@ -2317,12 +2350,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           <NewUserBenefitsToken
             checkTaskInProcess={checkTaskInProcess}
             handleErrorAll={handleErrorAll}
-          />
-        )}
-
-        {(isConnected && address) && (
-          <Invite
-            isMobile={isMobile}
           />
         )}
       </>
@@ -2529,9 +2556,9 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               className={mobileStyle.bodyCon}
               onMouseDown={handleMouseDown}
               onMouseUp={handleMouseUp}
-              // onMouseMove={handleMouseMoveData}
-              // onMouseLeave={handleLeave}
-              // onMouseEnter={handleMouseEnter}
+            // onMouseMove={handleMouseMoveData}
+            // onMouseLeave={handleLeave}
+            // onMouseEnter={handleMouseEnter}
             >
               <canvas
                 ref={canvasRef}
@@ -2593,7 +2620,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               <div className={mobileStyle.contentbox}>
                 <p>INSUFFICIENT GASBALANCE</p><br />
               </div>
-              <button className={mobileStyle.topupbtn} 
+              <button className={mobileStyle.topupbtn}
                 onClick={() => {
                   setShowNewPopUp(false);
                   setTopUpType(true);
@@ -2633,12 +2660,12 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
                 handleErrorAll={handleErrorAll}
                 isMobile={isMobile}
               />
+              <Invite
+                isMobile={isMobile}
+                checkTaskInProcess={checkTaskInProcess}
+                handleErrorAll={handleErrorAll}
+              />
             </>
-          )}
-          {(isConnected && address) && (
-            <Invite
-              isMobile={isMobile}
-            />
           )}
         </div>
 

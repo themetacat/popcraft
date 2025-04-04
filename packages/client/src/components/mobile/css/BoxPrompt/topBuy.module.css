@@ -476,3 +476,40 @@
     transition: transform 5s linear;
     height: 100%;
 }
+
+.discountWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.discountTipsImg {
+    vertical-align: middle;
+    width: 9rem;
+    height: 9rem;
+    cursor: pointer;
+}
+
+.discountTipsText {
+    position: absolute;
+    top: -140%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #caf6fe;
+    color: #47799a;
+    padding: 6px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: "AdobeHeitiStd-Regular2";
+    white-space: nowrap;
+    border: 1px solid #359fbf;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+    text-align: center;
+}
+
+.discountTipsText.visible {
+    opacity: 1;
+    visibility: visible;
+}

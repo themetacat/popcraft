@@ -11,6 +11,7 @@ import { useAccount, useBalance } from 'wagmi';
 import { addressToEntityID } from "../rightPart";
 import loadingImg from "../../images/loadingto.webp";
 import LoadingMobileImg from "../../images/Mobile/GameOver/Loading.webp";
+import QAImg from '../../images/QA.png';
 import xLogo from '../../images/xLogo.png';
 import TelegramLogo from '../../images/TelegramLogo.png'
 import GithubLogo from '../../images/GithubLogo.webp'
@@ -608,6 +609,15 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
     addressToEntityID(address)
   ) : undefined;
 
+  const [isDiscountTipsVisible, setIsDiscountTipsVisible] = useState(false);
+
+  const handleDiscountTipsClick = () => {
+      setIsDiscountTipsVisible(true);
+      setTimeout(() => {
+          setIsDiscountTipsVisible(false);
+      }, 1500);
+  };
+
   if (!isMobile) {
     return (
       <>
@@ -766,6 +776,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                   <span className={style.discountWrapper}>
                       <img src={discountTipsImg} className={style.discountTipsImg} />
                       <div className={style.discountTipsText}>
+                          <p>PopCraft Genesis NFT</p>
                           <p>1 NFT → 10% OFF</p>
                           <p>2 NFTs → 20% OFF</p>
                           <p>3 NFTs → 30% OFF</p>
@@ -1051,6 +1062,9 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
           </div>
         )}
         <div className={style.buttonBox}>
+          <a href="https://well-van-64a.notion.site/Q-A-PopCraft-1c9d5656f3d980388728fb99275dcac2" target="_blank" rel="noopener noreferrer">
+            <img src={QAImg}/>
+          </a>
           <a href="https://x.com/popcraftonchain" target="_blank" rel="noopener noreferrer">
             <img src={xLogo} className={xLogo} />
           </a>
@@ -1226,7 +1240,18 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                 </div>
                 <div className={mobileTopBuyStyle.totalAmount} style={{ color: "#f16394" }}>
                   <span className={mobileTopBuyStyle.leftSpan}>
-                    NFT(-{discount}%):
+                    NFT(-{discount}%)
+                    <span className={mobileTopBuyStyle.discountWrapper}>
+                        <img src={discountTipsImg} className={mobileTopBuyStyle.discountTipsImg} onTouchEnd={handleDiscountTipsClick}/>
+                        <div className={`${mobileTopBuyStyle.discountTipsText} ${isDiscountTipsVisible ? mobileTopBuyStyle.visible : ""}`}>
+                            <p>PopCraft Genesis NFT</p>
+                            <p>1 NFT → 10% OFF</p>
+                            <p>2 NFTs → 20% OFF</p>
+                            <p>3 NFTs → 30% OFF</p>
+                            <p>4+ NFTs → 40% OFF</p>
+                        </div>
+                    </span>
+                    :
                   </span>
                   <span>
                     -{formatAmount(totalPrice * (discount / 100))} {nativeToken}
