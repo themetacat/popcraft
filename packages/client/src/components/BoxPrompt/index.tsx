@@ -11,7 +11,7 @@ import { useAccount, useBalance } from 'wagmi';
 import { addressToEntityID } from "../rightPart";
 import loadingImg from "../../images/loadingto.webp";
 import LoadingMobileImg from "../../images/Mobile/GameOver/Loading.webp";
-import QAImg from '../../images/QA.png';
+import QANewImg from '../../images/QANEW.jpg';
 import xLogo from '../../images/xLogo.png';
 import TelegramLogo from '../../images/TelegramLogo.png'
 import GithubLogo from '../../images/GithubLogo.webp'
@@ -1026,7 +1026,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
         </div> */}
         <div className={howToPlayStyle.btnHtp}
           style={{
-            bottom: "30%"
+            bottom: "43%"
           }}
           onClick={async () => {
             setShowRewards(true);
@@ -1036,12 +1036,23 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
           <span>REWARDS</span>
         </div>
         <div className={howToPlayStyle.btnHtp}
+          style={{
+            bottom: "30%"
+          }}
           onClick={async () => {
             setShowHowToPlay(true);
           }}
         >
           <img src={HowToPlayBtnImg} alt="" />
           <span>HOW TO PLAY</span>
+        </div>
+        <div className={howToPlayStyle.btnHtp}
+          onClick={() => {
+            window.open('https://well-van-64a.notion.site/Q-A-PopCraft-1c9d5656f3d980388728fb99275dcac2', '_blank');
+          }}
+        >
+          <img src={QANewImg} alt="" />
+          <span>Q&A</span>
         </div>
         {showCrossFlow && (
           <div className={style.overlay} >
@@ -1062,9 +1073,6 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
           </div>
         )}
         <div className={style.buttonBox}>
-          <a href="https://well-van-64a.notion.site/Q-A-PopCraft-1c9d5656f3d980388728fb99275dcac2" target="_blank" rel="noopener noreferrer">
-            <img src={QAImg}/>
-          </a>
           <a href="https://x.com/popcraftonchain" target="_blank" rel="noopener noreferrer">
             <img src={xLogo} className={xLogo} />
           </a>
@@ -1091,7 +1099,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
         {chainId === 2818 && (
           <div className={howToPlayStyle.btnHtp}
             style={{
-              bottom: "43%"
+              bottom: "56%"
             }}
             onClick={() => window.open("https://morpha.io/en/launchpad", "_blank")}
           >
