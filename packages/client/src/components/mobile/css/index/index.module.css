@@ -635,7 +635,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 252.24rem;
-  height: 162.36rem;
+  height: 173.36rem;
   border: none;
   background-image: url("../../../../images/InviteFriends/InviteConfirmBg.webp");
   background-size: 100% 100%;
@@ -714,7 +714,7 @@
   margin-bottom: 23rem;
   width: 105rem;
   height: 20rem;
-  background-image: url("../../../../images/topup/Layerquestionback.webp");
+  background-image: url("../../../../images/gameover/paybutton.webp");
   background-size: 100% 100%;
   background-position: center;
   color: white;
