@@ -1009,8 +1009,8 @@ canvas {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 84.08rem;
-  height: 54.12rem;
+  width: 91.08rem;
+  height: 58.12rem;
   border: none;
   background-image: url("../../images/InviteFriends/InviteConfirmBg.webp");
   background-size: 100% 100%;
@@ -1032,17 +1032,8 @@ canvas {
   text-transform: capitalize;
   color: #ffffff;
   text-shadow:
-    1px 1px 2px #838383,
-    0 0 5px #8f8d8d,
-    1px 1px 3px #949494,
-    0 0 10px rgba(166, 166, 166, 0.5),
-    0 0 2px #a3a3a3,
-    0 0 3px #999898,
-    0 0 4px #868585,
-    0 0 5px rgba(183, 183, 183, 0.5),
-    2px 0 2px #7f7f7f,
-    3px 0 3px #7f7f7f,
-    4px 0 4px #7f7f7f;
+    1px 1px 4px rgba(0, 0, 0, 0.4),
+    0 0 6px rgba(255, 255, 255, 0.3);
 }
 
 .inviteCode {
@@ -1076,7 +1067,7 @@ canvas {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 4.0rem;
+  font-size: 4.5rem;
   width: 5.2rem;
   height: 5.2rem;
 }
@@ -1089,7 +1080,7 @@ canvas {
   margin-bottom: 7rem;
   width: 35rem;
   height: 5rem;
-  background-image: url("../../images/topup/Layerquestionback.webp");
+  background-image: url("../../images/gameover/paybutton.webp");
   background-size: 100% 100%;
   background-position: center;
   color: white;
