@@ -2391,7 +2391,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           <div className={style.overlay}>
             <div className={style.contentInviteConfirmWrap}>
               <div className={style.inviteCodeTitle}>
-                Ivitation Code
+                Invitation Code
               </div>
               <div className={style.inviteCode}>
                 {inviteCode.split('').map((char, index) => (
@@ -2748,7 +2748,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           <div className={mobileStyle.overlayInvite}>
             <div className={mobileStyle.contentInviteConfirmWrap}>
               <div className={mobileStyle.inviteCodeTitle}>
-                Ivitation Code
+                Invitation Code
               </div>
               <div className={mobileStyle.inviteCode}>
                 {inviteCode.split('').map((char, index) => (
