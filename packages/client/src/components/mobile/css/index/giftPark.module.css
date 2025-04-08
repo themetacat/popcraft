@@ -532,13 +532,14 @@
     font-family: "Simplicity";
     color: #B13200;
     width: 83%;
+    display: flex;
 
 }
 
 /* ===========PopCraft NFT Gifts============= */
 
 .nftRewards{
-    width: 37rem;
+    width: 63rem;
     font-size: 6rem;
     justify-content: center;
     text-align: center;
@@ -618,7 +619,7 @@
 
 .nftRewardsCornerMark {
     width: 10.5rem;
-    z-index: 2;
+    z-index: 1;
     position: relative;
     left: -7rem;
     bottom: 1rem;
@@ -663,7 +664,7 @@
     visibility: hidden;
     opacity: 1;
     left: -13rem;
-    bottom: 11rem;
+    bottom: -15rem;
     background-color: #FFF3A5;
     border: 3px solid #E7AB86;
     color: #B13200;

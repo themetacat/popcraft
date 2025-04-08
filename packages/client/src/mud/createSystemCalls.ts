@@ -1521,6 +1521,51 @@ export function createSystemCalls(
     return hashValpublic;
   };
 
+
+  const getMorphBlackRewardsToken = async (
+    account: any,
+    nonce: number
+  ): Promise<CallResponse> => {
+    let hashValpublic: any;
+    const encodeData = encodeFunctionData({
+      abi: BonusSystemAbi,
+      functionName: "getMorphBlackRewardsToken",
+      args: [],
+    });
+    try {
+      const txData = await worldContract.write.callFrom([
+        account,
+        bonusResourceHex,
+        encodeData,
+      ], {
+        gas: 5000000n,
+        nonce,
+        ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+        ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
+      });
+      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
+      await waitForTransaction(txData);
+      
+      if (hashValpublic.status === "reverted") {
+        const { simulateContractRequest } = await publicClient.simulateContract({
+          account: palyerAddress,
+          address: worldContract.address,
+          abi: worldContract.abi,
+          functionName: 'callFrom',
+          args: [
+            account,
+            bonusResourceHex,
+            encodeData,
+          ],
+        })
+      }
+    } catch (error) {
+      return { error: error.message };
+    }
+    return hashValpublic;
+  };
+
+
   return {
     update_abi,
     interact,
@@ -1536,6 +1581,7 @@ export function createSystemCalls(
     getStreakDaysRewards,
     getNFTRewardsToken,
     genInviteCode,
-    acceptInvitation
+    acceptInvitation,
+    getMorphBlackRewardsToken
   };
 }
