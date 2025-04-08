@@ -229,6 +229,25 @@ export default mudConfig({
         receiver: "address"
       }
     },
+    // --------------- Morph Black NFT Token Rewards ----------
+    MorphBlack: {
+      keySchema: {
+        player: "address",
+      },
+      valueSchema: {
+        balance: "uint256",
+        owned: "uint256[]"
+      }
+    },
+    MorphBlackRewards: {
+      keySchema: {
+        tokenId: "uint256",
+      },
+      valueSchema: {
+        recevied: "bool",
+        receiver: "address"
+      }
+    },
     // --------------- Invite ---------------
     InviterV2: {
       keySchema: {

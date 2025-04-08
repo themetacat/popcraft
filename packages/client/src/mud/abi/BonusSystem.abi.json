@@ -1,5 +1,12 @@
 [{
   "type": "function",
+  "name": "getMorphBlackRewardsToken",
+  "inputs": [],
+  "outputs": [],
+  "stateMutability": "nonpayable"
+},
+{
+  "type": "function",
   "name": "getNFTRewardsToken",
   "inputs": [],
   "outputs": [],

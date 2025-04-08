@@ -27,6 +27,7 @@ import mobileBtnImg from "../../images/Mobile/GiftPark/GiftParkBtn.webp";
 import { useOwnedTokens } from "../Utils/ERC721Utils";
 import { COMMON_CHAIN_IDS, useTopUp } from "../select";
 import { numToEntityID } from "../Utils/toEntityId";
+import MorphBlackNFTRewards from "../giftPark/morphBlackNFTRewards.tsx";
 
 interface Props {
     checkTaskInProcess: any
@@ -47,7 +48,9 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
         components: {
             StreakDays,
             GamesRewardsScores,
-            NFTRewards
+            NFTRewards,
+            MorphBlack,
+            MorphBlackRewards
         },
         systemCalls: { getStreakDaysRewards, getNFTRewardsToken, registerDelegation },
     } = useMUD();
@@ -67,6 +70,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
     const [callNFTRewards, setCallNFTRewards] = useState(false);
     const [popupNFTRewardsAmount, setPopupNFTRewardsAmount] = useState(0);
     const [NFTReceived, setNFTReceived] = useState(false);
+    const [noRecivedBlackToken, setNoRecivedBlackToken] = useState<number[]>([]);
 
     const handleNext = () => {
         setOffset((prev) => Math.min(prev + 1, maxOffset));
@@ -244,7 +248,24 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
             });
         }
     }
-    if (noRecivedGiftsToken.length > 0) {
+    useEffect(() => {
+        setNoRecivedBlackToken([]);
+        const morphBlackBalance = address ? getComponentValue(MorphBlack, addressToEntityID(address)) as unknown as MorphBlackData : undefined;
+        if (morphBlackBalance && morphBlackBalance.owned) {
+            for (let index = 0; index < morphBlackBalance.owned.length; index++) {
+                const tokenId = Number(morphBlackBalance.owned[index]);
+                const NFTRewardsData = getComponentValue(MorphBlackRewards, numToEntityID(tokenId));
+
+                if (!NFTRewardsData?.recevied) {
+                    setNoRecivedBlackToken((prev) =>
+                        prev.includes(tokenId) ? prev : [...prev, tokenId]
+                    );
+                }
+            }
+        }
+    }, [address, chainId, NFTReceived, MorphBlack, MorphBlackRewards])
+
+    if (noRecivedGiftsToken.length > 0 || noRecivedBlackToken.length > 0) {
         tips += 1;
     }
     const visibleCount = 5;
@@ -411,6 +432,7 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                         </span>
                                         <img src={PlayQuestionsImg} alt="" />
                                         <div className={style.nftRewardsQuestion}>
+                                            <p>Update in real-time based on contract changes.</p>
                                             <p>1. One NFT can claim 15 Lucky bags (150 items).</p>
                                             <p>2. One Lucky bag = 10 items, one of each type.</p>
                                             <p>3. Stack benefits with multiple NFTs.</p>
@@ -418,6 +440,11 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                         </div>
                                     </div>
                                 </div>
+                                <MorphBlackNFTRewards
+                                    checkTaskInProcess={checkTaskInProcess}
+                                    handleErrorAll={handleErrorAll}
+                                    isMobile={isMobile}
+                                />
                             </div>
                             {showAddScoresPopup &&
                                 <div className={style.addedPoints}>
@@ -604,8 +631,9 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                             >
                                                 <a href="https://morpha.io/en/launchpad" target="_blank" style={{ color: "rgb(255, 122, 0)", textDecoration: "underline", textDecorationColor: "rgb(230, 76, 0)" }}>PopCraft NFT</a> Gifts
                                             </span>
-                                            <img src={PlayQuestionsImg} alt="" onTouchEnd={handleNFTRewardsTipsClick}/>
+                                            <img src={PlayQuestionsImg} alt="" onTouchEnd={handleNFTRewardsTipsClick} />
                                             <div className={`${mobileStyle.nftRewardsQuestion} ${isNFTRewardsTipsVisible ? mobileStyle.visible : ""}`}>
+                                                <p>Update in real-time based on contract changes.</p>
                                                 <p>1. One NFT can claim 15 Lucky bags (150 items).</p>
                                                 <p>2. One Lucky bag = 10 items, one of each type.</p>
                                                 <p>3. Stack benefits with multiple NFTs.</p>
@@ -613,6 +641,11 @@ export default function GiftPark({ checkTaskInProcess, handleErrorAll, isMobile 
                                             </div>
                                         </div>
                                     </div>
+                                    <MorphBlackNFTRewards
+                                        checkTaskInProcess={checkTaskInProcess}
+                                        handleErrorAll={handleErrorAll}
+                                        isMobile={isMobile}
+                                    />
                                 </div>
                                 {showAddScoresPopup &&
                                     <div className={mobileStyle.addedPoints}>

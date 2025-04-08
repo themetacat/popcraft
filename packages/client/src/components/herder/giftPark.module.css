@@ -356,7 +356,7 @@
 /* ===========PopCraft NFT Gifts============= */
 
 .nftRewards{
-    width: 19rem;
+    width: 21rem;
     font-size: 2rem;
     justify-content: center;
     text-align: center;
@@ -437,7 +437,7 @@
 .nftRewardsCornerMark {
     width: 4.5rem;
     height: 4.5rem;
-    z-index: 2;
+    z-index: 1;
     position: relative;
     left: -3rem;
     cursor: not-allowed;
