@@ -136,7 +136,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
     };
 
     const tweetTextTemplate =
-        "🚀 @PopCraftOnChain , the first fully on-chain match-3 game on @MorphLayer!\n🔥 Climb the leaderboard, test your skills, and rack up rewards in @PopCraftOnChain!\n💡 Fully on-chain games can take Web3 mainstream—let’s go!\n🎮 Join now: https://popcraft.pixelaw.xyz/" + getNetworkName(chainId) + "?invite={InviteCode}\n#PopCraft #FOCG "
+        "🚀 PopCraft, the first fully on-chain match-3 game on @MorphLayer!\n🔥 Climb the leaderboard, test your skills, and rack up rewards in @PopCraftOnChain!\n💡 Fully on-chain games can take Web3 mainstream—let’s go!\n🎮 Join now: https://popcraft.pixelaw.xyz/" + getNetworkName(chainId) + "?invite={InviteCode}\n#PopCraft #FOCG "
 
     const [isTwitterBtnClicked, setIsTwitterBtnClicked] = useState(false);
     const handleTwitterBtnClick = (InviteCode: string) => {
@@ -220,8 +220,11 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
                                                 <button
                                                     className={style.copyInviteBtn}
                                                     onClick={() => {
-                                                        handleCopyBtnClick(InviteCode);
+                                                        if (InviteCode) {
+                                                            handleCopyBtnClick(InviteCode);
+                                                        }
                                                     }}
+                                                    disabled={!InviteCode}
                                                 >
                                                     <img
                                                         src={isCopyBtnClicked ? CopyBtnClickImg : CopyBtnImg}
@@ -234,8 +237,11 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
                                                 <button
                                                     className={style.shareXBtn}
                                                     onClick={() => {
-                                                        handleTwitterBtnClick(InviteCode);
+                                                        if (InviteCode) {
+                                                            handleTwitterBtnClick(InviteCode);
+                                                        }
                                                     }}
+                                                    disabled={!InviteCode}
                                                 >
                                                     <img
                                                         src={isTwitterBtnClicked ? TwitterClickImg : TwitterImg}
@@ -250,7 +256,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
                                             <br />
                                             Each chain's invitation is a separate link and calculated individually.</p>
                                     </div>
-                                    <p className={style.inviteRule}>You'll get 10% of your friends' scores from the project team.</p>
+                                    <p className={style.inviteRule}>You'll get a 10% bonus on friends' scores from PopCraft!</p>
                                 </div>
                                 <div className={style.dividingLine}></div>
                                 <div className={style.invitedRecordWrap}>
@@ -262,7 +268,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
                                                     <th>Rank</th>
                                                     <th>Address</th>
                                                     <th>Scores</th>
-                                                    <th>Your Rewards</th>
+                                                    <th>Earned Rewards</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -340,7 +346,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
                                             :
                                             <button
                                                 className={`${styleMoblie.genCodeBtn} ${!callGenInviteCodeLoading ? styleMoblie.genCodeBtnHover : ''}`}
-                                                onClick={() => {
+                                                onTouchEnd={() => {
                                                     !callGenInviteCodeLoading ? callGenInviteCode() : undefined;
                                                 }}
                                             >
@@ -361,8 +367,11 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
                                                 <button
                                                     className={styleMoblie.copyInviteBtn}
                                                     onTouchEnd={() => {
-                                                        handleCopyBtnClick(InviteCode);
+                                                        if (InviteCode) {
+                                                            handleCopyBtnClick(InviteCode);
+                                                        }
                                                     }}
+                                                    aria-disabled={!InviteCode}
                                                 >
                                                     <img
                                                         src={isCopyBtnClicked ? CopyBtnClickImg : CopyBtnImg}
@@ -375,8 +384,11 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
                                                 <button
                                                     className={styleMoblie.shareXBtn}
                                                     onTouchEnd={() => {
-                                                        handleTwitterBtnClickMobile(InviteCode);
+                                                        if (InviteCode) {
+                                                            handleTwitterBtnClickMobile(InviteCode);
+                                                        }
                                                     }}
+                                                    aria-disabled={!InviteCode}
                                                 >
                                                     <img
                                                         src={isTwitterBtnClicked ? TwitterClickImg : TwitterImg}
@@ -392,7 +404,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
                                             Each chain's invitation is a separate link and calculated individually.
                                         </p>
                                     </div>
-                                    <p className={styleMoblie.inviteRule}>You'll get 10% of your friends' scores from the project team.</p>
+                                    <p className={styleMoblie.inviteRule}>You'll get a 10% bonus on friends' scores from PopCraft!</p>
                                 </div>
                                 <div className={styleMoblie.dividingLine}></div>
                                 <div className={styleMoblie.invitedRecordWrap}>
@@ -404,7 +416,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
                                                     <th>Rank</th>
                                                     <th>Address</th>
                                                     <th>Scores</th>
-                                                    <th>Your Rewards</th>
+                                                    <th>Earned Rewards</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

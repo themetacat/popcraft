@@ -42,6 +42,7 @@ import MissionBonus from "./missionBonus";
 import TokenNotification from "./tokenNotification";
 import GiftPark from "./giftPark"
 import Invite from "../InviteFriends/index";
+import loadingImg from "../../images/loadingto.webp";
 
 import mobileStyle from "../mobile/css/index/index.module.css";
 import UserMobileImg from "../../images/Mobile/Top/User.webp";
@@ -152,8 +153,53 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [showMenu, setShowMenu] = useState(false);
   const [isCloseAnimatingMenu, setIsCloseAnimatingMenu] = useState(false);
   const [showMobileInDayBonus, setShowMobileInDayBonus] = useState(false);
+  const [showInviteConfirm, setShowInviteConfirm] = useState(false);
   const [searchParams] = useSearchParams();
   const inviteCode = searchParams.get("invite");
+
+  useEffect(() => {
+    if (!address || !inviteCode || !COMMON_CHAIN_IDS.includes(chainId)) return;
+  
+    const alreadyInvited = getComponentValue(PlayerToInviteV2, addressToEntityID(address));
+    if (alreadyInvited) {
+      handleErrorAll("alreadyInvited");
+      window.history.pushState(null, null, window.location.href.split("?")[0]);
+      return;
+    }
+  
+    const inviter = getComponentValue(InviteCodeToInviter, keccak256(toBytes(inviteCode)));
+    if (!inviter) {
+      handleErrorAll("Invalid code");
+      return;
+    }
+  
+    if (inviter.inviter !== address) {
+      setShowInviteConfirm(true);
+      return;
+    } else {
+      handleErrorAll("Self-invite");
+      window.history.pushState(null, null, window.location.href.split("?")[0]);
+      return;
+    }
+  }, [address, inviteCode, chainId]);
+
+  const handleConfirmInvite = async (inviteCode: string) => {
+    try {
+      setLoading(true);
+
+      const callRes = await acceptInvitation(address, inviteCode);
+      if (callRes && callRes.error) {
+        handleErrorAll(callRes.error);
+      } else {
+        toast.success("Invitation accepted success!");
+        setShowInviteConfirm(false);
+      }
+    } catch (error) {
+      handleErrorAll("");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchGasPrice = async () => {
@@ -1348,26 +1394,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     if (TCMPopStarData === undefined) {
       const emptyRegion = findEmptyRegion();
       EmptyRegionNum = emptyRegion
-      if (address && inviteCode && !getComponentValue(PlayerToInviteV2, addressToEntityID(address))) {
-        const inviter = getComponentValue(InviteCodeToInviter, keccak256(toBytes(inviteCode)));
-        if (!inviter) {
-          handleErrorAll("Invalid code");
-          setLoading(false);
-          setLoadingpaly(false);
-          return;
-        }
-        if (inviter.inviter != address) {
-          const nonce = await publicClient.getTransactionCount({ address: palyerAddress });
-          const callRes = await acceptInvitation(address, nonce, inviteCode)
-          if (callRes && callRes.error) {
-            console.error(callRes.error);
-            handleErrorAll(callRes.error);
-            setLoading(false);
-            setLoadingpaly(false);
-            return;
-          }
-        }
-      }
     }
 
     const ctx = canvasRef?.current?.getContext("2d");
@@ -1832,6 +1858,14 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         toastError = "Not reproducible!";
       } else if (errMessage.includes("Invalid code")) {
         toastError = "Invalid invitation code. Please check!";
+      } else if (errMessage.includes("alreadyInvited")) {
+        toastError = "You have already been invited!";
+      } else if (errMessage.includes("Not a new user")) {
+        toastError = "Invitations are only valid for new players!";
+      } else if (errMessage.includes("Self-invite")) {
+        toastError = "You can't invite yourself!";
+      } else if (errMessage.includes("User rejected the request")) {
+        toastError = "You rejected the request!";
       } else {
         toastError = "Unknow Error";
       }
@@ -2352,6 +2386,40 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             handleErrorAll={handleErrorAll}
           />
         )}
+
+        {showInviteConfirm && isConnected ? (
+          <div className={style.overlay}>
+            <div className={style.contentInviteConfirmWrap}>
+              <div className={style.inviteCodeTitle}>
+                Invitation Code
+              </div>
+              <div className={style.inviteCode}>
+                {inviteCode.split('').map((char, index) => (
+                  <div key={index} className={style.charBox}>
+                    {char}
+                  </div>
+                ))}
+              </div>
+              <button className={style.inviteConfirmBtn}
+                onClick={() => handleConfirmInvite(inviteCode)}
+                disabled={loading}
+                style={{
+                  cursor: loading ? "not-allowed" : "pointer",
+                  pointerEvents: loading ? "none" : "auto"
+                }}
+              >
+                {loading ? (
+                  <img
+                    src={loadingImg}
+                    className={style.loadingStyle}
+                  />
+                  ) : (
+                    "Confirm"
+                  )}
+              </button>
+            </div>
+          </div>
+        ) : null}
       </>
     );
   } else {
@@ -2676,6 +2744,39 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           </div>
         )}
 
+        {showInviteConfirm && isConnected ? (
+          <div className={mobileStyle.overlayInvite}>
+            <div className={mobileStyle.contentInviteConfirmWrap}>
+              <div className={mobileStyle.inviteCodeTitle}>
+                Invitation Code
+              </div>
+              <div className={mobileStyle.inviteCode}>
+                {inviteCode.split('').map((char, index) => (
+                  <div key={index} className={mobileStyle.charBox}>
+                    {char}
+                  </div>
+                ))}
+              </div>
+              <button className={mobileStyle.inviteConfirmBtn}
+                onTouchEnd={() => handleConfirmInvite(inviteCode)}
+                disabled={loading}
+                style={{
+                  cursor: loading ? "not-allowed" : "pointer",
+                  pointerEvents: loading ? "none" : "auto"
+                }}
+              >
+                {loading ? (
+                  <img
+                    src={loadingImg}
+                    className={mobileStyle.loadingStyle}
+                  />
+                  ) : (
+                    "Confirm"
+                  )}
+              </button>
+            </div>
+          </div>
+        ) : null}
       </>
     );
   }

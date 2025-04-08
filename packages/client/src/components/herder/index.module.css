@@ -1,3 +1,27 @@
+@font-face {
+  font-family: "Zihun-Buding";
+  src: url("/fonts/ZIHUN27BUDING.TTF") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Alibaba-PuHuiTi-Bold";
+  src: url("/fonts/Alibaba-PuHuiTi-Bold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AdobeHeitiStd-Regular";
+  src: url("/fonts/BRLNSR.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 * {
   margin: 0;
 }
@@ -593,7 +617,7 @@ canvas {
   justify-content: center;
   align-items: center;
   width: 100%;
-  z-index: 999999;
+  z-index: 1000000;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   pointer-events: auto !important;
@@ -952,11 +976,7 @@ canvas {
 }
 
 
-@font-face {
-  font-family: "AdobeHeitiStd-Regular";
-  src: url("/fonts/BRLNSR.woff2");
-  font-display: block;
-}
+
 
 .bottomLeftText p {
   margin-bottom: 0.8rem; 
@@ -982,4 +1002,119 @@ canvas {
     opacity: 0.8;
     transform: scale(1) translateX(0);
   }
+}
+
+.contentInviteConfirmWrap {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 91.08rem;
+  height: 58.12rem;
+  border: none;
+  background-image: url("../../images/InviteFriends/InviteConfirmBg.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Alibaba-PuHuiTi-Bold";
+}
+
+.inviteCodeTitle {
+  margin-top: 5rem;
+  height: 5rem;
+  text-align: center;
+  font-size: 4rem;
+  font-weight: 400;
+  letter-spacing: 0.5rem;
+  text-transform: capitalize;
+  color: #ffffff;
+  text-shadow:
+    1px 1px 4px rgba(0, 0, 0, 0.4),
+    0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+.inviteCode {
+  height: 23rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "AdobeHeitiStd-Regular";
+  font-size: 6rem;
+  font-weight: 400;
+  letter-spacing: 1.1rem;
+  color: #ffffff;
+  text-align: center;
+  text-shadow:
+    1px 1px 2px #838383,
+    0 0 5px #8f8d8d,
+    1px 1px 3px #949494,
+    0 0 10px rgba(166, 166, 166, 0.5),
+    0 0 2px #a3a3a3,
+    0 0 3px #999898,
+    0 0 4px #868585,
+    0 0 5px rgba(183, 183, 183, 0.5),
+    2px 0 2px #7f7f7f,
+    3px 0 3px #7f7f7f,
+    4px 0 4px #7f7f7f;
+}
+
+.charBox {
+  padding: 0.3rem;
+  border: 0.02rem solid #fbffdf;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4.5rem;
+  width: 5.2rem;
+  height: 5.2rem;
+}
+
+.inviteConfirmBtn {
+  margin-bottom: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 7rem;
+  width: 35rem;
+  height: 5rem;
+  background-image: url("../../images/gameover/paybutton.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  color: white;
+  border: none;
+  border-radius: 3rem;
+  cursor: pointer;
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-align: center;
+  color: #ffffff;
+  transition: font-size 0.3s ease;
+  text-transform: uppercase;
+  text-shadow: -2px -2px 0 rgba(149, 148, 148, 0.7),
+    2px -2px 0 rgba(177, 175, 175, 0.7),
+    -2px 2px 0 rgba(165, 164, 164, 0.7),
+    2px 2px 0 rgba(206, 206, 206, 0.7);
+}
+
+.inviteConfirmBtn:hover {
+  color: #ffffff;
+  font-size: 3.1rem;
+  text-shadow:
+    -1px -1px 0 rgba(56, 56, 56, 0.7),
+    1px -1px 0 rgba(71, 71, 71, 0.7),
+    -1px 1px 0 rgba(59, 59, 59, 0.7),
+    1px 1px 0 rgba(69, 69, 69, 0.7)
+}
+
+.loadingStyle {
+  animation: spin 5s linear infinite;
+  -webkit-transform: rotate(3600deg);
+  transform: rotate(3600deg);
+  -webkit-transition: -webkit-transform 5s linear;
+  transition: transform 5s linear;
+  height: 100%;
 }

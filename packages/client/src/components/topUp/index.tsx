@@ -406,6 +406,10 @@ export default function TopUp({
                           Bridge
                         </span>
                       </div>
+                      <div className={style.bridgeTips}>
+                        <img src={rightHandGrestureImg} alt="" className={style.bridgeTipsImg} />
+                        You can withdraw ETH from Bitget Exchange or bridge it.
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -707,10 +711,14 @@ export default function TopUp({
                     <div className={mobileStyle.bridgePart}>
                       <span
                         className={`${mobileStyle.bridgeBTN} ${isPlayButtonClicked ? mobileStyle.bridgeBTNClicked : ''}`}
-                        onClick={bridgeHandle}>
+                        onTouchEnd={bridgeHandle}>
                         Bridge
                       </span>
                     </div>
+                  </div>
+                  <div className={mobileStyle.bridgeTips}>
+                    <img src={rightHandGrestureImg} alt="" className={mobileStyle.bridgeTipsImg} />
+                    <p>You can withdraw ETH from Bitget Exchange or bridge it.</p>
                   </div>
                 </div>
   
@@ -769,7 +777,7 @@ export default function TopUp({
                         ${isWithdrawButtonWaiting ? mobileStyle.btnMeWaiting : ''}
                         ${mobileStyle.btnMeLoading}
                       `}
-                      onClick={withDraw}
+                      onTouchEnd={withDraw}
                       disabled={isWithdrawing || balance === 0}
                     >
                       {isWithdrawLoading ? (

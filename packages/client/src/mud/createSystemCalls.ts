@@ -1480,7 +1480,6 @@ export function createSystemCalls(
 
   const acceptInvitation = async (
     account: any,
-    nonce: number,
     code: string
   ): Promise<CallResponse> => {
     let hashValpublic: any;
@@ -1490,27 +1489,27 @@ export function createSystemCalls(
       args: [code],
     });
     try {
-      const txData = await worldContract.write.callFrom([
-        account,
-        InviteResourceHex,
-        encodeData,
-      ], {
-        gas: 5000000n,
-        nonce,
+      const eoaWalletClient = await getEoaContractFun();
+      const txData = await eoaWalletClient.writeContract({
+        address: worldContract.address,
+        abi: worldContract.abi,
+        functionName: "call",
+        args: [InviteResourceHex, encodeData],
+        gas: 8000000n,
         ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
         ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
       });
+
       hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
       await waitForTransaction(txData);
       
       if (hashValpublic.status === "reverted") {
         const { simulateContractRequest } = await publicClient.simulateContract({
-          account: palyerAddress,
+          account: account,
           address: worldContract.address,
           abi: worldContract.abi,
-          functionName: 'callFrom',
+          functionName: 'call',
           args: [
-            account,
             InviteResourceHex,
             encodeData,
           ],

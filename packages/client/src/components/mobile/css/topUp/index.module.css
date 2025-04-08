@@ -6,7 +6,10 @@
 
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
-  src: url("/fonts/BRLNSR.woff2");
+  src: url("/fonts/BRLNSR.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 .topBoxContainer {
@@ -94,6 +97,7 @@
   background-position: center;
   font-size: 8.09rem;
   font-weight: bold;
+  font-family: "MyriadPro";
   letter-spacing: 0.4rem;
   color: #ffffff;
   cursor: pointer;
@@ -224,7 +228,7 @@
 .onePartMain {
   display: grid;
   width: 211.24rem;
-  height: 44.21rem;
+  height: 53.21rem;
   margin: 0 auto;
   margin-top: -48rem;
   background-color: #fff2c8;
@@ -297,6 +301,7 @@
   background-position: center;
   font-size: 8.09rem;
   font-weight: 400;
+  font-family: "MyriadPro";
   letter-spacing: 0.4rem;
   text-align: center;
   color: #ffffff;
@@ -649,6 +654,7 @@
   background-position: center;
   border: none;
   font-size: 13.97rem;
+  font-family: "MyriadPro";
   margin-top: -32rem;
   margin-left: 22.5rem;
   justify-content: center;
@@ -865,4 +871,28 @@
 .loadingImg {
   animation: spin 5s linear infinite;
   height: 100%;
+}
+
+.bridgeTips {
+  width: 201.24rem;
+  height: 8rem;
+  display: flex;
+  align-items: center;
+  padding-left: 4.2rem;
+  text-align: left;
+  margin-left: 5rem;
+  
+  font-size: 6.1rem;
+  font-family: "AdobeHeitiStd-Regular";
+  font-weight: 400;
+  letter-spacing: 0.7rem;
+  
+  color: #e38666;
+  background: transparent;
+}
+
+.bridgeTips img {
+  width: 7rem;
+  height: 7rem;
+  margin-right: 4rem;
 }
