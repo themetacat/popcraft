@@ -880,7 +880,7 @@
   align-items: center;
   padding-left: 4.2rem;
   text-align: left;
-  margin-left: 5rem;
+  margin-left: 2rem;
   
   font-size: 6.1rem;
   font-family: "AdobeHeitiStd-Regular";
@@ -892,7 +892,7 @@
 }
 
 .bridgeTips img {
-  width: 7rem;
-  height: 7rem;
+  width: 12rem;
+  height: 12rem;
   margin-right: 4rem;
 }
