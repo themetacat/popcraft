@@ -186,7 +186,7 @@ export default function PointsToToken({ isMobile, checkTaskInProcess, handleErro
                         </div>
                         <div className={style.note}>
                             <p>NOTE:</p>
-                            <p>300 GP =1Props</p>
+                            <p>300 GP =1Prop</p>
                             <p>Win a game = 150 GP</p>
                             <p>Lose a game(≥250 scores)= 50GP</p>
                             <p>Lose a game(&lt;250 scores)= OGP</p>
