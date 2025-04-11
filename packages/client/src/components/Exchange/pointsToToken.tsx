@@ -263,7 +263,7 @@ export default function PointsToToken({ isMobile, checkTaskInProcess, handleErro
 }
 
 const GradientStrokeText = ({ text }: { text: string }) => (
-    <svg height={30}>
+    <svg height={33}>
         <defs>
             <linearGradient id="strokeGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="rgba(94, 184, 220, 1)" />
@@ -288,7 +288,7 @@ const GradientStrokeText = ({ text }: { text: string }) => (
 
 
 const StyledText = ({ remaining, totalGp }: { remaining: number, totalGp: number }) => (
-    <svg height={30}>
+    <svg height={33}>
         <defs>
             <linearGradient id="strokeGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="rgba(94, 184, 220, 1)" />
@@ -307,7 +307,7 @@ const StyledText = ({ remaining, totalGp }: { remaining: number, totalGp: number
         >
             <tspan>GP: </tspan>
             <tspan className={style.remaining} fill="#059925" stroke="none">{remaining}</tspan>
-            <tspan> /{totalGp}</tspan>
+            <tspan>/{totalGp}</tspan>
         </text>
 
     </svg>

@@ -123,7 +123,7 @@
 .note {
     margin-top: 1rem;
     color: #BB9F8B;
-    font-size: 1.3rem;
+    font-size: 1.6rem;
     letter-spacing: 0.2rem;
     text-transform: uppercase;
 }
@@ -344,6 +344,11 @@
     right: 0.2rem;
 }
 
+.tokenBalance span {
+    justify-content: center;
+    align-items: center;
+}
+
 .tokenItemBottom {
     height: 23%;
     margin-top: 0.6rem;
@@ -391,7 +396,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    bottom: 38rem;
+    bottom: 39.5rem;
     left: 6rem;
     display: flex;
     align-items: center;
