@@ -538,20 +538,20 @@ export default function PlantsIndex({ checkTaskInProcess, handleErrorAll }: Prop
 
 // add new plants: change here
 const PLANTS_NAME_GP = {
-    "Rose": 300,
-    "Lotus": 100,
-    "Tulip": 100,
-    "Edelweiss": 600,
-    "Plum blossom": 600,
-    "Marigold": 300,
-    "Chrysanthemum": 100,
-    "Hydrangea": 300,
+    "Rose": 3000,
+    "Lotus": 1500,
+    "Tulip": 1500,
+    "Edelweiss": 4500,
+    "Plum blossom": 4500,
+    "Marigold": 3000,
+    "Chrysanthemum": 1500,
+    "Hydrangea": 3000,
 };
 
 const CLASS_MULTIPLIERS: Record<number, number> = {
-    4: 600, 5: 600,  // CLASS_A_PLANTS
-    1: 300, 6: 300, 8: 300,  // CLASS_B_PLANTS
-    2: 100, 3: 100, 7: 100   // CLASS_C_PLANTS
+    4: 4500, 5: 4500,  // CLASS_A_PLANTS
+    1: 3000, 6: 3000, 8: 3000,  // CLASS_B_PLANTS
+    2: 1500, 3: 1500, 7: 1500   // CLASS_C_PLANTS
 };
 
 export function usePlantsGp() {

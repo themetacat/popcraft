@@ -172,7 +172,7 @@ export default function InviteFriends({ isMobile, checkTaskInProcess, handleErro
             <>
                 <div className={style.InviteImgBtn} onClick={() => toggleInviteModal()}>
                     <img src={InviteImg} alt="" />
-                    <button>Invite</button>
+                    <button>INVITE</button>
                 </div>
 
                 {isShowInviteModal && (

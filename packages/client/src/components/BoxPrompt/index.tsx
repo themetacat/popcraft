@@ -1026,7 +1026,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
         </div> */}
         <div className={howToPlayStyle.btnHtp}
           style={{
-            bottom: "43%"
+            bottom: "40%"
           }}
           onClick={async () => {
             setShowRewards(true);
@@ -1037,7 +1037,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
         </div>
         <div className={howToPlayStyle.btnHtp}
           style={{
-            bottom: "30%"
+            bottom: "27%"
           }}
           onClick={async () => {
             setShowHowToPlay(true);
@@ -1099,7 +1099,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
         {chainId === 2818 && (
           <div className={howToPlayStyle.btnHtp}
             style={{
-              bottom: "56%"
+              bottom: "64%"
             }}
             onClick={() => window.open("https://morpha.io/en/launchpad", "_blank")}
           >

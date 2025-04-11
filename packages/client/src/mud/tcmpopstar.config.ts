@@ -345,6 +345,24 @@ export default mudConfig({
         send: "bool"
       }
     },
+    PlantsToGP: {
+      keySchema: {
+        plantsId: "uint256",
+      },
+      valueSchema: {
+        points: "uint256",
+      }
+    },
+    // ------------- Exchange ---------------
+    // ------------- GP - Token ---------------
+    GPConsumeValue: {
+      keySchema: {
+        player: "address",
+      },
+      valueSchema: {
+        value: "uint256"
+      }
+    }
   },
   systems: {
     PopCraftSystem: {

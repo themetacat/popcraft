@@ -235,6 +235,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
     for (let i = 0; i < sortedRankingRecords.length; i++) {
         if (sortedRankingRecords[i].entity === address) {
             userRank = i + 1;
+            totalPoints = sortedRankingRecords[i].totalPoints;
             break;
         }
     }

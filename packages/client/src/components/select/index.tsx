@@ -205,7 +205,7 @@ export const useTopUp = () => {
         setRecipient("0xc44504ab6a2c4df9a9ce82aecfc453fec3c8771c");
         setBridgeUrl("https://happy-testnet-sepolia.hub.caldera.xyz/")
         setChianIcon("https://ugc.production.linktr.ee/eaf67eb0-14e8-4a70-aa3d-c03e7045761c_happychain.png");
-      }else if(chainId === 177 || chainId === 31337){
+      }else if(chainId === 177){
         setInputValue("5");
         setbalanceCheck('0.05')
         setNativeToken("HSK")
@@ -225,7 +225,7 @@ export const useTopUp = () => {
         setChianIcon("https://poster-phi.vercel.app/Morphl2_Logo_Circle.webp");
         setTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
         setPriTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
-        setRewardInfo("150 Scores");
+        setRewardInfo("300 Scores");
         setPrizePool("1,300 Morph Points");
         setMIN_SESSION_WALLET_BALANCE(parseEther("0.000008"));
       }

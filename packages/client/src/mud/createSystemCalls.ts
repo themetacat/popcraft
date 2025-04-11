@@ -21,6 +21,7 @@ import PlantsSystemAbi from "./abi/PlantsSystem.abi.json";
 import MissionSystemAbi from "./abi/MissionSystem.abi.json";
 import BonusSystemAbi from "./abi/BonusSystem.abi.json";
 import InviteSystemAbi from "./abi/InviteSystem.abi.json";
+import ExchangeSystemAbi from "./abi/ExchangeSystem.abi.json";
 import { numToEntityID, addr2NumToEntityID } from "../components/rightPart"
 export const update_app_value = (index: number) => {
   args_index = index;
@@ -1165,6 +1166,12 @@ export function createSystemCalls(
     name: "InviteSystem",
   })
 
+  const ExchangeResourceHex = resourceToHex({
+    type: "system",
+    namespace: "popCraft",
+    name: "ExchangeSystem",
+  })
+
   const collectSeed = async (
     account: any,
     nonce: number
@@ -1566,6 +1573,61 @@ export function createSystemCalls(
   };
 
 
+  const gpExchangeToken = async (
+    account: any,
+    nonce: number,
+    data: any,
+  ): Promise<CallResponse> => {
+    let hashValpublic: any;
+    const callData = [];
+    for (let index = 0; index < data.length; index++) {
+      if(data[index].amount > 0){
+        callData.push(data[index]);
+      }
+    }
+    if (callData.length == 0) {
+      return { error: "No data" };
+    }
+    
+    const encodeData = encodeFunctionData({
+      abi: ExchangeSystemAbi,
+      functionName: "gpExchangeToken",
+      args: [callData],
+    });
+    try {
+      const txData = await worldContract.write.callFrom([
+        account,
+        ExchangeResourceHex,
+        encodeData,
+      ], {
+        gas: 5000000n,
+        nonce,
+        ...(maxPriorityFeePerGas !== 0n ? { maxPriorityFeePerGas } : {}),
+        ...(maxFeePerGas !== 0n ? { maxFeePerGas } : {})
+      });
+      hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
+      await waitForTransaction(txData);
+      
+      if (hashValpublic.status === "reverted") {
+        const { simulateContractRequest } = await publicClient.simulateContract({
+          account: palyerAddress,
+          address: worldContract.address,
+          abi: worldContract.abi,
+          functionName: 'callFrom',
+          args: [
+            account,
+            ExchangeResourceHex,
+            encodeData,
+          ],
+        })
+      }
+    } catch (error) {
+      return { error: error.message };
+    }
+    return hashValpublic;
+  };
+
+
   return {
     update_abi,
     interact,
@@ -1582,6 +1644,7 @@ export function createSystemCalls(
     getNFTRewardsToken,
     genInviteCode,
     acceptInvitation,
-    getMorphBlackRewardsToken
+    getMorphBlackRewardsToken,
+    gpExchangeToken
   };
 }

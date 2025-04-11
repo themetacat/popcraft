@@ -35,8 +35,8 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    bottom: 38rem;
-    left: 6rem;
+    bottom: 52%;
+    right: 3.1%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -81,7 +81,7 @@
     background-color: transparent;
     border: none;
     font-family: "Simplicity";
-    color: #4FD770;
+    color: rgba(36, 185, 198, 1);
     transition: font-size 0.3s ease;
     font-size: 0.7vw;
     cursor: pointer;
