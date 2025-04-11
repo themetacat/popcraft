@@ -1,0 +1,490 @@
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 146rem;
+    height: 81rem;
+
+    background-image: url('../../images/Exchange/ExchangeBg.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 999999;
+    justify-content: center;
+    display: flex;
+    font-family: "AdobeHeitiStd-Regular2";
+    animation: scaleIn 0.1s ease-in forwards;
+}
+
+.containerClosed {
+    animation: scaleOut 0.1s ease-in forwards;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: translate(-50%, -50%) scale(0.2);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes scaleOut {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+}
+
+
+.content {
+    display: flex;
+    width: 83%;
+    height: 75%;
+    gap: 4rem;
+    margin-top: 17rem;
+}
+
+.left {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.gpInfo {
+    font-size: 3rem;
+    font-family: "AdobeHeitiStd-Regular2";
+    letter-spacing: 0.4rem;
+}
+
+.remaining {
+    color: #059925;
+    text-shadow:
+        -3px -3px 0 #fff,
+        3px -3px 0 #fff,
+        -3px 3px 0 #fff,
+        3px 3px 0 #fff;
+    font-size: 3rem;
+    font-family: "AdobeHeitiStd-Regular2";
+    letter-spacing: 0.2rem;
+}
+
+.selectInfo {
+    margin-top: 2rem;
+}
+
+.gpTitle {
+    font-size: 5.75rem;
+    font-weight: bold;
+    color: #835635;
+    letter-spacing: 0.5rem;
+}
+
+.numberBox {
+    margin: 2rem 0;
+    background: rgba(250, 229, 207, 1);
+    padding-bottom: 1rem;
+    border-radius: 7rem;
+    width: 40rem;
+    height: 7.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3.8rem;
+    color: rgba(187, 159, 139, 1);
+    letter-spacing: 0.4rem;
+}
+
+.selected {
+    font-size: 2.3rem;
+    color: #835635;
+    letter-spacing: 0.2rem;
+}
+
+.selectedGp {
+    color: rgba(5, 153, 37, 1);
+}
+
+.selectedGpExceed {
+    color: red;
+}
+
+.note {
+    margin-top: 1rem;
+    color: #BB9F8B;
+    font-size: 1.3rem;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+}
+
+.note p {
+    margin: 1rem 0;
+}
+
+.exchangeBtnWrapper {
+    position: relative;
+    width: 40rem;
+    height: 8rem;
+}
+
+.exchangeBtnOverlay {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.4rem;
+    width: 98%;
+    height: 91%;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 7rem;
+    pointer-events: none;
+}
+
+.exchangeBtn {
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+    background-image: url('../../images/Exchange/ExchangeBtn.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 40rem;
+    height: 8rem;
+    background-color: transparent;
+    font-size: 3.5rem;
+    letter-spacing: 0.7rem;
+    text-shadow:
+        0 0 1px black,
+        1px 1px 3px white;
+    font-family: "MyriadPro";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.callContractloading {
+    animation: spin 5s linear infinite;
+    -webkit-transform: rotate(3600deg);
+    transform: rotate(3600deg);
+    -webkit-transition: -webkit-transform 5s linear;
+    transition: transform 5s linear;
+    width: 4.5rem;
+    height: 4.5rem;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.exchangeBtnAllow:hover {
+    text-shadow: 2px 2px 3px #7E7A74;
+}
+
+.exchangeBtnAllow:active {
+    transform: scale(0.98);
+}
+
+.exchangeBtnNotAllow {
+    cursor: not-allowed;
+    background-image: url('../../images/Exchange/ExchangeBtnNotAllow.webp');
+}
+
+/* .exchangeBtnNotAllow::after {
+    content: "";
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 0.75rem;
+    z-index: 1;
+    pointer-events: none;
+} */
+
+.right {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.rightHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.propsTitle {
+    margin-left: 4rem;
+    font-size: 3rem;
+}
+
+.rightButtons {
+    margin-right: 3rem;
+    gap: 2rem;
+    display: flex;
+}
+
+.increaseBtn {
+    background-image: url('../../images/Exchange/Increase.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    width: 2.8rem;
+    height: 2.8rem;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.increaseBtn:hover {
+    transform: scale(1.06);
+}
+
+.increaseBtn:active {
+    transform: scale(0.97);
+}
+
+.decreaseBtn {
+    background-image: url('../../images/Exchange/Decrease.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    width: 2.8rem;
+    height: 2.8rem;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.decreaseBtn:hover {
+    transform: scale(1.06);
+}
+
+.decreaseBtn:active {
+    transform: scale(0.98);
+}
+
+.TokenItemGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 2rem;
+    margin-top: 1rem;
+    background-image: url('../../images/Exchange/ExchangeBgIn.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 56rem;
+    width: 69rem;
+    padding: 2rem 4rem;
+    padding-top: 3.7rem;
+    box-sizing: border-box;
+}
+
+.tokenItem {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0 1.6rem;
+    border-radius: 8px;
+    text-align: center;
+    height: 92%;
+}
+
+.tokenItemTop {
+    height: 76%;
+    background-color: #5BAC98;
+    box-shadow:
+        inset 0 5px 5px -2px rgba(0, 0, 0, 0.3),
+        inset 0 -8px 8px -4px rgba(0, 0, 0, 0),
+        inset 5px 0 5px -3px rgba(0, 0, 0, 0.3),
+        inset -5px 0 5px -3px rgba(0, 0, 0, 0.3);
+
+    border-radius: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+}
+
+.tokenItemTop img {
+    width: 7.2rem;
+    height: 7.2rem;
+}
+
+.tokenBalance {
+    width: 4.2rem;
+    height: 4.2rem;
+    font-size: 2rem;
+    color: #fff;
+    position: absolute;
+    background-image: url('../../images/Exchange/BalanceBg.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 0.2rem;
+    right: 0.2rem;
+}
+
+.tokenItemBottom {
+    height: 23%;
+    margin-top: 0.6rem;
+    width: 100%;
+    background-color: #5BAC98;
+    box-shadow:
+        inset 0 5px 5px -2px rgba(0, 0, 0, 0.3),
+        inset 0 -8px 8px -4px rgba(0, 0, 0, 0),
+        inset 5px 0 5px -3px rgba(0, 0, 0, 0.3),
+        inset -5px 0 5px -3px rgba(0, 0, 0, 0.3);
+
+    border-radius: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: #fff;
+}
+
+.tokenItemBottom span{
+    width: 40%;
+    height: 2.6rem;
+}
+
+.closeBtn {
+    width: 5.7rem;
+    height: 5.7rem;
+    position: absolute;
+    top: 5.5rem;
+    right: 0rem;
+    cursor: pointer;
+}
+
+.closeBtn:hover {
+    transform: scale(1.05);
+}
+
+.closeBtn:active {
+    transform: scale(0.99);
+}
+
+
+.exchange {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    bottom: 38rem;
+    left: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    z-index: 999999;
+    font-family: "Simplicity";
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    width: 15rem;
+    height: 10rem;
+}
+
+
+.exchange img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.exchange:hover img {
+    transform: scale(1.06);
+}
+
+.exchange:hover button {
+    text-shadow:
+        -0.2rem -0.2rem 0 white,
+        0.2rem -0.2rem 0 white,
+        -0.2rem 0.2rem 0 white,
+        0.2rem 0.2rem 0 white,
+        0.4rem 0.4rem 0.1rem rgba(0, 0, 0, 0.7);
+    transition: text-shadow 0.3s ease;
+}
+
+.exchange span {
+    position: absolute;
+    bottom: -2rem;
+    width: 17rem;
+    height: 3rem;
+    font-family: "Simplicity";
+    color: #2DA335;
+    transition: font-size 0.3s ease;
+    font-size: 0.7vw;
+    cursor: pointer;
+    margin-left: 1rem;
+    text-shadow:
+        -0.2rem -0.2rem 0 white,
+        0.2rem -0.2rem 0 white,
+        -0.2rem 0.2rem 0 white,
+        0.2rem 0.2rem 0 white,
+        0.3rem 0.3rem 0.1rem rgba(0, 0, 0, 0.6);
+}
+
+
+.exchangeStateContainer {
+    position: fixed;
+    z-index: 10000000;
+    width: 37rem;
+    height: 7rem;
+    background-image: url("../../images/substance/success.webp");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 2rem;
+    border-radius: 2rem;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    color: #03b243;
+}
+
+.exchangeFaild {
+    background-image: url("../../images/substance/fail.webp");
+    color: #C90100;
+}
+
+.exchangeStateContainer img {
+    width: 4.5rem;
+    height: 4.5rem;
+}
+
+.exchangeStateText {
+    font-size: 2.8rem;
+    font-weight: 500;
+    line-height: 3rem;
+    font-family: "AdobeHeitiStd-Regular4";
+    margin-left: 2rem;
+}

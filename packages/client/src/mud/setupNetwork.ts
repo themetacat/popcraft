@@ -256,6 +256,8 @@ export async function setupNetwork(): Promise<SetupNetworkResult> {
                   { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "InvitationScoreRecord" }) },
                   { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "MorphBlack" }) },
                   { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "MorphBlackRewards" }) },
+                  { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "GPConsumeValue" }) },
+                  { tableId: resourceToHex({ type: "table", namespace: "popCraft", name: "PlantsToGP" }) },
                 ]
                 : [])
             ],

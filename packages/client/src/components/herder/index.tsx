@@ -56,6 +56,8 @@ import TGMobileImg from "../../images/Mobile/Top/tg.webp";
 import { useSearchParams } from "react-router-dom";
 import mobileTopBuyStyle from "../mobile/css/BoxPrompt/topBuy.module.css";
 
+import PointsToToken from "../Exchange/pointsToToken"
+
 import { keccak256, toBytes } from "viem";
 
 interface Props {
@@ -159,20 +161,20 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
 
   useEffect(() => {
     if (!address || !inviteCode || !COMMON_CHAIN_IDS.includes(chainId)) return;
-  
+
     const alreadyInvited = getComponentValue(PlayerToInviteV2, addressToEntityID(address));
     if (alreadyInvited) {
       handleErrorAll("alreadyInvited");
       window.history.pushState(null, null, window.location.href.split("?")[0]);
       return;
     }
-  
+
     const inviter = getComponentValue(InviteCodeToInviter, keccak256(toBytes(inviteCode)));
     if (!inviter) {
       handleErrorAll("Invalid code");
       return;
     }
-  
+
     if (inviter.inviter !== address) {
       setShowInviteConfirm(true);
       return;
@@ -1866,6 +1868,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         toastError = "You can't invite yourself!";
       } else if (errMessage.includes("User rejected the request")) {
         toastError = "You rejected the request!";
+      } else if (errMessage.includes("Insufficient GP")) {
+        toastError = "Insufficient GP!";
       } else {
         toastError = "Unknow Error";
       }
@@ -1930,7 +1934,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               </a>
             </span>
           </div>
-          {isConnected && 
+          {isConnected &&
             <div className={style.content}>
               <button
                 className={numberData === 25 ? style.btnBoxY : style.btnBox}
@@ -1939,7 +1943,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               >
                 −
               </button>
-                <span className={style.spanData}>{numberData}%</span>
+              <span className={style.spanData}>{numberData}%</span>
               <button
                 className={numberData === 100 ? style.btnBoxY : style.btnBox}
                 disabled={numberData === 100}
@@ -1947,8 +1951,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               >
                 +
               </button>
-          </div>}
-          
+            </div>}
+
 
           <div
             className={style.addr}
@@ -2375,6 +2379,11 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               checkTaskInProcess={checkTaskInProcess}
               handleErrorAll={handleErrorAll}
             />
+            <PointsToToken
+              isMobile={isMobile}
+              checkTaskInProcess={checkTaskInProcess}
+              handleErrorAll={handleErrorAll}
+            />
           </>
 
         )}
@@ -2413,9 +2422,9 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
                     src={loadingImg}
                     className={style.loadingStyle}
                   />
-                  ) : (
-                    "Confirm"
-                  )}
+                ) : (
+                  "Confirm"
+                )}
               </button>
             </div>
           </div>
@@ -2770,9 +2779,9 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
                     src={loadingImg}
                     className={mobileStyle.loadingStyle}
                   />
-                  ) : (
-                    "Confirm"
-                  )}
+                ) : (
+                  "Confirm"
+                )}
               </button>
             </div>
           </div>
