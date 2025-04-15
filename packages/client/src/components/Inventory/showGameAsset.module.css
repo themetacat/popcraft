@@ -1,0 +1,64 @@
+.modalContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 146rem;
+    height: 81rem;
+
+    background-image: url('../../images/Inventory/InventoryModalBg.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 999999;
+    justify-content: center;
+    display: flex;
+    font-family: "AdobeHeitiStd-Regular2";
+    animation: scaleIn 0.1s ease-in forwards;
+}
+
+.modalContainerClosed {
+    animation: scaleOut 0.1s ease-in forwards;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: translate(-50%, -50%) scale(0.2);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes scaleOut {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+}
+
+.closeBtn {
+    width: 5.7rem;
+    height: 5.7rem;
+    position: absolute;
+    top: 5.5rem;
+    right: 0rem;
+    cursor: pointer;
+}
+
+.closeBtn:hover {
+    transform: scale(1.05);
+}
+
+.closeBtn:active {
+    transform: scale(0.99);
+}
