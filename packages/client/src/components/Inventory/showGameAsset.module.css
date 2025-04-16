@@ -398,6 +398,7 @@
     font-weight: 400;
     font-size: 1.5rem;
     color: #835635;
+    white-space: nowrap;
 }
 
 .popcraftNftDetails {
