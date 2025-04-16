@@ -166,7 +166,7 @@
     color: #5882D3;
 }
 
-.gpExChangeBtnWrapper {
+.gpExchangeBtnWrapper {
     width: 100%;
     height: 100%;
     position: relative;
@@ -175,7 +175,7 @@
     justify-content: center;
 }
 
-.gpExChangeBtn {
+.gpExchangeBtn {
     width: 10.56rem;
     height: 3.38rem;
 

@@ -37,7 +37,8 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
     const { address } = useAccount();
     const [isCloseAnimating, setIsCloseAnimating] = useState(false);
 
-    const transport = () => {
+    const [showExchange, setShowExchange] = useState(false);
+    const gpExchangeBtnTransport = () => {
         setIsCloseAnimating(true);
         setTimeout(() => {
             setShowGameAsset(false);
@@ -127,6 +128,18 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
     const ownedTokens = useOwnedTokens(chainId, address);
     const ownedPopCraftNFTTotal = ownedTokens && ownedTokens.length > 0 ? ownedTokens.length : 0;
 
+    const transport = () => {
+        if (!showExchange) {
+            setShowExchange(!showExchange);
+        } else {
+            setIsCloseAnimating(true);
+            setTimeout(() => {
+                setShowExchange(!showExchange);
+                setIsCloseAnimating(false);
+            }, 100);
+        }
+    };
+
     if (!isMobile) {
         return (
             <>
@@ -147,9 +160,10 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
                                         <span className={style.gpRemainingTitle}>Remaining</span>
                                         <span className={style.gpRemainingNum}>{gpRemaining.toLocaleString()}</span>
                                     </div>
-                                    <div className={style.gpExChangeBtnWrapper}>
+                                    <div className={style.gpExchangeBtnWrapper}>
                                         <button
-                                            className={style.gpExChangeBtn}
+                                            className={style.gpExchangeBtn}
+                                            onClick={() => gpExchangeBtnTransport()}
                                         >
                                             <span>Exchange</span>
                                         </button>
