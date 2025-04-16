@@ -141,11 +141,11 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
                                 <div className={style.gpContent}>
                                     <div className={style.gpObtainedWrapper}>
                                         <span className={style.gpObtainedTitle}>Obtained</span>
-                                        <span className={style.gpObtainedNum}>{gpTotal}</span>
+                                        <span className={style.gpObtainedNum}>{gpTotal.toLocaleString()}</span>
                                     </div>
                                     <div className={style.gpRemainingWrapper}>
                                         <span className={style.gpRemainingTitle}>Remaining</span>
-                                        <span className={style.gpRemainingNum}>{gpRemaining}</span>
+                                        <span className={style.gpRemainingNum}>{gpRemaining.toLocaleString()}</span>
                                     </div>
                                     <div className={style.gpExChangeBtnWrapper}>
                                         <button
@@ -164,11 +164,11 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
                                 <div className={style.scoreContent}>
                                     <div className={style.scoreObtainedWrapper}>
                                         <span className={style.scoreObtainedTitle}>Obtained</span>
-                                        <span className={style.scoreObtainedNum}>{totalScore}</span>
+                                        <span className={style.scoreObtainedNum}>{totalScore.toLocaleString()}</span>
                                     </div>
                                     <div className={style.scoreRemainingWrapper}>
                                         <span className={style.scoreRemainingTitle}>Remaining</span>
-                                        <span className={style.scoreRemainingNum}>{scoreRemaining}</span>
+                                        <span className={style.scoreRemainingNum}>{scoreRemaining.toLocaleString()}</span>
                                     </div>
                                 </div>
                             </div>
@@ -198,7 +198,14 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
                                         <span>{ownedPopCraftNFTTotal} items</span>
                                     </div>
                                     <div className={style.popcraftNftDetails}>
-                                        <span>Details</span>
+                                        <span>
+                                            <a 
+                                                href={`https://explorer.morphl2.io/token/0xf6e9932469CBde5dB4b9293330Ff1897Bb43b2AE?tab=inventory&holder_address_hash=${address}`}
+                                                target="_blank"
+                                            >
+                                                Details
+                                            </a>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
