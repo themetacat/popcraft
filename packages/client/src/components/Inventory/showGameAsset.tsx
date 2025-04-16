@@ -102,6 +102,52 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
                                     </div>
                                 </div>
                             </div>
+
+                            <div className={style.scoreWrapper}>
+                                <div className={style.scoreTitle}>
+                                    <GradientStrokeText text={`SCORE`} />
+                                </div>
+                                <div className={style.scoreContent}>
+                                    <div className={style.scoreObtainedWrapper}>
+                                        <span className={style.scoreObtainedTitle}>Obtained</span>
+                                        <span className={style.scoreObtainedNum}>1238888888</span>
+                                    </div>
+                                    <div className={style.scoreRemainingWrapper}>
+                                        <span className={style.scoreRemainingTitle}>Remaining</span>
+                                        <span className={style.scoreRemainingNum}>455677756</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={style.morphPointsWrapper}>
+                                <div className={style.morphPointsTitle}>
+                                    <GradientStrokeText text={`Morph Points`} />
+                                </div>
+                                <div className={style.morphPointsContent}>
+                                    <div className={style.morphPointsMainWalletWrapper}>
+                                        <span className={style.morphPointsMainWalletTitle}>Main Wallet:</span>
+                                        <span className={style.morphPointsMainWalletNum}>9.2</span>
+                                    </div>
+                                    <div className={style.morphPointsSessionWalletWrapper}>
+                                        <span className={style.morphPointsSessionWalletTitle}>Session Wallet:</span>
+                                        <span className={style.morphPointsSessionWalletNum}>40.23</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={style.popcraftNftWrapper}>
+                                <div className={style.popcraftNftTitle}>
+                                    <GradientStrokeText text={`PopCraft Genesis NFT`} />
+                                </div>
+                                <div className={style.popcraftNftContent}>
+                                    <div className={style.popcraftNftItems}>
+                                        <span>4 items</span>
+                                    </div>
+                                    <div className={style.popcraftNftDetails}>
+                                        <span>Details</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div className={style.right}>
                             <div className={style.rightHeader}>

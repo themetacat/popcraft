@@ -67,12 +67,14 @@
     display: flex;
     width: 83%;
     height: 75%;
-    gap: 4rem;
+    gap: 2rem;
     margin-top: 17rem;
 }
 
 .left {
     width: 40%;
+    height: 90%;
+    margin-left: 5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -101,7 +103,7 @@
     align-items: center;
     gap: 1rem;
     background-image: url('../../images/Inventory/gpContentBg.webp');
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -191,6 +193,218 @@
     text-shadow:
         0 0 1px black,
         1px 1px 3px white;
+}
+
+.scoreWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.scoreTitle {
+    width: 100%;
+    font-size: 2.5rem;
+}
+
+.scoreContent {
+    width: 47.53rem;
+    height: 6.89rem;
+    border-radius: 0.97rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background-image: url('../../images/Inventory/scoreContentBg.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.scoreObtainedWrapper {
+    width: 96%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.scoreObtainedTitle {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #FFFFFF;
+    text-shadow: 0rem 0rem 0rem rgba(0, 0, 0, 0.58);
+}
+
+.scoreObtainedNum {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #5882D3;
+}
+
+.scoreRemainingWrapper {
+    width: 96%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.scoreRemainingTitle {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #FFFFFF;
+    text-shadow: 0rem 0rem 0rem rgba(0, 0, 0, 0.58);
+}
+
+.scoreRemainingNum {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #5882D3;
+}
+
+.morphPointsWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.morphPointsTitle {
+    width: 100%;
+    font-size: 2.5rem;
+}
+
+.morphPointsContent {
+    width: 47.53rem;
+    height: 6.89rem;
+    border-radius: 0.97rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background-image: url('../../images/Inventory/morphPointContentBg.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.morphPointsMainWalletWrapper {
+    width: 96%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.morphPointsMainWalletTitle {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #BB9F8B;
+    text-shadow: 0rem 0rem 0rem rgba(0, 0, 0, 0.58);
+}
+
+.morphPointsMainWalletNum {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #BB9F8B;
+}
+
+.morphPointsSessionWalletWrapper {
+    width: 96%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.morphPointsSessionWalletTitle {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #BB9F8B;
+    text-shadow: 0rem 0rem 0rem rgba(0, 0, 0, 0.58);
+}
+
+.morphPointsSessionWalletNum {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #BB9F8B;
+}
+
+.popcraftNftWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.popcraftNftTitle {
+    width: 100%;
+    font-size: 2.5rem;
+}
+
+.popcraftNftContent {
+    width: 21.53rem;
+    height: 3.89rem;
+    border-radius: 0.97rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background-image: url('../../images/Inventory/PopCraftGenesisNftBg.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.popcraftNftItems {
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #835635;
+}
+
+.popcraftNftDetails {
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #BB9F8B;
 }
 
 .right {
