@@ -6,8 +6,12 @@ import { useMUD } from "../../MUDContext"
 import { imageIconData } from "../imageIconData";
 import { useAccount } from 'wagmi';
 import { getComponentValue } from "@latticexyz/recs";
-import { addressToEntityIDTwo } from "../Utils/toEntityId";
+import { useComponentValue } from "@latticexyz/react";
+import { addressToEntityID, addressToEntityIDTwo } from "../Utils/toEntityId";
 import { Hex } from "viem";
+import { useOwnedTokens } from "../Utils/ERC721Utils";
+import { usePlantsGp } from "../herder/plantsIndex";
+import { numAddressToEntityID } from "../rightPart/index";
 
 interface ShowGameAssetProps {
     setShowGameAsset: any;
@@ -23,6 +27,10 @@ type TokenItem = {
 export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobile }: ShowGameAssetProps) {
     const {
         components: {
+            GPConsumeValue,
+            GameRecord,
+            RankingRecord,
+            PlayerPlantingRecord,
             TokenBalance
         },
     } = useMUD();
@@ -37,7 +45,7 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
         }, 100);
     };
 
-    const { priTokenAddress } = useTopUp();
+    const { priTokenAddress, chainId } = useTopUp();
     const [items, setItems] = useState<TokenItem[]>(
         priTokenAddress.map(token => ({ token, amount: 0 }))
     );
@@ -73,6 +81,52 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
         }
     }, [priTokenAddress, address, setShowGameAsset])
 
+    const [totalScore, setTotalScore] = useState(0);
+    const rankRecord = address ? getComponentValue(
+        RankingRecord,
+        addressToEntityID(address)
+    ) : undefined;
+    useEffect(() => {
+        if (rankRecord && rankRecord.totalScore) {
+            setTotalScore(Number(rankRecord.totalScore))
+        } else {
+            setTotalScore(0)
+        }
+    }, [address, rankRecord])
+
+    const [totalScoreConsumed, setTotalScoreConsumed] = useState(0);
+    const plantingRecord = address ? getComponentValue(
+        PlayerPlantingRecord,
+        numAddressToEntityID(0, address)
+    ) : undefined;
+    useEffect(() => {
+        if (plantingRecord && plantingRecord.scores) {
+            setTotalScoreConsumed(Number(plantingRecord.scores))
+        } else {
+            setTotalScoreConsumed(0)
+        }
+    }, [plantingRecord])
+    const scoreRemaining = totalScore - totalScoreConsumed < 0 ? 0 : totalScore - totalScoreConsumed;
+
+    const entityId = address ? addressToEntityID(address) : undefined;
+    const gameRecord = useComponentValue(GameRecord, entityId);
+    const gamePoints = Number(gameRecord?.totalPoints ?? 0);
+    const { getPlantsGp } = usePlantsGp();
+    const plantsGp = address ? getPlantsGp(address) : 0;
+    const gpTotal = gamePoints + plantsGp;
+
+    const GPConsume = useComponentValue(GPConsumeValue, entityId);
+    const gpConsume = Number(GPConsume?.value ?? 0);
+    const gpRemaining = gpTotal - gpConsume < 0 ? 0 : gpTotal - gpConsume;
+
+    const formatAddress = (address) => {
+        if (!address) return '';
+        return `${address.slice(0, 4)}...${address.slice(-4)}`;
+    };
+
+    const ownedTokens = useOwnedTokens(chainId, address);
+    const ownedPopCraftNFTTotal = ownedTokens && ownedTokens.length > 0 ? ownedTokens.length : 0;
+
     if (!isMobile) {
         return (
             <>
@@ -87,11 +141,11 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
                                 <div className={style.gpContent}>
                                     <div className={style.gpObtainedWrapper}>
                                         <span className={style.gpObtainedTitle}>Obtained</span>
-                                        <span className={style.gpObtainedNum}>1238888888</span>
+                                        <span className={style.gpObtainedNum}>{gpTotal}</span>
                                     </div>
                                     <div className={style.gpRemainingWrapper}>
                                         <span className={style.gpRemainingTitle}>Remaining</span>
-                                        <span className={style.gpRemainingNum}>455677756</span>
+                                        <span className={style.gpRemainingNum}>{gpRemaining}</span>
                                     </div>
                                     <div className={style.gpExChangeBtnWrapper}>
                                         <button
@@ -110,11 +164,11 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
                                 <div className={style.scoreContent}>
                                     <div className={style.scoreObtainedWrapper}>
                                         <span className={style.scoreObtainedTitle}>Obtained</span>
-                                        <span className={style.scoreObtainedNum}>1238888888</span>
+                                        <span className={style.scoreObtainedNum}>{totalScore}</span>
                                     </div>
                                     <div className={style.scoreRemainingWrapper}>
                                         <span className={style.scoreRemainingTitle}>Remaining</span>
-                                        <span className={style.scoreRemainingNum}>455677756</span>
+                                        <span className={style.scoreRemainingNum}>{scoreRemaining}</span>
                                     </div>
                                 </div>
                             </div>
@@ -125,11 +179,11 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
                                 </div>
                                 <div className={style.morphPointsContent}>
                                     <div className={style.morphPointsMainWalletWrapper}>
-                                        <span className={style.morphPointsMainWalletTitle}>Main Wallet:</span>
+                                        <span className={style.morphPointsMainWalletTitle}>Main Wallet : {formatAddress(address)}</span>
                                         <span className={style.morphPointsMainWalletNum}>9.2</span>
                                     </div>
                                     <div className={style.morphPointsSessionWalletWrapper}>
-                                        <span className={style.morphPointsSessionWalletTitle}>Session Wallet:</span>
+                                        <span className={style.morphPointsSessionWalletTitle}>Session Wallet : {formatAddress(palyerAddress)}</span>
                                         <span className={style.morphPointsSessionWalletNum}>40.23</span>
                                     </div>
                                 </div>
@@ -141,7 +195,7 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
                                 </div>
                                 <div className={style.popcraftNftContent}>
                                     <div className={style.popcraftNftItems}>
-                                        <span>4 items</span>
+                                        <span>{ownedPopCraftNFTTotal} items</span>
                                     </div>
                                     <div className={style.popcraftNftDetails}>
                                         <span>Details</span>
