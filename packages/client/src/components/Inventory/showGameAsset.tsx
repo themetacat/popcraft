@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useId } from 'react'
 import style from './showGameAsset.module.css'
 import CloseImg from "../../images/Inventory/Close.webp"
 import { useTopUp } from "../select"
@@ -165,7 +165,7 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
                                             className={style.gpExchangeBtn}
                                             onClick={() => gpExchangeBtnTransport()}
                                         >
-                                            <span>Exchange</span>
+                                            <span>EXCHANGE</span>
                                         </button>
                                     </div>
                                 </div>
@@ -189,7 +189,15 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
 
                             <div className={style.morphPointsWrapper}>
                                 <div className={style.morphPointsTitle}>
-                                    <GradientStrokeText text={`Morph Points`} />
+                                    <GradientStrokeText
+                                        text={`Morph Points`}
+                                        colors={["rgba(219, 161, 122, 1)", "rgba(157, 61, 33, 1)"]}
+                                    />
+                                    <div className={style.morphPointsDetailsWrapper}>
+                                        <a href='https://www.morphl2.io/points/greattoken_migration/dashboard' target='blank'>
+                                            Details
+                                        </a>
+                                    </div>
                                 </div>
                                 <div className={style.morphPointsContent}>
                                     <div className={style.morphPointsMainWalletWrapper}>
@@ -205,21 +213,22 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
 
                             <div className={style.popcraftNftWrapper}>
                                 <div className={style.popcraftNftTitle}>
-                                    <GradientStrokeText text={`PopCraft Genesis NFT`} />
+                                    <GradientStrokeText
+                                        text={`PopCraft Genesis NFT`}
+                                        colors={["rgba(219, 161, 122, 1)", "rgba(157, 61, 33, 1)"]}
+                                    />
                                 </div>
                                 <div className={style.popcraftNftContent}>
                                     <div className={style.popcraftNftItems}>
                                         <span>{ownedPopCraftNFTTotal} items</span>
                                     </div>
                                     <div className={style.popcraftNftDetails}>
-                                        <span>
-                                            <a 
-                                                href={`https://explorer.morphl2.io/token/0xf6e9932469CBde5dB4b9293330Ff1897Bb43b2AE?tab=inventory&holder_address_hash=${address}`}
-                                                target="_blank"
-                                            >
-                                                Details
-                                            </a>
-                                        </span>
+                                        <a
+                                            href={`https://explorer.morphl2.io/token/0xf6e9932469CBde5dB4b9293330Ff1897Bb43b2AE?tab=inventory&holder_address_hash=${address}`}
+                                            target="_blank"
+                                        >
+                                            Details
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -269,26 +278,35 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
     }
 }
 
-const GradientStrokeText = ({ text }: { text: string }) => (
-    <svg height={33}>
-        <defs>
-            <linearGradient id="strokeGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="rgba(132, 188, 210, 1)" />
-                <stop offset="100%" stopColor="rgba(114, 92, 224, 1)" />
-            </linearGradient>
-        </defs>
+const GradientStrokeText = ({
+    text,
+    colors = ["rgba(132, 188, 210, 1)", "rgba(114, 92, 224, 1)"],
+}: {
+    text: string;
+    colors?: [string, string];
+}) => {
+    const gradientId = useId();
+    return (
+        <svg height={33}>
+            <defs>
+                <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor={colors[0]} />
+                    <stop offset="100%" stopColor={colors[1]} />
+                </linearGradient>
+            </defs>
 
-        <text
-            x="3"
-            y="70%"
-            fill="white"
-            stroke="url(#strokeGradient)"
-            strokeWidth="7.5"
-            paintOrder="stroke fill"
-            fontFamily="sans-serif"
-            className={style.gpInfo}
-        >
-            {text}
-        </text>
-    </svg>
-);
+            <text
+                x="3"
+                y="70%"
+                fill="white"
+                stroke={`url(#${gradientId})`}
+                strokeWidth="7.5"
+                paintOrder="stroke fill"
+                fontFamily="sans-serif"
+                className={style.gpInfo}
+            >
+                {text}
+            </text>
+        </svg>
+    );
+};
