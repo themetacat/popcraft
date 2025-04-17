@@ -1,5 +1,5 @@
 import { useState, useEffect, useId } from 'react'
-import style from './showGameAsset.module.css'
+import showAssetStyle from './showGameAsset.module.css'
 import CloseImg from "../../images/Inventory/Close.webp"
 import { useTopUp } from "../select"
 import { useMUD } from "../../MUDContext"
@@ -143,26 +143,26 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
     if (!isMobile) {
         return (
             <>
-                <div className={`${style.modalContainer} ${isCloseAnimating ? style.modalContainerClosed : ''}`}>
-                    <img src={CloseImg} className={style.closeBtn} alt="" onClick={() => transport()} />
-                    <div className={style.content}>
-                        <div className={style.left}>
-                            <div className={style.gpWrapper}>
-                                <div className={style.gpTitle}>
+                <div className={`${showAssetStyle.modalContainer} ${isCloseAnimating ? showAssetStyle.modalContainerClosed : ''}`}>
+                    <img src={CloseImg} className={showAssetStyle.closeBtn} alt="" onClick={() => transport()} />
+                    <div className={showAssetStyle.content}>
+                        <div className={showAssetStyle.left}>
+                            <div className={showAssetStyle.gpWrapper}>
+                                <div className={showAssetStyle.gpTitle}>
                                     <GradientStrokeText text={`GP`} />
                                 </div>
-                                <div className={style.gpContent}>
-                                    <div className={style.gpObtainedWrapper}>
-                                        <span className={style.gpObtainedTitle}>Obtained</span>
-                                        <span className={style.gpObtainedNum}>{gpTotal.toLocaleString()}</span>
+                                <div className={showAssetStyle.gpContent}>
+                                    <div className={showAssetStyle.gpObtainedWrapper}>
+                                        <span className={showAssetStyle.gpObtainedTitle}>Obtained</span>
+                                        <span className={showAssetStyle.gpObtainedNum}>{gpTotal.toLocaleString()}</span>
                                     </div>
-                                    <div className={style.gpRemainingWrapper}>
-                                        <span className={style.gpRemainingTitle}>Remaining</span>
-                                        <span className={style.gpRemainingNum}>{gpRemaining.toLocaleString()}</span>
+                                    <div className={showAssetStyle.gpRemainingWrapper}>
+                                        <span className={showAssetStyle.gpRemainingTitle}>Remaining</span>
+                                        <span className={showAssetStyle.gpRemainingNum}>{gpRemaining.toLocaleString()}</span>
                                     </div>
-                                    <div className={style.gpExchangeBtnWrapper}>
+                                    <div className={showAssetStyle.gpExchangeBtnWrapper}>
                                         <button
-                                            className={style.gpExchangeBtn}
+                                            className={showAssetStyle.gpExchangeBtn}
                                             onClick={() => gpExchangeBtnTransport()}
                                         >
                                             <span>EXCHANGE</span>
@@ -171,58 +171,58 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
                                 </div>
                             </div>
 
-                            <div className={style.scoreWrapper}>
-                                <div className={style.scoreTitle}>
+                            <div className={showAssetStyle.scoreWrapper}>
+                                <div className={showAssetStyle.scoreTitle}>
                                     <GradientStrokeText text={`SCORE`} />
                                 </div>
-                                <div className={style.scoreContent}>
-                                    <div className={style.scoreObtainedWrapper}>
-                                        <span className={style.scoreObtainedTitle}>Obtained</span>
-                                        <span className={style.scoreObtainedNum}>{totalScore.toLocaleString()}</span>
+                                <div className={showAssetStyle.scoreContent}>
+                                    <div className={showAssetStyle.scoreObtainedWrapper}>
+                                        <span className={showAssetStyle.scoreObtainedTitle}>Obtained</span>
+                                        <span className={showAssetStyle.scoreObtainedNum}>{totalScore.toLocaleString()}</span>
                                     </div>
-                                    <div className={style.scoreRemainingWrapper}>
-                                        <span className={style.scoreRemainingTitle}>Remaining</span>
-                                        <span className={style.scoreRemainingNum}>{scoreRemaining.toLocaleString()}</span>
+                                    <div className={showAssetStyle.scoreRemainingWrapper}>
+                                        <span className={showAssetStyle.scoreRemainingTitle}>Remaining</span>
+                                        <span className={showAssetStyle.scoreRemainingNum}>{scoreRemaining.toLocaleString()}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className={style.morphPointsWrapper}>
-                                <div className={style.morphPointsTitle}>
+                            <div className={showAssetStyle.morphPointsWrapper}>
+                                <div className={showAssetStyle.morphPointsTitle}>
                                     <GradientStrokeText
                                         text={`Morph Points`}
                                         colors={["rgba(219, 161, 122, 1)", "rgba(157, 61, 33, 1)"]}
                                     />
-                                    <div className={style.morphPointsDetailsWrapper}>
+                                    <div className={showAssetStyle.morphPointsDetailsWrapper}>
                                         <a href='https://www.morphl2.io/points/greattoken_migration/dashboard' target='blank'>
                                             Details
                                         </a>
                                     </div>
                                 </div>
-                                <div className={style.morphPointsContent}>
-                                    <div className={style.morphPointsMainWalletWrapper}>
-                                        <span className={style.morphPointsMainWalletTitle}>Main Wallet : {formatAddress(address)}</span>
-                                        <span className={style.morphPointsMainWalletNum}>9.2</span>
+                                <div className={showAssetStyle.morphPointsContent}>
+                                    <div className={showAssetStyle.morphPointsMainWalletWrapper}>
+                                        <span className={showAssetStyle.morphPointsMainWalletTitle}>Main Wallet : {formatAddress(address)}</span>
+                                        <span className={showAssetStyle.morphPointsMainWalletNum}>9.2</span>
                                     </div>
-                                    <div className={style.morphPointsSessionWalletWrapper}>
-                                        <span className={style.morphPointsSessionWalletTitle}>Session Wallet : {formatAddress(palyerAddress)}</span>
-                                        <span className={style.morphPointsSessionWalletNum}>40.23</span>
+                                    <div className={showAssetStyle.morphPointsSessionWalletWrapper}>
+                                        <span className={showAssetStyle.morphPointsSessionWalletTitle}>Session Wallet : {formatAddress(palyerAddress)}</span>
+                                        <span className={showAssetStyle.morphPointsSessionWalletNum}>40.23</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className={style.popcraftNftWrapper}>
-                                <div className={style.popcraftNftTitle}>
+                            <div className={showAssetStyle.popcraftNftWrapper}>
+                                <div className={showAssetStyle.popcraftNftTitle}>
                                     <GradientStrokeText
                                         text={`PopCraft Genesis NFT`}
                                         colors={["rgba(219, 161, 122, 1)", "rgba(157, 61, 33, 1)"]}
                                     />
                                 </div>
-                                <div className={style.popcraftNftContent}>
-                                    <div className={style.popcraftNftItems}>
+                                <div className={showAssetStyle.popcraftNftContent}>
+                                    <div className={showAssetStyle.popcraftNftItems}>
                                         <span>{ownedPopCraftNFTTotal} items</span>
                                     </div>
-                                    <div className={style.popcraftNftDetails}>
+                                    <div className={showAssetStyle.popcraftNftDetails}>
                                         <a
                                             href={`https://explorer.morphl2.io/token/0xf6e9932469CBde5dB4b9293330Ff1897Bb43b2AE?tab=inventory&holder_address_hash=${address}`}
                                             target="_blank"
@@ -233,33 +233,33 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
                                 </div>
                             </div>
                         </div>
-                        <div className={style.right}>
-                            <div className={style.rightHeader}>
-                                <div className={style.propsTitle}>
+                        <div className={showAssetStyle.right}>
+                            <div className={showAssetStyle.rightHeader}>
+                                <div className={showAssetStyle.propsTitle}>
                                     <GradientStrokeText text={`PROPS`} />
                                 </div>
                             </div>
-                            <div className={style.TokenItemGrid}>
+                            <div className={showAssetStyle.TokenItemGrid}>
                                 {items.map((item) => (
                                     <div
                                         key={item.token}
-                                        className={style.tokenItem}
+                                        className={showAssetStyle.tokenItem}
                                     >
-                                        <div className={style.tokenItemTop}>
+                                        <div className={showAssetStyle.tokenItemTop}>
                                             <img src={imageIconData[item.token].src} alt="item" />
-                                            <div className={style.tokenBalance}>
+                                            <div className={showAssetStyle.tokenBalance}>
                                                 <span>{tokenBalance[item.token]}</span>
                                             </div>
                                         </div>
-                                        <div className={style.tokenItemBottom}>
+                                        <div className={showAssetStyle.tokenItemBottom}>
                                             <span>{imageIconData[item.token].name}</span>
                                         </div>
                                     </div>
                                 ))}
                             </div>
-                            <div className={style.buyBtnWrapper}>
+                            <div className={showAssetStyle.buyBtnWrapper}>
                                 <button
-                                    className={style.buyBtn}
+                                    className={showAssetStyle.buyBtn}
                                 >
                                     <span>BUY</span>
                                 </button>
@@ -303,7 +303,7 @@ const GradientStrokeText = ({
                 strokeWidth="7.5"
                 paintOrder="stroke fill"
                 fontFamily="sans-serif"
-                className={style.gpInfo}
+                className={showAssetStyle.gpInfo}
             >
                 {text}
             </text>
