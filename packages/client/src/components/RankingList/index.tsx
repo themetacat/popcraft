@@ -28,7 +28,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
     const isPlayEventStart = true;
     const playEventStartWeek = 9;
     const playEventRankName = 'Chill Week'
-    const playEventPrizePoolText = 'Gas used in ETH x 625'
+    const playEventPrizePoolText = 'Morph Points = Gas used in ETH x 625'
     const {
         components: {
             RankingRecord, GameRecord, DayToScore, StarToScore, WeeklyRecord
@@ -296,10 +296,10 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                             }}
                         />
                     </div>
-                    <div className={style.seasonCountdownDiv}>
+                    <div className={style.seasonCountdownDiv} style={isPlayEventStart ? { width: "68rem" } : {}}>
                         {season > 0 && selectSeason == season && csd > 0 && timeLeft > 0 &&
                             <span>
-                                {formatSeasonCountDown(timeLeft)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRIZE POOL: {isPlayEventStart && playEventStartWeek && season >= playEventStartWeek ? playEventPrizePoolText : prizePool}
+                                {formatSeasonCountDown(timeLeft)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{isPlayEventStart && playEventStartWeek && season >= playEventStartWeek ? playEventPrizePoolText : "PRIZE POOL: " + prizePool}
                             </span>
                         }
                     </div>
@@ -533,7 +533,7 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
                                 {season > 0 && selectSeason == season && csd > 0 && timeLeft > 0 &&
                                     <span>
                                         {formatSeasonCountDown(timeLeft)}<br/>
-                                        PRIZE POOL: {isPlayEventStart && playEventStartWeek && season >= playEventStartWeek ? playEventPrizePoolText : prizePool}
+                                        {isPlayEventStart && playEventStartWeek && season >= playEventStartWeek ? playEventPrizePoolText : "PRIZE POOL: " + prizePool}
                                     </span>
                                 }
                             </div>
