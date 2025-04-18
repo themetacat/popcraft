@@ -241,7 +241,7 @@
 .leftArrow {
     position: absolute;
     top: 50%;
-    left: 5rem;
+    left: 2.5rem;
     transform: translateY(-50%);
     cursor: pointer;
     font-size: 6rem;
@@ -269,7 +269,7 @@
 .rightArrow {
     position: absolute;
     top: 50%;
-    right: 5rem;
+    right: 2.5rem;
     transform: translateY(-50%);
     cursor: pointer;
     font-size: 6rem;

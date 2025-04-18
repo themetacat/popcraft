@@ -1225,5 +1225,5 @@ p {
 }
 
 .seeMore:hover {
-  transform: scale(1.03);
+  transform: translate(-148%, 280%) scale(1.03);
 }
