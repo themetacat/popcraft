@@ -27,7 +27,7 @@ interface Props {
 export default function RankingList({ setShowRankingList, showRankingList, isMobile }: Props) {
     const isPlayEventStart = true;
     const playEventStartWeek = 9;
-    const playEventRankName = 'Play Rank'
+    const playEventRankName = 'Chill Week'
     const playEventPrizePoolText = 'Gas used in ETH x 625'
     const {
         components: {

@@ -87,6 +87,13 @@ export default function HowToPlay({ setShowHowToPlay }: PropsHowToPlay) {
         </div>
 
       </div>
+      {
+        currentIndex == 0 && chainId === 2818 && (
+          <div className={style.seeMore}>
+            <a href="https://www.morphl2.io/points/greattoken_migration/dashboard" target="blank">See More</a>
+          </div>
+        )
+      }
     </div>
   )
 }
@@ -140,6 +147,13 @@ export function Rewards({ setShowRewards }: PropsRewards) {
           ))}
         </div>
       </div>
+      {
+        currentIndex == 0 && chainId === 2818 && (
+          <div className={style.seeMore}>
+            <a href="https://www.morphl2.io/points/greattoken_migration/dashboard" target="blank">See More</a>
+          </div>
+        )
+      }
     </div>
   )
 }
