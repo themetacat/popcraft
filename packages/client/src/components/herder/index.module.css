@@ -146,9 +146,8 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 6rem;
+  margin-left: 4.5rem;
   gap: 1rem;
-  margin-right: 3rem;
 }
 
 .chain {
@@ -324,7 +323,7 @@ canvas {
   right: 0;
   bottom: 0;
   left: 0;
-  margin-right: 21rem;
+  margin-right: 38rem;
   background-image: url('../../images/PinkButtonheader.webp');
   background-size: 23rem 6rem;
   background-position: center;

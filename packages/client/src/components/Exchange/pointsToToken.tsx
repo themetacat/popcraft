@@ -18,7 +18,9 @@ import successImg from '../../images/substance/successto.png'
 interface InviteProps {
     isMobile: boolean,
     checkTaskInProcess: any,
-    handleErrorAll: any
+    handleErrorAll: any,
+    isShowContent?: boolean,
+    setOtherShowExchange?: any
 }
 
 type TokenItem = {
@@ -29,7 +31,7 @@ type TokenItem = {
 
 const COST_PER_TOKEN = 300;
 
-export default function PointsToToken({ isMobile, checkTaskInProcess, handleErrorAll }: InviteProps) {
+export default function PointsToToken({ isMobile, checkTaskInProcess, handleErrorAll, isShowContent, setOtherShowExchange }: InviteProps) {
     const {
         network: { publicClient, palyerAddress },
         components: {
@@ -144,6 +146,7 @@ export default function PointsToToken({ isMobile, checkTaskInProcess, handleErro
 
     const transport = () => {
         if (!showExchange) {
+            setOtherShowExchange && setOtherShowExchange(false);
             setShowExchange(!showExchange);
         } else {
             setIsCloseAnimating(true);
@@ -173,78 +176,87 @@ export default function PointsToToken({ isMobile, checkTaskInProcess, handleErro
         resetTokenBalance();
     }, [priTokenAddress, address, optionalProps])
 
+    useEffect(() => {
+        if(isShowContent) {
+            transport()
+        }
+    }, [isShowContent])
+
     return (
         <>{
-            showExchange && <div className={`${style.container} ${isCloseAnimating ? style.containerClosed : ''}`}>
-                <div className={style.content}>
-                    <div className={style.left}>
-                        <StyledText remaining={remainingGp > totalPoints ? totalPoints : remainingGp} totalGp={totalPoints} />
-                        <div className={style.selectInfo}>
-                            <p className={style.gpTitle}>GP</p>
-                            <div className={style.numberBox}>{selectedTotalGp.toLocaleString()}</div>
-                            <p className={style.selected}>SELECTED: <span className={`${selectedProps > optionalProps ? style.selectedGpExceed : style.selectedGp}` }>{selectedProps}</span>/{optionalProps} PROPS</p>
-                        </div>
-                        <div className={style.note}>
-                            <p>NOTE:</p>
-                            <p>300 GP =1Prop</p>
-                            <p>Win a game = 150 GP</p>
-                            <p>Lose a game(≥250 scores)= 50GP</p>
-                            <p>Lose a game(&lt;250 scores)= OGP</p>
-                            <p>A/B/C plants: 4500 / 3000 / 1500 GP</p>
-                        </div>
-                        <div className={style.exchangeBtnWrapper}>
-                            <button
-                                className={`${style.exchangeBtn} ${callContract || selectedProps > optionalProps || selectedProps == 0 ? style.exchangeBtnNotAllow : style.exchangeBtnAllow}`}
-                                onClick={callContract || selectedProps > optionalProps || selectedProps == 0 ? undefined : () => callGpExchangeToken()}
-                            >
-                                {callContract === true ? (
-                                    <img
-                                        src={loadingImg}
-                                        alt=""
-                                        className={`${style.callContractloading}`}
-                                    />
-                                ) : <span>EXCHANGE</span>}
-                                {(selectedTotalGp > remainingGp || selectedTotalGp == 0) && <div className={style.exchangeBtnOverlay} />}
-                            </button>
-                        </div>
-
-                    </div>
-
-                    <div className={style.right}>
-                        <div className={style.rightHeader}>
-                            <div className={style.propsTitle}>
-                                <GradientStrokeText text={`PROPS`} />
+            showExchange && 
+            <div className={style.overlay}>
+                <div className={`${style.container} ${isCloseAnimating ? style.containerClosed : ''}`}>
+                    <div className={style.content}>
+                        <div className={style.left}>
+                            <StyledText remaining={remainingGp > totalPoints ? totalPoints : remainingGp} totalGp={totalPoints} />
+                            <div className={style.selectInfo}>
+                                <p className={style.gpTitle}>GP</p>
+                                <div className={style.numberBox}>{selectedTotalGp.toLocaleString()}</div>
+                                <p className={style.selected}>SELECTED: <span className={`${selectedProps > optionalProps ? style.selectedGpExceed : style.selectedGp}` }>{selectedProps}</span>/{optionalProps} PROPS</p>
                             </div>
-                            <div className={style.rightButtons}>
-                                <button className={style.decreaseBtn} style={{ width: "4rem", height: "4rem" }} onClick={() => updateAll(-1)}></button>
-                                <button className={style.increaseBtn} style={{ width: "4rem", height: "4rem" }} onClick={() => updateAll(1)}></button>
+                            <div className={style.note}>
+                                <p>NOTE:</p>
+                                <p>300 GP =1Prop</p>
+                                <p>Win a game = 150 GP</p>
+                                <p>Lose a game(≥250 scores)= 50GP</p>
+                                <p>Lose a game(&lt;250 scores)= OGP</p>
+                                <p>A/B/C plants: 4500 / 3000 / 1500 GP</p>
                             </div>
-                        </div>
-                        <div className={style.TokenItemGrid}>
-                            {items.map((item) => (
-                                <div
-                                    key={item.token}
-                                    className={style.tokenItem}
+                            <div className={style.exchangeBtnWrapper}>
+                                <button
+                                    className={`${style.exchangeBtn} ${callContract || selectedProps > optionalProps || selectedProps == 0 ? style.exchangeBtnNotAllow : style.exchangeBtnAllow}`}
+                                    onClick={callContract || selectedProps > optionalProps || selectedProps == 0 ? undefined : () => callGpExchangeToken()}
                                 >
-                                    <div className={style.tokenItemTop}>
-                                        <img src={imageIconData[item.token].src} alt="item" />
-                                        <div className={style.tokenBalance}>
-                                            <span>{tokenBalance[item.token]}</span>
-                                        </div>
-                                    </div>
-                                    <div className={style.tokenItemBottom}>
+                                    {callContract === true ? (
+                                        <img
+                                            src={loadingImg}
+                                            alt=""
+                                            className={`${style.callContractloading}`}
+                                        />
+                                    ) : <span>EXCHANGE</span>}
+                                    {(selectedTotalGp > remainingGp || selectedTotalGp == 0) && <div className={style.exchangeBtnOverlay} />}
+                                </button>
+                            </div>
 
-                                        <button className={style.decreaseBtn} onClick={() => updateCount(item.token, -1)}></button>
-                                        <span>{item.amount}</span>
-                                        <button className={style.increaseBtn} onClick={() => updateCount(item.token, 1)}></button>
-                                    </div>
+                        </div>
 
+                        <div className={style.right}>
+                            <div className={style.rightHeader}>
+                                <div className={style.propsTitle}>
+                                    <GradientStrokeText text={`PROPS`} />
                                 </div>
-                            ))}
+                                <div className={style.rightButtons}>
+                                    <button className={style.decreaseBtn} style={{ width: "4rem", height: "4rem" }} onClick={() => updateAll(-1)}></button>
+                                    <button className={style.increaseBtn} style={{ width: "4rem", height: "4rem" }} onClick={() => updateAll(1)}></button>
+                                </div>
+                            </div>
+                            <div className={style.TokenItemGrid}>
+                                {items.map((item) => (
+                                    <div
+                                        key={item.token}
+                                        className={style.tokenItem}
+                                    >
+                                        <div className={style.tokenItemTop}>
+                                            <img src={imageIconData[item.token].src} alt="item" />
+                                            <div className={style.tokenBalance}>
+                                                <span>{tokenBalance[item.token]}</span>
+                                            </div>
+                                        </div>
+                                        <div className={style.tokenItemBottom}>
+
+                                            <button className={style.decreaseBtn} onClick={() => updateCount(item.token, -1)}></button>
+                                            <span>{item.amount}</span>
+                                            <button className={style.increaseBtn} onClick={() => updateCount(item.token, 1)}></button>
+                                        </div>
+
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
+                    <img src={CloseImg} className={style.closeBtn} alt="" onClick={() => transport()} />
                 </div>
-                <img src={CloseImg} className={style.closeBtn} alt="" onClick={() => transport()} />
             </div>
         }
             {exchangeState == 1 && (

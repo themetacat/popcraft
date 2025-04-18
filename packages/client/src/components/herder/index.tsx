@@ -22,7 +22,7 @@ import effectSound from '../../audio/2.mp3';
 import failto from '../../images/substance/failto.png'
 import RankingListimg from '../../images/RankingList/trophy.png'
 import LuckyBagImg from '../../images/LuckyBag.webp'
-import ShoppingCartImg from '../../images/ShoppingCart.webp'
+import ShoppingCartImg from '../../images/Inventory.jpg'
 import UserImg from "../../images/User.webp"
 import RankingList from '../RankingList'
 import { useTopUp, COMMON_CHAIN_IDS, MISSION_BOUNS_CHAIN_IDS } from "../select";
@@ -34,6 +34,7 @@ import BGMOff from "../../images/BGMOff.webp";
 import BotInfo from "./botInfo"
 import PlantsIndex, { usePlantsGp } from "./plantsIndex"
 import TopBuy from "../BoxPrompt/TopBuy"
+import ShowGameAsset from "../Inventory/showGameAsset"
 import toast from "react-hot-toast";
 import NewUserBenefitsToken from "./newUserBenefitsToken"
 import ConnectImg from "../../images/connect.webp";
@@ -139,6 +140,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showRankingList, setShowRankingList] = useState(false);
   const [showTopBuy, setShowTopBuy] = useState(false);
+  const [showGameAsset, setShowGameAsset] = useState(false);
   const [balancover, setBalancover] = useState(0);
   const { balanceCheck, currencySymbol, chainId } = useTopUp();
   const [isOpen, setIsOpen] = useState(false);
@@ -1790,6 +1792,10 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     setShowTopBuy(true)
   }
 
+  const gameAssetTransports = () => {
+    setShowGameAsset(true)
+  }
+
   const menuTransports = () => {
     if (!showMenu) {
       setShowMenu(!showMenu)
@@ -1953,7 +1959,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               </button>
             </div>}
 
-
           <div
             className={style.addr}
           >
@@ -2040,13 +2045,13 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
 
                           <div
                             className={style.buyButton}
-                            onClick={() => topBuyTransports()}
+                            onClick={() => gameAssetTransports()}
                             style={{
                               cursor: "pointer",
                             }}
                           >
                             <img src={ShoppingCartImg} alt="" />
-                            <span>BUY</span>
+                            <span>INVENTORY</span>
                           </div>
 
                           <div className={style.chain}>
@@ -2253,6 +2258,16 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           </div>
         ) : null}
 
+        {showGameAsset && isConnected ? (
+            <ShowGameAsset
+              setShowGameAsset={setShowGameAsset}
+              palyerAddress={palyerAddress}
+              isMobile={isMobile}
+              checkTaskInProcess={checkTaskInProcess}
+              handleErrorAll={handleErrorAll}
+            />
+        ) : null}
+
         {showNewPopUp && localStorage.getItem("isShowWaitingMaskLayer") === "false" && (
           <div className={style.overlaybox}>
             <div className={style.popup}>
@@ -2383,6 +2398,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               isMobile={isMobile}
               checkTaskInProcess={checkTaskInProcess}
               handleErrorAll={handleErrorAll}
+              isShowContent={false}
             />
           </>
 
