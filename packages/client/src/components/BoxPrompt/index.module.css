@@ -1192,8 +1192,9 @@ p {
   position: fixed;
   width: 31rem;
   height: 6rem;
-  margin-left: 75rem;
-  margin-top: 72rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-148%, 280%);
 
   background-image: url("../../images/topup/wrongnetwork.webp");
   background-size: 100% 100%;
