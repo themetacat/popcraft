@@ -22,7 +22,7 @@ import effectSound from '../../audio/2.mp3';
 import failto from '../../images/substance/failto.png'
 import RankingListimg from '../../images/RankingList/trophy.png'
 import LuckyBagImg from '../../images/LuckyBag.webp'
-import ShoppingCartImg from '../../images/ShoppingCart.webp'
+import ShoppingCartImg from '../../images/Inventory.jpg'
 import UserImg from "../../images/User.webp"
 import RankingList from '../RankingList'
 import { useTopUp, COMMON_CHAIN_IDS, MISSION_BOUNS_CHAIN_IDS } from "../select";
@@ -1959,7 +1959,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               </button>
             </div>}
 
-
           <div
             className={style.addr}
           >
@@ -2264,6 +2263,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               setShowGameAsset={setShowGameAsset}
               palyerAddress={palyerAddress}
               isMobile={isMobile}
+              checkTaskInProcess={checkTaskInProcess}
+              handleErrorAll={handleErrorAll}
             />
         ) : null}
 
@@ -2397,6 +2398,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               isMobile={isMobile}
               checkTaskInProcess={checkTaskInProcess}
               handleErrorAll={handleErrorAll}
+              isShowContent={false}
             />
           </>
 

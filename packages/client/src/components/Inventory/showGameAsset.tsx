@@ -13,11 +13,14 @@ import { useOwnedTokens } from "../Utils/ERC721Utils";
 import { usePlantsGp } from "../herder/plantsIndex";
 import { numAddressToEntityID } from "../rightPart/index";
 import TopBuy from "../BoxPrompt/TopBuy"
+import PointsToToken from "../Exchange/pointsToToken"
 
 interface ShowGameAssetProps {
     setShowGameAsset: any;
     palyerAddress: any;
     isMobile: boolean;
+    checkTaskInProcess: any;
+    handleErrorAll: any;
 }
 
 type TokenItem = {
@@ -25,7 +28,7 @@ type TokenItem = {
     amount: number;
 };
 
-export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobile }: ShowGameAssetProps) {
+export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobile, checkTaskInProcess, handleErrorAll }: ShowGameAssetProps) {
     const {
         components: {
             GPConsumeValue,
@@ -40,11 +43,7 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
 
     const [showExchange, setShowExchange] = useState(false);
     const gpExchangeBtnTransport = () => {
-        setIsCloseAnimating(true);
-        setTimeout(() => {
-            setShowGameAsset(false);
-            setIsCloseAnimating(false);
-        }, 100);
+        setShowExchange(true)
     };
 
     const { priTokenAddress, chainId } = useTopUp();
@@ -141,17 +140,25 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
     const topBuyTransports = () => {
         setShowTopBuy(true)
     }
-    
+
     if (!isMobile) {
         return (
             <>
+                <PointsToToken
+                    isMobile={isMobile}
+                    checkTaskInProcess={checkTaskInProcess}
+                    handleErrorAll={handleErrorAll}
+                    isShowContent={showExchange}
+                    setOtherShowExchange={setShowExchange}
+                />
+
                 {showTopBuy && (
-                    <div className={showAssetStyle.overlay} style={{zIndex:"1000001"}}>
-                    <TopBuy
-                      setShowTopBuy={setShowTopBuy}
-                      isMobile={isMobile}
-                    />
-                  </div>
+                    <div className={showAssetStyle.overlay} style={{ zIndex: "1000001" }}>
+                        <TopBuy
+                            setShowTopBuy={setShowTopBuy}
+                            isMobile={isMobile}
+                        />
+                    </div>
                 )}
 
                 <div className={showAssetStyle.overlay}>
@@ -214,11 +221,11 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
                                     <div className={showAssetStyle.morphPointsContent}>
                                         <div className={showAssetStyle.morphPointsMainWalletWrapper}>
                                             <span className={showAssetStyle.morphPointsMainWalletTitle}>Main Wallet : {formatAddress(address)}</span>
-                                            <span className={showAssetStyle.morphPointsMainWalletNum}>9.2</span>
+                                            <span className={showAssetStyle.morphPointsMainWalletNum}>Coming soon</span>
                                         </div>
                                         <div className={showAssetStyle.morphPointsSessionWalletWrapper}>
                                             <span className={showAssetStyle.morphPointsSessionWalletTitle}>Session Wallet : {formatAddress(palyerAddress)}</span>
-                                            <span className={showAssetStyle.morphPointsSessionWalletNum}>40.23</span>
+                                            <span className={showAssetStyle.morphPointsSessionWalletNum}>Coming soon</span>
                                         </div>
                                     </div>
                                 </div>

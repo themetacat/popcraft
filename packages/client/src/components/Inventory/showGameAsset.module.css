@@ -206,6 +206,10 @@
         1px 1px 3px white;
 }
 
+.gpExchangeBtn:hover {
+    transform: scale(1.03);
+}
+
 .scoreWrapper {
     height: 14rem;
     width: 100%;
@@ -364,7 +368,9 @@
     font-family: "AdobeHeitiStd-Regular2";
     font-weight: 400;
     font-size: 2.5rem;
-    color: #835635;
+    /* color: #835635; */
+    color: #BB9F8B;
+
 }
 
 .morphPointsSessionWalletWrapper {
@@ -393,7 +399,8 @@
     font-family: "AdobeHeitiStd-Regular2";
     font-weight: 400;
     font-size: 2.5rem;
-    color: #835635;
+    /* color: #835635; */
+    color: #BB9F8B;
 }
 
 .popcraftNftWrapper {
@@ -600,4 +607,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.buyBtn:hover {
+    transform: scale(1.03);
 }
