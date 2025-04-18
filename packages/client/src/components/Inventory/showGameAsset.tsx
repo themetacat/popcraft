@@ -12,6 +12,7 @@ import { Hex } from "viem";
 import { useOwnedTokens } from "../Utils/ERC721Utils";
 import { usePlantsGp } from "../herder/plantsIndex";
 import { numAddressToEntityID } from "../rightPart/index";
+import TopBuy from "../BoxPrompt/TopBuy"
 
 interface ShowGameAssetProps {
     setShowGameAsset: any;
@@ -129,140 +130,153 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
     const ownedPopCraftNFTTotal = ownedTokens && ownedTokens.length > 0 ? ownedTokens.length : 0;
 
     const transport = () => {
-        if (!showExchange) {
-            setShowExchange(!showExchange);
-        } else {
-            setIsCloseAnimating(true);
-            setTimeout(() => {
-                setShowExchange(!showExchange);
-                setIsCloseAnimating(false);
-            }, 100);
-        }
+        setIsCloseAnimating(true);
+        setTimeout(() => {
+            setShowGameAsset(false);
+            setIsCloseAnimating(false);
+        }, 100);
     };
 
+    const [showTopBuy, setShowTopBuy] = useState(false);
+    const topBuyTransports = () => {
+        setShowTopBuy(true)
+    }
+    
     if (!isMobile) {
         return (
             <>
-                <div className={`${showAssetStyle.modalContainer} ${isCloseAnimating ? showAssetStyle.modalContainerClosed : ''}`}>
-                    <img src={CloseImg} className={showAssetStyle.closeBtn} alt="" onClick={() => transport()} />
-                    <div className={showAssetStyle.content}>
-                        <div className={showAssetStyle.left}>
-                            <div className={showAssetStyle.gpWrapper}>
-                                <div className={showAssetStyle.gpTitle}>
-                                    <GradientStrokeText text={`GP`} />
+                {showTopBuy && (
+                    <div className={showAssetStyle.overlay} style={{zIndex:"1000001"}}>
+                    <TopBuy
+                      setShowTopBuy={setShowTopBuy}
+                      isMobile={isMobile}
+                    />
+                  </div>
+                )}
+
+                <div className={showAssetStyle.overlay}>
+                    <div className={`${showAssetStyle.modalContainer} ${isCloseAnimating ? showAssetStyle.modalContainerClosed : ''}`}>
+                        <img src={CloseImg} className={showAssetStyle.closeBtn} alt="" onClick={() => transport()} />
+                        <div className={showAssetStyle.content}>
+                            <div className={showAssetStyle.left}>
+                                <div className={showAssetStyle.gpWrapper}>
+                                    <div className={showAssetStyle.gpTitle}>
+                                        <GradientStrokeText text={`GP`} />
+                                    </div>
+                                    <div className={showAssetStyle.gpContent}>
+                                        <div className={showAssetStyle.gpObtainedWrapper}>
+                                            <span className={showAssetStyle.gpObtainedTitle}>Obtained</span>
+                                            <span className={showAssetStyle.gpObtainedNum}>{gpTotal.toLocaleString()}</span>
+                                        </div>
+                                        <div className={showAssetStyle.gpRemainingWrapper}>
+                                            <span className={showAssetStyle.gpRemainingTitle}>Remaining</span>
+                                            <span className={showAssetStyle.gpRemainingNum}>{gpRemaining.toLocaleString()}</span>
+                                        </div>
+                                        <div className={showAssetStyle.gpExchangeBtnWrapper}>
+                                            <button
+                                                className={showAssetStyle.gpExchangeBtn}
+                                                onClick={() => gpExchangeBtnTransport()}
+                                            >
+                                                <span>EXCHANGE</span>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className={showAssetStyle.gpContent}>
-                                    <div className={showAssetStyle.gpObtainedWrapper}>
-                                        <span className={showAssetStyle.gpObtainedTitle}>Obtained</span>
-                                        <span className={showAssetStyle.gpObtainedNum}>{gpTotal.toLocaleString()}</span>
+
+                                <div className={showAssetStyle.scoreWrapper}>
+                                    <div className={showAssetStyle.scoreTitle}>
+                                        <GradientStrokeText text={`SCORE`} />
                                     </div>
-                                    <div className={showAssetStyle.gpRemainingWrapper}>
-                                        <span className={showAssetStyle.gpRemainingTitle}>Remaining</span>
-                                        <span className={showAssetStyle.gpRemainingNum}>{gpRemaining.toLocaleString()}</span>
+                                    <div className={showAssetStyle.scoreContent}>
+                                        <div className={showAssetStyle.scoreObtainedWrapper}>
+                                            <span className={showAssetStyle.scoreObtainedTitle}>Obtained</span>
+                                            <span className={showAssetStyle.scoreObtainedNum}>{totalScore.toLocaleString()}</span>
+                                        </div>
+                                        <div className={showAssetStyle.scoreRemainingWrapper}>
+                                            <span className={showAssetStyle.scoreRemainingTitle}>Remaining</span>
+                                            <span className={showAssetStyle.scoreRemainingNum}>{scoreRemaining.toLocaleString()}</span>
+                                        </div>
                                     </div>
-                                    <div className={showAssetStyle.gpExchangeBtnWrapper}>
-                                        <button
-                                            className={showAssetStyle.gpExchangeBtn}
-                                            onClick={() => gpExchangeBtnTransport()}
+                                </div>
+
+                                <div className={showAssetStyle.morphPointsWrapper}>
+                                    <div className={showAssetStyle.morphPointsTitle}>
+                                        <GradientStrokeText
+                                            text={`Morph Points`}
+                                            colors={["rgba(219, 161, 122, 1)", "rgba(157, 61, 33, 1)"]}
+                                        />
+                                        <div className={showAssetStyle.morphPointsDetailsWrapper}>
+                                            <a href='https://www.morphl2.io/points/greattoken_migration/dashboard' target='blank'>
+                                                Details
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div className={showAssetStyle.morphPointsContent}>
+                                        <div className={showAssetStyle.morphPointsMainWalletWrapper}>
+                                            <span className={showAssetStyle.morphPointsMainWalletTitle}>Main Wallet : {formatAddress(address)}</span>
+                                            <span className={showAssetStyle.morphPointsMainWalletNum}>9.2</span>
+                                        </div>
+                                        <div className={showAssetStyle.morphPointsSessionWalletWrapper}>
+                                            <span className={showAssetStyle.morphPointsSessionWalletTitle}>Session Wallet : {formatAddress(palyerAddress)}</span>
+                                            <span className={showAssetStyle.morphPointsSessionWalletNum}>40.23</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className={showAssetStyle.popcraftNftWrapper}>
+                                    <div className={showAssetStyle.popcraftNftTitle}>
+                                        <GradientStrokeText
+                                            text={`PopCraft Genesis NFT`}
+                                            colors={["rgba(219, 161, 122, 1)", "rgba(157, 61, 33, 1)"]}
+                                        />
+                                    </div>
+                                    <div className={showAssetStyle.popcraftNftContent}>
+                                        <div className={showAssetStyle.popcraftNftItems}>
+                                            <span>{ownedPopCraftNFTTotal} items</span>
+                                        </div>
+                                        <div className={showAssetStyle.popcraftNftDetails}>
+                                            <a
+                                                href={`https://explorer.morphl2.io/token/0xf6e9932469CBde5dB4b9293330Ff1897Bb43b2AE?tab=inventory&holder_address_hash=${address}`}
+                                                target="_blank"
+                                            >
+                                                Details
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={showAssetStyle.right}>
+                                <div className={showAssetStyle.rightHeader}>
+                                    <div className={showAssetStyle.propsTitle}>
+                                        <GradientStrokeText text={`PROPS`} />
+                                    </div>
+                                </div>
+                                <div className={showAssetStyle.TokenItemGrid}>
+                                    {items.map((item) => (
+                                        <div
+                                            key={item.token}
+                                            className={showAssetStyle.tokenItem}
                                         >
-                                            <span>EXCHANGE</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className={showAssetStyle.scoreWrapper}>
-                                <div className={showAssetStyle.scoreTitle}>
-                                    <GradientStrokeText text={`SCORE`} />
-                                </div>
-                                <div className={showAssetStyle.scoreContent}>
-                                    <div className={showAssetStyle.scoreObtainedWrapper}>
-                                        <span className={showAssetStyle.scoreObtainedTitle}>Obtained</span>
-                                        <span className={showAssetStyle.scoreObtainedNum}>{totalScore.toLocaleString()}</span>
-                                    </div>
-                                    <div className={showAssetStyle.scoreRemainingWrapper}>
-                                        <span className={showAssetStyle.scoreRemainingTitle}>Remaining</span>
-                                        <span className={showAssetStyle.scoreRemainingNum}>{scoreRemaining.toLocaleString()}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className={showAssetStyle.morphPointsWrapper}>
-                                <div className={showAssetStyle.morphPointsTitle}>
-                                    <GradientStrokeText
-                                        text={`Morph Points`}
-                                        colors={["rgba(219, 161, 122, 1)", "rgba(157, 61, 33, 1)"]}
-                                    />
-                                    <div className={showAssetStyle.morphPointsDetailsWrapper}>
-                                        <a href='https://www.morphl2.io/points/greattoken_migration/dashboard' target='blank'>
-                                            Details
-                                        </a>
-                                    </div>
-                                </div>
-                                <div className={showAssetStyle.morphPointsContent}>
-                                    <div className={showAssetStyle.morphPointsMainWalletWrapper}>
-                                        <span className={showAssetStyle.morphPointsMainWalletTitle}>Main Wallet : {formatAddress(address)}</span>
-                                        <span className={showAssetStyle.morphPointsMainWalletNum}>9.2</span>
-                                    </div>
-                                    <div className={showAssetStyle.morphPointsSessionWalletWrapper}>
-                                        <span className={showAssetStyle.morphPointsSessionWalletTitle}>Session Wallet : {formatAddress(palyerAddress)}</span>
-                                        <span className={showAssetStyle.morphPointsSessionWalletNum}>40.23</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className={showAssetStyle.popcraftNftWrapper}>
-                                <div className={showAssetStyle.popcraftNftTitle}>
-                                    <GradientStrokeText
-                                        text={`PopCraft Genesis NFT`}
-                                        colors={["rgba(219, 161, 122, 1)", "rgba(157, 61, 33, 1)"]}
-                                    />
-                                </div>
-                                <div className={showAssetStyle.popcraftNftContent}>
-                                    <div className={showAssetStyle.popcraftNftItems}>
-                                        <span>{ownedPopCraftNFTTotal} items</span>
-                                    </div>
-                                    <div className={showAssetStyle.popcraftNftDetails}>
-                                        <a
-                                            href={`https://explorer.morphl2.io/token/0xf6e9932469CBde5dB4b9293330Ff1897Bb43b2AE?tab=inventory&holder_address_hash=${address}`}
-                                            target="_blank"
-                                        >
-                                            Details
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={showAssetStyle.right}>
-                            <div className={showAssetStyle.rightHeader}>
-                                <div className={showAssetStyle.propsTitle}>
-                                    <GradientStrokeText text={`PROPS`} />
-                                </div>
-                            </div>
-                            <div className={showAssetStyle.TokenItemGrid}>
-                                {items.map((item) => (
-                                    <div
-                                        key={item.token}
-                                        className={showAssetStyle.tokenItem}
-                                    >
-                                        <div className={showAssetStyle.tokenItemTop}>
-                                            <img src={imageIconData[item.token].src} alt="item" />
-                                            <div className={showAssetStyle.tokenBalance}>
-                                                <span>{tokenBalance[item.token]}</span>
+                                            <div className={showAssetStyle.tokenItemTop}>
+                                                <img src={imageIconData[item.token].src} alt="item" />
+                                                <div className={showAssetStyle.tokenBalance}>
+                                                    <span>{tokenBalance[item.token]}</span>
+                                                </div>
+                                            </div>
+                                            <div className={showAssetStyle.tokenItemBottom}>
+                                                <span>{imageIconData[item.token].name}</span>
                                             </div>
                                         </div>
-                                        <div className={showAssetStyle.tokenItemBottom}>
-                                            <span>{imageIconData[item.token].name}</span>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className={showAssetStyle.buyBtnWrapper}>
-                                <button
-                                    className={showAssetStyle.buyBtn}
-                                >
-                                    <span>BUY</span>
-                                </button>
+                                    ))}
+                                </div>
+                                <div className={showAssetStyle.buyBtnWrapper}>
+                                    <button
+                                        className={showAssetStyle.buyBtn}
+                                        onClick={() => topBuyTransports()}
+                                    >
+                                        <span>BUY</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
