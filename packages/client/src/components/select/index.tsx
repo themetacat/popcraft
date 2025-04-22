@@ -27,9 +27,11 @@ export const getNetworkName = (chainId: number): string | undefined => {
 };
 
 // add new chain: change here
-
 export const COMMON_CHAIN_IDS = [31337, 2818, 8333, 8453, 216, 177];
 export const MISSION_BOUNS_CHAIN_IDS = [31337, 2818, 177];
+
+// add new mode chain:
+export const MODE_GAME_CHAIN_IDS = [31337, 2818];
 
 export const useTopUp = () => {
   const [chainId, setChainId] = useState(0);

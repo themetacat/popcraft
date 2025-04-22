@@ -3,24 +3,16 @@ import style from "./index.module.css";
 import {
   Has,
   getComponentValueStrict,
-  getComponentValue,
 } from "@latticexyz/recs";
 import {
   encodeEntity,
-  syncToRecs,
   decodeEntity,
 } from "@latticexyz/store-sync/recs";
-import { useComponentValue, useEntityQuery } from "@latticexyz/react";
+import { useEntityQuery } from "@latticexyz/react";
 import { useMUD } from "../../MUDContext";
-import leftIcon from "../../images/zuojiantou.png";
-import rightIcon from "../../images/youjiantou.png";
-import { Hex, fromBytes, hexToString, isHex } from "viem";
-import { SetupNetworkResult } from "../../mud/setupNetwork";
+import { Hex, fromBytes } from "viem";
 import loadingImg from "../../images/loading.webp";
-
-import { hexToUtf8 } from "web3-utils";
-import { abi_json, update_app_value } from "../../mud/createSystemCalls";
-import { element } from "@rainbow-me/rainbowkit/dist/css/reset.css";
+import { update_app_value } from "../../mud/createSystemCalls";
 export const ManifestContext = createContext<string>("");
 
 interface Props {
@@ -69,9 +61,7 @@ export const addr3NumToEntityID = (address: Hex, num1: number, num2: number, num
 export default function RightPart({
   coordinates,
   loading,
-  onHandleOwner,
   onHandleExe,
-  entityData,
   onUpdateAbiJson,
   setPanningState,
   handlePageClickIs,
@@ -81,13 +71,11 @@ export default function RightPart({
   onUpdateAbiCommonJson,
 }: Props) {
   const {
-    components: { App, Pixel, AppName },
-    systemCalls: { update_abi },
+    components: { App },
   } = useMUD();
   const entities_app = useEntityQuery([Has(App)]);
   const [panning, setPanning] = useState(true);
   const loacl_app_name = window.localStorage.getItem("app_name");
-  const [update_abi_jsonData, setUpdate_abi_json] = useState(null);
   const [selectedIcon, setSelectedIcon] = useState<number | null>(null);
   
   const handleIconClick = (index: number, value: any) => {
@@ -162,7 +150,6 @@ export default function RightPart({
           handlePageClickIs();
         }
 
-        update_abi(systemData);
       } catch (error) {
         onHandleLoading();
         console.log("error:", error);
@@ -177,7 +164,6 @@ export default function RightPart({
       try {
         const response = await fetch(worldCommonAbiUrl); 
         common_abi = await response.json();
-        update_abi(common_abi, true);
       } catch (error) {
         console.log("error:", error);
       }

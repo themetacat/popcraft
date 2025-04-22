@@ -1,0 +1,150 @@
+[
+  {
+    "type": "function",
+    "name": "interact",
+    "inputs": [
+      {
+        "name": "default_parameters",
+        "type": "tuple",
+        "internalType": "struct DefaultParameters",
+        "components": [
+          {
+            "name": "for_player",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "for_app",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "position",
+            "type": "tuple",
+            "internalType": "struct Position",
+            "components": [
+              {
+                "name": "x",
+                "type": "uint32",
+                "internalType": "uint32"
+              },
+              {
+                "name": "y",
+                "type": "uint32",
+                "internalType": "uint32"
+              }
+            ]
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "internalType": "string"
+          }
+        ]
+      },
+      {
+        "name": "mode",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "for_player",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "for_app",
+            "type": "string"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint32",
+                "name": "x",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint32",
+                "name": "y",
+                "type": "uint32"
+              }
+            ],
+            "internalType": "struct Position",
+            "name": "position",
+            "type": "tuple"
+          },
+          {
+            "internalType": "string",
+            "name": "color",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct DefaultParameters",
+        "name": "default_parameters",
+        "type": "tuple"
+      }
+    ],
+    "name": "pop",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "name": "call_data",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "token_addr",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct TokenInfo",
+            "name": "token_info",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct UniversalRouterParams[]",
+        "name": "universalRouterParams",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "buyToken",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "type": "function",
+    "name": "getUserBenefitsToken",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  }
+]

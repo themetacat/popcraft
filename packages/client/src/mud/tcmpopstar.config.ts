@@ -21,6 +21,23 @@ export default mudConfig({
         tokenAddressArr: "address[]"
       }
     },
+    GameMode:{
+      keySchema: {
+        owner: "address",
+      },
+      valueSchema: {
+        mode: "uint256",
+      }
+    },
+    ScoreChal: {
+      keySchema: {
+        player: "address",
+      },
+      valueSchema: {
+        added: "bool",
+        newMatrixArray: "uint256[]",
+      }
+    },
     TokenBalance: {
       keySchema: {
         owner: "address",

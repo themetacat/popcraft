@@ -1,7 +1,7 @@
 import style from "./index.module.css";
 import React, { useState, useEffect, useRef, useCallback, useLayoutEffect } from "react";
-import { Has, getComponentValueStrict, getComponentValue, AnyComponentValue, } from "@latticexyz/recs";
-import { formatUnits, decodeErrorResult, parseEther } from "viem";
+import { Has, getComponentValue } from "@latticexyz/recs";
+import { parseEther } from "viem";
 import { imageIconData } from "../imageIconData";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { useMUD } from "../../MUDContext";
@@ -9,9 +9,7 @@ import BoxPrompt from "../BoxPrompt";
 import PopStar from "../popStar";
 import PopUpBox from "../popUpBox";
 import TopUpContent from "../topUp";
-import { encodeEntity, syncToRecs, decodeEntity, } from "@latticexyz/store-sync/recs";
-import { update_app_value, OpRenderingResult } from "../../mud/createSystemCalls";
-import { CANVAS_HEIGHT } from "../../global/constants";
+import { OpRenderingResult } from "../../mud/createSystemCalls";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useDisconnect, useBalance } from 'wagmi';
@@ -25,7 +23,7 @@ import LuckyBagImg from '../../images/LuckyBag.webp'
 import ShoppingCartImg from '../../images/ShoppingCart.webp'
 import UserImg from "../../images/User.webp"
 import RankingList from '../RankingList'
-import { useTopUp, COMMON_CHAIN_IDS, MISSION_BOUNS_CHAIN_IDS } from "../select";
+import { useTopUp, COMMON_CHAIN_IDS, MISSION_BOUNS_CHAIN_IDS, MODE_GAME_CHAIN_IDS } from "../select";
 import Arrow from "../../images/Arrow.webp"
 import ArrowMobileImg from "../../images/Mobile/Top/ArrowDownChain.webp"
 import { addressToEntityID, addr2NumToEntityID } from "../rightPart";
@@ -59,6 +57,8 @@ import mobileTopBuyStyle from "../mobile/css/BoxPrompt/topBuy.module.css";
 import PointsToToken from "../Exchange/pointsToToken"
 
 import { keccak256, toBytes } from "viem";
+import { checkIsSuccess } from "../Utils/popCraftUtils"
+import { MODE_TARGE, OVER_TIME } from "../../constant"
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -88,6 +88,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       WeeklyRecord,
       PlayerToInviteV2,
       InviteCodeToInviter,
+      GameMode,
+      RankingRecord
     },
     network: { publicClient, palyerAddress },
     systemCalls: { interact, interactTCM, registerDelegation, opRendering, acceptInvitation },
@@ -105,8 +107,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
   const [paramInputs, setParamInputs] = useState([]);
   const [convertedParamsData, setConvertedParamsData] = useState(null);
-  const [updateAbiJson, setUpdate_abi_json] = useState("");
-  const [updateAbiCommonJson, setUpdate_abi_Common_json] = useState([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const visibleAreaRef = useRef<HTMLDivElement>(null);
   const [topUpTypeto, setTopUpTypeto] = useState(false);
@@ -116,17 +116,14 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [mouseY, setMouseY] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadingplay, setLoadingpaly] = useState(false);
-  const [panningFromChild, setPanningFromChild] = useState(false);
   const [popStar, setPopStar] = useState(false);
   const [pageClick, setPageClick] = useState(false);
   const [GRID_SIZE, setGRID_SIZE] = useState(32);
-  // const entities = useEntityQuery([Has(Pixel)]);
   const tcmPopStarEntities = useEntityQuery([Has(TCMPopStar)]);
   const [mainContent, setMainContent] = useState("MAINNET");
   const [TCMPopStarData, setTCMPopStarData] = useState(null);
   const [addressModel, setAddressModel] = useState(false);
   const [enumValue, setEnumValue] = useState({});
-  const [ownerData, setOwnerData] = useState(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioCache: { [url: string]: HTMLAudioElement } = {};
   const [showTopUp, setShowTopUp] = useState(false);
@@ -158,6 +155,38 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [showInviteConfirm, setShowInviteConfirm] = useState(false);
   const [searchParams] = useSearchParams();
   const inviteCode = searchParams.get("invite");
+  const [systemName, setSystemName] = useState<string>("PopCraftSystem");
+  const [gameMode, setGameMode] = useState(0);
+
+  // add new mode: change here
+  const safeAddressEntityID = addressToEntityID(address ?? "0x0000000000000000000000000000000000000000");
+  const gameModeData = useComponentValue(GameMode, safeAddressEntityID);
+  const rankingRecordData = useComponentValue(RankingRecord, safeAddressEntityID);
+  const isModeGameChain = MODE_GAME_CHAIN_IDS.includes(chainId);
+
+  useEffect(() => {
+    if (isModeGameChain) {
+      setSystemName('MClearSystem');
+      if (gameModeData) {
+        if (gameModeData.mode == 1n) {
+          setSystemName('MScoreChalSystem')
+          setGameMode(1)
+        }
+      }
+    }
+  }, [gameModeData, isModeGameChain])
+
+  useEffect(() => {
+    if (isModeGameChain) {
+      if (gameMode == 1) {
+        setSystemName('MScoreChalSystem')
+      } else {
+        setSystemName('MClearSystem');
+      }
+    } else {
+      setSystemName('PopCraftSystem');
+    }
+  }, [gameMode, isModeGameChain])
 
   useEffect(() => {
     if (!address || !inviteCode || !COMMON_CHAIN_IDS.includes(chainId)) return;
@@ -349,7 +378,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     height: document.documentElement.clientHeight,
   });
   const [loadingSquare, setLoadingSquare] = useState<{ x: number; y: number } | null>(null);
-  const overTime = 122; //控制顶部时间
 
   useEffect(() => {
     // 默认设置localStorage中的值为popCraft相关的值
@@ -403,11 +431,9 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
 
   // 判断用户临时钱包有没有钱 
   useEffect(() => {
-
+    
     if (isConnected && appName === "BASE/PopCraftSystem" && !hasExecutedRef.current) {
       if ((Number(balance) / 1e18) < balanceCheck) {
-        // console.log(Number(balance));
-
         setTopUpType(true);
         localStorage.setItem('money', 'nomoney')
         localStorage.setItem('playAction', 'noplay')
@@ -420,14 +446,17 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         if (TCMPopStarData && TCMPopStarData.startTime) {
           const currentTime = Math.floor(Date.now() / 1000);
           const elapsedTime = currentTime - Number(TCMPopStarData.startTime);
-          const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
-          const allZeros = TCMPopStarData.matrixArray.every((data) => data === 0n);
-          if (updatedTimeLeft > 0 && !allZeros) {
+          const updatedTimeLeft = Math.max(OVER_TIME - elapsedTime, 0);
+          const isSuccess = checkIsSuccess({
+            gameModeData,
+            TCMPopStarData,
+            rankingRecordData,
+          });
+          if (updatedTimeLeft > 0 && !isSuccess) {
             localStorage.setItem('playAction', 'gameContinue');
             setTimeControl(true);
-          }
-          else {
-            if ((!loading && localStorage.getItem("showGameOver") !== "true") || allZeros) {
+          } else {
+            if ((!loading && localStorage.getItem("showGameOver") !== "true") || isSuccess) {
               localStorage.setItem('playAction', 'play')
               setPopStar(true);
             }
@@ -941,7 +970,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     if (pageClick === true) {
       return;
     }
-    get_function_param(action);
   };
 
   //点击方块触发事件
@@ -963,82 +991,71 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       downTimerRef.current = null;
     }
 
-    const a = get_function_param(action);
-    a.then((x) => {
-      const isEmpty = Object.keys(x).length === 0;
+    if (isLongPress) {
+      setIsLongPress(false);
+      setIsDragging(false);
+    } else {
+      const canvas = canvasRef.current as any;
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
 
-      if (isLongPress) {
-        setIsLongPress(false);
-        setIsDragging(false);
-      } else {
-        const canvas = canvasRef.current as any;
-        const rect = canvas.getBoundingClientRect();
-        const mouseX = event.clientX - rect.left;
-        const mouseY = event.clientY - rect.top;
+      const CANVAS_WIDTH = document.documentElement.clientWidth;
+      const CANVAS_HEIGHT = document.documentElement.clientHeight;
+      const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
+      const offsetY = (CANVAS_HEIGHT - calcOffsetYValue * GRID_SIZE) / 2;
 
-        const CANVAS_WIDTH = document.documentElement.clientWidth;
-        const CANVAS_HEIGHT = document.documentElement.clientHeight;
-        const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
-        const offsetY = (CANVAS_HEIGHT - calcOffsetYValue * GRID_SIZE) / 2;
-
-        const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
-        const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
-        const newHoveredSquare = { x: gridX, y: gridY };
-        if (!isMobile) {
-          setHoveredSquare(newHoveredSquare);
-        }
-        const upCoordinates = { x: gridX, y: gridY };
-
-        if (isEmpty) {
-          // if (selectedColor && coordinates) {
-          hoveredSquareRef.current = upCoordinates;
-          setIsDragging(false);
-          // if (action === "pop") {
-          if (TCMPopStarData && upCoordinates.x < 10 && upCoordinates.x >= 0 && upCoordinates.y < 10 && upCoordinates.y >= 0) {
-            const new_coor = {
-              x: upCoordinates.x + TCMPopStarData.x,
-              y: upCoordinates.y + TCMPopStarData.y,
-            }
-            if (new_coor.x >= 0 && new_coor.y >= 0) {
-              interactHandleTCM(
-                new_coor,
-                palyerAddress,
-                selectedColor,
-                'pop',
-                null
-              );
-            }
-          }
-
-          mouseXRef.current = mouseX;
-          mouseYRef.current = mouseY;
-          handleData(hoveredSquare as any);
-          const ctx = canvas.getContext("2d");
-          if (ctx) {
-            const { x, y } = upCoordinates;
-            ctx.fillStyle = selectedColor;
-            ctx.fillRect(
-              x * GRID_SIZE - scrollOffset.x,
-              y * GRID_SIZE - scrollOffset.y,
-              GRID_SIZE,
-              GRID_SIZE
-            );
-            if (upCoordinates.x < 10 && upCoordinates.x >= 0 && upCoordinates.y < 10 && upCoordinates.y >= 0) {
-              ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-              drawGrid2(ctx, upCoordinates, true);
-            }
-          }
-          // }
-        } else {
-          setPopExhibit(true);
-        }
-        setIsDragging(false);
-        setShowOverlay(true);
-
-        setTranslateX(0);
-        setTranslateY(0);
+      const gridX = Math.floor((mouseX - offsetX) / GRID_SIZE);
+      const gridY = Math.floor((mouseY - offsetY) / GRID_SIZE);
+      const newHoveredSquare = { x: gridX, y: gridY };
+      if (!isMobile) {
+        setHoveredSquare(newHoveredSquare);
       }
-    });
+      const upCoordinates = { x: gridX, y: gridY };
+
+      hoveredSquareRef.current = upCoordinates;
+      setIsDragging(false);
+      if (TCMPopStarData && upCoordinates.x < 10 && upCoordinates.x >= 0 && upCoordinates.y < 10 && upCoordinates.y >= 0) {
+        const new_coor = {
+          x: upCoordinates.x + TCMPopStarData.x,
+          y: upCoordinates.y + TCMPopStarData.y,
+        }
+        if (new_coor.x >= 0 && new_coor.y >= 0) {
+          interactHandleTCM(
+            new_coor,
+            palyerAddress,
+            selectedColor,
+            'pop',
+            null
+          );
+        }
+      }
+
+      mouseXRef.current = mouseX;
+      mouseYRef.current = mouseY;
+      handleData(hoveredSquare as any);
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        const { x, y } = upCoordinates;
+        ctx.fillStyle = selectedColor;
+        ctx.fillRect(
+          x * GRID_SIZE - scrollOffset.x,
+          y * GRID_SIZE - scrollOffset.y,
+          GRID_SIZE,
+          GRID_SIZE
+        );
+        if (upCoordinates.x < 10 && upCoordinates.x >= 0 && upCoordinates.y < 10 && upCoordinates.y >= 0) {
+          ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+          drawGrid2(ctx, upCoordinates, true);
+        }
+      }
+      setIsDragging(false);
+      setShowOverlay(true);
+
+      setTranslateX(0);
+      setTranslateY(0);
+    }
+    // });
   };
 
   const interactHandle = (
@@ -1186,6 +1203,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               execute,
               account,
               nonce,
+              systemName,
               result.popStarId,
               result.tokenBalanceId,
               result.rankingRecordId,
@@ -1200,7 +1218,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               other_params,
               true,
               account,
-              nonce
+              nonce,
+              systemName
             );
             // setCheckInteractTask(false)
           }
@@ -1330,7 +1349,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           if (data && data.startTime) {
             const currentTime = Math.floor(Date.now() / 1000);
             const elapsedTime = currentTime - Number(data.startTime);
-            const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
+            const updatedTimeLeft = Math.max(OVER_TIME - elapsedTime, 0);
 
             if (updatedTimeLeft > 0) {
               //游戏没结束 popstart不显示 
@@ -1414,7 +1433,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         palyerAddress,
         selectedColor,
         "interact",
-        null
+        isModeGameChain ? [gameMode] : null
       );
     }
     // localStorage.setItem('playAction', 'gameContinue'); // 设置 playAction 为 gameContinue
@@ -1501,130 +1520,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       GRID_SIZE,
     ]
   );
-
-
-  const DEFAULT_PARAMETERS_TYPE = "struct DefaultParameters";
-  const get_function_param = async (
-    function_name: string,
-    common_json: any[] = []
-  ) => {
-    const abi_json = updateAbiJson;
-
-    if (abi_json === "") {
-      return [];
-    }
-    if (!function_name) {
-      return [];
-    }
-    let function_def = abi_json.filter(
-      (entry) => entry.name === function_name && entry.type === "function"
-    );
-    if (!function_def) {
-      function_def = abi_json.filter(
-        (entry) => entry.name === "interact" && entry.type === "function"
-      );
-
-      if (!function_def) {
-        return [];
-      }
-    }
-    let res = {};
-    update_app_value(-1);
-    function_def.forEach((param) => {
-      (async () => {
-        const filteredInputs = param.inputs.filter((component, index) => {
-          const hasStructDefaultParameters = component.internalType.includes(
-            DEFAULT_PARAMETERS_TYPE
-          );
-          const filteredEnum = param.inputs.filter((component) =>
-            component.internalType.includes("enum ")
-          );
-          setParamInputs(filteredEnum);
-          if (hasStructDefaultParameters) {
-            update_app_value(index);
-          }
-
-          return !hasStructDefaultParameters;
-        });
-        if (filteredInputs) {
-          const copy_filteredInputs = deepCopy(filteredInputs);
-
-          res = get_struct(copy_filteredInputs);
-
-          setConvertedParamsData(res);
-        }
-      })();
-    });
-
-    return res;
-  };
-
-  const deepCopy = (obj) => {
-    return JSON.parse(JSON.stringify(obj));
-  };
-
-  const get_struct = (components: any) => {
-    const res: any = {};
-    components.forEach((component) => {
-      if (component.internalType.startsWith("struct ")) {
-        component = get_struct(component.components);
-      } else if (component.internalType.includes("enum ")) {
-        component["enum_value"] = get_enum_value(
-          component.internalType.replace("enum ", "")
-        );
-      }
-      component["type"] = get_value_type(component.type);
-    });
-
-    return components;
-  };
-
-  const get_enum_value = (enumName: string) => {
-    const res = [] as any;
-
-    let systemCommonData = updateAbiCommonJson;
-
-    const enumData = systemCommonData.ast.nodes.find(
-      (node) => node.name === enumName
-    );
-    let key = 0;
-
-    enumData.members.forEach((member) => {
-      if (member.nodeType === "EnumValue") {
-        res.push(member.name);
-      }
-    });
-
-    return res;
-  };
-  const get_value_type = (type: string) => {
-    if (type === undefined) {
-      return type;
-    }
-    if (type.includes("int")) {
-      return "number";
-    } else if (type === "address") {
-      return "string";
-    } else {
-      return type;
-    }
-  };
-  const addressDataCopy = (text: any) => {
-    navigator.clipboard.writeText(text).then(
-      function () {
-        toast.success("Text copied to clipboard");
-      },
-      function (err) {
-        toast.error("Error in copying text");
-      }
-    );
-  };
-
-  const handlePanningChange = (newPanningValue: any) => {
-    setPopExhibit(false);
-    setShowOverlay(false);
-    setPanningFromChild(newPanningValue);
-  };
 
   const handleError = (errorMessage: any) => {
     setLoading(false);
@@ -2210,11 +2105,11 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             <PopStar
               setPopStar={setPopStar}
               playFun={playFun}
-              playFuntop={playFuntop}
-              onTopUpClick={handleTopUpClick}
               loadingplay={loadingplay}
               setTopUpType={setTopUpType}
               isMobile={isMobile}
+              setGameMode={setGameMode}
+              gameMode={gameMode}
             />
           </div>
         ) : null}
@@ -2230,7 +2125,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             checkInteractTask={checkInteractTask}
             isMobile={isMobile}
             showMobileInDayBonus={showMobileInDayBonus}
-            popStar={popStar}
+            gameMode={gameMode}
+            setGameMode={setGameMode}
           />
         ) : null}
 
@@ -2388,6 +2284,18 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
 
         )}
 
+        {
+          isModeGameChain &&
+          <>
+            <div className={style.target}>
+              <div>
+                <h1 className={style.targetTitle}>TARGET</h1>
+                <p className={style.targetBody}>{MODE_TARGE[gameMode]}</p>
+              </div>
+            </div>
+          </>
+        }
+
         {/* add new chain: chain here */}
         {chainId !== null && COMMON_CHAIN_IDS.includes(chainId) && address && (
           <NewUserBenefitsToken
@@ -2488,11 +2396,11 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             <PopStar
               setPopStar={setPopStar}
               playFun={playFun}
-              playFuntop={playFuntop}
-              onTopUpClick={handleTopUpClick}
               loadingplay={loadingplay}
               setTopUpType={setTopUpType}
               isMobile={isMobile}
+              setGameMode={setGameMode}
+              gameMode={gameMode}
             />
           </div>
         ) : null}
@@ -2678,7 +2586,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           checkInteractTask={checkInteractTask}
           isMobile={isMobile}
           showMobileInDayBonus={showMobileInDayBonus}
-          popStar={popStar}
+          gameMode={gameMode}
+          setGameMode={setGameMode}
         />
 
         <audio ref={audioRef} src={backgroundMusic} onEnded={handleEnded} loop />

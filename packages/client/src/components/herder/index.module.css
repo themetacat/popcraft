@@ -1118,3 +1118,37 @@ canvas {
   transition: transform 5s linear;
   height: 100%;
 }
+
+/* ========== Target ============ */
+.target{
+  position: absolute;
+  right: 40rem;
+  top: 44rem;
+  width: 42rem;
+  height: 18rem;
+  background-image: url("../../images/Target.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Simplicity";
+  text-shadow:
+  -0.2rem -0.2rem 0 white,
+  0.2rem -0.2rem 0 white,
+  -0.2rem 0.2rem 0 white,
+  0.2rem 0.2rem 0 white;
+}
+
+.targetTitle{
+  margin-top: 3.7rem;
+  font-size: 3rem;
+  color: #69341B;
+  text-align: center;
+}
+
+.targetBody{
+  margin-top: 1.8rem;
+  color: rgba(105, 52, 27, 0.54);
+  font-size: 3.2rem;
+}
