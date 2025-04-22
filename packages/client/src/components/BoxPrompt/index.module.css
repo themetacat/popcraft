@@ -1490,3 +1490,43 @@ p {
     transform: scale(0.98);
   }
 }
+
+.seeMore {
+  position: fixed;
+  width: 31rem;
+  height: 6rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-148%, 280%);
+
+  background-image: url("../../images/topup/wrongnetwork.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  border: none;
+
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: "AdobeHeitiStd-Regular";
+  letter-spacing: 0.4em;
+  text-align: center;
+  color: red;
+  text-transform: uppercase;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  transition: font-size 0.3s ease;
+}
+
+.seeMore a {
+  white-space: nowrap;
+  color: #BB9F8B;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.seeMore:hover {
+  transform: translate(-148%, 280%) scale(1.03);
+}

@@ -1,0 +1,614 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000000;
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: auto !important;
+}
+
+.modalContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 146rem;
+    height: 81rem;
+
+    background-image: url('../../images/Inventory/InventoryModalBg.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+    justify-content: center;
+    display: flex;
+    font-family: "AdobeHeitiStd-Regular2";
+    animation: scaleIn 0.1s ease-in forwards;
+}
+
+.modalContainerClosed {
+    animation: scaleOut 0.1s ease-in forwards;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: translate(-50%, -50%) scale(0.2);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes scaleOut {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+}
+
+.closeBtn {
+    width: 5.7rem;
+    height: 5.7rem;
+    position: absolute;
+    top: 8.5rem;
+    right: 7.5rem;
+    cursor: pointer;
+}
+
+.closeBtn:hover {
+    transform: scale(1.05);
+}
+
+.closeBtn:active {
+    transform: scale(0.99);
+}
+
+.content {
+    display: flex;
+    width: 83%;
+    height: 75%;
+    gap: 2rem;
+    margin-top: 17rem;
+}
+
+.left {
+    width: 40%;
+    height: 90%;
+    margin-left: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2.5rem;
+}
+
+.gpWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0rem;
+}
+
+.gpTitle {
+    width: 100%;
+    font-size: 2.5rem;
+}
+
+.gpContent {
+    width: 50rem;
+    height: 8.89rem;
+    border-radius: 0.97rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background-image: url('../../images/Inventory/gpContentBg.webp');
+    background-size: 50rem 8.89rem;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.gpObtainedWrapper {
+    width: 96%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0rem;
+}
+
+.gpObtainedTitle {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #FFFFFF;
+    text-shadow: 0rem 0.15rem 0.1rem rgba(0, 0, 0, 0.58)
+}
+
+.gpObtainedNum {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 2.5rem;
+    color: #5882D3;
+}
+
+.gpRemainingWrapper {
+    width: 96%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0rem;
+}
+
+.gpRemainingTitle {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #FFFFFF;
+    text-shadow: 0rem 0.15rem 0.1rem rgba(0, 0, 0, 0.58)
+}
+
+.gpRemainingNum {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 2.5rem;
+    color: #5882D3;
+}
+
+.gpExchangeBtnWrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gpExchangeBtn {
+    width: 11.56rem;
+    height: 4.38rem;
+
+    color: white;
+    border: none;
+    border-radius: 0.8rem;
+    cursor: pointer;
+
+    background: linear-gradient(179deg, #D1C3FC, #9BC4FC);
+
+    font-size: 1.5rem;
+    font-family: "AdobeHeitiStd-Regular2";
+    letter-spacing: 0.1rem;
+    line-height: 1.5rem;
+    text-shadow:
+        0 0 1px black,
+        1px 1px 3px white;
+}
+
+.gpExchangeBtn:hover {
+    transform: scale(1.03);
+}
+
+.scoreWrapper {
+    height: 14rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0rem;
+}
+
+.scoreTitle {
+    width: 100%;
+    font-size: 2.5rem;
+}
+
+.scoreContent {
+    width: 50rem;
+    height: 8.89rem;
+    border-radius: 0.97rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background-image: url('../../images/Inventory/scoreContentBg.webp');
+    background-size: 50rem 8.89rem;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.scoreObtainedWrapper {
+    width: 96%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0rem;
+}
+
+.scoreObtainedTitle {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #FFFFFF;
+    text-shadow: 0rem 0.15rem 0.1rem rgba(0, 0, 0, 0.58)
+}
+
+.scoreObtainedNum {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 2.5rem;
+    color: #5882D3;
+}
+
+.scoreRemainingWrapper {
+    width: 96%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0rem;
+}
+
+.scoreRemainingTitle {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #FFFFFF;
+    text-shadow: 0rem 0.15rem 0.1rem rgba(0, 0, 0, 0.58)
+}
+
+.scoreRemainingNum {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 2.5rem;
+    color: #5882D3;
+}
+
+.morphPointsWrapper {
+    height: 14rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0rem;
+}
+
+.morphPointsTitle {
+    width: 100%;
+    font-size: 2.5rem;
+    display: flex;
+}
+
+.morphPointsDetailsWrapper {
+    margin-top: 1.8rem;
+    margin-right: 22.5rem;
+    font-size: 1.3rem;
+}
+
+.morphPointsDetailsWrapper a {
+    white-space: nowrap;
+    color: #fff;
+    cursor: pointer;
+    text-shadow:
+        1px 0 #835635, -1px 0 #835635,
+        0 1px #835635, 0 -1px #835635,
+        1px 1px #835635, -1px 1px #835635,
+        1px -1px #835635, -1px -1px #835635;
+}
+
+.morphPointsContent {
+    width: 50rem;
+    height: 8.89rem;
+    border-radius: 0.97rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background-image: url('../../images/Inventory/morphPointContentBg.webp');
+    background-size: 50rem 8.89rem;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.morphPointsMainWalletWrapper {
+    width: 96%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0rem;
+}
+
+.morphPointsMainWalletTitle {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #BB9F8B;
+    text-shadow: 0rem 0rem 0rem rgba(0, 0, 0, 0.58);
+}
+
+.morphPointsMainWalletNum {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 2.5rem;
+    /* color: #835635; */
+    color: #BB9F8B;
+
+}
+
+.morphPointsSessionWalletWrapper {
+    width: 96%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0rem;
+}
+
+.morphPointsSessionWalletTitle {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #BB9F8B;
+    text-shadow: 0rem 0rem 0rem rgba(0, 0, 0, 0.58);
+}
+
+.morphPointsSessionWalletNum {
+    justify-content: center;
+    align-items: center;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 2.5rem;
+    /* color: #835635; */
+    color: #BB9F8B;
+}
+
+.popcraftNftWrapper {
+    width: 50rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+}
+
+.popcraftNftTitle {
+    width: 34rem;
+    font-size: 2.5rem;
+}
+
+.popcraftNftContent {
+    width: 15rem;
+    height: 3.89rem;
+    border-radius: 0.97rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background-image: url('../../images/Inventory/PopCraftGenesisNftBg.webp');
+    background-size: 15rem 3.89rem;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.popcraftNftItems {
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 2rem;
+    color: #835635;
+    white-space: nowrap;
+}
+
+.popcraftNftDetails {
+    font-family: "AdobeHeitiStd-Regular2";
+    font-weight: 400;
+    font-size: 1.5rem;
+}
+
+.popcraftNftDetails a {
+    white-space: nowrap;
+    color: #BB9F8B;
+    cursor: pointer;
+}
+
+.right {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.rightHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.propsTitle {
+    margin-left: 4rem;
+    font-size: 2.5rem;
+}
+
+.rightButtons {
+    margin-right: 3rem;
+    gap: 2rem;
+    display: flex;
+}
+
+.gpInfo {
+    font-size: 2.5rem;
+    font-family: "AdobeHeitiStd-Regular2";
+    letter-spacing: 0.4rem;
+}
+
+.TokenItemGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 2rem;
+    margin-top: 0rem;
+    background-image: url('../../images/Inventory/ShowGameAssetBgIn.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 51rem;
+    width: 63.18rem;
+    padding: 2rem 4rem;
+    padding-top: 3.7rem;
+    box-sizing: border-box;
+}
+
+.tokenItem {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0 1.6rem;
+    border-radius: 8px;
+    text-align: center;
+    height: 92%;
+}
+
+.tokenItemTop {
+    height: 76%;
+    background-color: #8EA9D6;
+    box-shadow:
+        inset 0 5px 5px -2px rgba(0, 0, 0, 0.3),
+        inset 0 -8px 8px -4px rgba(0, 0, 0, 0),
+        inset 5px 0 5px -3px rgba(0, 0, 0, 0.3),
+        inset -5px 0 5px -3px rgba(0, 0, 0, 0.3);
+
+    border-radius: 2.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+}
+
+.tokenItemTop img {
+    width: 7.2rem;
+    height: 7.2rem;
+}
+
+.tokenBalance {
+    width: 3.2rem;
+    height: 3.2rem;
+    font-size: 2rem;
+    color: #fff;
+    position: absolute;
+    background-image: url('../../images/Inventory/BalanceBg.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 0.2rem;
+    right: 0.2rem;
+}
+
+.tokenBalance span {
+    justify-content: center;
+    align-items: center;
+}
+
+.tokenItemBottom {
+    height: 23%;
+    margin-top: 0.6rem;
+    width: 100%;
+
+    border-radius: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tokenItemBottom span {
+    width: 40%;
+    height: 2.6rem;
+    color: #fff;
+    font-family: "AdobeHeitiStd-Regular2";
+    font-size: 2rem;
+    text-shadow:
+        0 0 3px rgba(94, 184, 220, 0.7),
+        0 0 6px rgba(94, 184, 220, 0.5),
+        -2px -2px 0 rgba(94, 184, 220, 1),
+        2px -2px 0 rgba(94, 184, 220, 1),
+        -2px 2px 0 rgba(94, 184, 220, 1),
+        2px 2px 0 rgba(94, 184, 220, 1),
+        0px -2px 0 rgba(94, 184, 220, 1),
+        0px 2px 0 rgba(94, 184, 220, 1),
+        -2px 0px 0 rgba(94, 184, 220, 1),
+        2px 0px 0 rgba(94, 184, 220, 1);
+}
+
+.buyBtnWrapper {
+    position: relative;
+    width: 20rem;
+    height: 8rem;
+    left: 35rem;
+    bottom: 13rem;
+}
+
+.buyBtn {
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+    background-image: url('../../images/Inventory/buyBtn.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 20rem;
+    height: 8rem;
+    background-color: transparent;
+    font-size: 3.5rem;
+    letter-spacing: 0.7rem;
+    text-shadow:
+        0 0 1px black,
+        1px 1px 3px white;
+    font-family: "MyriadPro";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buyBtn:hover {
+    transform: scale(1.03);
+}

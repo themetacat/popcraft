@@ -1,3 +1,14 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000001;
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: auto !important;
+}
+
 .container {
     position: absolute;
     top: 50%;
@@ -123,7 +134,7 @@
 .note {
     margin-top: 1rem;
     color: #BB9F8B;
-    font-size: 1.3rem;
+    font-size: 1.6rem;
     letter-spacing: 0.2rem;
     text-transform: uppercase;
 }
@@ -344,6 +355,11 @@
     right: 0.2rem;
 }
 
+.tokenBalance span {
+    justify-content: center;
+    align-items: center;
+}
+
 .tokenItemBottom {
     height: 23%;
     margin-top: 0.6rem;
@@ -391,7 +407,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    bottom: 38rem;
+    bottom: 39.5rem;
     left: 6rem;
     display: flex;
     align-items: center;
