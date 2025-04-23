@@ -45,26 +45,12 @@ export interface OpRenderingResult {
   tokenBalanceId?: string;
   rankingRecordId?: string;
   seasonRankingRecordId?: string;
+  scoreChalId?:string;
   score?: bigint;
   tokenChange?: {
     tokenAddr?: string;
     amount?: bigint
   };
-}
-
-interface InteractTCMParams {
-  coordinates: any;
-  addressData: any;
-  selectedColor: any;
-  action: string;
-  other_params: any;
-  popStarId?: any;
-  tokenBalanceId?: any;
-  newRankingRecordId?: any;
-  seasonRankingRecordId?: any;
-  isExecute: boolean;
-  account: any;
-  nonce: any;
 }
 
 export function createSystemCalls(
@@ -358,11 +344,12 @@ export function createSystemCalls(
     tokenBalanceId?: any,
     newRankingRecordId?: any,
     seasonRankingRecordId?: any,
+    scoreChalId?: any,
   ) => {
     let tx, hashValpublic;
 
     if (!isExecute) {
-      rmOverride(popStarId, tokenBalanceId, newRankingRecordId, seasonRankingRecordId);
+      rmOverride(popStarId, tokenBalanceId, newRankingRecordId, seasonRankingRecordId, scoreChalId);
       return [tx, hashValpublic]
     }
     if (!account) {
@@ -468,7 +455,7 @@ export function createSystemCalls(
         } catch (error: any) {
           return { error: error.message };
         } finally {
-          rmOverride(popStarId, tokenBalanceId, newRankingRecordId, seasonRankingRecordId)
+          rmOverride(popStarId, tokenBalanceId, newRankingRecordId, seasonRankingRecordId, scoreChalId)
 
         }
 
@@ -497,7 +484,7 @@ export function createSystemCalls(
     });
   }
 
-  function rmOverride(popStarId: any, tokenBalanceId: any, newRankingRecordId: any, seasonRankingRecordId: any) {
+  function rmOverride(popStarId: any, tokenBalanceId: any, newRankingRecordId: any, seasonRankingRecordId: any, scoreChalId: any) {
     if (popStarId) {
       TCMPopStar.removeOverride(popStarId);
     }
@@ -509,6 +496,9 @@ export function createSystemCalls(
     }
     if (seasonRankingRecordId) {
       WeeklyRecord.removeOverride(seasonRankingRecordId);
+    }
+    if (scoreChalId) {
+      ScoreChal.removeOverride(scoreChalId);
     }
   }
 
@@ -615,10 +605,9 @@ export function createSystemCalls(
     return { "totalValue": totalValue, "args": args, "abi": abi }
   };
 
-  // function opRendering(positionX: number, positionY: number, playerAddr: any) {
   const opRendering = (positionX: number, positionY: number, playerAddr: "0x${string}"): OpRenderingResult => {
     let tokenBalanceId;
-    // let rankingRecordId;
+    let scoreChalId;
     let seasonRankingRecordId;
     let eliminateAmount = 0;
     let tokenChange = {};
@@ -733,8 +722,13 @@ export function createSystemCalls(
           isSuccess = latestScores >= MODE_SCORE_CHAL_SUCCESS_SCORE;
           if (!isSuccess) {
             const scoreChalData = getComponentValue(ScoreChal, playerEntity);
-            if (scoreChalData && !scoreChalData.added) {
+            if (scoreChalData) {
               regenerateBottomRows(matrixArray, scoreChalData.newMatrixArray as bigint[])
+              scoreChalId = uuid();
+              ScoreChal.addOverride(scoreChalId, {
+                entity: playerEntity,
+                value: scoreChalData,
+              });
             }
           }
         }
@@ -747,6 +741,7 @@ export function createSystemCalls(
       tokenBalanceId,
       rankingRecordId,
       seasonRankingRecordId,
+      scoreChalId,
       score,
       tokenChange
     };

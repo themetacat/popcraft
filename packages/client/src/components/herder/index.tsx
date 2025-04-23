@@ -60,6 +60,7 @@ import PointsToToken from "../Exchange/pointsToToken"
 import { keccak256, toBytes } from "viem";
 import { checkIsSuccess } from "../Utils/popCraftUtils"
 import { MODE_TARGE, OVER_TIME } from "../../constant"
+// import CanvasPopStarGrid from "./CanvasScoreChalGrid";
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -433,7 +434,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
 
   // 判断用户临时钱包有没有钱 
   useEffect(() => {
-    
+
     if (isConnected && appName === "BASE/PopCraftSystem" && !hasExecutedRef.current) {
       if ((Number(balance) / 1e18) < balanceCheck) {
         setTopUpType(true);
@@ -1210,6 +1211,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               result.tokenBalanceId,
               result.rankingRecordId,
               result.seasonRankingRecordId,
+              result.scoreChalId,
             );
           } else {
             interact_data = await interactTCM(
@@ -2155,13 +2157,13 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         ) : null}
 
         {showGameAsset && isConnected ? (
-            <ShowGameAsset
-              setShowGameAsset={setShowGameAsset}
-              palyerAddress={palyerAddress}
-              isMobile={isMobile}
-              checkTaskInProcess={checkTaskInProcess}
-              handleErrorAll={handleErrorAll}
-            />
+          <ShowGameAsset
+            setShowGameAsset={setShowGameAsset}
+            palyerAddress={palyerAddress}
+            isMobile={isMobile}
+            checkTaskInProcess={checkTaskInProcess}
+            handleErrorAll={handleErrorAll}
+          />
         ) : null}
 
         {showNewPopUp && localStorage.getItem("isShowWaitingMaskLayer") === "false" && (
@@ -2309,6 +2311,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
                 <p className={style.targetBody}>{MODE_TARGE[gameMode]}</p>
               </div>
             </div>
+            {/* {gameMode == 1 && <CanvasPopStarGrid/>} */}
           </>
         }
 

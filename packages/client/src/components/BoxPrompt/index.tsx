@@ -175,6 +175,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
       TCMPopStarData,
       rankingRecordData,
     });
+    setTokenBalance();
 
     if (isSuccess) {
       // localStorage.setItem('showGameOver', 'true');
@@ -187,7 +188,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
   }, [TCMPopStarData, address, TokenBalance, first, gameModeData, RankingRecord, rankingRecordData]);
 
   useEffect(() => {
-    if (!TCMPopStarData) return;
+    if (!TCMPopStarData?.startTime) return;
     const blockchainStartTime = Number(TCMPopStarData.startTime);
     const currentTime = Math.floor(Date.now() / 1000);
     const elapsedTime = currentTime - blockchainStartTime;
@@ -196,8 +197,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
   }, [TCMPopStarData?.startTime]);
 
   useEffect(() => {
-    if (!TCMPopStarData) return;
-    setTokenBalance();
+    if (!TCMPopStarData?.tokenAddressArr) return;
     setGetEoaContractData(TCMPopStarData.tokenAddressArr as []);
   }, [TCMPopStarData?.tokenAddressArr]);
 

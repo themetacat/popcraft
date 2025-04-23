@@ -1,26 +1,32 @@
 
 
 export function regenerateBottomRows(matrixArray: bigint[], regenerateMatrixArray: bigint[],): bigint[] {
-    let topCleared = true;
-
-    for (let i = 0; i < 70; i++) {
-        if (matrixArray[i] !== 0n) {
-            topCleared = false;
-            break;
+    const regenerateMatrixArrayLength = regenerateMatrixArray.length;
+    if(regenerateMatrixArray[regenerateMatrixArrayLength - 1] == 0n){
+        return matrixArray;
+    }
+    let newValueIndex = findNewValueIndex(regenerateMatrixArray);
+    if(newValueIndex == regenerateMatrixArrayLength){
+        return matrixArray;
+    }
+    for (let index = 99; index >= 0; index--) {
+        if(matrixArray[index] == 0n){
+            if(newValueIndex == regenerateMatrixArrayLength || regenerateMatrixArray[newValueIndex] == 0n) break;
+            matrixArray[index] = regenerateMatrixArray[newValueIndex];
+            regenerateMatrixArray[newValueIndex] = 0n;
+            newValueIndex++;
         }
     }
-
-    if (topCleared) {
-        for (let i = 40; i < 70; i++) {
-            matrixArray[i] = matrixArray[i + 30];
-        }
-
-        for (let i = 0; i < regenerateMatrixArray.length; i++) {
-            matrixArray[i + 70] = regenerateMatrixArray[i];
-        }
-    }
-
     return matrixArray;
+}
+
+const findNewValueIndex = (regenerateMatrixArray: bigint[]): number => {
+    for (let index = 0; index < regenerateMatrixArray.length; index++) {
+        if (regenerateMatrixArray[index] != 0n) {
+            return index;
+        }
+    }
+    return regenerateMatrixArray.length;
 }
 
 export function moveMatrixArray(matrixArray: bigint[]): bigint[] {
