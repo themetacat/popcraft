@@ -51,6 +51,7 @@ export interface OpRenderingResult {
     tokenAddr?: string;
     amount?: bigint
   };
+  popIndexArr: number[]
 }
 
 export function createSystemCalls(
@@ -611,6 +612,7 @@ export function createSystemCalls(
     let seasonRankingRecordId;
     let eliminateAmount = 0;
     let tokenChange = {};
+    const popIndexArr: number[] = [];
     if (!playerAddr) {
       throw new Error("Address undefind");
     }
@@ -645,7 +647,8 @@ export function createSystemCalls(
         amount: -1
       }
     } else {
-      const [updatedMatrixArray, finalEliminateAmount] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0);
+      const [updatedMatrixArray, finalEliminateAmount ] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0, popIndexArr);
+      
       eliminateAmount = finalEliminateAmount;
       if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && eliminateAmount >= 5) {
         const comboRewardGamesData = getComponentValue(ComboRewardGames, playerEntity);
@@ -743,7 +746,8 @@ export function createSystemCalls(
       seasonRankingRecordId,
       scoreChalId,
       score,
-      tokenChange
+      tokenChange,
+      popIndexArr
     };
   }
 

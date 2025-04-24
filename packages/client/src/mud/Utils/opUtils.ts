@@ -72,7 +72,7 @@ export function moveMatrixArray(matrixArray: bigint[]): bigint[] {
 }
 
 
-export function dfsPopCraft(matrixIndex: number, targetValue: bigint, matrixArray: bigint[], eliminateAmount: number): [bigint[], number] {
+export function dfsPopCraft(matrixIndex: number, targetValue: bigint, matrixArray: bigint[], eliminateAmount: number, popindexArr: number[]): [bigint[], number, number[]] {
     const x = matrixIndex % 10;
     const y = Math.floor(matrixIndex / 10);
 
@@ -84,7 +84,8 @@ export function dfsPopCraft(matrixIndex: number, targetValue: bigint, matrixArra
         if (matrixArray[index] === targetValue) {
             matrixArray[index] = 0n;
             eliminateAmount += 1;
-            [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount);
+            popindexArr.push(index);
+            [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount, popindexArr);
         }
     }
 
@@ -94,7 +95,8 @@ export function dfsPopCraft(matrixIndex: number, targetValue: bigint, matrixArra
         if (matrixArray[index] === targetValue) {
             matrixArray[index] = 0n;
             eliminateAmount += 1;
-            [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount);
+            popindexArr.push(index);
+            [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount, popindexArr);
         }
     }
 
@@ -104,7 +106,8 @@ export function dfsPopCraft(matrixIndex: number, targetValue: bigint, matrixArra
         if (matrixArray[index] === targetValue) {
             matrixArray[index] = 0n;
             eliminateAmount += 1;
-            [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount);
+            popindexArr.push(index);
+            [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount, popindexArr);
         }
     }
 
@@ -114,11 +117,12 @@ export function dfsPopCraft(matrixIndex: number, targetValue: bigint, matrixArra
         if (matrixArray[index] === targetValue) {
             matrixArray[index] = 0n;
             eliminateAmount += 1;
-            [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount);
+            popindexArr.push(index);
+            [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount, popindexArr);
         }
     }
 
-    return [matrixArray, eliminateAmount];
+    return [matrixArray, eliminateAmount, popindexArr];
 }
 
 export function checkPopAccess(matrixIndex: number, targetValue: bigint, matrixArray: bigint[]): boolean {

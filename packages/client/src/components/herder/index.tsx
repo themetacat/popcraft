@@ -60,7 +60,7 @@ import PointsToToken from "../Exchange/pointsToToken"
 import { keccak256, toBytes } from "viem";
 import { checkIsSuccess } from "../Utils/popCraftUtils"
 import { MODE_TARGE, OVER_TIME } from "../../constant"
-// import CanvasPopStarGrid from "./CanvasScoreChalGrid";
+import CanvasPopStarGrid, { animateImagePopIn, animateImagePopOut } from "./CanvasScoreChalGrid";
 
 interface Props {
   hoveredData: { x: number; y: number } | null;
@@ -160,12 +160,14 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const inviteCode = searchParams.get("invite");
   const [systemName, setSystemName] = useState<string>("PopCraftSystem");
   const [gameMode, setGameMode] = useState(0);
+  const previousImagesRef = useRef<Record<string, number>>({});
 
   // add new mode: change here
   const safeAddressEntityID = addressToEntityID(address ?? "0x0000000000000000000000000000000000000000");
   const gameModeData = useComponentValue(GameMode, safeAddressEntityID);
   const rankingRecordData = useComponentValue(RankingRecord, safeAddressEntityID);
   const isModeGameChain = MODE_GAME_CHAIN_IDS.includes(chainId);
+  const [popIndexArr, setPopIndexArr] = useState<number[]>([]);
 
   useEffect(() => {
     if (isModeGameChain) {
@@ -625,7 +627,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     (
       ctx: CanvasRenderingContext2D,
       hoveredSquare: { x: number; y: number } | null,
-      playType: boolean
+      playType: boolean,
+      popIndexArr: number[] = []
     ) => {
       // 清空画布
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -711,61 +714,82 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       ctx.strokeStyle = "#ffc974";
       ctx.stroke();
 
-      // 绘制水平和垂直网格线
-      for (let x = 0; x <= 10 * GRID_SIZE; x += GRID_SIZE) {
-        ctx.beginPath();
-        ctx.moveTo(x + offsetX, offsetY);
-        ctx.lineTo(x + offsetX, 10 * GRID_SIZE + offsetY);
-        ctx.stroke();
-      }
-      for (let y = 0; y <= 10 * GRID_SIZE; y += GRID_SIZE) {
-        ctx.beginPath();
-        ctx.moveTo(offsetX, y + offsetY);
-        ctx.lineTo(10 * GRID_SIZE + offsetX, y + offsetY);
-        ctx.stroke();
-      }
+      if (TCMPopStarData?.tokenAddressArr && TCMPopStarData?.matrixArray) {
+        for (let i = 0; i < 10; i++) {
+          for (let j = 0; j < 10; j++) {
+            const currentX = i * GRID_SIZE + offsetX;
+            const currentY = j * GRID_SIZE + offsetY;
 
-      // 绘制网格中的内容
-      for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
-          const currentX = i * GRID_SIZE + offsetX;
-          const currentY = j * GRID_SIZE + offsetY;
+            const color = (i + j) % 2 === 0 ? "#fddca1" : "#fdf2d1";
+            ctx.fillStyle = color;
+            ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
+            ctx.lineWidth = 1;
+            ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
+            ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
 
-          // 绘制每个格子的边框和填充色
-          const color = (i + j) % 2 === 0 ? "#fddca1" : "#fdf2d1";
-          ctx.fillStyle = color;
-          ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-          ctx.lineWidth = 1;
-          ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-          ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-
-          // 绘制图像
-          // if (!loadingSquare || !(loadingSquare.x === i && loadingSquare.y === j)) {
-          if (TCMPopStarData && TCMPopStarData.tokenAddressArr && TCMPopStarData.matrixArray) {
-            const tokenAddress = TCMPopStarData.tokenAddressArr[Number(TCMPopStarData.matrixArray[i + j * 10]) - 1];
+            const gridKey = `${i}_${j}`;
+            const itemIndex = i + j * 10;
+            const tokenIndex = Number(TCMPopStarData.matrixArray[itemIndex]);
+            const tokenAddress = TCMPopStarData.tokenAddressArr[tokenIndex - 1];
             const src = imageIconData[tokenAddress]?.src;
-            if (tokenAddress !== undefined && src !== undefined) {
+
+            if (!tokenAddress || !src) continue;
+
+            const imageX = currentX + (GRID_SIZE - GRID_SIZE * tokenImgScale) / 2;
+            const imageY = currentY + (GRID_SIZE - GRID_SIZE * tokenImgScale) / 2;
+            const imageWidth = GRID_SIZE * tokenImgScale;
+            const imageHeight = GRID_SIZE * tokenImgScale;
+
+            const prevTokenIndex = previousImagesRef.current[gridKey];
+            const isSameToken = prevTokenIndex === tokenIndex && tokenIndex !== 0;
+            const isChangedToken = prevTokenIndex !== tokenIndex && tokenIndex !== 0;
+
+
+            const drawImageOrAnimate = (img: HTMLImageElement) => {
+
+              if (isSameToken) {
+                ctx.drawImage(img, imageX, imageY, imageWidth, imageHeight);
+              } else if (isChangedToken) {
+                animateImagePopIn(ctx, img, currentX, currentY, GRID_SIZE, color);
+              }
+            };
+
+            if (popIndexArr.includes(itemIndex)) {
+              console.log(tokenIndex);
+
+              const lastTokenIndex = previousImagesRef.current[gridKey];
+              const lastTokenAddress = TCMPopStarData.tokenAddressArr[lastTokenIndex - 1];
+              const lastSrc = imageIconData[lastTokenAddress]?.src;
+              if (lastSrc) {
+                const lastImg = new Image();
+                lastImg.src = lastSrc;
+                animateImagePopOut(ctx, lastImg, currentX, currentY, GRID_SIZE, 250, () => {
+                  ctx.clearRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
+                  ctx.fillStyle = color;
+                  ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
+                  ctx.lineWidth = 1;
+                  ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
+                  ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
+                });
+              }
+              previousImagesRef.current[gridKey] = 0;
+            } else {
               if (!imageCache[src]) {
                 const img = new Image();
                 img.src = src;
                 img.onload = () => {
                   setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
-                  // 重新绘制图像
-                  ctx.drawImage(img, currentX, currentY, GRID_SIZE * 0.9, GRID_SIZE * 0.9);
+                  drawImageOrAnimate(img);
                 };
               } else {
-                // 调整图片大小
-                const imageWidth = GRID_SIZE * tokenImgScale; // 调整图片宽度
-                const imageHeight = GRID_SIZE * tokenImgScale; // 调整图片高度
-                const imageX = currentX + (GRID_SIZE - imageWidth) / 2;
-                const imageY = currentY + (GRID_SIZE - imageHeight) / 2;
-                ctx.drawImage(imageCache[src], imageX, imageY, imageWidth, imageHeight);
+                drawImageOrAnimate(imageCache[src]);
               }
             }
+            previousImagesRef.current[gridKey] = tokenIndex;
           }
-          // }
         }
       }
+
       if (hoveredSquare && coordinates.x < 10) {
         const i = hoveredSquare.x;
         const j = hoveredSquare.y;
@@ -785,24 +809,18 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           const src = imageIconData[tokenAddress]?.src;
 
           if (tokenAddress !== undefined && src !== undefined) {
+            const imageWidth = drawSize * tokenImgScale; // 调整图片宽度
+            const imageHeight = drawSize * tokenImgScale; // 调整图片高度
+            const imageX = drawX + (drawSize - imageWidth) / 2;
+            const imageY = drawY + (drawSize - imageHeight) / 2;
             if (!imageCache[src]) {
               const img = new Image();
               img.src = src;
               img.onload = () => {
                 setImageCache((prevCache) => ({ ...prevCache, [src]: img }));
-                // 重新绘制图像
-                const imageWidth = drawSize * tokenImgScale
-                const imageHeight = drawSize * tokenImgScale;
-                const imageX = drawX + (drawSize - imageWidth) / 2;
-                const imageY = drawY + (drawSize - imageHeight) / 2;
                 ctx.drawImage(img, imageX, imageY, imageWidth, imageHeight);
               };
             } else {
-              // 调整图片大小
-              const imageWidth = drawSize * tokenImgScale; // 调整图片宽度
-              const imageHeight = drawSize * tokenImgScale; // 调整图片高度
-              const imageX = drawX + (drawSize - imageWidth) / 2;
-              const imageY = drawY + (drawSize - imageHeight) / 2;
               ctx.drawImage(imageCache[src], imageX, imageY, imageWidth, imageHeight);
             }
           }
@@ -821,7 +839,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       imageCache,
       isMobile,
       calcOffsetYValue,
-      tokenImgScale
+      tokenImgScale,
+      // popIndexArr
     ]
   );
 
@@ -966,10 +985,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         setHoveredSquare(null);
       }, 100);
     }
-    if (newCoordinates.x < 10) {
-      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      drawGrid2(ctx, newCoordinates, false);
-    }
     if (pageClick === true) {
       return;
     }
@@ -1047,10 +1062,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           GRID_SIZE,
           GRID_SIZE
         );
-        if (upCoordinates.x < 10 && upCoordinates.x >= 0 && upCoordinates.y < 10 && upCoordinates.y >= 0) {
-          ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-          drawGrid2(ctx, upCoordinates, true);
-        }
+
       }
       setIsDragging(false);
       setShowOverlay(true);
@@ -1179,6 +1191,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           return;
         }
         result = opRendering(coordinates.x, coordinates.y, address);
+        setPopIndexArr(result.popIndexArr)
         if (Number(result.score) != 0) {
           addScoreBubble(Number(result.score));
         }
@@ -1424,14 +1437,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     const ctx = canvasRef?.current?.getContext("2d");
 
     if (ctx && canvasRef) {
-      if (appName === "BASE/PopCraftSystem") {
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        drawGrid2(ctx, coordinates, true);
-
-      } else {
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        drawGrid(ctx, coordinates, true);
-      }
+ 
       interactHandleTCM(
         { x: EmptyRegionNum, y: 0 },
         palyerAddress,
@@ -1456,18 +1462,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
 
       setHoveredSquare({ x: gridX, y: gridY });
 
-      const ctx = canvasRef.current.getContext("2d");
-      if (ctx) {
-        if (appName === "BASE/PopCraftSystem") {
-          ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-          drawGrid2(ctx, coordinates, false);
-        } else {
-          ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-          drawGrid(ctx, coordinates, false);
-        }
-      }
     },
-    [drawGrid, hoveredSquare, drawGrid2]
+    []
   );
 
   //鼠标移动事件
@@ -1498,17 +1494,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         const gridX = Math.floor((mouseX + scrollOffset.x) / GRID_SIZE);
         const gridY = Math.floor((mouseY + scrollOffset.y) / GRID_SIZE);
         setHoveredSquare({ x: gridX, y: gridY });
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          if (appName === "BASE/PopCraftSystem") {
-
-            ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            drawGrid2(ctx, coordinates, false);
-          } else {
-            ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            drawGrid(ctx, coordinates, false);
-          }
-        }
       }
 
     },
@@ -1605,16 +1590,41 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     if (canvas) {
       const ctx = canvas.getContext("2d");
       if (ctx) {
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        drawGrid2(ctx, hoveredSquare, true);
+        drawGrid2(ctx, null, true);
       }
     }
   }, [
-    drawGrid2,
     CANVAS_WIDTH,
     CANVAS_HEIGHT,
-    hoveredSquare,
+    TCMPopStarData?.matrixArray,
   ]);
+
+  useEffect(() => {
+
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      if (ctx && popIndexArr.length > 0) {
+        drawGrid2(ctx, null, true, popIndexArr);
+      }
+    }
+  }, [
+    // drawGrid2,
+    CANVAS_WIDTH,
+    CANVAS_HEIGHT,
+    // TCMPopStarData?.matrixArray,
+    popIndexArr
+  ]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      if (ctx && hoveredSquare) {
+        drawGrid2(ctx, hoveredSquare, true);
+      }
+    }
+  }, [drawGrid2, hoveredSquare])
 
   useEffect(() => {
     const canvas = canvasRef.current as any;
@@ -2311,7 +2321,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
                 <p className={style.targetBody}>{MODE_TARGE[gameMode]}</p>
               </div>
             </div>
-            {/* {gameMode == 1 && <CanvasPopStarGrid/>} */}
+            {gameMode == 1 && <CanvasPopStarGrid />}
           </>
         }
 
