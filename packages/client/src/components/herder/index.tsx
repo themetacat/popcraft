@@ -58,7 +58,7 @@ import mobileTopBuyStyle from "../mobile/css/BoxPrompt/topBuy.module.css";
 import PointsToToken from "../Exchange/pointsToToken"
 
 import { keccak256, toBytes } from "viem";
-import { checkIsSuccess } from "../Utils/popCraftUtils"
+import { checkIsSuccess, checkClearBoard } from "../Utils/popCraftUtils"
 import { MODE_TARGE, OVER_TIME } from "../../constant"
 import CanvasPopStarGrid, { animateImagePopIn, animateImagePopOut } from "./CanvasScoreChalGrid";
 
@@ -168,6 +168,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const rankingRecordData = useComponentValue(RankingRecord, safeAddressEntityID);
   const isModeGameChain = MODE_GAME_CHAIN_IDS.includes(chainId);
   const [popIndexArr, setPopIndexArr] = useState<number[]>([]);
+  const latestPopIndexArrRef = useRef<number[]>([]);
 
   useEffect(() => {
     if (isModeGameChain) {
@@ -176,22 +177,27 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         if (gameModeData.mode == 1n) {
           setSystemName('MScoreChalSystem')
           setGameMode(1)
+        }else{
+          setSystemName('MClearSystem');
+          setGameMode(0)
         }
       }
+    }else {
+      setSystemName('PopCraftSystem');
     }
   }, [gameModeData, isModeGameChain])
 
-  useEffect(() => {
-    if (isModeGameChain) {
-      if (gameMode == 1) {
-        setSystemName('MScoreChalSystem')
-      } else {
-        setSystemName('MClearSystem');
-      }
-    } else {
-      setSystemName('PopCraftSystem');
-    }
-  }, [gameMode, isModeGameChain])
+  // useEffect(() => {
+  //   if (isModeGameChain) {
+  //     if (gameMode == 1) {
+  //       setSystemName('MScoreChalSystem')
+  //     } else {
+  //       setSystemName('MClearSystem');
+  //     }
+  //   } else {
+  //     setSystemName('PopCraftSystem');
+  //   }
+  // }, [gameMode, isModeGameChain])
 
   useEffect(() => {
     if (!address || !inviteCode || !COMMON_CHAIN_IDS.includes(chainId)) return;
@@ -451,12 +457,18 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         if (TCMPopStarData && TCMPopStarData.startTime) {
           const currentTime = Math.floor(Date.now() / 1000);
           const elapsedTime = currentTime - Number(TCMPopStarData.startTime);
-          const updatedTimeLeft = Math.max(OVER_TIME - elapsedTime, 0);
+          let updatedTimeLeft = Math.max(OVER_TIME - elapsedTime, 0);
           const isSuccess = checkIsSuccess({
             gameModeData,
             TCMPopStarData,
             rankingRecordData,
           });
+          if (!isSuccess && gameModeData && gameModeData.mode == 1n) {
+            const clear = checkClearBoard(TCMPopStarData.matrixArray as bigint[]);
+            if(clear){
+              updatedTimeLeft = 0
+            }
+          }
           if (updatedTimeLeft > 0 && !isSuccess) {
             localStorage.setItem('playAction', 'gameContinue');
             setTimeControl(true);
@@ -464,6 +476,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             if ((!loading && localStorage.getItem("showGameOver") !== "true") || isSuccess) {
               localStorage.setItem('playAction', 'play')
               setPopStar(true);
+              setTimeControl(false);
             }
           }
         } else {
@@ -741,29 +754,25 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             const imageHeight = GRID_SIZE * tokenImgScale;
 
             const prevTokenIndex = previousImagesRef.current[gridKey];
+            const isPopIndex = popIndexArr.includes(itemIndex);
             const isSameToken = prevTokenIndex === tokenIndex && tokenIndex !== 0;
             const isChangedToken = prevTokenIndex !== tokenIndex && tokenIndex !== 0;
-
-
+            
             const drawImageOrAnimate = (img: HTMLImageElement) => {
-
               if (isSameToken) {
                 ctx.drawImage(img, imageX, imageY, imageWidth, imageHeight);
               } else if (isChangedToken) {
+
                 animateImagePopIn(ctx, img, currentX, currentY, GRID_SIZE, color);
               }
             };
-
-            if (popIndexArr.includes(itemIndex)) {
-              console.log(tokenIndex);
-
-              const lastTokenIndex = previousImagesRef.current[gridKey];
-              const lastTokenAddress = TCMPopStarData.tokenAddressArr[lastTokenIndex - 1];
+            if (isPopIndex) {
+              const lastTokenAddress = TCMPopStarData.tokenAddressArr[prevTokenIndex - 1];
               const lastSrc = imageIconData[lastTokenAddress]?.src;
               if (lastSrc) {
                 const lastImg = new Image();
                 lastImg.src = lastSrc;
-                animateImagePopOut(ctx, lastImg, currentX, currentY, GRID_SIZE, 250, () => {
+                animateImagePopOut(ctx, lastImg, currentX, currentY, GRID_SIZE, color,250, () => {
                   ctx.clearRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
                   ctx.fillStyle = color;
                   ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
@@ -784,9 +793,12 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               } else {
                 drawImageOrAnimate(imageCache[src]);
               }
+              previousImagesRef.current[gridKey] = tokenIndex;
             }
-            previousImagesRef.current[gridKey] = tokenIndex;
           }
+        }
+        if (popIndexArr.length >0) {
+          setPopIndexArr([]);
         }
       }
 
@@ -840,7 +852,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       isMobile,
       calcOffsetYValue,
       tokenImgScale,
-      // popIndexArr
     ]
   );
 
@@ -868,94 +879,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   }, [appName, isMobile]);
 
 
-  //第一层画布
-  let tcmTokenAddrDict = {}
-  const drawGrid = useCallback(
-    (
-      ctx: CanvasRenderingContext2D,
-      hoveredSquare: { x: number; y: number } | null,
-      playType: any
-    ) => {
-
-      let pix_text;
-
-      ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      ctx.lineWidth = 10;
-      ctx.strokeStyle = "#000000";
-      const checkSize = 10;
-      for (let x = 0; x < CANVAS_WIDTH; x += GRID_SIZE) {
-        ctx.beginPath();
-        ctx.moveTo(x - scrollOffset.x, 0);
-        ctx.lineTo(x - scrollOffset.x, CANVAS_HEIGHT);
-        ctx.stroke();
-      }
-      for (let y = 0; y < CANVAS_HEIGHT; y += GRID_SIZE) {
-        ctx.beginPath();
-        ctx.moveTo(0, y - scrollOffset.y);
-        ctx.lineTo(CANVAS_WIDTH, y - scrollOffset.y);
-        ctx.stroke();
-      }
-
-      const baseFontSize = 15;
-      const fontSizeIncrement = 0.8;
-      const fontWeight = "normal";
-      const fontSize =
-        numberData === 25
-          ? baseFontSize
-          : baseFontSize + (numberData - 25) * fontSizeIncrement;
-      ctx.font = `${fontWeight} ${fontSize}px Arial`;
-
-      const visibleArea = {
-        x: Math.max(0, Math.floor(scrollOffset.x / GRID_SIZE)),
-        y: Math.max(0, Math.floor(scrollOffset.y / GRID_SIZE)),
-        width: Math.ceil(document.documentElement.clientWidth / GRID_SIZE),
-        height: Math.ceil(document.documentElement.clientHeight / GRID_SIZE),
-      };
-      for (let i = visibleArea.x; i < visibleArea.x + visibleArea.width; i++) {
-        for (
-          let j = visibleArea.y;
-          j < visibleArea.y + visibleArea.height;
-          j++
-        ) {
-          const currentX = i * GRID_SIZE - scrollOffset.x;
-          const currentY = j * GRID_SIZE - scrollOffset.y;
-          ctx.lineWidth = 3;
-          ctx.strokeStyle = "#2e1043";
-          ctx.strokeRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-          ctx.fillStyle = "#2f1643";
-          ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
-
-        }
-      }
-
-      if (selectedColor && hoveredSquare) {
-        ctx.fillStyle = selectedColor;
-        ctx.fillRect(
-          coordinates.x * GRID_SIZE - scrollOffset.x,
-          coordinates.y * GRID_SIZE - scrollOffset.y,
-          GRID_SIZE,
-          GRID_SIZE
-        );
-      }
-
-      if (hoveredSquare) {
-        ctx.canvas.style.cursor = "pointer";
-      } else {
-        ctx.canvas.style.cursor = "default";
-      }
-    },
-    [
-      GRID_SIZE,
-      coordinates,
-      numberData,
-      TCMPopStarData,
-      CANVAS_WIDTH,
-      // getEntityAtCoordinates,
-      CANVAS_HEIGHT,
-      selectedColor,
-      scrollOffset,
-    ]
-  );
   const [isDragging, setIsDragging] = useState(false);
   const [timeControl, setTimeControl] = useState(false);
   const downTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -1070,7 +993,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       setTranslateX(0);
       setTranslateY(0);
     }
-    // });
   };
 
   const interactHandle = (
@@ -1111,26 +1033,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     });
   };
 
-  /**
-   * 判断数组中是否只剩一个非零元素或所有非零元素相同且相邻
-   * @param {BigInt[]} matrixArray - 要检查的数组
-   * @returns {boolean} - 是否满足条件
-   */
-  const checkSingleOrAdjacentSame = (matrixArray: BigInt[]) => {
-    // 统计不为零的元素
-    const nonZeroElements = matrixArray.filter(data => data !== 0n);
-
-    // 判断是否只剩一个非零元素
-    const isSingleNonZero = nonZeroElements.length === 1;
-
-    // 判断是否只剩一组相同的非零元素
-    const hasAdjacentSame = nonZeroElements.length > 1 && nonZeroElements.every((data, _, array) => {
-      return data === array[0]; // 检查所有非零元素是否相同
-    });
-
-    // 最终判断
-    return isSingleNonZero || hasAdjacentSame;
-  };
 
   const interactTaskQueue = useRef<((execute: boolean, account: any, nonce: any) => Promise<void>)[]>([]);
   const isInteractProcessingQueue = useRef(false);
@@ -1241,14 +1143,13 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             // setCheckInteractTask(false)
           }
         } catch (error) {
-          actionData == "pop" && (sendCount -= 1)
+          actionData === "pop" && sendCount > 1 && (sendCount -= 1);
           setLoadingSquare(null);
           // console.log(error);
         }
 
         if (interact_data && interact_data.error) {
-
-          actionData == "pop" && (sendCount -= 1)
+          actionData === "pop" && sendCount > 1 && (sendCount -= 1);
           isgameOverSet(interact_data.error)
           handleError(interact_data.error);
           setLoadingSquare(null); // 清除 loading 状态
@@ -1264,6 +1165,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               receiveCount = 0
               // localStorage.setItem('showGameOver', 'false');
               setCheckInteractTask(false)
+              setPopIndexArr([])
             } else if (actionData === "pop") {
               receiveCount += 1
             }
@@ -1275,7 +1177,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             localStorage.setItem('playAction', 'gameContinue');
           } else {
             actionData == "pop" && (receiveCount += 1);
-            // actionData == "pop" && (sendCount -= 1);
             handleError(receipt.error);
             onHandleLoading();
             setLoadingSquare(null); // 清除 loading 状态
@@ -1283,7 +1184,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           }
         } else {
           // 点击消除的交易处理失败，交易计数器减一
-          actionData == "pop" && (sendCount -= 1);
+          actionData === "pop" && sendCount > 1 && (sendCount -= 1);
           handleError("No receipt returned");
           setLoadingSquare(null); // 清除 loading 状态
           throwError = true;
@@ -1400,18 +1301,21 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   };
 
   //创建游戏实例
-  const playFun = () => {
-    let deldata = localStorage.getItem('deleGeData')
-    let money = localStorage.getItem('money')
+  const playFun = (temporaryGameMode = -1) => {
+    const deldata = localStorage.getItem('deleGeData')
+    const money = localStorage.getItem('money')
     setLoadingpaly(true)
     setLoading(true)
+    if(temporaryGameMode < 0){
+      temporaryGameMode = gameMode
+    }
     if (deldata == "undefined") {
       if (money == "toomoney") {
 
         const delegationData = registerDelegation();
         delegationData.then((data) => {
           if (data !== undefined && data.status == "success") {
-            playData() //渲染游戏画布+图片
+            playData(temporaryGameMode) //渲染游戏画布+图片
           } else {
             setLoadingpaly(false)
             setLoading(false)
@@ -1422,22 +1326,20 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         setLoading(false)
       }
     } else {
-      playData()
+      playData(temporaryGameMode)
     }
     // localStorage.setItem('playAction', 'play'); // 设置 playAction 为 play
   };
 
-  const playData = async () => {
+  const playData = async (gameMode = 0) => {
     let EmptyRegionNum = 0
     if (TCMPopStarData === undefined) {
       const emptyRegion = findEmptyRegion();
       EmptyRegionNum = emptyRegion
     }
 
-    const ctx = canvasRef?.current?.getContext("2d");
-
+    const ctx = canvasRef?.current?.getContext("2d");   
     if (ctx && canvasRef) {
- 
       interactHandleTCM(
         { x: EmptyRegionNum, y: 0 },
         palyerAddress,
@@ -1501,7 +1403,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       translateX,
       translateY,
       visibleAreaRef,
-      drawGrid,
       drawGrid2,
       hoveredSquare,
       isDragging,
@@ -1590,30 +1491,23 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     if (canvas) {
       const ctx = canvas.getContext("2d");
       if (ctx) {
-        drawGrid2(ctx, null, true);
+        if (popIndexArr.length == 0) {
+          setTimeout(() => {
+            drawGrid2(ctx, null, true, popIndexArr);
+            latestPopIndexArrRef.current = []
+          }, 250);
+        }else{
+          drawGrid2(ctx, null, true, popIndexArr);
+          latestPopIndexArrRef.current = popIndexArr
+        }
       }
     }
   }, [
     CANVAS_WIDTH,
     CANVAS_HEIGHT,
     TCMPopStarData?.matrixArray,
-  ]);
-
-  useEffect(() => {
-
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const ctx = canvas.getContext("2d");
-      if (ctx && popIndexArr.length > 0) {
-        drawGrid2(ctx, null, true, popIndexArr);
-      }
-    }
-  }, [
-    // drawGrid2,
-    CANVAS_WIDTH,
-    CANVAS_HEIGHT,
-    // TCMPopStarData?.matrixArray,
-    popIndexArr
+    GRID_SIZE,
+    popIndexArr,
   ]);
 
   useEffect(() => {
@@ -1621,7 +1515,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     if (canvas) {
       const ctx = canvas.getContext("2d");
       if (ctx && hoveredSquare) {
-        drawGrid2(ctx, hoveredSquare, true);
+        drawGrid2(ctx, hoveredSquare, true, latestPopIndexArrRef.current);
       }
     }
   }, [drawGrid2, hoveredSquare])

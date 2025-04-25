@@ -13,7 +13,11 @@ export function checkIsSuccess({
     if (gameModeData && gameModeData.mode === 1n) {
       return rankingRecordData && (rankingRecordData.latestScores as bigint) >= MODE_SCORE_CHAL_SUCCESS_SCORE;
     } else {
-      return TCMPopStarData.matrixArray.every((data: bigint) => data === 0n);
+      return checkClearBoard(TCMPopStarData.matrixArray);
     }
   }
+
+export function checkClearBoard(matrixArray: bigint[]): boolean {
+    return matrixArray.every((data: bigint) => data === 0n);
+}
   

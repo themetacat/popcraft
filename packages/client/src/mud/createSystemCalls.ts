@@ -404,7 +404,7 @@ export function createSystemCalls(
           });
           hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
           // hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }),7000);
-          await waitForTransaction(txData);
+          await waitForTransaction(txData);  
           firstGameOver = true
         } catch (error) {
           return { error: error.message };
@@ -457,7 +457,6 @@ export function createSystemCalls(
           return { error: error.message };
         } finally {
           rmOverride(popStarId, tokenBalanceId, newRankingRecordId, seasonRankingRecordId, scoreChalId)
-
         }
 
       }
@@ -646,6 +645,7 @@ export function createSystemCalls(
         tokenAddr,
         amount: -1
       }
+      popIndexArr.push(matrixIndex)
     } else {
       const [updatedMatrixArray, finalEliminateAmount ] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0, popIndexArr);
       

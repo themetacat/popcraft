@@ -98,7 +98,7 @@ const CanvasPopStarGrid: React.FC = () => {
                     const lastImg = new Image();
                     lastImg.src = imageIconData[tokenAddrList[previousImagesRef.current[gridKey] - 1]]?.src;
                     lastImg.onload = () => {
-                        animateImagePopOut(ctx, lastImg, x, y, cellSize, 250, () => {
+                        animateImagePopOut(ctx, lastImg, x, y, cellSize, color, 250, () => {
                             ctx.clearRect(x, y, cellSize, cellSize);
                             ctx.fillStyle = color;
                             ctx.fillRect(x, y, cellSize, cellSize);
@@ -234,17 +234,20 @@ export const animateImagePopIn = (
 ) => {
     const startTime = performance.now();
     const draw = (now: number) => {
+ 
         const elapsed = now - startTime;
-        const progress = Math.min(elapsed / duration, 0.8);
+        const progress = Math.min(elapsed / duration, 1);
         const scale = easeInBack(progress);
-        ctx.clearRect(x, y, size, size);
+
         const imgSize = size * scale;
         const offset = (size - imgSize) / 2;
+
+        ctx.clearRect(x, y, size, size);
         ctx.fillStyle = color;
         ctx.fillRect(x, y, size, size);
         ctx.drawImage(img, x + offset, y + offset, imgSize, imgSize);
 
-        if (progress < 0.8) {
+        if (progress < 1) {
             requestAnimationFrame(draw);
         }
     };
@@ -254,7 +257,7 @@ export const animateImagePopIn = (
 function easeInBack(x: number): number {
     const c1 = 1.70158;
     const c3 = c1 + 1;
-    return 0.7 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+    return 0.8 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
 }
 
 export const animateImagePopOut = (
@@ -263,6 +266,7 @@ export const animateImagePopOut = (
     x: number,
     y: number,
     size: number,
+    color: "#fddca1" | "#fdf2d1" = "#fddca1",
     duration = 300,
     onComplete?: () => void
 ) => {
@@ -276,6 +280,8 @@ export const animateImagePopOut = (
         const offset = (size - imgSize) / 2;
         ctx.clearRect(x, y, size, size);
         if (scale > 0) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, size, size);
             ctx.drawImage(img, x + offset, y + offset, imgSize, imgSize);
             requestAnimationFrame(draw);
         } else {
