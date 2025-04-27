@@ -114,12 +114,9 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [topUpTypeto, setTopUpTypeto] = useState(false);
   const [scrollOffset, setScrollOffset] = useState({ x: 0, y: 0 });
   const [showOverlay, setShowOverlay] = useState(false);
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadingplay, setLoadingpaly] = useState(false);
   const [popStar, setPopStar] = useState(false);
-  const [pageClick, setPageClick] = useState(false);
   const [GRID_SIZE, setGRID_SIZE] = useState(32);
   const tcmPopStarEntities = useEntityQuery([Has(TCMPopStar)]);
   const [mainContent, setMainContent] = useState("MAINNET");
@@ -128,9 +125,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [enumValue, setEnumValue] = useState({});
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioCache: { [url: string]: HTMLAudioElement } = {};
-  const [showTopUp, setShowTopUp] = useState(false);
   const [showTopElements, setShowTopElements] = useState(false);
-  const [playFuntop, setPlayFun] = useState(false);
   const playAction = localStorage.getItem('playAction');
   const hasExecutedRef = useRef(true);
   const [imageCache, setImageCache] = useState({});
@@ -141,7 +136,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [showGameAsset, setShowGameAsset] = useState(false);
   const [balancover, setBalancover] = useState(0);
   const { balanceCheck, currencySymbol, chainId } = useTopUp();
-  const [isOpen, setIsOpen] = useState(false);
   const [botInfoTaskTips, setBotInfoTaskTips] = useState(false);
   const [gasPrice, setGasPrice] = useState<string>("");
   const { getPlantsGp, getPlantsGpSeason } = usePlantsGp();
@@ -186,18 +180,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       setSystemName('PopCraftSystem');
     }
   }, [gameModeData, isModeGameChain])
-
-  // useEffect(() => {
-  //   if (isModeGameChain) {
-  //     if (gameMode == 1) {
-  //       setSystemName('MScoreChalSystem')
-  //     } else {
-  //       setSystemName('MClearSystem');
-  //     }
-  //   } else {
-  //     setSystemName('PopCraftSystem');
-  //   }
-  // }, [gameMode, isModeGameChain])
 
   useEffect(() => {
     if (!address || !inviteCode || !COMMON_CHAIN_IDS.includes(chainId)) return;
@@ -388,7 +370,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     width: document.documentElement.clientWidth,
     height: document.documentElement.clientHeight,
   });
-  const [loadingSquare, setLoadingSquare] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     // 默认设置localStorage中的值为popCraft相关的值
@@ -414,10 +395,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   }, []);
   const CANVAS_WIDTH = canvasSize.width;
   const CANVAS_HEIGHT = canvasSize.height;
-
-  const handleTopUpClick = () => {
-    setShowTopUp(true);
-  };
 
   const handleTopupSuccess = () => {
     const balanceFN = publicClient.getBalance({ address: palyerAddress });
@@ -451,7 +428,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         setPopStar(true);
       } else {
         setTopUpType(false);
-        setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
         setShowTopElements(true); // 显示顶部元素
         localStorage.setItem('money', 'toomoney')
         if (TCMPopStarData && TCMPopStarData.startTime) {
@@ -762,7 +738,13 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               if (isSameToken) {
                 ctx.drawImage(img, imageX, imageY, imageWidth, imageHeight);
               } else if (isChangedToken) {
-
+                // if(popIndexArr.length > 0){
+                //   setTimeout(() => {
+                //     animateImagePopIn(ctx, img, currentX, currentY, GRID_SIZE, color);
+                //   }, 250);
+                // }else{
+                //   animateImagePopIn(ctx, img, currentX, currentY, GRID_SIZE, color);
+                // }
                 animateImagePopIn(ctx, img, currentX, currentY, GRID_SIZE, color);
               }
             };
@@ -908,16 +890,10 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         setHoveredSquare(null);
       }, 100);
     }
-    if (pageClick === true) {
-      return;
-    }
   };
 
   //点击方块触发事件
   const handleMouseUp = async (event: React.MouseEvent<HTMLDivElement>) => {
-    if (pageClick === true) {
-      return;
-    }
 
     if ("ontouchstart" in window) {
       setHoveredSquare(null); // 移除 hover 状态 
@@ -1018,17 +994,13 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           if (a.status === "success") {
             setLoading(false);
             setLoadingpaly(false);
-            setLoadingSquare(null);
             onHandleLoading();
 
           } else {
             setTopUpType(true)
-            setLoadingSquare(null);
             onHandleLoading();
           }
         });
-      } else {
-        setLoadingSquare(null);
       }
     });
   };
@@ -1144,15 +1116,12 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           }
         } catch (error) {
           actionData === "pop" && sendCount > 1 && (sendCount -= 1);
-          setLoadingSquare(null);
-          // console.log(error);
         }
 
         if (interact_data && interact_data.error) {
           actionData === "pop" && sendCount > 1 && (sendCount -= 1);
           isgameOverSet(interact_data.error)
           handleError(interact_data.error);
-          setLoadingSquare(null); // 清除 loading 状态
           throwError = true;
           // return;
         } else if (interact_data[1]) {
@@ -1172,21 +1141,18 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             setLoading(false);
             setLoadingpaly(false);
             setTimeControl(true);
-            setLoadingSquare(null); // 清除 loading 状态
             onHandleLoading();
             localStorage.setItem('playAction', 'gameContinue');
           } else {
             actionData == "pop" && (receiveCount += 1);
             handleError(receipt.error);
             onHandleLoading();
-            setLoadingSquare(null); // 清除 loading 状态
             throwError = true;
           }
         } else {
           // 点击消除的交易处理失败，交易计数器减一
           actionData === "pop" && sendCount > 1 && (sendCount -= 1);
           handleError("No receipt returned");
-          setLoadingSquare(null); // 清除 loading 状态
           throwError = true;
         }
 
@@ -1202,7 +1168,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       })
     } catch (error) {
       handleError(error.message);
-      setLoadingSquare(null); // 清除 loading 状态
     }
     interactProcessQueue()
   };
@@ -1261,7 +1226,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           setPopStar(true);
         } else {
           setTopUpType(false);
-          setPlayFun(true); // 如果余额大于0.000001，设置playFun为true
           localStorage.setItem('money', 'toomoney')
 
           if (data && data.startTime) {
@@ -1391,8 +1355,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         const rect = canvas.getBoundingClientRect();
         const mouseX = event.clientX - rect.left;
         const mouseY = event.clientY - rect.top;
-        setMouseX(mouseX);
-        setMouseY(mouseY);
         const gridX = Math.floor((mouseX + scrollOffset.x) / GRID_SIZE);
         const gridY = Math.floor((mouseY + scrollOffset.y) / GRID_SIZE);
         setHoveredSquare({ x: gridX, y: gridY });
@@ -1869,7 +1831,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
                                 )}
                                 <img
                                   src={Arrow}
-                                  className={`${style.arrow} ${isOpen ? style.arrowRotated : ''}`}
+                                  className={`${style.arrow}`}
                                 />
                               </button>
 
@@ -1898,7 +1860,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
                                 : ""}
                               <img
                                 src={Arrow}
-                                className={`${style.arrow} ${isOpen ? style.arrowRotated : ''}`}
+                                className={`${style.arrow}`}
                               />
                             </button>
 

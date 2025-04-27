@@ -625,7 +625,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                     // }}>New<br />Game</div>
                   }
                 </p>
-                {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
+                <p>TIME</p>
               </div>
               <div className={style.twoPart} >
                 <p>{rewardInfo}</p>

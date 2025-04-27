@@ -10,6 +10,7 @@ import SpikBtnImg from "../../images/Mobile/ConnectBtnSpik.webp";
 import DecorativeFigure from "../mobile/components/herder/index";
 import IndexMobileCloudBgImg from "../../images/Mobile/IndexBgCloud.webp"
 import ModeSelectImg from "../../images/welcome/ModeSelect.webp";
+import { MODE_SCORE_CHAL_SUCCESS_SCORE } from "../../constant";
 
 interface Props {
   setPopStar: any;
@@ -86,7 +87,7 @@ export default function PopStar({ setPopStar, playFun, setTopUpType, loadingplay
 
                     </div>
                     <p className={style.moduleText}>
-                      Score 600 points from 130 items within 2 minutes
+                      Score {Number(MODE_SCORE_CHAL_SUCCESS_SCORE)} points from 130 items within 2 minutes
                     </p>
                   </div>
                 </div>
@@ -347,7 +348,13 @@ const PlayButton = ({
                 onClick={handleConnectClick}
                 type="button"
                 disabled={playButtonClicked}
-                className={`${style.btnPlay} ${playButtonClicked ? style.btnPlayClicked : style.btnPlayModeAllow} ${isPlaying ? style.btnPlayPlaying : ''} ${MODE_GAME_CHAIN_IDS.includes(chainId) ? style.btnPlayMode : style.btnPlayNoMode}`}
+                className={[
+                  style.btnPlay,
+                  playButtonClicked && style.btnPlayClicked,
+                  isPlaying && style.btnPlayPlaying,
+                  MODE_GAME_CHAIN_IDS.includes(chainId) ? style.btnPlayMode : style.btnPlayNoMode,
+                  MODE_GAME_CHAIN_IDS.includes(chainId) && !playButtonClicked && style.btnPlayModeAllow
+                ].filter(Boolean).join(' ')}
               >
                 {
                   loadingplay === true ? (
