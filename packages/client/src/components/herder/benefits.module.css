@@ -16,8 +16,8 @@
 /* 添加动画延迟和循环控制 */
 .boxStyle {
     position: absolute;
-    top: 50%;
-    right: 17%;
+    top: 60%;
+    left: 25%;
     transform: translateY(-50%);
     z-index: 100000;
     /* animation: bounce 1.5s ease-in-out infinite, bounce 1.5s ease-in-out infinite 4s; */
