@@ -225,12 +225,10 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
     };
 
     const fetchPrices = async (getPriceData: any) => {
-
+        setLoadingPrices({})
+        
         const pricePromises = Object.keys(getPriceData).map(async (key) => {
-
-            // const quantity = numberData[key] || 0;
             const quantity = getPriceData[key] || 0;
-
             if (quantity > 0) {
                 setLoadingPrices(prev => ({ ...prev, [key]: true }));
 
