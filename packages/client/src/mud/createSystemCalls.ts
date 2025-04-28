@@ -13,7 +13,6 @@ import {
   encodeFunctionData,
 } from "viem";
 import { createWalletClient, custom, parseEther, parseGwei } from "viem";
-import toast from "react-hot-toast";
 let args_index: number = -1;
 import { Payments } from "@uniswap/v3-sdk"
 import { MISSION_BOUNS_CHAIN_IDS } from "../components/select";
@@ -22,12 +21,16 @@ import MissionSystemAbi from "./abi/MissionSystem.abi.json";
 import BonusSystemAbi from "./abi/BonusSystem.abi.json";
 import InviteSystemAbi from "./abi/InviteSystem.abi.json";
 import ExchangeSystemAbi from "./abi/ExchangeSystem.abi.json";
+import popCraftSystemAbi from "./abi/PopCraftSystem.abi.json";
+import popCraftSystemAbiMode from "./abi/PopCraftSystemMode.abi.json";
 import { numToEntityID, addr2NumToEntityID } from "../components/rightPart"
+import { moveMatrixArray, regenerateBottomRows, dfsPopCraft, checkPopAccess } from "./Utils/opUtils"
+import { plantsResourceHex, missionResourceHex, bonusResourceHex, InviteResourceHex, ExchangeResourceHex } from "./Utils/systemResourceHex"
+import { MODE_SCORE_CHAL_SUCCESS_SCORE } from "../constant"
+
 export const update_app_value = (index: number) => {
   args_index = index;
 };
-
-export let abi_json = {};
 
 export type PlantsResponse = {
   error?: string;
@@ -42,26 +45,13 @@ export interface OpRenderingResult {
   tokenBalanceId?: string;
   rankingRecordId?: string;
   seasonRankingRecordId?: string;
+  scoreChalId?:string;
   score?: bigint;
   tokenChange?: {
     tokenAddr?: string;
     amount?: bigint
   };
-}
-
-interface InteractTCMParams {
-  coordinates: any;
-  addressData: any;
-  selectedColor: any;
-  action: string;
-  other_params: any;
-  popStarId?: any;
-  tokenBalanceId?: any;
-  newRankingRecordId?: any;
-  seasonRankingRecordId?: any;
-  isExecute: boolean;
-  account: any;
-  nonce: any;
+  popIndexArr: number[]
 }
 
 export function createSystemCalls(
@@ -89,38 +79,17 @@ export function createSystemCalls(
     waitForTransaction,
     publicClient,
     palyerAddress,
-    walletClient,
-    abi,
     clientOptions,
     maxFeePerGas,
     maxPriorityFeePerGas,
     chainId
   }: SetupNetworkResult,
-  { TCMPopStar, TokenBalance, StarToScore, RankingRecord, WeeklyRecord, SeasonTime, CurrentSeasonDimension, ComboRewardGames }: ClientComponents,
+  { TCMPopStar, TokenBalance, StarToScore, RankingRecord, WeeklyRecord, SeasonTime, CurrentSeasonDimension, ComboRewardGames, ScoreChal, GameMode }: ClientComponents,
 ) {
 
-  const app_name: string = window.localStorage.getItem("app_name") || "paint";
-  // https://pixelaw-game.vercel.app/TCMPopStarSystem.abi.json
-  // const response = await fetch(worldAbiUrl); 
-  // systemData = await response.json();
-  abi_json[app_name] = abi;
-  const update_abi = (value: any, common = false) => {
-    const app_name: string = window.localStorage.getItem("app_name") || "paint";
-    if (common) {
-      abi_json[app_name + "Common"] = value;
-    } else {
-      abi_json[app_name] = value;
-    }
-  };
+  // add new mode chain: change here 
+  const isModeGameChain = [31337, 2818].includes(chainId);
 
-  const entityVal = localStorage.getItem("entityVal") as any;
-  if (entityVal === null) {
-    localStorage.setItem(
-      "entityVal",
-      "0xc96BedB3C0f9aB47E50b53bcC03E5D7294C97cf2"
-    );
-  }
-  let waitingTransaction: boolean = false;
   const namespace = "tcmPopStar";
   const system_name = "TcmPopStar";
   const SYSTEM_ID = resourceToHex({
@@ -161,7 +130,7 @@ export function createSystemCalls(
   ];
 
   let waitTime = 13000;
-  if(chainId === 177){
+  if (chainId === 177) {
     waitTime = 30000
   }
 
@@ -257,7 +226,7 @@ export function createSystemCalls(
       });
 
       const encodeData = encodeFunctionData({
-        abi: abi_json[app_name],
+        abi: [],
         functionName: action,
         args: allArgs
       })
@@ -272,153 +241,6 @@ export function createSystemCalls(
     }
     return [tx, hashValpublic];
   };
-
-
-  const popCraftAbi = [
-    {
-      "inputs": [
-        {
-          "components": [
-            {
-              "internalType": "address",
-              "name": "for_player",
-              "type": "address"
-            },
-            {
-              "internalType": "string",
-              "name": "for_app",
-              "type": "string"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "uint32",
-                  "name": "x",
-                  "type": "uint32"
-                },
-                {
-                  "internalType": "uint32",
-                  "name": "y",
-                  "type": "uint32"
-                }
-              ],
-              "internalType": "struct Position",
-              "name": "position",
-              "type": "tuple"
-            },
-            {
-              "internalType": "string",
-              "name": "color",
-              "type": "string"
-            }
-          ],
-          "internalType": "struct DefaultParameters",
-          "name": "default_parameters",
-          "type": "tuple"
-        }
-      ],
-      "name": "interact",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "components": [
-            {
-              "internalType": "address",
-              "name": "for_player",
-              "type": "address"
-            },
-            {
-              "internalType": "string",
-              "name": "for_app",
-              "type": "string"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "uint32",
-                  "name": "x",
-                  "type": "uint32"
-                },
-                {
-                  "internalType": "uint32",
-                  "name": "y",
-                  "type": "uint32"
-                }
-              ],
-              "internalType": "struct Position",
-              "name": "position",
-              "type": "tuple"
-            },
-            {
-              "internalType": "string",
-              "name": "color",
-              "type": "string"
-            }
-          ],
-          "internalType": "struct DefaultParameters",
-          "name": "default_parameters",
-          "type": "tuple"
-        }
-      ],
-      "name": "pop",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "components": [
-            {
-              "name": "call_data",
-              "type": "bytes",
-              "internalType": "bytes"
-            },
-            {
-              "internalType": "uint256",
-              "name": "value",
-              "type": "uint256"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "token_addr",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "amount",
-                  "type": "uint256"
-                }
-              ],
-              "internalType": "struct TokenInfo",
-              "name": "token_info",
-              "type": "tuple"
-            }
-          ],
-          "internalType": "struct UniversalRouterParams[]",
-          "name": "universalRouterParams",
-          "type": "tuple[]"
-        }
-      ],
-      "name": "buyToken",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "type": "function",
-      "name": "getUserBenefitsToken",
-      "inputs": [],
-      "outputs": [],
-      "stateMutability": "nonpayable"
-    },
-  ]
 
   const popCraftRedstoneBuyAbi = [{
     "inputs": [
@@ -518,28 +340,29 @@ export function createSystemCalls(
     isExecute: any,
     account: any,
     nonce: any,
+    systemName = "PopCraftSystem",
     popStarId?: any,
     tokenBalanceId?: any,
     newRankingRecordId?: any,
     seasonRankingRecordId?: any,
+    scoreChalId?: any,
   ) => {
     let tx, hashValpublic;
 
     if (!isExecute) {
-      rmOverride(popStarId, tokenBalanceId, newRankingRecordId, seasonRankingRecordId);
+      rmOverride(popStarId, tokenBalanceId, newRankingRecordId, seasonRankingRecordId, scoreChalId);
       return [tx, hashValpublic]
     }
     if (!account) {
       return { error: "Not connected" }
     }
-    // const app_name = window.localStorage.getItem("app_name") || "paint";
-    // const system_name = window.localStorage.getItem("system_name") as string;
-    // const namespace = window.localStorage.getItem("namespace") as string;
     const app_name = "popCraft";
-    const system_name = "PopCraftSystem";
     const namespace = "popCraft";
+    const DEFAULT_SYSTEM = "PopCraftSystem";
 
-    let allArgs = [];
+    const isDefaultSystem = systemName === DEFAULT_SYSTEM;
+
+    const abi = isDefaultSystem ? popCraftSystemAbi : popCraftSystemAbiMode;
     const args = {
       for_player: addressData,
       for_app: app_name,
@@ -549,7 +372,7 @@ export function createSystemCalls(
       },
       color: selectedColor,
     };
-    allArgs = [args];
+    let allArgs = [args];
 
     if (other_params !== null) {
       other_params.splice(args_index, 0, args);
@@ -557,9 +380,8 @@ export function createSystemCalls(
     }
 
     try {
-
       const encodeData = encodeFunctionData({
-        abi: popCraftAbi,
+        abi: abi,
         functionName: action,
         args: allArgs,
       });
@@ -571,7 +393,7 @@ export function createSystemCalls(
             resourceToHex({
               type: "system",
               namespace: namespace,
-              name: system_name,
+              name: DEFAULT_SYSTEM,
             }),
             encodeData,
           ], {
@@ -582,9 +404,8 @@ export function createSystemCalls(
           });
           hashValpublic = await publicClient.waitForTransactionReceipt({ hash: txData });
           // hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }),7000);
-          await waitForTransaction(txData);
+          await waitForTransaction(txData);  
           firstGameOver = true
-          // waitingTransaction = false;
         } catch (error) {
           return { error: error.message };
         }
@@ -597,7 +418,7 @@ export function createSystemCalls(
             resourceToHex({
               type: "system",
               namespace: namespace,
-              name: system_name,
+              name: systemName,
             }),
             encodeData,
           ], {
@@ -633,16 +454,13 @@ export function createSystemCalls(
           // unwatch()
           await waitForTransaction(txData);
         } catch (error: any) {
-          // waitingTransaction = false;
           return { error: error.message };
         } finally {
-          rmOverride(popStarId, tokenBalanceId, newRankingRecordId, seasonRankingRecordId)
-
+          rmOverride(popStarId, tokenBalanceId, newRankingRecordId, seasonRankingRecordId, scoreChalId)
         }
 
       }
     } catch (error) {
-      waitingTransaction = false;
       return { error: error.message };
     }
     return [tx, hashValpublic];
@@ -666,7 +484,7 @@ export function createSystemCalls(
     });
   }
 
-  function rmOverride(popStarId: any, tokenBalanceId: any, newRankingRecordId: any, seasonRankingRecordId: any) {
+  function rmOverride(popStarId: any, tokenBalanceId: any, newRankingRecordId: any, seasonRankingRecordId: any, scoreChalId: any) {
     if (popStarId) {
       TCMPopStar.removeOverride(popStarId);
     }
@@ -679,6 +497,9 @@ export function createSystemCalls(
     if (seasonRankingRecordId) {
       WeeklyRecord.removeOverride(seasonRankingRecordId);
     }
+    if (scoreChalId) {
+      ScoreChal.removeOverride(scoreChalId);
+    }
   }
 
   const payFunction = async (methodParametersArray: any[], totalValue = 0n) => {
@@ -687,7 +508,7 @@ export function createSystemCalls(
     let system_name = "PopCraftSystem";
 
     // add new chain: change here
-    if(chainId === 31337 || chainId === 2818){
+    if (chainId === 31337 || chainId === 2818) {
       system_name = "BuySystem"
     }
     let hashValpublic;
@@ -776,7 +597,7 @@ export function createSystemCalls(
         args.push(arg_single);
       }
       abi = popCraftMintChainBuyAbi;
-      if(theTotalValue > 0n){
+      if (theTotalValue > 0n) {
         totalValue = theTotalValue
       }
     }
@@ -784,15 +605,13 @@ export function createSystemCalls(
     return { "totalValue": totalValue, "args": args, "abi": abi }
   };
 
-
-  // function opRendering(positionX: number, positionY: number, playerAddr: any) {
   const opRendering = (positionX: number, positionY: number, playerAddr: "0x${string}"): OpRenderingResult => {
-    let popStarId;
     let tokenBalanceId;
-    let rankingRecordId;
+    let scoreChalId;
     let seasonRankingRecordId;
     let eliminateAmount = 0;
     let tokenChange = {};
+    const popIndexArr: number[] = [];
     if (!playerAddr) {
       throw new Error("Address undefind");
     }
@@ -819,25 +638,27 @@ export function createSystemCalls(
     const popAccess: boolean = checkPopAccess(matrixIndex, targetValue, matrixArray);
     const tokenAddr = tcmPopStarData.tokenAddressArr[Number(targetValue) - 1];
     if (!popAccess) {
-      matrixArray[matrixIndex] = 0n;
-      eliminateAmount = 1;
       tokenBalanceId = consumeTokens(tokenAddr, playerAddr);
+      eliminateAmount = 1;
+      matrixArray[matrixIndex] = 0n;
       tokenChange = {
         tokenAddr,
         amount: -1
       }
+      popIndexArr.push(matrixIndex)
     } else {
-      const [updatedMatrixArray, finalEliminateAmount] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0);
+      const [updatedMatrixArray, finalEliminateAmount ] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0, popIndexArr);
+      
       eliminateAmount = finalEliminateAmount;
       if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && eliminateAmount >= 5) {
         const comboRewardGamesData = getComponentValue(ComboRewardGames, playerEntity);
-        
-        if(comboRewardGamesData && Number(comboRewardGamesData.games) > 3 && Number(comboRewardGamesData.addedTime) == getCurrentCommon(5)){
+
+        if (comboRewardGamesData && Number(comboRewardGamesData.games) > 3 && Number(comboRewardGamesData.addedTime) == getCurrentCommon(5)) {
           tokenChange = {
             tokenAddr: '',
             amount: 0
           }
-        }else{
+        } else {
           const amount = Math.floor(eliminateAmount / 5);
           tokenChange = {
             tokenAddr,
@@ -845,42 +666,26 @@ export function createSystemCalls(
           }
           tokenBalanceId = comboReward(amount, tokenAddr, playerAddr);
         }
-        
       }
     }
     moveMatrixArray(matrixArray);
-
-    const allZeros = matrixArray.every((data) => data === 0n);
-    if (!allZeros) {
-      popStarId = uuid();
-      TCMPopStar.addOverride(popStarId, {
-        entity: playerEntity,
-        value: newTcmPopStarData,
-      });
-    } else {
-      waitingTransaction = true;
-      localStorage.setItem('isShowWaitingMaskLayer', 'true')
-      // toast.success("Action submitted, waiting...");
-      console.warn("Action submitted, waiting...");
-    }
-
+    let isSuccess = matrixArray.every((data) => data === 0n);
     const score = getStartToScore(eliminateAmount);
+    let newRankingRecord = {}
     if (score > 0n) {
       const rankingRecordData = getComponentValue(RankingRecord, playerEntity);
+      let latestScores = 0n;
       if (rankingRecordData) {
-        const newRankingRecord = {
+        latestScores = rankingRecordData.latestScores as bigint + score;
+        newRankingRecord = {
           ...rankingRecordData,
           totalScore: rankingRecordData.totalScore as bigint + score,
-          latestScores: rankingRecordData.latestScores as bigint + score
+          latestScores: latestScores
         };
-        rankingRecordId = uuid();
-        RankingRecord.addOverride(rankingRecordId, {
-          entity: playerEntity,
-          value: newRankingRecord,
-        });
+       
       }
-      
-      if (chainId === 2818 || chainId === 31337) {
+      // add new chain: change here
+      if (isModeGameChain) {
         const csd = getComponentValue(CurrentSeasonDimension, numToEntityID(0));
         let season = 0;
 
@@ -914,17 +719,64 @@ export function createSystemCalls(
             });
           }
         }
+
+        const gameModeData = getComponentValue(GameMode, playerEntity);
+        if (gameModeData && gameModeData.mode == 1n) {
+          isSuccess = latestScores >= MODE_SCORE_CHAL_SUCCESS_SCORE;
+          if (!isSuccess) {
+            const scoreChalData = getComponentValue(ScoreChal, playerEntity);
+            if (scoreChalData) {
+              regenerateBottomRows(matrixArray, scoreChalData.newMatrixArray as bigint[])
+              scoreChalId = uuid();
+              ScoreChal.addOverride(scoreChalId, {
+                entity: playerEntity,
+                value: scoreChalData,
+              });
+            }
+          }
+        }
       }
     }
+    const [popStarId, rankingRecordId] = handlePopStarOrWait(playerEntity, isSuccess, newTcmPopStarData, newRankingRecord);
+
     return {
       popStarId,
       tokenBalanceId,
       rankingRecordId,
       seasonRankingRecordId,
+      scoreChalId,
       score,
-      tokenChange
+      tokenChange,
+      popIndexArr
     };
-    // return [popStarId, tokenBalanceId, rankingRecordId, seasonRankingRecordId, score, tokenChange];
+  }
+
+  function handlePopStarOrWait(
+    entity: any,
+    isSuccess: boolean,
+    newTcmPopStarData: any,
+    newRankingRecord: any
+  ): [string | undefined, string | undefined] {
+    if (!isSuccess) {
+      const popStartId = uuid();
+      TCMPopStar.addOverride(popStartId, {
+        entity,
+        value: newTcmPopStarData,
+      });
+      let rankingRecordId;
+      if(newRankingRecord && Object.keys(newRankingRecord).length > 0){
+        rankingRecordId = uuid();
+        RankingRecord.addOverride(rankingRecordId, {
+          entity: entity,
+          value: newRankingRecord,
+        });
+      }
+      return [popStartId, rankingRecordId];
+    } else {
+      localStorage.setItem("isShowWaitingMaskLayer", "true");
+      console.warn("Action submitted, waiting...");
+      return [undefined, undefined];
+    }
   }
 
   function consumeTokens(tokenAddr: any, playerAddr: any) {
@@ -951,157 +803,25 @@ export function createSystemCalls(
   }
 
   function comboReward(amount: number, tokenAddr: `0x${string}`, playerAddr: `0x${string}`) {
-      // add new token: change here
-      const tokenBalanceEntity = encodeEntity({ playerAddress: "address", tokenAddress: "address" }, { playerAddress: playerAddr, tokenAddress: tokenAddr });
-      const tokenBalanceData = getComponentValue(TokenBalance, tokenBalanceEntity);
-      const tokenBalanceId = uuid();
-      let oldBalance = 0n;
-      if (tokenBalanceData && tokenBalanceData.balance) {
-        oldBalance = tokenBalanceData.balance as bigint
-      }
-      const rewardTokenAmount = oldBalance + BigInt(amount) * 10n ** 18n;
-      const newTokenBalance = {
-        ...tokenBalanceData,
-        balance: rewardTokenAmount
-      };
-
-      TokenBalance.addOverride(tokenBalanceId, {
-        entity: tokenBalanceEntity,
-        value: newTokenBalance,
-      });
-      return tokenBalanceId;
-  }
-
-  function dfsPopCraft(matrixIndex: number, targetValue: bigint, matrixArray: bigint[], eliminateAmount: number): [bigint[], number] {
-    const x = matrixIndex % 10;
-    const y = Math.floor(matrixIndex / 10);
-
-    let index: number;
-
-    // 检查左边
-    if (x > 0) {
-      index = matrixIndex - 1;
-      if (matrixArray[index] === targetValue) {
-        matrixArray[index] = 0n;
-        eliminateAmount += 1;
-        [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount);
-      }
+    // add new token: change here
+    const tokenBalanceEntity = encodeEntity({ playerAddress: "address", tokenAddress: "address" }, { playerAddress: playerAddr, tokenAddress: tokenAddr });
+    const tokenBalanceData = getComponentValue(TokenBalance, tokenBalanceEntity);
+    const tokenBalanceId = uuid();
+    let oldBalance = 0n;
+    if (tokenBalanceData && tokenBalanceData.balance) {
+      oldBalance = tokenBalanceData.balance as bigint
     }
+    const rewardTokenAmount = oldBalance + BigInt(amount) * 10n ** 18n;
+    const newTokenBalance = {
+      ...tokenBalanceData,
+      balance: rewardTokenAmount
+    };
 
-    // 检查右边
-    if (x < 9) {
-      index = matrixIndex + 1;
-      if (matrixArray[index] === targetValue) {
-        matrixArray[index] = 0n;
-        eliminateAmount += 1;
-        [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount);
-      }
-    }
-
-    // 检查上方
-    if (y > 0) {
-      index = matrixIndex - 10;
-      if (matrixArray[index] === targetValue) {
-        matrixArray[index] = 0n;
-        eliminateAmount += 1;
-        [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount);
-      }
-    }
-
-    // 检查下方
-    if (y < 9) {
-      index = matrixIndex + 10;
-      if (matrixArray[index] === targetValue) {
-        matrixArray[index] = 0n;
-        eliminateAmount += 1;
-        [matrixArray, eliminateAmount] = dfsPopCraft(index, targetValue, matrixArray, eliminateAmount);
-      }
-    }
-
-    return [matrixArray, eliminateAmount];
-  }
-
-  function moveMatrixArray(matrixArray: bigint[]): bigint[] {
-    let index: number;
-    let zeroIndexRow: number;
-    let zeroIndexColBot = 89;
-    let zeroIndexCol: number;
-
-    for (let i = 0; i < 10; i++) {
-      zeroIndexRow = 90 + i;
-
-      for (let j = 10; j > 0; j--) {
-        index = i + (j - 1) * 10;
-
-        if (matrixArray[index] !== 0n) {
-          if (index !== zeroIndexRow) {
-            matrixArray[zeroIndexRow] = matrixArray[index];
-            matrixArray[index] = 0n;
-          }
-          zeroIndexRow -= 10;
-        }
-      }
-
-      if (i > 0 && matrixArray[zeroIndexColBot] === 0n) {
-        if (matrixArray[90 + i] !== 0n) {
-          zeroIndexCol = zeroIndexColBot - 90;
-
-          for (let x = 0; x < 10; x++) {
-            index = i + x * 10;
-            if (matrixArray[index] !== 0n) {
-              matrixArray[x * 10 + zeroIndexCol] = matrixArray[index];
-              matrixArray[index] = 0n;
-            }
-          }
-          zeroIndexColBot += 1;
-        }
-      } else {
-        zeroIndexColBot += 1;
-      }
-    }
-
-    return matrixArray;
-  }
-
-  function checkPopAccess(matrixIndex: number, targetValue: bigint, matrixArray: bigint[]): boolean {
-    const x = matrixIndex % 10;
-    const y = Math.floor(matrixIndex / 10);
-
-    let index: number;
-
-    // 检查左侧的元素
-    if (x > 0) {
-      index = matrixIndex - 1;
-      if (matrixArray[index] === targetValue) {
-        return true;
-      }
-    }
-
-    // 检查右侧的元素
-    if (x < 9) {
-      index = matrixIndex + 1;
-      if (matrixArray[index] === targetValue) {
-        return true;
-      }
-    }
-
-    // 检查上方的元素
-    if (y > 0) {
-      index = matrixIndex - 10;
-      if (matrixArray[index] === targetValue) {
-        return true;
-      }
-    }
-
-    // 检查下方的元素
-    if (y < 9) {
-      index = matrixIndex + 10;
-      if (matrixArray[index] === targetValue) {
-        return true;
-      }
-    }
-
-    return false;
+    TokenBalance.addOverride(tokenBalanceId, {
+      entity: tokenBalanceEntity,
+      value: newTokenBalance,
+    });
+    return tokenBalanceId;
   }
 
   function getStartToScore(eliminateAmount: number) {
@@ -1135,42 +855,6 @@ export function createSystemCalls(
     }
     return resultScore;
   }
-
-  const plantsResourceHex = resourceToHex({
-    type: "system",
-    namespace: "popCraft",
-    name: "PlantsSystem",
-  })
-
-  const popcraftResourceHex = resourceToHex({
-    type: "system",
-    namespace: "popCraft",
-    name: "PopCraftSystem",
-  })
-
-  const missionResourceHex = resourceToHex({
-    type: "system",
-    namespace: "popCraft",
-    name: "MissionSystem",
-  })
-
-  const bonusResourceHex = resourceToHex({
-    type: "system",
-    namespace: "popCraft",
-    name: "BonusSystem",
-  })
-
-  const InviteResourceHex = resourceToHex({
-    type: "system",
-    namespace: "popCraft",
-    name: "InviteSystem",
-  })
-
-  const ExchangeResourceHex = resourceToHex({
-    type: "system",
-    namespace: "popCraft",
-    name: "ExchangeSystem",
-  })
 
   const collectSeed = async (
     account: any,
@@ -1264,7 +948,7 @@ export function createSystemCalls(
   ): Promise<CallResponse> => {
     let hashValpublic: any;
     const encodeData = encodeFunctionData({
-      abi: popCraftAbi,
+      abi: popCraftSystemAbi,
       functionName: "getUserBenefitsToken",
       args: [],
     });
@@ -1323,7 +1007,7 @@ export function createSystemCalls(
       });
       hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
       await waitForTransaction(txData);
-      
+
       if (hashValpublic.status === "reverted") {
         const { simulateContractRequest } = await publicClient.simulateContract({
           account: palyerAddress,
@@ -1343,7 +1027,7 @@ export function createSystemCalls(
     return hashValpublic;
   };
 
-  function getCurrentCommon(latitude: number){
+  function getCurrentCommon(latitude: number) {
     const seasonTimeData = getComponentValue(SeasonTime, numToEntityID(latitude));
     const timestamp = Math.floor(Date.now() / 1000);
     if (!seasonTimeData || timestamp < Number(seasonTimeData.startTime) || Number(seasonTimeData.duration) === 0) {
@@ -1377,7 +1061,7 @@ export function createSystemCalls(
 
       hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
       await waitForTransaction(txData);
-      
+
       if (hashValpublic.status === "reverted") {
         const { simulateContractRequest } = await publicClient.simulateContract({
           account: palyerAddress,
@@ -1391,7 +1075,7 @@ export function createSystemCalls(
           ],
         })
       }
-      
+
     } catch (error) {
       return { error: error.message };
     }
@@ -1422,7 +1106,7 @@ export function createSystemCalls(
 
       hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
       await waitForTransaction(txData);
-      
+
       if (hashValpublic.status === "reverted") {
         const { simulateContractRequest } = await publicClient.simulateContract({
           account: palyerAddress,
@@ -1436,7 +1120,7 @@ export function createSystemCalls(
           ],
         })
       }
-      
+
     } catch (error) {
       return { error: error.message };
     }
@@ -1509,7 +1193,7 @@ export function createSystemCalls(
 
       hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
       await waitForTransaction(txData);
-      
+
       if (hashValpublic.status === "reverted") {
         const { simulateContractRequest } = await publicClient.simulateContract({
           account: account,
@@ -1552,7 +1236,7 @@ export function createSystemCalls(
       });
       hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
       await waitForTransaction(txData);
-      
+
       if (hashValpublic.status === "reverted") {
         const { simulateContractRequest } = await publicClient.simulateContract({
           account: palyerAddress,
@@ -1581,14 +1265,14 @@ export function createSystemCalls(
     let hashValpublic: any;
     const callData = [];
     for (let index = 0; index < data.length; index++) {
-      if(data[index].amount > 0){
+      if (data[index].amount > 0) {
         callData.push(data[index]);
       }
     }
     if (callData.length == 0) {
       return { error: "No data" };
     }
-    
+
     const encodeData = encodeFunctionData({
       abi: ExchangeSystemAbi,
       functionName: "gpExchangeToken",
@@ -1607,7 +1291,7 @@ export function createSystemCalls(
       });
       hashValpublic = await withTimeout(publicClient.waitForTransactionReceipt({ hash: txData }), waitTime);
       await waitForTransaction(txData);
-      
+
       if (hashValpublic.status === "reverted") {
         const { simulateContractRequest } = await publicClient.simulateContract({
           account: palyerAddress,
@@ -1629,7 +1313,6 @@ export function createSystemCalls(
 
 
   return {
-    update_abi,
     interact,
     interactTCM,
     payFunction,

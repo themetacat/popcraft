@@ -25,7 +25,7 @@ import SimbaImg from "../../../public/image/private/SIMBA.webp";
 import KoalaImg from "../../../public/image/private/KOALA.webp";
 import { generateRoute, generateRouteMintChain } from '../../uniswap_routing/routing'
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useTopUp } from "../select";
+import { useTopUp, MODE_GAME_CHAIN_IDS } from "../select";
 import { encodeEntity } from "@latticexyz/store-sync/recs";
 import { getComponentValue } from "@latticexyz/recs";
 import substanceImg from "../../images/substance/substance.webp";
@@ -34,6 +34,11 @@ import mobileStyle from "../mobile/css/BoxPrompt/index.module.css";
 import GenesisNFTImg from "../../images/HowToPlay/GenesisNFT117.webp";
 import { useNFTDiscount } from "../Utils/ERC721Utils";
 import discountTipsImg from "../../images/substance/NFTDiscountTips.jpg";
+import { useComponentValue } from "@latticexyz/react";
+import { checkIsSuccess, checkClearBoard } from "../Utils/popCraftUtils"
+import ModeSelectImg from "../../images/gameover/ModeSelect.webp"
+import ModeSelectSucImg from "../../images/gameover/ModeSucSelect.webp"
+import { OVER_TIME } from "../../constant"
 
 interface Props {
   timeControl: any;
@@ -45,9 +50,10 @@ interface Props {
   checkInteractTask: any,
   isMobile: boolean,
   showMobileInDayBonus: any
-  popStar: boolean,
+  gameMode: number,
+  setGameMode: any
 }
-export default function BoxPrompt({ timeControl, playFun, handleEoaContractData, setPopStar, showTopElements, interactTaskToExecute, checkInteractTask, isMobile, showMobileInDayBonus, popStar }: Props) {
+export default function BoxPrompt({ timeControl, playFun, handleEoaContractData, setPopStar, showTopElements, interactTaskToExecute, checkInteractTask, isMobile, showMobileInDayBonus, gameMode, setGameMode }: Props) {
   const {
     components: {
       TCMPopStar,
@@ -55,13 +61,13 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
       UserDelegationControl,
       RankingRecord,
       PriTokenPrice,
-      GameRecord
+      GameRecord,
+      GameMode
     },
     network: { palyerAddress },
     systemCalls: { payFunction },
   } = useMUD();
-  const overTime = 122;
-  const [timeLeft, setTimeLeft] = useState(overTime);
+  const [timeLeft, setTimeLeft] = useState(OVER_TIME);
   const [warnBox, setWarnBox] = useState(false);
   const [dataq, setdataq] = useState(false);
   const [cresa, setcresa] = useState(false);
@@ -69,11 +75,11 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
   const [first, setFirst] = useState(false);
   const [data2, setdata2] = useState(false);
   const [gameSuccess, setGameSuccess] = useState(false);
-  const [getEoaContractData, setGetEoaContractData] = useState(null);
+  const [getEoaContractData, setGetEoaContractData] = useState([]);
   const [balanceData, setBalanceData] = useState({});
   const [numberData, setNumberData] = useState({});
   const { address, isConnected } = useAccount();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [loadingPlayAgain, setLoadingPlayAgain] = useState(false);
   const [isPriceLoaded, setIsPriceLoaded] = useState(false);
   const [prices, setPrices] = useState({});
@@ -88,6 +94,11 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
   const [showCrossFlow, setShowCrossFlow] = useState(false);
   const default_buy_token_num = 5;
   const discount = useNFTDiscount(chainId, address);
+  const [temporaryGameMode, setTemporaryGameMode] = useState(0);
+
+  useEffect(() => {
+    setTemporaryGameMode(gameMode);
+  }, [gameMode])
 
   useEffect(() => {
     const rankRecord = address ? getComponentValue(
@@ -101,9 +112,9 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
     }
   }, [])
 
-  const handlePlayAgain = () => {
+  const handlePlayAgain = (gameModeValue = -1) => {
     setLoading(true);
-    playFun();
+    playFun(gameModeValue);
     setPopStar(false);
     setdataq(false);
   };
@@ -129,7 +140,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
     balanceData
   );
 
-  function getMatchedData(tokenAddresses, imageData, balanceData) {
+  function getMatchedData(tokenAddresses: string[], imageData: any, balanceData: any) {
     const result = {};
     tokenAddresses?.forEach((address) => {
       if (imageData[address]) {
@@ -152,115 +163,111 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
     return result;
   }
 
-  const fetchData = async () => {
-    try {
-      if (address === undefined) {
-        return;
-      }
-      const TCMPopStarData = getComponentValue(
-        TCMPopStar,
-        addressToEntityID(address)
-      );
-      if (TCMPopStarData) {
-        const tokenBalanceResults = TCMPopStarData.tokenAddressArr.map(
-          (item) => {
-            try {
-              const balance = getComponentValue(
-                TokenBalance,
-                addressToEntityIDTwo(address, item)
-              );
-              // console.log(addressToEntityIDTwo(address, item));
+  const safeAddress = address ?? "0x0000000000000000000000000000000000000000";
+  const safeAddressEntityID = addressToEntityID(safeAddress);
+  const TCMPopStarData = useComponentValue(TCMPopStar, safeAddressEntityID);
+  const gameModeData = useComponentValue(GameMode, safeAddressEntityID);
+  const rankingRecordData = useComponentValue(RankingRecord, safeAddressEntityID);
+  const deleGeData = useComponentValue(UserDelegationControl, addressToEntityIDTwo(safeAddress, palyerAddress));
 
-              return { [item]: balance };
-            } catch (error) {
-              console.error(`Error fetching balance for ${item}:`, error);
-              return { [item]: undefined };
-            }
-          }
-        );
-        setBalanceData(tokenBalanceResults)
-      }
-      const deleGeData = getComponentValue(
-        UserDelegationControl,
-        addressToEntityIDTwo(address, palyerAddress)
-      );
-      if (deleGeData) {
-        localStorage.setItem('deleGeData', "true")
-      } else {
-        localStorage.setItem('deleGeData', "undefined")
-      }
-      return TCMPopStarData;
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  useEffect(() => {
+    handleEoaContractData(TCMPopStarData);
 
-  const updateTCMPopStarData = () => {
-    const allTCMPopStarData = fetchData();
-    allTCMPopStarData.then((TCMPopStarData) => {
-      if (palyerAddress !== undefined) {
-        handleEoaContractData(TCMPopStarData);
-        if (TCMPopStarData) {
-          setGetEoaContractData(TCMPopStarData?.tokenAddressArr);
-          const blockchainStartTime = Number(TCMPopStarData.startTime) as any;
-          const currentTime = Math.floor(Date.now() / 1000);
-          const elapsedTime = currentTime - blockchainStartTime;
-          const updatedTimeLeft = Math.max(overTime - elapsedTime, 0);
-          setTimeLeft(updatedTimeLeft);
-          const allZeros = TCMPopStarData.matrixArray.every((data) => data === 0n);
-          if (allZeros) {
-            localStorage.setItem('showGameOver', 'true');
-            setGameSuccess(true)
-          }
-          else {
-            setLoadingPlayAgain(false)
-            setGameSuccess(false)
-            if (!first) {
-              setFirst(true)
-            }
-          }
+    if (!TCMPopStarData) return;
+    if (!address) return;
+    const isSuccess = checkIsSuccess({
+      gameModeData,
+      TCMPopStarData,
+      rankingRecordData,
+    });
+    setTokenBalance();
+
+    if (isSuccess) {
+      // localStorage.setItem('showGameOver', 'true');
+      setGameSuccess(true)
+    } else {
+      setGameSuccess(false);
+      if (!first) setFirst(true);
+      if (gameModeData && gameModeData.mode == 1n) {
+        const clear = checkClearBoard(TCMPopStarData.matrixArray as bigint[]);
+        if (clear) {
+          setTimeLeft(0);
         }
+      }
+    }
+  }, [TCMPopStarData, address, TokenBalance, first, gameModeData, RankingRecord, rankingRecordData]);
+
+  useEffect(() => {
+    if (!TCMPopStarData?.startTime) return;
+    const blockchainStartTime = Number(TCMPopStarData.startTime);
+    const currentTime = Math.floor(Date.now() / 1000);
+    const elapsedTime = currentTime - blockchainStartTime;
+    const updatedTimeLeft = Math.max(OVER_TIME - elapsedTime, 0);
+    setTimeLeft(updatedTimeLeft);
+    setLoading(false);
+    setLoadingPlayAgain(false);
+  }, [TCMPopStarData?.startTime]);
+
+  useEffect(() => {
+    if (!TCMPopStarData?.tokenAddressArr) return;
+    setGetEoaContractData(TCMPopStarData.tokenAddressArr as []);
+  }, [TCMPopStarData?.tokenAddressArr]);
+
+  useEffect(() => {
+    if (deleGeData) {
+      localStorage.setItem('deleGeData', "true")
+    } else {
+      localStorage.setItem('deleGeData', "undefined")
+    }
+  }, [deleGeData])
+
+  const setTokenBalance = () => {
+    const tokenBalanceResults = TCMPopStarData.tokenAddressArr.map((tokenAddress: string) => {
+      try {
+        const balance = getComponentValue(
+          TokenBalance,
+          addressToEntityIDTwo(address, tokenAddress)
+        );
+        return { [tokenAddress]: balance };
+      } catch (error) {
+        console.error(`Error fetching balance for ${tokenAddress}:`, error);
+        return { [tokenAddress]: undefined };
       }
     });
-  };
+    setBalanceData(tokenBalanceResults);
+  }
 
   useEffect(() => {
-    if (isConnected) {
-      const interval = setInterval(() => {
-        const currentTime = new Date().toLocaleString();
-        updateTCMPopStarData();
-      }, 500);
-      return () => clearInterval(interval);
+    // if (gameSuccess) {
+    //   setTimeLeft(0);
+    // }
+    if (!timeControl || gameSuccess) return;
+    if (timeLeft <= 0) return;
+    if (localStorage.getItem('showGameOver') != 'false') {
+      localStorage.setItem('showGameOver', 'false')
     }
-  }, [isConnected]);
-
-
-  useEffect(() => {
-    if (timeControl && gameSuccess === false) {
-
-      if (timeLeft > 0) {
-        if (localStorage.getItem('showGameOver') != 'false') {
-          localStorage.setItem('showGameOver', 'false')
+    const timer = setTimeout(() => {
+      setTimeLeft((prevTimeLeft) => {
+        if (prevTimeLeft <= 0) {
+          return 0;
         }
-        const timer = setTimeout(() => {
-          setTimeLeft(timeLeft - 1);
+        const newTimeLeft = prevTimeLeft - 1;
 
-          if (localStorage.getItem('showGameOver') === 'false') {
-            if (timeLeft <= 1 && !interactTaskToExecute && localStorage.getItem("isShowWaitingMaskLayer") === "false") {
-              localStorage.setItem('showGameOver', 'true')
-            }
-            setLoading(false)
+        if (localStorage.getItem('showGameOver') === 'false') {
+          if (newTimeLeft <= 1 && !interactTaskToExecute && localStorage.getItem("isShowWaitingMaskLayer") === "false") {
+            localStorage.setItem('showGameOver', 'true');
           }
-        }, 1000);
-      }
-    }
-    if (gameSuccess === true) {
-      setTimeLeft(0)
-    }
+        }
+        return newTimeLeft;
+      });
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [timeLeft, timeControl, gameSuccess, interactTaskToExecute]);
 
   useEffect(() => {
+
     if (checkInteractTask && timeLeft <= 0) {
+
       if (interactTaskToExecute && localStorage.getItem("showGameOver") === "false") {
         localStorage.setItem('isShowWaitingMaskLayer', 'true')
       }
@@ -300,6 +307,9 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
           setShowSuccessModal(false);
           setdataq(false);
         }, 1000);
+        setTimeout(() => {
+          setTokenBalance();
+        }, 2000);
       } else {
         toast.error("Payment failed! Try again!");
         setcresa(false);
@@ -322,17 +332,14 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
 
   useEffect(() => {
     const fetchData = async () => {
-      const matchedData = getMatchedData(
-        getEoaContractData,
-        imageIconData,
-        balanceData
-      );
       setForPayMonType(true);
       setIsPriceLoaded(true);
       setForPayMonType(false);
     };
     if (isConnected) {
       fetchData();
+    } else {
+      setGameSuccess(false)
     }
   }, [isConnected, getEoaContractData, balanceData]);
 
@@ -570,28 +577,11 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
 
   useEffect(() => {
     localStorage.setItem('showGameOver', 'false');
-    // const showGameOver = localStorage.getItem('showGameOver');
-    // if (showGameOver === 'true') {
-    //   setGameSuccess(true);
-    // } else {
     setGameSuccess(false);
-    // }
   }, []);
 
   const formatAmount = (amount: any) => {
     return parseFloat(amount).toFixed(8).replace(/\.?0+$/, "");
-  };
-
-  const formatBalance = (balance) => {
-    return balance.toLocaleString();
-  };
-
-  const getRoute = async () => {
-    const matchedData = getMatchedData(
-      getEoaContractData,
-      imageIconData,
-      balanceData
-    );
   };
 
   useEffect(() => {
@@ -612,11 +602,13 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
   const [isDiscountTipsVisible, setIsDiscountTipsVisible] = useState(false);
 
   const handleDiscountTipsClick = () => {
-      setIsDiscountTipsVisible(true);
-      setTimeout(() => {
-          setIsDiscountTipsVisible(false);
-      }, 1500);
+    setIsDiscountTipsVisible(true);
+    setTimeout(() => {
+      setIsDiscountTipsVisible(false);
+    }, 1500);
   };
+
+  const isModeGameChain = MODE_GAME_CHAIN_IDS.includes(chainId);
 
   if (!isMobile) {
     return (
@@ -627,12 +619,13 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
               <div className={style.firstPart}>
                 <p className={style.firstnew}>
                   {timeControl && timeLeft !== 0 && gameSuccess === false ? formatTime(timeLeft) :
-                    <div onClick={() => {
-                      playFun()
-                    }}>New<br />Game</div>
+                    <div>00:00</div>
+                    // <div onClick={() => {
+                    //   playFun()
+                    // }}>New<br />Game</div>
                   }
                 </p>
-                {timeControl && timeLeft !== 0 && gameSuccess === false ? <p>TIME</p> : null}
+                <p>TIME</p>
               </div>
               <div className={style.twoPart} >
                 <p>{rewardInfo}</p>
@@ -667,7 +660,6 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                   className={style.buyBtn}
                   onClick={async () => {
                     setdataq(!warnBox);
-                    // getRoute()
                   }}
                 >
                   BUY
@@ -774,14 +766,14 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                 <span className={style.leftSpan}>
                   NFT(-{discount}%)
                   <span className={style.discountWrapper}>
-                      <img src={discountTipsImg} className={style.discountTipsImg} />
-                      <div className={style.discountTipsText}>
-                          <p>PopCraft Genesis NFT</p>
-                          <p>1 NFT → 10% OFF</p>
-                          <p>2 NFTs → 20% OFF</p>
-                          <p>3 NFTs → 30% OFF</p>
-                          <p>4+ NFTs → 40% OFF</p>
-                      </div>
+                    <img src={discountTipsImg} className={style.discountTipsImg} />
+                    <div className={style.discountTipsText}>
+                      <p>PopCraft Genesis NFT</p>
+                      <p>1 NFT → 10% OFF</p>
+                      <p>2 NFTs → 20% OFF</p>
+                      <p>3 NFTs → 30% OFF</p>
+                      <p>4+ NFTs → 40% OFF</p>
+                    </div>
                   </span>
                   :
                 </span>
@@ -941,17 +933,119 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
               <div
                 className={panningType !== "false" ? style.overlayBuy : style.overlay}
               >
-                <div className={style.contentSuccess}>
-                  <p>Game Over!</p>
+                {isModeGameChain ?
+                  <div className={style.modeGameOver}>
+                    <p>Game Over!</p>
+                    <div className={style.mgwModulesWrapper}>
+                      <div
+                        className={`${style.mgwModeChoose} ${gameMode == 0 ? style.mgwModeSelectBg : ''} ${loading ? style.mgwModeChooseNotAllow : style.mgwModeChooseAllow} `}
+                        onClick={loading ? undefined : () => setGameMode(0)}
+                      >
+                        <div className={`${style.mgwModeChooseHeader} ${gameMode == 0 ? style.mgwModeSelectHeader : ''}`}>
+                          <span>CLEAR BOARD</span>
+                        </div>
+                        <div className={style.mgwModeSelectConcernBg}>
+                          {gameMode == 0 && <img src={ModeSelectImg} alt="" />}
+                        </div>
+                      </div>
+                      <div
+                        className={`${style.mgwModeChoose} ${gameMode == 1 ? style.mgwModeSelectBg : ''} ${loading ? style.mgwModeChooseNotAllow : style.mgwModeChooseAllow} `}
+                        onClick={loading ? undefined : () => setGameMode(1)}
+                      >
+                        <div className={`${style.mgwModeChooseHeader} ${gameMode == 1 ? style.mgwModeSelectHeader : ''}`}>
+                          <span>SCORE CHALLENGE </span>
+                        </div>
+                        <div className={style.mgwModeSelectConcernBg}>
+                          {gameMode == 1 && <img src={ModeSelectImg} alt="" />}
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => handlePlayAgain()}
+                      disabled={loading}
+                      style={{
+                        cursor: loading ? "not-allowed" : "pointer",
+                        pointerEvents: loading ? "none" : "auto"
+                      }}
+                    >
+                      {loading ? (
+                        <img
+                          src={loadingImg}
+                          className={`${style.commonCls2} ${style.spinAnimation}`}
+                        />
+                      ) : (
+                        "Play Again"
+                      )}
+                    </button>
+                  </div>
+                  :
+                  <div className={style.contentSuccess}>
+                    <p>Game Over!</p>
+                    <button
+                      onClick={() => handlePlayAgain()}
+                      disabled={loading}
+                      style={{
+                        cursor: loading ? "not-allowed" : "pointer",
+                        pointerEvents: loading ? "none" : "auto"
+                      }}
+                    >
+                      {loading ? (
+                        <img
+                          src={loadingImg}
+                          className={`${style.commonCls2} ${style.spinAnimation}`}
+                        />
+                      ) : (
+                        "Play Again"
+                      )}
+                    </button>
+                  </div>
+                }
+
+              </div>
+            ) : null}
+        {gameSuccess === true
+          // && localStorage.getItem('showGameOver') === 'true'
+          ? (
+            <div
+              className={panningType !== "false" ? style.overlayBuy : style.overlay}
+            >
+              {isModeGameChain ?
+                <div className={style.contentCon}>
+                  <p>Congrats!</p>
+                  {rewardInfo ? <p>+{rewardInfo}!</p> : <p></p>}
+                  <div className={style.mgwModulesWrapper}>
+                    <div
+                      className={`${style.mgwModeChoose} ${style.mgwModeChooseSuc} ${gameMode == 0 ? style.mgwModeSelectBgSuc : ''} ${loadingPlayAgain ? style.mgwModeChooseNotAllow : style.mgwModeChooseAllow} `}
+                      onClick={loadingPlayAgain ? undefined : () => setGameMode(0)}
+                    >
+                      <div className={`${style.mgwModeChooseHeader} ${gameMode == 0 ? style.mgwModeSelectHeader : ''}`}>
+                        <span>CLEAR BOARD</span>
+                      </div>
+                      <div className={`${style.mgwModeSelectConcernBg} ${style.mgwModeSelectConcernBgSuc}`}>
+                        {gameMode == 0 && <img src={ModeSelectSucImg} alt="" />}
+                      </div>
+                    </div>
+                    <div
+                      className={`${style.mgwModeChoose} ${style.mgwModeChooseSuc} ${gameMode == 1 ? style.mgwModeSelectBgSuc : ''} ${loadingPlayAgain ? style.mgwModeChooseNotAllow : style.mgwModeChooseAllow} `}
+                      onClick={loadingPlayAgain ? undefined : () => setGameMode(1)}
+                    >
+                      <div className={`${style.mgwModeChooseHeader} ${gameMode == 1 ? style.mgwModeSelectHeader : ''}`}>
+                        <span>SCORE CHALLENGE </span>
+                      </div>
+                      <div className={`${style.mgwModeSelectConcernBg} ${style.mgwModeSelectConcernBgSuc}`}>
+                        {gameMode == 1 && <img src={ModeSelectSucImg} alt="" />}
+                      </div>
+                    </div>
+                  </div>
                   <button
-                    onClick={handlePlayAgain}
-                    disabled={loading}
+                    onClick={handlePlayAgaintow}
+                    disabled={loadingPlayAgain}
                     style={{
-                      cursor: loading ? "not-allowed" : "pointer",
-                      pointerEvents: loading ? "none" : "auto"
+                      cursor: loadingPlayAgain ? "not-allowed" : "pointer",
+                      pointerEvents: loadingPlayAgain ? "none" : "auto"
                     }}
                   >
-                    {loading ? (
+                    {loadingPlayAgain ? (
                       <img
                         src={loadingImg}
                         className={`${style.commonCls2} ${style.spinAnimation}`}
@@ -961,38 +1055,80 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                     )}
                   </button>
                 </div>
-              </div>
-            ) : null}
-        {gameSuccess === true
-          && localStorage.getItem('showGameOver') === 'true'
-          ? (
-            <div
-              className={panningType !== "false" ? style.overlayBuy : style.overlay}
-            >
-              <div className={style.contentCon}>
-                <p>Congrats!</p>
-                {rewardInfo ? <p>+{rewardInfo}!</p> : <p></p>}
-                <button
-                  onClick={handlePlayAgaintow}
-                  disabled={loadingPlayAgain}
-                  style={{
-                    cursor: loadingPlayAgain ? "not-allowed" : "pointer",
-                    pointerEvents: loadingPlayAgain ? "none" : "auto"
-                  }}
-                >
-                  {loadingPlayAgain ? (
-                    <img
-                      src={loadingImg}
-                      className={`${style.commonCls2} ${style.spinAnimation}`}
-                    />
-                  ) : (
-                    "Play Again"
-                  )}
-                </button>
-              </div>
+                :
+                <div className={style.contentCon}>
+                  <p>Congrats!</p>
+                  {rewardInfo ? <p>+{rewardInfo}!</p> : <p></p>}
+                  <button
+                    onClick={handlePlayAgaintow}
+                    disabled={loadingPlayAgain}
+                    style={{
+                      cursor: loadingPlayAgain ? "not-allowed" : "pointer",
+                      pointerEvents: loadingPlayAgain ? "none" : "auto"
+                    }}
+                  >
+                    {loadingPlayAgain ? (
+                      <img
+                        src={loadingImg}
+                        className={`${style.commonCls2} ${style.spinAnimation}`}
+                      />
+                    ) : (
+                      "Play Again"
+                    )}
+                  </button>
+                </div>
+              }
+
             </div>
           ) : null
         }
+        {(loading || loadingPlayAgain) && <div className={style.gameBoardBlocker} />}
+        <div className={style.NewGameContainer}>
+          <div
+            className={`${style.NewGameBtn} ${loading || loadingPlayAgain ? style.NewGameBtnNotAllow : style.NewGameBtnAllow}`}
+            onClick={loading || loadingPlayAgain ? undefined : () => handlePlayAgain(temporaryGameMode)}
+          >
+            {loading || loadingPlayAgain ? (
+              <img
+                style={{ width: "6rem", height: "6rem" }}
+                src={loadingImg}
+                className={`${style.commonCls2} ${style.spinAnimation}`}
+              />
+            ) : (
+              "NEW GAME"
+            )}
+          </div>
+          {(isModeGameChain && !loading) && <div className={style.NewGameModulesWrapper}>
+            <div
+              className={`${style.mgwModeChoose} ${temporaryGameMode == 0 ? style.mgwModeSelectBg : ''} ${loading ? style.mgwModeChooseNotAllow : style.mgwModeChooseAllow} `}
+              onClick={loading ? undefined : () => setTemporaryGameMode(0)}
+            >
+              <div className={`${style.mgwModeChooseHeader} ${temporaryGameMode == 0 ? style.mgwModeSelectHeader : ''}`}>
+                <span>CLEAR BOARD</span>
+              </div>
+              <div 
+              className={`${style.mgwModeSelectConcernBg} ${style.mgwModeSelectConcernBgSuc}`}
+              style={{width: "1.9rem", height: "1.9rem"}}>
+                {temporaryGameMode == 0 && <img src={ModeSelectSucImg} style={{width: "1.5rem", height: "1.5rem"}} alt="" />}
+              </div>
+            </div>
+            <div
+              className={`${style.mgwModeChoose} ${temporaryGameMode == 1 ? style.mgwModeSelectBg : ''} ${loading ? style.mgwModeChooseNotAllow : style.mgwModeChooseAllow} `}
+              style={{ marginTop: "1.5rem" }}
+              onClick={loading ? undefined : () => setTemporaryGameMode(1)}
+            >
+              <div className={`${style.mgwModeChooseHeader} ${temporaryGameMode == 1 ? style.mgwModeSelectHeader : ''}`}>
+                <span>SCORE CHALLENGE </span>
+              </div>
+              <div 
+              className={`${style.mgwModeSelectConcernBg} ${style.mgwModeSelectConcernBgSuc}`}
+              style={{width: "1.8rem", height: "1.8rem"}}
+              >
+                {temporaryGameMode == 1 && <img src={ModeSelectSucImg} style={{width: "1.5rem", height: "1.5rem"}} alt="" />}
+              </div>
+            </div>
+          </div>}
+        </div>
         {data2 === true ? (
           <div
             className={panningType !== "false" ? style.overlayBuy : style.overlay}
@@ -1250,14 +1386,14 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                   <span className={mobileTopBuyStyle.leftSpan}>
                     NFT(-{discount}%)
                     <span className={mobileTopBuyStyle.discountWrapper}>
-                        <img src={discountTipsImg} className={mobileTopBuyStyle.discountTipsImg} onTouchEnd={handleDiscountTipsClick}/>
-                        <div className={`${mobileTopBuyStyle.discountTipsText} ${isDiscountTipsVisible ? mobileTopBuyStyle.visible : ""}`}>
-                            <p>PopCraft Genesis NFT</p>
-                            <p>1 NFT → 10% OFF</p>
-                            <p>2 NFTs → 20% OFF</p>
-                            <p>3 NFTs → 30% OFF</p>
-                            <p>4+ NFTs → 40% OFF</p>
-                        </div>
+                      <img src={discountTipsImg} className={mobileTopBuyStyle.discountTipsImg} onTouchEnd={handleDiscountTipsClick} />
+                      <div className={`${mobileTopBuyStyle.discountTipsText} ${isDiscountTipsVisible ? mobileTopBuyStyle.visible : ""}`}>
+                        <p>PopCraft Genesis NFT</p>
+                        <p>1 NFT → 10% OFF</p>
+                        <p>2 NFTs → 20% OFF</p>
+                        <p>3 NFTs → 30% OFF</p>
+                        <p>4+ NFTs → 40% OFF</p>
+                      </div>
                     </span>
                     :
                   </span>
@@ -1363,7 +1499,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
           </div>
         )}
 
-        {
+        {/* {
           timeLeft === 0 && localStorage.getItem('showGameOver') === 'true' && !gameSuccess
             ? (
 
@@ -1387,7 +1523,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                   )}
                 </button>
               </div>
-            ) : null}
+            ) : null} */}
 
 
         {gameSuccess === true

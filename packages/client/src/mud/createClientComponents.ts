@@ -22,6 +22,7 @@ export function createClientComponents({ components }: SetupNetworkResult) {
     TokenBalance: overridableComponent(components.TokenBalance),
     RankingRecord: overridableComponent(components.RankingRecord),
     WeeklyRecord: overridableComponent(components.WeeklyRecord),
+    ScoreChal: overridableComponent(components.ScoreChal),
     // add your client components or overrides here
   };
 }

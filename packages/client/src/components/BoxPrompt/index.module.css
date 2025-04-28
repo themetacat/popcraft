@@ -10,6 +10,7 @@
   display: flex;
   gap: 5rem;
 }
+
 .buttonBox {
   position: fixed;
   justify-content: center;
@@ -22,13 +23,16 @@
   padding: 4rem;
   display: flex;
   gap: 1.6rem;
-  z-index: 9999; /* 确保媒体链接始终在页面显示 */
+  z-index: 9999;
+  /* 确保媒体链接始终在页面显示 */
 }
+
 .buttonBox img {
   max-width: 4rem;
   max-height: 4rem;
   cursor: pointer;
 }
+
 .container2 {
   width: 121.875rem;
   height: 13.125rem;
@@ -37,14 +41,17 @@
   justify-content: center;
   gap: 7rem;
 }
+
 @font-face {
   font-family: "AdobeHeitiStd-Regular";
   src: url("/fonts/BRLNSR.woff2");
 }
+
 @font-face {
   font-family: "Simplicity";
   src: url("/fonts/Simplicity.woff2");
 }
+
 .firstPart {
   width: 35rem;
   height: 13.125rem;
@@ -55,6 +62,7 @@
   display: grid;
   gap: 4px;
 }
+
 .firstPart p:nth-child(1) {
   display: flex;
   align-items: center;
@@ -68,6 +76,7 @@
   margin-top: 1.3rem;
   font-family: "Simplicity";
 }
+
 .firstPart p:nth-child(2) {
   text-align: center;
   color: #ffffff;
@@ -78,6 +87,7 @@
   margin-top: -0.2rem;
   font-family: "Simplicity";
 }
+
 .itemName {
   font-weight: 600;
   color: #feed95;
@@ -90,6 +100,7 @@
   justify-content: center;
   text-align: center;
 }
+
 .itemImage {
   width: 69px;
   height: 65px;
@@ -97,6 +108,7 @@
   flex-shrink: 0;
   margin-left: 10px;
 }
+
 .itemNameto {
   display: flex;
   flex-direction: column;
@@ -106,6 +118,7 @@
   margin-left: 18px;
   margin-top: 5px;
 }
+
 .twoPart {
   width: 35rem;
   height: 13.125rem;
@@ -116,6 +129,7 @@
   display: grid;
   /* cursor: pointer; */
 }
+
 .twoPart p:nth-child(1) {
   display: flex;
   align-items: center;
@@ -129,6 +143,7 @@
   margin-top: 2rem;
   font-family: "Simplicity";
 }
+
 .twoPart p:nth-child(2) {
   text-align: center;
   color: #ffffff;
@@ -149,25 +164,35 @@
 }
 
 .tooltipText {
-  left: 50%; /* 保持在父元素的中心 */
-  bottom: 50%; /* 垂直居中 */
-  margin-left: -30rem; /* 水平居中 */
-  transform: translate(-26%, 20%); /* 向左移动气泡，同时保持垂直居中 */
+  left: 50%;
+  /* 保持在父元素的中心 */
+  bottom: 50%;
+  /* 垂直居中 */
+  margin-left: -30rem;
+  /* 水平居中 */
+  transform: translate(-26%, 20%);
+  /* 向左移动气泡，同时保持垂直居中 */
   visibility: hidden;
-  width: 40.625rem; /* 13.75rem * 1.5 = 20.625rem */
-  background-color: rgba(92, 193, 143, 0.8); /* 更柔和的颜色 */
+  width: 40.625rem;
+  /* 13.75rem * 1.5 = 20.625rem */
+  background-color: rgba(92, 193, 143, 0.8);
+  /* 更柔和的颜色 */
   color: #fff;
   text-align: center;
   border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 添加阴影 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* 添加阴影 */
   font-size: 1.9rem;
   font-family: "Simplicity";
-  padding: 0.5rem 1rem; /* 调整内边距 */
+  padding: 0.5rem 1rem;
+  /* 调整内边距 */
   position: absolute;
   z-index: 1;
-  bottom: 10%; /* 调整气泡位置，设置为按钮的顶部 */
+  bottom: 10%;
+  /* 调整气泡位置，设置为按钮的顶部 */
   left: 50%;
-  margin-left: -10.3125rem; /* 使气泡居中, 20.625rem / 2 = 10.3125rem */
+  margin-left: -10.3125rem;
+  /* 使气泡居中, 20.625rem / 2 = 10.3125rem */
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -188,7 +213,7 @@
   display: grid;
 }
 
-.balance{
+.balance {
   display: inline-block;
   align-items: center;
   justify-content: center;
@@ -203,6 +228,7 @@
   margin-top: 2rem;
   font-family: "Simplicity";
 }
+
 .threePart p:nth-child(2) {
   text-align: center;
   color: #ffffff;
@@ -213,6 +239,7 @@
   margin-top: -0.5rem;
   font-family: "Simplicity";
 }
+
 .imgContent {
   width: 61.25rem;
   height: 9.375rem;
@@ -223,15 +250,18 @@
   width: 60rem;
   height: 6.875rem;
 }
+
 .containerItem {
   position: relative;
   display: inline-block;
 }
+
 .imgconItem {
   width: 8.75rem;
   height: 8.75rem;
   box-sizing: border-box;
 }
+
 .iconFont {
   display: flex;
   justify-content: center;
@@ -248,6 +278,7 @@
   font-family: "Alibaba-PuHuiTi-TIMESBD";
   font-size: 2.5rem;
 }
+
 .imgconItemFill {
   width: 66px;
   height: 66px;
@@ -256,20 +287,24 @@
   text-align: center;
   box-sizing: border-box;
 }
+
 .buyBtnBox {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 3.6rem;
 }
+
 @font-face {
   font-family: "Alibaba-PuHuiTi-TIMESBD";
   src: url("/fonts/TIMESBD.woff2");
 }
+
 @font-face {
   font-family: "Simplicity";
   src: url("/fonts/Simplicity.woff2");
 }
+
 .buyBtn {
   width: 9.375rem;
   height: 9.5rem;
@@ -290,14 +325,17 @@
   margin-left: -2rem;
   font-family: "Simplicity";
 }
+
 .buyBtn:hover {
   color: #ffffff;
   font-size: 2.7rem;
 }
+
 @font-face {
   font-family: "Alibaba-PuHuiTi";
   src: url("/fonts/Alibaba-PuHuiTi-Bold.woff2");
 }
+
 .warningIcon {
   background-color: transparent;
   display: flex;
@@ -1188,6 +1226,271 @@ p {
   margin-top: 48px;
 }
 
+
+/* ==============================Mode Game========================== */
+.modeGameOver {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 69rem;
+  height: 53rem;
+  padding-left: 1rem;
+  border: none;
+  background-image: url("../../images/gameover/ModeFail.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10rem;
+  text-transform: uppercase;
+  font-family: "Alibaba-PuHuiTi-TIMESBD";
+
+  p {
+    text-transform: uppercase;
+    font-size: 5.5rem;
+    font-weight: 400;
+    letter-spacing: 0.1rem;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 19rem;
+    font-family: "AdobeHeitiStd-Regular4";
+    text-shadow:
+      1px 1px 2px #838383,
+      0 0 5px #8f8d8d,
+      1px 1px 3px #949494,
+      0 0 10px rgba(166, 166, 166, 0.5),
+      0 0 2px #a3a3a3,
+      0 0 3px #999898,
+      0 0 4px #868585,
+      0 0 5px rgba(183, 183, 183, 0.5),
+      2px 0 2px #7f7f7f,
+      3px 0 3px #7f7f7f,
+      4px 0 4px #7f7f7f;
+  }
+
+  button {
+    text-transform: uppercase;
+    background-image: url("../../images/gameover/paybutton.webp");
+    background-size: 100% 100%;
+    background-position: center;
+    border: none;
+    background-color: transparent;
+    width: 50rem;
+    height: 7rem;
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 2rem;
+    letter-spacing: 0.6rem;
+    text-align: center;
+    color: #ffffff;
+    transition: font-size 0.3s ease;
+    text-transform: uppercase;
+    margin-top: -7.3rem;
+    text-shadow:
+      -2px -2px 0 rgba(163, 162, 162, 0.7),
+      2px -2px 0 rgba(180, 179, 179, 0.7),
+      -2px 2px 0 rgba(165, 164, 164, 0.7),
+      2px 2px 0 rgba(206, 206, 206, 0.7);
+  }
+
+  button:hover {
+    color: #ffffff;
+    font-size: 3rem;
+    text-shadow:
+      -1px -1px 0 rgba(56, 56, 56, 0.7),
+      1px -1px 0 rgba(71, 71, 71, 0.7),
+      -1px 1px 0 rgba(59, 59, 59, 0.7),
+      1px 1px 0 rgba(69, 69, 69, 0.7)
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+}
+
+.mgwModulesWrapper {
+  font-size: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: -7.5rem;
+  font-family: "AdobeHeitiStd-Regular2";
+  color: #fff;
+  text-shadow: 0.1rem 0.1rem 0.3rem rgb(0, 0, 0, 0.3);
+}
+
+.mgwModeChoose {
+  width: 24.5rem;
+  height: 7.56rem;
+  border-radius: 12px;
+  position: relative;
+  background-image: url("../../images/gameover/ModeNoSelectBg.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  cursor: pointer;
+  letter-spacing: 0.1rem;
+  transition: transform 0.1s ease;
+  display: flex;
+  justify-content: center;
+}
+
+.mgwModeChooseSuc{
+  background-image: url("../../images/gameover/ModeSucNoSelectBg.webp");
+}
+
+.mgwModeChooseNotAllow {
+  cursor: not-allowed;
+}
+
+.mgwModeChooseAllow:hover {
+  text-shadow: 0.2rem 0.2rem 0.5rem rgb(0, 0, 0, 0.7);
+}
+
+.mgwModeChooseAllow:active {
+  transform: scale(0.98);
+}
+
+.mgwModeSelectBg {
+  background-image: url("../../images/gameover/ModeSelectBg.webp");
+}
+
+.mgwModeSelectBgSuc {
+  background-image: url("../../images/gameover/ModeSucSelectBg.webp");
+}
+
+.mgwModeChooseHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-size: 2.35rem;
+}
+
+.mgwModeSelectConcernBg {
+  background-image: url("../../images/gameover/ModeSelectConcernBg.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  width: 1.33rem;
+  height: 1.36rem;
+  position: absolute;
+  top: 1.04rem;
+  right: 1.03rem;
+}
+
+.mgwModeSelectConcernBg{
+  background-image: url("../../images/gameover/ModeSucSelectConcernBg.webp");
+}
+
+.mgwModeSelectConcernBg img {
+  width: 1.34rem;
+  height: 1.25rem;
+  display: block;
+  margin: 0 auto;
+}
+
+.contentCon {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 62rem;
+  height: 59rem;
+  padding-right: 2rem;
+  border: none;
+  background-image: url("../../images/gameover/ModeSucceed.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10rem;
+  text-transform: uppercase;
+
+  p:nth-child(1) {
+    text-transform: uppercase;
+    font-size: 6rem;
+    font-weight: 400;
+    letter-spacing: 0.1rem;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 18rem;
+    font-family: "AdobeHeitiStd-Regular4";
+    text-shadow:
+      1px 1px 2px #838383,
+      0 0 5px #8f8d8d,
+      1px 1px 3px #949494,
+      0 0 10px rgba(166, 166, 166, 0.5),
+      0 0 2px #a3a3a3,
+      0 0 3px #999898,
+      0 0 4px #868585,
+      0 0 5px rgba(183, 183, 183, 0.5),
+      2px 0 2px #7f7f7f,
+      3px 0 3px #7f7f7f,
+      4px 0 4px #7f7f7f;
+  }
+
+  p:nth-child(2) {
+    text-transform: uppercase;
+    font-size: 6rem;
+    font-weight: 400;
+    letter-spacing: 0.1rem;
+    color: #f16999;
+    text-align: center;
+    margin-top: -5rem;
+    padding-bottom: 1rem;
+    font-family: "AdobeHeitiStd-Regular";
+    text-shadow:
+      1px 1px 2px #585858,
+      0 0 1px #747373,
+      1px 1px 1px #b3b3b3,
+      0 0 1px rgba(131, 131, 131, 0.5);
+  }
+
+  button {
+    text-transform: uppercase;
+    background-image: url("../../images/gameover/succeedpay.webp");
+    background-size: 100% 100%;
+    background-position: center;
+    border: none;
+    background-color: transparent;
+    width: 50rem;
+    height: 7rem;
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 2rem;
+    letter-spacing: 0.6rem;
+    text-align: center;
+    color: #ffffff;
+    transition: font-size 0.3s ease;
+    text-transform: uppercase;
+    margin-top: -7.3rem;
+    text-shadow:
+      -2px -2px 0 rgba(163, 162, 162, 0.7),
+      2px -2px 0 rgba(180, 179, 179, 0.7),
+      -2px 2px 0 rgba(165, 164, 164, 0.7),
+      2px 2px 0 rgba(206, 206, 206, 0.7);
+  }
+
+  button:hover {
+    color: #ffffff;
+    font-size: 3.2rem;
+    text-shadow:
+      -1px -1px 0 rgba(56, 56, 56, 0.7),
+      1px -1px 0 rgba(71, 71, 71, 0.7),
+      -1px 1px 0 rgba(59, 59, 59, 0.7),
+      1px 1px 0 rgba(69, 69, 69, 0.7)
+  }
+
+  button::active{
+    transform: scale(0.98);
+  }
+}
+
 .seeMore {
   position: fixed;
   width: 31rem;
@@ -1226,4 +1529,80 @@ p {
 
 .seeMore:hover {
   transform: translate(-148%, 280%) scale(1.03);
+}
+
+/* =========================New Game========================= */
+
+.NewGameContainer {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38rem;
+}
+
+.NewGameBtn{
+  background-image: url("../../images/NewGameBtnBg.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 31rem;
+  height: 12rem;
+  cursor: pointer;
+  font-family: "Simplicity";
+  font-size: 2.7rem;
+  color: #fff;
+  text-shadow: 0.1rem 0.1rem 1.1rem #0380a3;
+  border-radius: 3rem;
+}
+
+.NewGameBtnAllow:active{
+  transform: scale(0.98);
+}
+
+.NewGameBtnAllow:hover{
+  text-shadow: 0.1rem 0.1rem 0.2rem #19191a;
+}
+
+.NewGameBtnNotAllow:hover{
+  cursor: not-allowed;
+}
+
+.NewGameModulesWrapper {
+  font-size: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: -12.5rem;
+  left: 36rem;
+  font-family: "AdobeHeitiStd-Regular2";
+  color: #fff;
+  text-shadow: 0.1rem 0.1rem 0.3rem rgb(0, 0, 0, 0.3);
+  position: fixed;
+  box-shadow: inset 0 0 1.3rem #1799b0;
+  background-color: #9BFFFC;
+  border-radius: 3rem;
+  padding: 3.1rem;
+  display: none;
+}
+
+.NewGameModulesWrapper:hover{
+  display: block;
+}
+
+.NewGameContainer:hover .NewGameModulesWrapper {
+  display: block;
+}
+
+.gameBoardBlocker {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0);
+  pointer-events: auto;
+  cursor: not-allowed;
 }

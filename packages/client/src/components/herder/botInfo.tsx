@@ -133,7 +133,7 @@ export default function BotInfo({ sendCount, receiveCount, botInfoTaskTips }: Pr
 
     return (
         <div className={style.bottomLeftText}>
-            <p className={`${botInfoTaskTips ? style.flashText : ""}`}>Queue: {receiveCount > sendCount ? sendCount : receiveCount}/{sendCount}</p>
+            <p className={`${botInfoTaskTips ? style.flashText : ""}`}>Queue: {receiveCount < 0 ? 0 : Math.min(receiveCount, sendCount)}/{sendCount < 0 ? 0 : sendCount}</p>
             <p>Rank: {userRank}</p>
             <p>Total Score: {totalScore}</p>
             <p>Session Wallet Balance: {sessionWalletBalance != "0" ? parseFloat(Number(sessionWalletBalance).toFixed(8)) : 0} ETH</p>
