@@ -107,7 +107,7 @@ p {
 .btnPlay {
   width: 49rem;
   height: 6.5rem;
-  background-color: #fff1c8;
+  background-color:transparent;
   opacity: 0px;
   border: none;
   background-image: url("../../images/welcome/playnormal.webp");
