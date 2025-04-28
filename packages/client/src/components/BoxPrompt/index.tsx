@@ -243,25 +243,25 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
     // }
     if (!timeControl || gameSuccess) return;
     if (timeLeft <= 0) return;
-      if (localStorage.getItem('showGameOver') != 'false') {
-        localStorage.setItem('showGameOver', 'false')
-      }
-      const timer = setTimeout(() => {
-        setTimeLeft((prevTimeLeft) => {
-          if (prevTimeLeft <= 0) {
-            return 0;
-          }
-          const newTimeLeft = prevTimeLeft - 1;
+    if (localStorage.getItem('showGameOver') != 'false') {
+      localStorage.setItem('showGameOver', 'false')
+    }
+    const timer = setTimeout(() => {
+      setTimeLeft((prevTimeLeft) => {
+        if (prevTimeLeft <= 0) {
+          return 0;
+        }
+        const newTimeLeft = prevTimeLeft - 1;
 
-          if (localStorage.getItem('showGameOver') === 'false') {
-            if (newTimeLeft <= 1 && !interactTaskToExecute && localStorage.getItem("isShowWaitingMaskLayer") === "false") {
-              localStorage.setItem('showGameOver', 'true');
-            }
+        if (localStorage.getItem('showGameOver') === 'false') {
+          if (newTimeLeft <= 1 && !interactTaskToExecute && localStorage.getItem("isShowWaitingMaskLayer") === "false") {
+            localStorage.setItem('showGameOver', 'true');
           }
-          return newTimeLeft;
-        });
-      }, 1000);
-      return () => clearTimeout(timer);
+        }
+        return newTimeLeft;
+      });
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [timeLeft, timeControl, gameSuccess, interactTaskToExecute]);
 
   useEffect(() => {
@@ -1106,6 +1106,11 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
               <div className={`${style.mgwModeChooseHeader} ${temporaryGameMode == 0 ? style.mgwModeSelectHeader : ''}`}>
                 <span>CLEAR BOARD</span>
               </div>
+              <div 
+              className={`${style.mgwModeSelectConcernBg} ${style.mgwModeSelectConcernBgSuc}`}
+              style={{width: "1.9rem", height: "1.9rem"}}>
+                {temporaryGameMode == 0 && <img src={ModeSelectSucImg} style={{width: "1.5rem", height: "1.5rem"}} alt="" />}
+              </div>
             </div>
             <div
               className={`${style.mgwModeChoose} ${temporaryGameMode == 1 ? style.mgwModeSelectBg : ''} ${loading ? style.mgwModeChooseNotAllow : style.mgwModeChooseAllow} `}
@@ -1114,6 +1119,12 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
             >
               <div className={`${style.mgwModeChooseHeader} ${temporaryGameMode == 1 ? style.mgwModeSelectHeader : ''}`}>
                 <span>SCORE CHALLENGE </span>
+              </div>
+              <div 
+              className={`${style.mgwModeSelectConcernBg} ${style.mgwModeSelectConcernBgSuc}`}
+              style={{width: "1.8rem", height: "1.8rem"}}
+              >
+                {temporaryGameMode == 1 && <img src={ModeSelectSucImg} style={{width: "1.5rem", height: "1.5rem"}} alt="" />}
               </div>
             </div>
           </div>}
