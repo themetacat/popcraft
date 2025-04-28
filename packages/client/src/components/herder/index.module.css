@@ -1142,12 +1142,12 @@ canvas {
 .targetTitle{
   margin-top: 3.7rem;
   font-size: 3rem;
-  color: #69341B;
+  color: rgba(105, 52, 27, 0.54);
   text-align: center;
 }
 
 .targetBody{
   margin-top: 1.8rem;
-  color: rgba(105, 52, 27, 0.54);
+  color: #69341B;
   font-size: 3.2rem;
 }
