@@ -87,7 +87,7 @@ export default function PopStar({ setPopStar, playFun, setTopUpType, loadingplay
 
                     </div>
                     <p className={style.moduleText}>
-                      Get {Number(MODE_SCORE_CHAL_SUCCESS_SCORE)} scores from 130 items within 2 minutes
+                      Get a score of {Number(MODE_SCORE_CHAL_SUCCESS_SCORE)} from 130 items within 2 minutes.
                     </p>
                   </div>
                 </div>
