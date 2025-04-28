@@ -726,11 +726,16 @@ export function createSystemCalls(
           if (!isSuccess) {
             const scoreChalData = getComponentValue(ScoreChal, playerEntity);
             if (scoreChalData) {
-              regenerateBottomRows(matrixArray, scoreChalData.newMatrixArray as bigint[])
+              const newScoreChalData = {
+                ...scoreChalData,
+                newMatrixArray: [...scoreChalData.newMatrixArray as bigint[]]
+              };
+              const newMatrixArray = newScoreChalData.newMatrixArray;
+              regenerateBottomRows(matrixArray, newMatrixArray)
               scoreChalId = uuid();
               ScoreChal.addOverride(scoreChalId, {
                 entity: playerEntity,
-                value: scoreChalData,
+                value: newScoreChalData,
               });
             }
           }
