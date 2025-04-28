@@ -28,16 +28,21 @@ const CanvasPopStarGrid: React.FC = () => {
     const previousImagesRef = useRef<Record<string, number>>({});
 
     const [canvasSize, setCanvasSize] = useState({
-        width: 300,
-        height: 250,
+        width: 0,
+        height: 0,
         cellSize: 40,
         padding: 0,
     });
+    useEffect(() => {
+        resizeCanvas();
+        window.addEventListener("resize", resizeCanvas);
+        return () => window.removeEventListener("resize", resizeCanvas);
+    }, []);
 
     useEffect(() => {
         previousImagesRef.current = {};
     }, [popStarData?.tokenAddressArr, canvasSize])
-
+    
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -50,8 +55,9 @@ const CanvasPopStarGrid: React.FC = () => {
 
         const newMatrixArray = scoreChalData?.newMatrixArray as bigint[] | undefined;
         if (!newMatrixArray || newMatrixArray.length === 0) return;
-
+        
         const { width, height, cellSize, padding } = canvasSize;
+        if(!(width > 0 && height > 0)) return;
         const canvasWidth = width + 40;
         const canvasHeight = height + 40;
         canvas.width = canvasWidth;
@@ -59,7 +65,7 @@ const CanvasPopStarGrid: React.FC = () => {
         canvas.style.width = `${canvasWidth}px`;
         canvas.style.height = `${canvasHeight}px`;
 
-        ctx.clearRect(0, 0, width, height);
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
         const offsetX = (canvasWidth - width) / 2;
         const offsetY = (canvasHeight - height) / 2;
 
@@ -126,14 +132,6 @@ const CanvasPopStarGrid: React.FC = () => {
     }, [scoreChalData, popStarData?.tokenAddressArr, canvasSize]);
 
 
-    useEffect(() => {
-        resizeCanvas();
-        window.addEventListener("resize", resizeCanvas);
-        return () => window.removeEventListener("resize", resizeCanvas);
-    }, []);
-
-    
-
     const resizeCanvas = () => {
         const screenWidth = window.innerWidth;
         const totalWidth = Math.min(screenWidth * 0.15, 400);
@@ -161,40 +159,40 @@ const CanvasPopStarGrid: React.FC = () => {
     }
 
     // 拖动事件逻辑
-    useEffect(() => {
-        // const container = containerRef.current;
-        // if (!container) return;
+    // useEffect(() => {
+    //     // const container = containerRef.current;
+    //     // if (!container) return;
 
-        const onMouseDown = (e: MouseEvent) => {
-            setDragging(true);
-            offset.current = {
-                x: e.clientX - position.x,
-                y: e.clientY - position.y,
-            };
-        };
+    //     const onMouseDown = (e: MouseEvent) => {
+    //         setDragging(true);
+    //         offset.current = {
+    //             x: e.clientX - position.x,
+    //             y: e.clientY - position.y,
+    //         };
+    //     };
 
-        const onMouseMove = (e: MouseEvent) => {
-            if (!dragging) return;
-            setPosition({
-                x: e.clientX - offset.current.x,
-                y: e.clientY - offset.current.y,
-            });
-        };
+    //     const onMouseMove = (e: MouseEvent) => {
+    //         if (!dragging) return;
+    //         setPosition({
+    //             x: e.clientX - offset.current.x,
+    //             y: e.clientY - offset.current.y,
+    //         });
+    //     };
 
-        const onMouseUp = () => {
-            setDragging(false);
-        };
+    //     const onMouseUp = () => {
+    //         setDragging(false);
+    //     };
 
-        // container.addEventListener("mousedown", onMouseDown);
-        window.addEventListener("mousemove", onMouseMove);
-        window.addEventListener("mouseup", onMouseUp);
+    //     // container.addEventListener("mousedown", onMouseDown);
+    //     window.addEventListener("mousemove", onMouseMove);
+    //     window.addEventListener("mouseup", onMouseUp);
 
-        return () => {
-            // container.removeEventListener("mousedown", onMouseDown);
-            window.removeEventListener("mousemove", onMouseMove);
-            window.removeEventListener("mouseup", onMouseUp);
-        };
-    }, [dragging, position]);
+    //     return () => {
+    //         // container.removeEventListener("mousedown", onMouseDown);
+    //         window.removeEventListener("mousemove", onMouseMove);
+    //         window.removeEventListener("mouseup", onMouseUp);
+    //     };
+    // }, [dragging, position]);
 
     if (gameModeData && gameModeData.mode == 1n) {
         return (
@@ -211,7 +209,7 @@ const CanvasPopStarGrid: React.FC = () => {
                         right: '40rem',
                         // bottom: position.x,
                         // right: position.y,
-                        cursor: dragging ? "grabbing" : "grab",
+                        // cursor: dragging ? "grabbing" : "grab",
                         userSelect: "none",
                     }}
                 />
