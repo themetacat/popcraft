@@ -53,9 +53,9 @@ export default function PopStar({ setPopStar, playFun, setTopUpType, loadingplay
                 <h1 className={style.mgwMainTitle}>Welcome to PopCraft !</h1>
 
                 <p className={style.mgwCenterParagraph}>
-                  A single spark can start a prairie fire! Let themass
+                  A single spark can start a prairie fire! Let the mass
                   <br />
-                  adoption of Web3 begin with fully onchain casual
+                  adoption of Web3 begin with fully on-chain casual
                   <br />
                   games like PopCraft !
                 </p>
@@ -87,7 +87,7 @@ export default function PopStar({ setPopStar, playFun, setTopUpType, loadingplay
 
                     </div>
                     <p className={style.moduleText}>
-                      Score {Number(MODE_SCORE_CHAL_SUCCESS_SCORE)} points from 130 items within 2 minutes
+                      Get {Number(MODE_SCORE_CHAL_SUCCESS_SCORE)} scores from 130 items within 2 minutes
                     </p>
                   </div>
                 </div>
