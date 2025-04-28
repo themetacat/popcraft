@@ -642,7 +642,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                 <p className={style.balance}>
                   {rankRecord ? Number(rankRecord.latestScores) : 0}
                 </p>
-                <p>SCORE</p>
+                <p>SCORES</p>
               </div>
             </div>
 
@@ -1109,7 +1109,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
               <div 
               className={`${style.mgwModeSelectConcernBg} ${style.mgwModeSelectConcernBgSuc}`}
               style={{width: "1.9rem", height: "1.9rem"}}>
-                {temporaryGameMode == 0 && <img src={ModeSelectSucImg} style={{width: "1.5rem", height: "1.5rem"}} alt="" />}
+                {temporaryGameMode == 0 && <img src={ModeSelectImg} style={{width: "1.5rem", height: "1.5rem"}} alt="" />}
               </div>
             </div>
             <div
@@ -1124,7 +1124,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
               className={`${style.mgwModeSelectConcernBg} ${style.mgwModeSelectConcernBgSuc}`}
               style={{width: "1.8rem", height: "1.8rem"}}
               >
-                {temporaryGameMode == 1 && <img src={ModeSelectSucImg} style={{width: "1.5rem", height: "1.5rem"}} alt="" />}
+                {temporaryGameMode == 1 && <img src={ModeSelectImg} style={{width: "1.5rem", height: "1.5rem"}} alt="" />}
               </div>
             </div>
           </div>}
