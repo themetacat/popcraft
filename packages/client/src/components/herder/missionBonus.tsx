@@ -40,7 +40,7 @@ export default function MissionBonus({ checkTaskInProcess, handleErrorAll, isMob
         },
         systemCalls: { getDailyGamesRewards },
     } = useMUD();
-    const [isContentVisible, setContentVisible] = useState(true);
+    const [isContentVisible, setContentVisible] = useState(false);
     const { address, } = useAccount();
     const { missionBonusDay, missionBonusCountdown } = useUtils();
     const [timeLeft, setTimeLeft] = useState(0);
@@ -48,12 +48,12 @@ export default function MissionBonus({ checkTaskInProcess, handleErrorAll, isMob
     const [showAddScoresPopup, setShowAddScoresPopup] = useState(false);
     const [popupScores, setPopupScores] = useState(0);
     const [isCloseAnimating, setIsCloseAnimating] = useState(false);
-    const [timeOutCloseAnimating, setTimeOutCloseAnimating] = useState(300);
+    const [timeOutCloseAnimating, setTimeOutCloseAnimating] = useState(150);
 
     useEffect(() => {
-        if (isMobile) {
-            setContentVisible(false);
-            setTimeOutCloseAnimating(150);
+        if (!isMobile) {
+            setContentVisible(true);
+            setTimeOutCloseAnimating(300);
         }
     }, [isMobile])
 

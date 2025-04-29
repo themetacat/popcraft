@@ -228,6 +228,7 @@ export const animateImagePopIn = (
     y: number,
     size: number,
     color: "#fddca1" | "#fdf2d1" = "#fddca1", 
+    imgScale = 0.8,
     duration = 350,
 ) => {
     const startTime = performance.now();
@@ -235,7 +236,7 @@ export const animateImagePopIn = (
  
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        const scale = easeInBack(progress);
+        const scale = easeInBack(progress, imgScale);
 
         const imgSize = size * scale;
         const offset = (size - imgSize) / 2;
@@ -252,10 +253,10 @@ export const animateImagePopIn = (
 
     requestAnimationFrame(draw);
 };
-function easeInBack(x: number): number {
+function easeInBack(x: number, scale = 0.8): number {
     const c1 = 1.70158;
     const c3 = c1 + 1;
-    return 0.8 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+    return scale + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
 }
 
 export const animateImagePopOut = (

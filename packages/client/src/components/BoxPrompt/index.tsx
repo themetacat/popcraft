@@ -49,11 +49,12 @@ interface Props {
   interactTaskToExecute: any,
   checkInteractTask: any,
   isMobile: boolean,
-  showMobileInDayBonus: any
+  showMobileInDayBonus: any,
+  showMobileBottomMenu: any
   gameMode: number,
   setGameMode: any
 }
-export default function BoxPrompt({ timeControl, playFun, handleEoaContractData, setPopStar, showTopElements, interactTaskToExecute, checkInteractTask, isMobile, showMobileInDayBonus, gameMode, setGameMode }: Props) {
+export default function BoxPrompt({ timeControl, playFun, handleEoaContractData, setPopStar, showTopElements, interactTaskToExecute, checkInteractTask, isMobile, showMobileInDayBonus, showMobileBottomMenu, gameMode, setGameMode }: Props) {
   const {
     components: {
       TCMPopStar,
@@ -1106,10 +1107,10 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
               <div className={`${style.mgwModeChooseHeader} ${temporaryGameMode == 0 ? style.mgwModeSelectHeader : ''}`}>
                 <span>CLEAR BOARD</span>
               </div>
-              <div 
-              className={`${style.mgwModeSelectConcernBg} ${style.mgwModeSelectConcernBgSuc}`}
-              style={{width: "1.9rem", height: "1.9rem"}}>
-                {temporaryGameMode == 0 && <img src={ModeSelectImg} style={{width: "1.5rem", height: "1.5rem"}} alt="" />}
+              <div
+                className={`${style.mgwModeSelectConcernBg} ${style.mgwModeSelectConcernBgSuc}`}
+                style={{ width: "1.9rem", height: "1.9rem" }}>
+                {temporaryGameMode == 0 && <img src={ModeSelectImg} style={{ width: "1.5rem", height: "1.5rem" }} alt="" />}
               </div>
             </div>
             <div
@@ -1120,11 +1121,11 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
               <div className={`${style.mgwModeChooseHeader} ${temporaryGameMode == 1 ? style.mgwModeSelectHeader : ''}`}>
                 <span>SCORE CHALLENGE </span>
               </div>
-              <div 
-              className={`${style.mgwModeSelectConcernBg} ${style.mgwModeSelectConcernBgSuc}`}
-              style={{width: "1.8rem", height: "1.8rem"}}
+              <div
+                className={`${style.mgwModeSelectConcernBg} ${style.mgwModeSelectConcernBgSuc}`}
+                style={{ width: "1.8rem", height: "1.8rem" }}
               >
-                {temporaryGameMode == 1 && <img src={ModeSelectImg} style={{width: "1.5rem", height: "1.5rem"}} alt="" />}
+                {temporaryGameMode == 1 && <img src={ModeSelectImg} style={{ width: "1.5rem", height: "1.5rem" }} alt="" />}
               </div>
             </div>
           </div>}
@@ -1275,7 +1276,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
             </div>
 
             {
-              !showMobileInDayBonus && (
+              !showMobileInDayBonus && !showMobileBottomMenu && (
                 <div className={mobileStyle.containerBuy}>
                   {Object.entries(matchedData).map(([key, { src, balance, name }]) => (
                     <div key={key} className={mobileStyle.containerItem}>
@@ -1499,14 +1500,37 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
           </div>
         )}
 
-        {/* {
-          timeLeft === 0 && localStorage.getItem('showGameOver') === 'true' && !gameSuccess
-            ? (
-
-              <div className={mobileStyle.gameOver}>
+        {
+          timeLeft === 0 && localStorage.getItem('showGameOver') === 'true' && !gameSuccess ? (
+            isModeGameChain ? (
+              <div className={mobileStyle.modeGameOver}>
                 <p>Game Over!</p>
+                <div className={mobileStyle.mgwModulesWrapper}>
+                  <div
+                    className={`${mobileStyle.mgwModeChoose} ${gameMode == 0 ? mobileStyle.mgwModeSelectBg : ''} ${loading ? mobileStyle.mgwModeChooseNotAllow : mobileStyle.mgwModeChooseAllow}`}
+                    onClick={loading ? undefined : () => setGameMode(0)}
+                  >
+                    <div className={`${mobileStyle.mgwModeChooseHeader} ${gameMode == 0 ? mobileStyle.mgwModeSelectHeader : ''}`}>
+                      <span>CLEAR BOARD</span>
+                    </div>
+                    <div className={mobileStyle.mgwModeSelectConcernBg}>
+                      {gameMode == 0 && <img src={ModeSelectImg} alt="" />}
+                    </div>
+                  </div>
+                  <div
+                    className={`${mobileStyle.mgwModeChoose} ${gameMode == 1 ? mobileStyle.mgwModeSelectBg : ''} ${loading ? mobileStyle.mgwModeChooseNotAllow : mobileStyle.mgwModeChooseAllow}`}
+                    onClick={loading ? undefined : () => setGameMode(1)}
+                  >
+                    <div className={`${mobileStyle.mgwModeChooseHeader} ${gameMode == 1 ? mobileStyle.mgwModeSelectHeader : ''}`}>
+                      <span>SCORE CHALLENGE</span>
+                    </div>
+                    <div className={mobileStyle.mgwModeSelectConcernBg}>
+                      {gameMode == 1 && <img src={ModeSelectImg} alt="" />}
+                    </div>
+                  </div>
+                </div>
                 <button
-                  onClick={handlePlayAgain}
+                  onClick={() => handlePlayAgain()}
                   disabled={loading}
                   style={{
                     cursor: loading ? "not-allowed" : "pointer",
@@ -1523,35 +1547,102 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                   )}
                 </button>
               </div>
-            ) : null} */}
-
-
-        {gameSuccess === true
-          && localStorage.getItem('showGameOver') === 'true'
-          ? (
-
-            <div className={mobileStyle.congrats}>
-              <p>Congrats!</p>
-              {rewardInfo ? <p>+{rewardInfo}!</p> : <p></p>}
-              <button
-                onClick={handlePlayAgaintow}
-                disabled={loadingPlayAgain}
-                style={{
-                  cursor: loadingPlayAgain ? "not-allowed" : "pointer",
-                  pointerEvents: loadingPlayAgain ? "none" : "auto"
-                }}
-              >
-                {loadingPlayAgain ? (
-                  <img
-                    src={LoadingMobileImg}
-                    className={`${mobileStyle.loading}`}
-                  />
-                ) : (
-                  "Play Again"
-                )}
-              </button>
-            </div>
+            ) : (
+              <div className={mobileStyle.gameOver}>
+                <p>Game Over!</p>
+                <button
+                  onClick={() => handlePlayAgain()}
+                  disabled={loading}
+                  style={{
+                    cursor: loading ? "not-allowed" : "pointer",
+                    pointerEvents: loading ? "none" : "auto"
+                  }}
+                >
+                  {loading ? (
+                    <img
+                      src={loadingImg}
+                      className={mobileStyle.loading}
+                    />
+                  ) : (
+                    "Play Again"
+                  )}
+                </button>
+              </div>
+            )
           ) : null
+        }
+
+        {
+          gameSuccess === true
+            ? (
+              isModeGameChain ?
+                <div className={mobileStyle.ModeGameSuc}>
+                  <p>Congrats!</p>
+                  {rewardInfo ? <p>+{rewardInfo}!</p> : <p></p>}
+                  <div className={mobileStyle.mgwModulesWrapper}>
+                    <div
+                      className={`${mobileStyle.mgwModeChoose} ${mobileStyle.mgwModeChooseSuc} ${gameMode == 0 ? mobileStyle.mgwModeSelectBgSuc : ''} ${loadingPlayAgain ? mobileStyle.mgwModeChooseNotAllow : mobileStyle.mgwModeChooseAllow} `}
+                      onClick={loadingPlayAgain ? undefined : () => setGameMode(0)}
+                    >
+                      <div className={`${mobileStyle.mgwModeChooseHeader} ${gameMode == 0 ? mobileStyle.mgwModeSelectHeader : ''}`}>
+                        <span>CLEAR BOARD</span>
+                      </div>
+                      <div className={`${mobileStyle.mgwModeSelectConcernBg} ${mobileStyle.mgwModeSelectConcernBgSuc}`}>
+                        {gameMode == 0 && <img src={ModeSelectSucImg} alt="" />}
+                      </div>
+                    </div>
+                    <div
+                      className={`${mobileStyle.mgwModeChoose} ${mobileStyle.mgwModeChooseSuc} ${gameMode == 1 ? mobileStyle.mgwModeSelectBgSuc : ''} ${loadingPlayAgain ? mobileStyle.mgwModeChooseNotAllow : mobileStyle.mgwModeChooseAllow} `}
+                      onClick={loadingPlayAgain ? undefined : () => setGameMode(1)}
+                    >
+                      <div className={`${mobileStyle.mgwModeChooseHeader} ${gameMode == 1 ? mobileStyle.mgwModeSelectHeader : ''}`}>
+                        <span>SCORE CHALLENGE </span>
+                      </div>
+                      <div className={`${mobileStyle.mgwModeSelectConcernBg} ${mobileStyle.mgwModeSelectConcernBgSuc}`}>
+                        {gameMode == 1 && <img src={ModeSelectSucImg} alt="" />}
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={handlePlayAgaintow}
+                    disabled={loadingPlayAgain}
+                    style={{
+                      cursor: loadingPlayAgain ? "not-allowed" : "pointer",
+                      pointerEvents: loadingPlayAgain ? "none" : "auto"
+                    }}
+                  >
+                    {loadingPlayAgain ? (
+                      <img
+                        src={loadingImg}
+                        className={`${mobileStyle.loading}`}
+                      />
+                    ) : (
+                      "Play Again"
+                    )}
+                  </button>
+                </div>
+                : <div className={mobileStyle.congrats}>
+                  <p>Congrats!</p>
+                  {rewardInfo ? <p>+{rewardInfo}!</p> : <p></p>}
+                  <button
+                    onClick={handlePlayAgaintow}
+                    disabled={loadingPlayAgain}
+                    style={{
+                      cursor: loadingPlayAgain ? "not-allowed" : "pointer",
+                      pointerEvents: loadingPlayAgain ? "none" : "auto"
+                    }}
+                  >
+                    {loadingPlayAgain ? (
+                      <img
+                        src={LoadingMobileImg}
+                        className={`${mobileStyle.loading}`}
+                      />
+                    ) : (
+                      "Play Again"
+                    )}
+                  </button>
+                </div>
+            ) : null
         }
       </>
     )

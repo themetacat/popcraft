@@ -1486,7 +1486,7 @@ p {
       1px 1px 0 rgba(69, 69, 69, 0.7)
   }
 
-  button::active{
+  button:active{
     transform: scale(0.98);
   }
 }

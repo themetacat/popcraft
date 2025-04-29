@@ -133,18 +133,18 @@
 
 .containerBuy {
   position: absolute;
-  width: 235.38rem;
+  width: 217.38rem;
   height: 40.22rem;
   border-radius: 20.11rem;
   background-color: rgba(255, 255, 255, 0);
   box-shadow: inset 0 0 10rem rgba(24, 127, 21, 0.46);
-  left: 6.87rem;
-  /* bottom: 95.12rem; */
-  top:  76%;
+  left: 26.87rem;
+  bottom: 18.12rem;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 13em;
+  z-index: 10;
 }
 
 .containerItem {
@@ -201,6 +201,7 @@
   transform: translate(-50%, -50%);
   width: 239.46rem;
   height: 198.44rem;
+  z-index: 9;
   border: none;
   background-image: url("../../../../images/Mobile/GameOver/GameOverBg.webp");
   background-size: contain;
@@ -257,7 +258,8 @@
 }
 
 .gameOver button:active {
-  font-size: 15rem;
+  /* font-size: 15rem; */
+  transform: scale(0.9);
   text-shadow:
     -0.7rem -0.7rem 0 rgba(56, 56, 56, 0.7),
     0.7rem -0.7rem 0 rgba(71, 71, 71, 0.7),
@@ -271,8 +273,8 @@
   transform: rotate(3600deg);
   -webkit-transition: -webkit-transform 5s linear;
   transition: transform 5s linear;
-  width: 15.86rem;
-  height: 15.3rem;
+  width: 19.86rem;
+  height: 19.3rem;
 }
 
 @keyframes spin {
@@ -299,10 +301,9 @@
   top: 46%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* width: 247.25rem;
-  height: 197.55rem; */
   width: 239.46rem;
   height: 198.44rem;
+  z-index: 9;
   border: none;
   background-image: url("../../../../images/Mobile/GameOver/Congrats.webp");
   background-size: contain;
@@ -374,10 +375,258 @@
 }
 
 .congrats button:active {
-  font-size: 15rem;
+  transform: scale(0.95);
   text-shadow:
     -0.7rem -0.7rem 0 rgba(56, 56, 56, 0.7),
     0.7rem -0.7rem 0 rgba(71, 71, 71, 0.7),
     -0.7rem 0.7rem 0 rgba(59, 59, 59, 0.7),
     0.7rem 0.7rem 0 rgba(69, 69, 69, 0.7);
+}
+
+
+/* ==============================Mode Game========================== */
+.modeGameOver {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 254rem;
+  height: 200rem;
+  padding-left: 1rem;
+  border: none;
+  background-image: url("../../../../images/gameover/ModeFail.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10rem;
+  text-transform: uppercase;
+  font-family: "Alibaba-PuHuiTi-TIMESBD";
+  z-index: 9;
+
+  p {
+    text-transform: uppercase;
+    font-size: 23rem;
+    font-weight: 400;
+    letter-spacing: 0.1rem;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 70rem;
+    font-family: "AdobeHeitiStd-Regular4";
+    text-shadow:
+      1px 1px 2px #838383,
+      0 0 5px #8f8d8d,
+      1px 1px 3px #949494,
+      0 0 10px rgba(166, 166, 166, 0.5),
+      0 0 2px #a3a3a3,
+      0 0 3px #999898,
+      0 0 4px #868585,
+      0 0 5px rgba(183, 183, 183, 0.5),
+      2px 0 2px #7f7f7f,
+      3px 0 3px #7f7f7f,
+      4px 0 4px #7f7f7f;
+  }
+
+  button {
+    text-transform: uppercase;
+    background-image: url("../../../../images/Mobile/GameOver/PlayBtn.webp");
+    background-size: 100% 100%;
+    background-position: center;
+    border: none;
+    background-color: transparent;
+    width: 184rem;
+    height: 27rem;
+    font-size: 13rem;
+    font-weight: 600;
+    line-height: 7rem;
+    letter-spacing: 0.6rem;
+    text-align: center;
+    color: #ffffff;
+    transition: font-size 0.3s ease;
+    text-transform: uppercase;
+    margin-top: -1.3rem;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    text-shadow:
+      -1px -1px 0 rgba(163, 162, 162, 0.7),
+      1px -1px 0 rgba(180, 179, 179, 0.7),
+      -1px 1px 0 rgba(165, 164, 164, 0.7),
+      1px 1px 0 rgba(206, 206, 206, 0.7);
+  }
+
+  button:active {
+    transform: scale(0.95);
+  }
+}
+
+.mgwModulesWrapper {
+  font-size: 9rem;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: -1.5rem;
+  font-family: "AdobeHeitiStd-Regular2";
+  color: #fff;
+  text-shadow: 0.5rem 0.5rem 0.9rem rgb(0, 0, 0, 0.3);
+}
+
+.mgwModeChoose {
+  width: 90.5rem;
+  height: 27.56rem;
+  border-radius: 2px;
+  position: relative;
+  background-image: url("../../../../images/gameover/ModeNoSelectBg.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  cursor: pointer;
+  letter-spacing: 0.1rem;
+  transition: transform 0.1s ease;
+  display: flex;
+  justify-content: center;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mgwModeChooseSuc{
+  background-image: url("../../../../images/gameover/ModeSucNoSelectBg.webp");
+}
+
+.mgwModeChooseNotAllow {
+  cursor: not-allowed;
+}
+
+.mgwModeChooseAllow:active {
+  transform: scale(0.95);
+}
+
+.mgwModeSelectBg {
+  background-image: url("../../../../images/gameover/ModeSelectBg.webp");
+}
+
+.mgwModeSelectBgSuc {
+  background-image: url("../../../../images/gameover/ModeSucSelectBg.webp");
+}
+
+.mgwModeChooseHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.mgwModeSelectConcernBg {
+  background-image: url("../../../../images/gameover/ModeSelectConcernBg.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  width: 7.33rem;
+  height: 7.36rem;
+  position: absolute;
+  top: 3.04rem;
+  right: 4.03rem;
+}
+
+.mgwModeSelectConcernBg{
+  background-image: url("../../../../images/gameover/ModeSucSelectConcernBg.webp");
+}
+
+.mgwModeSelectConcernBg img {
+  width: 6.34rem;
+  height: 6.25rem;
+  display: block;
+  margin: 0 auto;
+}
+
+.ModeGameSuc {
+  position: fixed;
+  top: 50%;
+  left: 52%;
+  transform: translate(-50%, -50%);
+  width: 227rem;
+  height: 230rem;
+  padding-right: 8rem;
+  border: none;
+  background-image: url("../../../../images/gameover/ModeSucceed.webp");
+  background-size: 100% 100%;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10rem;
+  text-transform: uppercase;
+  z-index: 9;
+
+  p:nth-child(1) {
+    text-transform: uppercase;
+    font-size: 24rem;
+    font-weight: 400;
+    letter-spacing: 0.1rem;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 69rem;
+    font-family: "AdobeHeitiStd-Regular4";
+    text-shadow:
+      1px 1px 2px #838383,
+      0 0 5px #8f8d8d,
+      1px 1px 3px #949494,
+      0 0 10px rgba(166, 166, 166, 0.5),
+      0 0 2px #a3a3a3,
+      0 0 3px #999898,
+      0 0 4px #868585,
+      0 0 5px rgba(183, 183, 183, 0.5),
+      2px 0 2px #7f7f7f,
+      3px 0 3px #7f7f7f,
+      4px 0 4px #7f7f7f;
+  }
+
+  p:nth-child(2) {
+    text-transform: uppercase;
+    font-size: 25rem;
+    font-weight: 400;
+    letter-spacing: 0.1rem;
+    color: #f16999;
+    text-align: center;
+    margin-top: -4rem;
+    padding-bottom: 1rem;
+    font-family: "AdobeHeitiStd-Regular";
+    text-shadow:
+      1px 1px 2px #585858,
+      0 0 1px #747373,
+      1px 1px 1px #b3b3b3,
+      0 0 1px rgba(131, 131, 131, 0.5);
+  }
+
+  button {
+    text-transform: uppercase;
+    background-image: url("../../../../images/gameover/succeedpay.webp");
+    background-size: 100% 100%;
+    background-position: center;
+    border: none;
+    background-color: transparent;
+    width: 184rem;
+    height: 27rem;
+    font-size: 13rem;
+    font-weight: 600;
+    line-height: 2rem;
+    letter-spacing: 0.6rem;
+    text-align: center;
+    color: #ffffff;
+    transition: font-size 0.3s ease;
+    text-transform: uppercase;
+    margin-top: -1.3rem;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    text-shadow:
+      -1px -1px 0 rgba(163, 162, 162, 0.7),
+      1px -1px 0 rgba(180, 179, 179, 0.7),
+      -1px 1px 0 rgba(165, 164, 164, 0.7),
+      1px 1px 0 rgba(206, 206, 206, 0.7);
+  }
+
+  button:active{
+    transform: scale(0.95);
+  }
 }

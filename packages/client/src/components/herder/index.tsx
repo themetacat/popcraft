@@ -149,6 +149,8 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
   const [showMenu, setShowMenu] = useState(false);
   const [isCloseAnimatingMenu, setIsCloseAnimatingMenu] = useState(false);
   const [showMobileInDayBonus, setShowMobileInDayBonus] = useState(false);
+  const [showMobileBottomMenu, setShowMobileBottomMenu] = useState(false);
+  const [mobileBottomMenuClose, setMobileBottomMenuClose] = useState(false);
   const [showInviteConfirm, setShowInviteConfirm] = useState(false);
   const [searchParams] = useSearchParams();
   const inviteCode = searchParams.get("invite");
@@ -171,15 +173,23 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
         if (gameModeData.mode == 1n) {
           setSystemName('MScoreChalSystem')
           setGameMode(1)
-        }else{
+        } else {
           setSystemName('MClearSystem');
           setGameMode(0)
         }
       }
-    }else {
+    } else {
       setSystemName('PopCraftSystem');
     }
   }, [gameModeData, isModeGameChain])
+
+  useEffect(() => {
+    if (popStar) {
+      setShowMobileBottomMenu(true);
+    } else {
+      setShowMobileBottomMenu(false);
+    }
+  }, [popStar])
 
   useEffect(() => {
     if (!address || !inviteCode || !COMMON_CHAIN_IDS.includes(chainId)) return;
@@ -441,7 +451,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           });
           if (!isSuccess && gameModeData && gameModeData.mode == 1n) {
             const clear = checkClearBoard(TCMPopStarData.matrixArray as bigint[]);
-            if(clear){
+            if (clear) {
               updatedTimeLeft = 0
             }
           }
@@ -621,7 +631,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     ) => {
       // 清空画布
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
       // 绘制最外层的立体圆角边框
       let outerBorderRadius = 20;
       const offsetX = (CANVAS_WIDTH - 10 * GRID_SIZE) / 2;
@@ -733,7 +742,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             const isPopIndex = popIndexArr.includes(itemIndex);
             const isSameToken = prevTokenIndex === tokenIndex && tokenIndex !== 0;
             const isChangedToken = prevTokenIndex !== tokenIndex && tokenIndex !== 0;
-            
+
             const drawImageOrAnimate = (img: HTMLImageElement) => {
               if (isSameToken) {
                 ctx.drawImage(img, imageX, imageY, imageWidth, imageHeight);
@@ -745,7 +754,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
                 // }else{
                 //   animateImagePopIn(ctx, img, currentX, currentY, GRID_SIZE, color);
                 // }
-                animateImagePopIn(ctx, img, currentX, currentY, GRID_SIZE, color);
+                animateImagePopIn(ctx, img, currentX, currentY, GRID_SIZE, color, tokenImgScale);
               }
             };
             if (isPopIndex) {
@@ -754,7 +763,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               if (lastSrc) {
                 const lastImg = new Image();
                 lastImg.src = lastSrc;
-                animateImagePopOut(ctx, lastImg, currentX, currentY, GRID_SIZE, color,250, () => {
+                animateImagePopOut(ctx, lastImg, currentX, currentY, GRID_SIZE, color, 250, () => {
                   ctx.clearRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
                   ctx.fillStyle = color;
                   ctx.fillRect(currentX, currentY, GRID_SIZE, GRID_SIZE);
@@ -779,12 +788,12 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             }
           }
         }
-        if (popIndexArr.length >0) {
+        if (popIndexArr.length > 0) {
           setPopIndexArr([]);
         }
       }
 
-      if (hoveredSquare && coordinates.x < 10) {
+      if (hoveredSquare && coordinates.x < 10 && coordinates.x > 0 && coordinates.y < 10 && coordinates.x > 0) {
         const i = hoveredSquare.x;
         const j = hoveredSquare.y;
         const currentX = i * GRID_SIZE + offsetX;
@@ -844,7 +853,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       if (!isMobile) {
         setGRID_SIZE(44);
       } else {
-        setCalcOffsetYValue(11);
+        setCalcOffsetYValue(7.5);
         setTokenImgScale(0.9)
         setGRID_SIZE(33);
       }
@@ -860,6 +869,18 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     }
   }, [appName, isMobile]);
 
+  useEffect(() => {
+    if (!isMobile) return;
+    const screenWidth = canvasSize.width;
+    const screenHeight = canvasSize.height;
+
+    const maxGridWidth = (screenWidth - 40) / 10;
+    const maxGridHeight = (screenHeight - 100) / 10;
+
+    const newGridSize = Math.floor(Math.min(maxGridWidth, maxGridHeight));
+
+    setGRID_SIZE(newGridSize);
+  }, [canvasSize.width, canvasSize.height, isMobile]);
 
   const [isDragging, setIsDragging] = useState(false);
   const [timeControl, setTimeControl] = useState(false);
@@ -1135,6 +1156,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               // localStorage.setItem('showGameOver', 'false');
               setCheckInteractTask(false)
               setPopIndexArr([])
+              setPopStar(false);
             } else if (actionData === "pop") {
               receiveCount += 1
             }
@@ -1270,7 +1292,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
     const money = localStorage.getItem('money')
     setLoadingpaly(true)
     setLoading(true)
-    if(temporaryGameMode < 0){
+    if (temporaryGameMode < 0) {
       temporaryGameMode = gameMode
     }
     if (deldata == "undefined") {
@@ -1302,7 +1324,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
       EmptyRegionNum = emptyRegion
     }
 
-    const ctx = canvasRef?.current?.getContext("2d");   
+    const ctx = canvasRef?.current?.getContext("2d");
     if (ctx && canvasRef) {
       interactHandleTCM(
         { x: EmptyRegionNum, y: 0 },
@@ -1458,7 +1480,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             drawGrid2(ctx, null, true, popIndexArr);
             latestPopIndexArrRef.current = []
           }, 250);
-        }else{
+        } else {
           drawGrid2(ctx, null, true, popIndexArr);
           latestPopIndexArrRef.current = popIndexArr
         }
@@ -1511,13 +1533,6 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           setHoveredSquare(null);
           hoveredSquareRef.current = null;
         }
-      } else {
-
-        const gridX = Math.floor((mouseX + scrollOffset.x) / GRID_SIZE);
-        const gridY = Math.floor((mouseY + scrollOffset.y) / GRID_SIZE);
-        setCoordinates({ x: gridX, y: gridY });
-        setHoveredSquare({ x: gridX, y: gridY });
-        hoveredSquareRef.current = { x: gridX, y: gridY };
       }
     };
 
@@ -1998,6 +2013,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
             checkInteractTask={checkInteractTask}
             isMobile={isMobile}
             showMobileInDayBonus={showMobileInDayBonus}
+            showMobileBottomMenu={showMobileBottomMenu}
             gameMode={gameMode}
             setGameMode={setGameMode}
           />
@@ -2426,15 +2442,25 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
               className={mobileStyle.bodyCon}
               onMouseDown={handleMouseDown}
               onMouseUp={handleMouseUp}
-            // onMouseMove={handleMouseMoveData}
-            // onMouseLeave={handleLeave}
-            // onMouseEnter={handleMouseEnter}
+              style={{ position: 'relative', zIndex: 1 }}
             >
               <canvas
                 ref={canvasRef}
                 width={CANVAS_WIDTH}
                 height={CANVAS_HEIGHT}
+                style={{ position: 'relative', zIndex: 2 }}
               />
+              {isModeGameChain &&
+                <div className={mobileStyle.target}
+                  style={{
+                    top: `${(CANVAS_HEIGHT - calcOffsetYValue * GRID_SIZE) / 2 - (CANVAS_WIDTH * 0.16)}px`,
+                  }}>
+                  <div>
+                    <span className={mobileStyle.targetTitle}>TARGET:</span>
+                    <span> {MODE_TARGE[gameMode]}</span>
+                  </div>
+                </div>
+              }
             </div>
           </>}
 
@@ -2471,6 +2497,7 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           checkInteractTask={checkInteractTask}
           isMobile={isMobile}
           showMobileInDayBonus={showMobileInDayBonus}
+          showMobileBottomMenu={showMobileBottomMenu}
           gameMode={gameMode}
           setGameMode={setGameMode}
         />
@@ -2511,34 +2538,58 @@ export default function Header({ hoveredData, handleData, isMobile }: Props) {
           value={tokenNotificationValue}
           isMobile={isMobile}
         />)}
-
-        <div className={mobileStyle.buttomBtn}>
-          <RankingList
-            setShowRankingList={setShowRankingList}
-            showRankingList={showRankingList}
-            isMobile={isMobile}
-          />
-          {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && chainId != 177 && (
-            <>
-              <MissionBonus
-                checkTaskInProcess={checkTaskInProcess}
-                handleErrorAll={handleErrorAll}
-                isMobile={isMobile}
-                setShowMobileInDayBonus={setShowMobileInDayBonus}
-              />
-              <GiftPark
-                checkTaskInProcess={checkTaskInProcess}
-                handleErrorAll={handleErrorAll}
-                isMobile={isMobile}
-              />
-              <Invite
-                isMobile={isMobile}
-                checkTaskInProcess={checkTaskInProcess}
-                handleErrorAll={handleErrorAll}
-              />
-            </>
-          )}
-        </div>
+        {
+          showMobileBottomMenu && <div className={`${mobileStyle.bottomMenuBtn} ${mobileBottomMenuClose ? mobileStyle.bounsContainerClose : ''}`}>
+            <RankingList
+              setShowRankingList={setShowRankingList}
+              showRankingList={showRankingList}
+              isMobile={isMobile}
+            />
+            {(isConnected && address && MISSION_BOUNS_CHAIN_IDS.includes(chainId)) && chainId != 177 && (
+              <>
+                <MissionBonus
+                  checkTaskInProcess={checkTaskInProcess}
+                  handleErrorAll={handleErrorAll}
+                  isMobile={isMobile}
+                  setShowMobileInDayBonus={setShowMobileInDayBonus}
+                />
+                <GiftPark
+                  checkTaskInProcess={checkTaskInProcess}
+                  handleErrorAll={handleErrorAll}
+                  isMobile={isMobile}
+                />
+                <Invite
+                  isMobile={isMobile}
+                  checkTaskInProcess={checkTaskInProcess}
+                  handleErrorAll={handleErrorAll}
+                />
+              </>
+            )}
+          </div>
+        }
+        {!popStar && <button
+          className={`${mobileStyle.bottomMenuArrow}`}
+          // style={{ transform: showMobileBottomMenu ? '' : 'scaleX(-1)' }}
+          onClick={() => {
+            if (showMobileBottomMenu) {
+              setMobileBottomMenuClose(true)
+              setShowMobileInDayBonus(false)
+              setTimeout(() => {
+                setShowMobileBottomMenu(!showMobileBottomMenu)
+                setMobileBottomMenuClose(false)
+              }, 250)
+            } else {
+              setShowMobileBottomMenu(!showMobileBottomMenu)
+            }
+          }}
+        >
+          <span style={{ display: 'flex', flexDirection: 'column' }}>
+            <span>M</span>
+            <span>E</span>
+            <span>N</span>
+            <span>U</span>
+          </span>
+        </button>}
 
         {showSuccessModal && (
           <div className={mobileStyle.modal}>
