@@ -1,11 +1,7 @@
 .btn {
     width: 173.83rem;
     height: 29.05rem;
-    opacity: 0px;
-    position: absolute;
-    left: 50%;
-    top: 52%;
-    transform: translate(-50%, 52%);
+    margin-top: 19.5rem;
     color: #ffffff;
     text-transform: uppercase;
 }
@@ -40,7 +36,7 @@
 
 .btnPlay:active {
     transition: transform 0.1s ease, font-size 0.1s ease;
-    font-size: 15.5rem;
+    transform: scale(0.9);
     text-shadow:
         -0.45rem -0.45rem 0.3rem rgba(255, 255, 255, 0.3),
         0.45rem -0.45rem 0.3rem rgba(255, 255, 255, 0.3),
@@ -72,17 +68,98 @@
     }
 }
 
-.btnSpik{
+.btnSpik {
     width: 23.72rem;
     height: 20.4rem;
     position: absolute;
-    right: 7.76rem;
+    right: 37.76rem;
     bottom: 25.5rem;
 }
 
-.cloudBg{
+.cloudBg {
     width: 100%;
     height: 431.69rem;
     position: absolute;
     bottom: 0;
+}
+
+.mgwModulesWrapper {
+    font-size: 8.31rem;
+    display: flex;
+    gap: 6.5rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 12.85rem;
+    width: 230rem;
+}
+
+.mgwModeChoose {
+    width: 102.44rem;
+    height: 44.57rem;
+    border-radius: 2px;
+    position: relative;
+    background-image: url("../../../../images/welcome/ModeNoSelectBg.webp");
+    background-size: 100% 100%;
+    background-position: center;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mgwModeChooseNotAllow {
+    cursor: not-allowed;
+}
+
+.mgwModeChooseAllow:active {
+    transform: scale(0.95);
+}
+
+.mgwModeSelectBg {
+    background-image: url("../../../../images/welcome/ModeSelectBg.webp");
+}
+
+.mgwModeChooseHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.mgwModeSelectHeader {
+    text-shadow:
+        -0.9rem -0.9rem 0 white,
+        0.9rem -0.9rem 0 white,
+        -0.9rem 0.9rem 0 white,
+        0.9rem 0.9rem 0 white;
+}
+
+.mgwModeChooseTitle {
+    color: rgba(57, 57, 57, 0.73);
+    margin-top: 7.1rem;
+}
+
+.mgwModeSelectConcernBg {
+    background-image: url("../../../../images/welcome/ModeSelectConcernBg.webp");
+    background-size: 100% 100%;
+    background-position: center;
+    width: 10.42rem;
+    height: 9.98rem;
+    position: absolute;
+    top: 3.1rem;
+    right: 4.21rem;
+}
+
+.mgwModeSelectConcernBg img {
+    width: 9.32rem;
+    height: 9.1rem;
+    display: block;
+    margin: 0 auto;
+}
+
+.moduleText {
+    text-align: center;
+    width: 95.03rem;
+    margin: 5.43rem auto 0 auto;
+    color: rgba(57, 57, 57, 1);
 }

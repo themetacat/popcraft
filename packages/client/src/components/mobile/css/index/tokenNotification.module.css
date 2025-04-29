@@ -1,6 +1,6 @@
 .container {
     position: absolute;
-    top: 68.5%;
+    bottom: 13%;
     right: 37.2rem;
     display: flex;
     gap: 11.75rem;
@@ -60,8 +60,8 @@
 
 .containerBouns {
     position: absolute;
-    top: 20%;
-    left: 66.74rem;
+    top: 27%;
+    left: 53.74rem;
     display: flex;
     z-index: 20;
     flex-direction: column;

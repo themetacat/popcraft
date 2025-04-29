@@ -176,94 +176,128 @@ export default function PopStar({ setPopStar, playFun, setTopUpType, loadingplay
     return (
       <>
         <img src={IndexMobileCloudBgImg} alt="" className={mobilePopstarStyle.cloudBg} />
-        <div className={mobileStyle.welcome}>
-          Welcome to PopCraft !
-          <br />
-          A fully on-chain,
-          <br />
-          composability-based casual
-          <br />
-          elimination game!
+        <div className={mobileStyle.homePageContainer}>
+          <p className={mobileStyle.welcome}>
+            Welcome to PopCraft !
+            <br />
+            A fully on-chain,
+            <br />
+            composability-based casual
+            <br />
+            elimination game!
+          </p>
+          {MODE_GAME_CHAIN_IDS.includes(chainId) && <div className={mobilePopstarStyle.mgwModulesWrapper}>
+            <div
+              className={`${mobilePopstarStyle.mgwModeChoose} ${gameMode == 0 ? mobilePopstarStyle.mgwModeSelectBg : ''} ${loadingplay ? mobilePopstarStyle.mgwModeChooseNotAllow : mobilePopstarStyle.mgwModeChooseAllow} `}
+              onClick={loadingplay ? undefined : () => setGameMode(0)}
+            >
+              <div className={`${mobilePopstarStyle.mgwModeChooseHeader} ${gameMode == 0 ? mobilePopstarStyle.mgwModeSelectHeader : ''}`}>
+                <span className={mobilePopstarStyle.mgwModeChooseTitle}>CLEAR BOARD</span>
+              </div>
+              <div className={mobilePopstarStyle.mgwModeSelectConcernBg}>
+                {gameMode == 0 && <img src={ModeSelectImg} alt="" />}
+              </div>
+              <p className={mobilePopstarStyle.moduleText}>
+                Clear all items on a 10x10 board within 2 minutes.
+              </p>
+            </div>
+            <div
+              className={`${mobilePopstarStyle.mgwModeChoose} ${gameMode == 1 ? mobilePopstarStyle.mgwModeSelectBg : ''} ${loadingplay ? mobilePopstarStyle.mgwModeChooseNotAllow : mobilePopstarStyle.mgwModeChooseAllow} `}
+              onClick={loadingplay ? undefined : () => setGameMode(1)}
+            >
+              <div className={`${mobilePopstarStyle.mgwModeChooseHeader} ${gameMode == 1 ? mobilePopstarStyle.mgwModeSelectHeader : ''}`}>
+                <span className={mobilePopstarStyle.mgwModeChooseTitle}>SCORE CHALLENGE </span>
+              </div>
+              <div className={mobilePopstarStyle.mgwModeSelectConcernBg}>
+                {gameMode == 1 && <img src={ModeSelectImg} alt="" />}
+
+              </div>
+              <p className={mobilePopstarStyle.moduleText}>
+                Get a score of {Number(MODE_SCORE_CHAL_SUCCESS_SCORE)} from 130 items within 2 minutes.
+              </p>
+            </div>
+          </div>}
+
+          <ConnectButton.Custom>
+            {({
+              account,
+              chain,
+              openChainModal,
+              openConnectModal,
+              authenticationStatus,
+              mounted,
+            }) => {
+              const ready = mounted && authenticationStatus !== "loading";
+              const connected =
+                ready &&
+                account &&
+                chain &&
+                (!authenticationStatus ||
+                  authenticationStatus === "authenticated");
+              return (
+                <div
+                  {...(!ready && {
+                    "aria-hidden": true,
+                    style: {
+                      opacity: 0,
+                      pointerEvents: "none",
+                      userSelect: "none",
+                    },
+                  })}
+                  className={mobilePopstarStyle.btn}
+                >
+                  <img src={SpikBtnImg} alt="" className={mobilePopstarStyle.btnSpik} />
+                  {(() => {
+                    if (!connected) {
+                      return (
+                        <button
+                          onClick={() => {
+                            openConnectModal();
+                          }}
+                          type="button"
+                          className={mobilePopstarStyle.btnPlay}>
+                          CONNECT
+                        </button>
+                      );
+                    }
+                    if (chain.unsupported) {
+                      return (
+                        <button
+                          onClick={openChainModal}
+                          type="button"
+                          className={mobilePopstarStyle.btnPlay}
+                        >
+                          Wrong network
+                        </button>
+                      );
+                    }
+                    return (
+                      <button
+                        onClick={handleConnectClick}
+                        type="button"
+                        disabled={playButtonClicked}
+                        className={`${mobilePopstarStyle.btnPlay}`}
+                      >
+                        {
+                          loadingplay === true ? (
+                            <img
+                              src={loadingImg}
+                              alt=""
+                              className={`${mobilePopstarStyle.loading}`}
+                            />
+                          ) : (
+                            <> {playAction == 'play' ? "Play" : "Top Up First"}</>
+                          )
+                        }
+                      </button>
+                    );
+                  })()}
+                </div>
+              );
+            }}
+          </ConnectButton.Custom>
         </div>
 
-        <ConnectButton.Custom>
-          {({
-            account,
-            chain,
-            openChainModal,
-            openConnectModal,
-            authenticationStatus,
-            mounted,
-          }) => {
-            const ready = mounted && authenticationStatus !== "loading";
-            const connected =
-              ready &&
-              account &&
-              chain &&
-              (!authenticationStatus ||
-                authenticationStatus === "authenticated");
-            return (
-              <div
-                {...(!ready && {
-                  "aria-hidden": true,
-                  style: {
-                    opacity: 0,
-                    pointerEvents: "none",
-                    userSelect: "none",
-                  },
-                })}
-                className={mobilePopstarStyle.btn}
-              >
-                <img src={SpikBtnImg} alt="" className={mobilePopstarStyle.btnSpik} />
-                {(() => {
-                  if (!connected) {
-                    return (
-                      <button
-                        onClick={() => {
-                          openConnectModal();
-                        }}
-                        type="button"
-                        className={mobilePopstarStyle.btnPlay}>
-                        CONNECT
-                      </button>
-                    );
-                  }
-                  if (chain.unsupported) {
-                    return (
-                      <button
-                        onClick={openChainModal}
-                        type="button"
-                        className={mobilePopstarStyle.btnPlay}
-                      >
-                        Wrong network
-                      </button>
-                    );
-                  }
-                  return (
-                    <button
-                      onClick={handleConnectClick}
-                      type="button"
-                      disabled={playButtonClicked}
-                      className={`${mobilePopstarStyle.btnPlay}`}
-                    >
-                      {
-                        loadingplay === true ? (
-                          <img
-                            src={loadingImg}
-                            alt=""
-                            className={`${mobilePopstarStyle.loading}`}
-                          />
-                        ) : (
-                          <> {playAction == 'play' ? "Play" : "Top Up First"}</>
-                        )
-                      }
-                    </button>
-                  );
-                })()}
-              </div>
-            );
-          }}
-        </ConnectButton.Custom>
         <DecorativeFigure />
       </>
     )
