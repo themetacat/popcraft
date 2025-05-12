@@ -225,7 +225,7 @@ export const useTopUp = () => {
         setRecipient("0x784844480280ca865ac8ef89bb554283dddff737");
         setBridgeUrl("https://owlto.finance/?to=Morph")
         setChianIcon("https://poster-phi.vercel.app/Morphl2_Logo_Circle.webp");
-        setTokenAddress(["0x0000000000000000000000000000000000000012", "0xe2E7D83dFBd25407045Fd061e4c17cC76007deaD", ...defaultTokenAddresses])
+        setTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses, "0xe2E7D83dFBd25407045Fd061e4c17cC76007deaD"])
         setPriTokenAddress(["0x0000000000000000000000000000000000000012", ...defaultTokenAddresses])
         setRewardInfo("300 Scores");
         setPrizePool("1,300 Morph Points");
