@@ -46,23 +46,23 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
         setShowExchange(true)
     };
 
-    const { priTokenAddress, chainId } = useTopUp();
+    const { priTokenAddress, tokenAddress, chainId } = useTopUp();
     const [items, setItems] = useState<TokenItem[]>(
-        priTokenAddress.map(token => ({ token, amount: 0 }))
+        tokenAddress.map(token => ({ token, amount: 0 }))
     );
     useEffect(() => {
-        const distributedItems = priTokenAddress.map((token, index) => ({
+        const distributedItems = tokenAddress.map((token, index) => ({
             token,
             amount: 0
         }));
         setItems(distributedItems);
 
-    }, [priTokenAddress, address])
+    }, [tokenAddress, address])
 
     const [tokenBalance, setTokenBalance] = useState<{ [key: string]: number }>({});
     useEffect(() => {
         if (address) {
-            priTokenAddress.forEach((tokenAddress) => {
+            tokenAddress.forEach((tokenAddress) => {
                 const balance = getComponentValue(
                     TokenBalance,
                     addressToEntityIDTwo(address, tokenAddress as Hex)
@@ -80,7 +80,7 @@ export default function ShowGameAsset({ setShowGameAsset, palyerAddress, isMobil
                 }
             })
         }
-    }, [priTokenAddress, address, setShowGameAsset])
+    }, [tokenAddress, address, setShowGameAsset])
 
     const [totalScore, setTotalScore] = useState(0);
     const rankRecord = address ? getComponentValue(
