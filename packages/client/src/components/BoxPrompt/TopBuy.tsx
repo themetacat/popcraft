@@ -291,15 +291,13 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
         const priceObject = prices.reduce<{ [key: string]: { price: string | number; methodParameters: any } }>((acc, curr) => {
             return { ...acc, ...curr };
         }, {});
-
         // const total = Object.values(priceObject).reduce((sum, { price }) => sum + Number(price), 0);
-        setPrices(priceObject);
+        // setPrices(priceObject);
         // setTotalPrice(total);
         return priceObject;
     };
 
     const fetchPriceForSingleItem = async (key: string, quantity: number) => {
-
         if (quantity > 0) {
             try {
                 let routeMethodParameters: any = {};
@@ -344,7 +342,6 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                     tokenAddress: key,
                     amount: quantity,
                 };
-
                 setPrices(prev => ({
                     ...prev,
                     [key]: { price, methodParameters }

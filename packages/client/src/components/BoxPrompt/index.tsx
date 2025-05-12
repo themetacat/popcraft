@@ -405,10 +405,10 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
     });
     const prices = await Promise.all(pricePromises);
     const priceObject = prices.reduce((acc, curr) => ({ ...acc, ...curr }), {});
-    const total = Object.values(priceObject).reduce((sum, { price }) => sum + Number(price), 0);
+    // const total = Object.values(priceObject).reduce((sum, { price }) => sum + Number(price), 0);
     // setLastPrices(priceObject);
-    setPrices(priceObject);
-    setTotalPrice(total);
+    // setPrices(priceObject);
+    // setTotalPrice(total);
     return priceObject;
   }, [numberData, recipient]);
 
