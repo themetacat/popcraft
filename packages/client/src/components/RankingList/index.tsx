@@ -63,8 +63,12 @@ export default function RankingList({ setShowRankingList, showRankingList, isMob
     };
 
     useEffect(() => {
-        setSelectSeason(season);
-    }, [season]);
+        if (season == 12 && (chainId ==2818 || chainId == 31337)) {
+            setSelectSeason(0);
+        }else{
+            setSelectSeason(season);
+        }
+    }, [season, chainId]);
 
     //格式化地址，只显示前4位和后4位
     const formatAddress = (address) => {
