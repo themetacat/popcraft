@@ -2,6 +2,7 @@ import { useMUD } from "../../MUDContext";
 import { getComponentValue } from "@latticexyz/recs";
 import { numToEntityID } from "../rightPart/index";
 import { useEffect, useState } from "react";
+import { useTopUp } from "../select";
 
 export function useUtils() {
     const {
@@ -11,6 +12,7 @@ export function useUtils() {
             StreakDays
         },
     } = useMUD();
+    const { chainId } = useTopUp();
     const [season, setSeason] = useState(0);
     const [seasonCountdown, setSeasonCountDown] = useState(0);
     const currentSeasonDimension = getComponentValue(
@@ -41,7 +43,11 @@ export function useUtils() {
         const currentTime = Math.floor(Date.now() / 1000);
         let newSeason;
         if (currentTime < startTime || startTime === 0) {
-            newSeason = 0;
+            if (chainId == 2818 || chainId == 31337) {
+                newSeason = 12;
+            }else{
+                newSeason = 0;
+            }
         } else {
             newSeason = Math.floor((currentTime - startTime) / duration) + 1;
         }
@@ -58,7 +64,7 @@ export function useUtils() {
             }, delay * 1000);
             return () => clearTimeout(timeout);
         }
-    }, [])
+    }, [chainId])
 
     const getMissionBonusDailyDay = () => {
         const seasonTime = getComponentValue(SeasonTime, numToEntityID(2));
