@@ -13,7 +13,7 @@ struct TokenInfo{
 }
 
 struct UniversalRouterParams{
-  bytes[] call_data;
+  bytes call_data;
   uint256 value; 
   TokenInfo token_info;
 }

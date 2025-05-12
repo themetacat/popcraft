@@ -13,7 +13,7 @@ import substanceImg from "../../images/substance/substance.webp";
 import mobileSubstanceImg from "../../images/Mobile/TopBuy/Bg.webp";
 import add from '../../images/substance/add.png'
 import reduce from '../../images/substance/reduce.png'
-import { generateRoute, generateRouteMintChain } from '../../uniswap_routing/routing'
+import { generateRoute, generateRouteMintChain, generateRouteMorphChain } from '../../uniswap_routing/routing'
 import { useTopUp } from "../select";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import toast from "react-hot-toast";
@@ -53,6 +53,7 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
     const [prices, setPrices] = useState<Record<string, PriceDetails>>({});
     const { recipient, chainId, tokenAddress, priTokenAddress, nativeToken } = useTopUp();
     const [totalPrice, setTotalPrice] = useState(0);
+    const [totalPriPrice, setTotalPriPrice] = useState(0);
     const [cresa, setcresa] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -62,7 +63,7 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
     const default_buy_token_num = 5;
 
     const discount = useNFTDiscount(chainId, address);
-    
+
     useEffect(() => {
         // const token = getComponentValue(Token, numToEntityID(0));
         // if (token && token.tokenAddress) {
@@ -226,7 +227,7 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
 
     const fetchPrices = async (getPriceData: any) => {
         setLoadingPrices({})
-        
+
         const pricePromises = Object.keys(getPriceData).map(async (key) => {
             const quantity = getPriceData[key] || 0;
             if (quantity > 0) {
@@ -259,9 +260,16 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                         const route = getPriTokenPrice(key, quantity)
                         price = route.price;
                         routeMethodParameters = route.methodParameters;
+                    } else {
+                        if (chainId === 2818 || chainId === 31337) {
+                            const route = await generateRouteMorphChain(key, quantity, recipient);
+                            if (route) {
+                                price = route.price;
+                                routeMethodParameters = route.methodParameters
+                            }
+                        }
                     }
                 }
-
 
                 const methodParameters = {
                     ...routeMethodParameters,
@@ -321,6 +329,14 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                         const route = getPriTokenPrice(key, quantity)
                         price = route.price;
                         routeMethodParameters = route.methodParameters;
+                    }else{
+                        if (chainId === 2818 || chainId === 31337) {
+                            const route = await generateRouteMorphChain(key, quantity, recipient);
+                            if (route) {
+                                price = route.price;
+                                routeMethodParameters = route.methodParameters
+                            }
+                        }
                     }
                 }
                 const methodParameters = {
@@ -344,11 +360,16 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
     };
 
     const updateTotalPrice = () => {
+        let priTotalPrice= 0;
         const total = Object.entries(numberData).reduce((sum, [key, num]) => {
             const price = prices[key] ? prices[key].price : 0;
+            if (priTokenAddress.includes(key)) {
+                priTotalPrice += Number(price)
+            }
             return sum + Number(price);
         }, 0);
 
+        setTotalPriPrice(priTotalPrice);
         setTotalPrice(total);
     };
 
@@ -376,10 +397,10 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
             return;
         }
         const methodParametersArray = itemsToPay.map(item => prices[item.key]?.methodParameters);
-        
+
         const payFunctionTwo = payFunction(
             methodParametersArray,
-            discount > 0 ? (BigInt(Math.floor(totalPrice * 10 ** 18)) * BigInt(100 - discount) / 100n) : 0n
+            discount > 0 ? (BigInt(Math.floor(totalPriPrice * 10 ** 18)) * BigInt(100 - discount) / 100n + (BigInt(Math.floor(totalPrice * 10 ** 18))-BigInt(Math.floor(totalPriPrice * 10 ** 18)))) : 0n
         );
         setcresa(true);
         payFunctionTwo.then((result) => {
@@ -517,7 +538,7 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                         :
                     </span>
                     <span>
-                        -{formatAmount(totalPrice * (discount / 100))} {nativeToken}
+                        -{formatAmount(totalPriPrice * (discount / 100))} {nativeToken}
                     </span>
                 </div>
                 <div className={style.totalAmount}>
@@ -525,7 +546,7 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                         Final TOTAL:
                     </span>
                     <span style={{ fontSize: "19px" }}>
-                        {formatAmount(totalPrice * ((100 - discount) / 100))} {nativeToken}
+                        {formatAmount(totalPriPrice * ((100 - discount) / 100) + (totalPrice-totalPriPrice))} {nativeToken}
                     </span>
                 </div>
 
@@ -691,11 +712,11 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                             {formatAmount(totalPrice)} {nativeToken}
                         </span>
                     </div>
-                    <div className={mobileTopBuyStyle.totalAmount} style={{ color: "#f16394"}}>
+                    <div className={mobileTopBuyStyle.totalAmount} style={{ color: "#f16394" }}>
                         <span className={mobileTopBuyStyle.leftSpan}>
                             NFT(-{discount}%)
                             <span className={mobileTopBuyStyle.discountWrapper}>
-                                <img src={discountTipsImg} className={mobileTopBuyStyle.discountTipsImg} onTouchEnd={handleDiscountTipsClick}/>
+                                <img src={discountTipsImg} className={mobileTopBuyStyle.discountTipsImg} onTouchEnd={handleDiscountTipsClick} />
                                 <div className={`${mobileTopBuyStyle.discountTipsText} ${isDiscountTipsVisible ? mobileTopBuyStyle.visible : ""}`}>
                                     <p>PopCraft Genesis NFT</p>
                                     <p>1 NFT → 10% OFF</p>
@@ -707,7 +728,7 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                             :
                         </span>
                         <span>
-                            -{formatAmount(totalPrice * (discount / 100))} {nativeToken}
+                            -{formatAmount(totalPriPrice * (discount / 100))} {nativeToken}
                         </span>
                     </div>
                     <div className={mobileTopBuyStyle.totalAmount}>
@@ -715,7 +736,7 @@ export default function TopBuy({ setShowTopBuy, isMobile }: Props) {
                             Final TOTAL:
                         </span>
                         <span style={{ fontSize: "19px" }}>
-                            {formatAmount(totalPrice * ((100 - discount) / 100))} {nativeToken}
+                            {formatAmount(totalPrice * ((100 - discount) / 100) + (totalPrice-totalPriPrice))} {nativeToken}
                         </span>
                     </div>
                 </div>

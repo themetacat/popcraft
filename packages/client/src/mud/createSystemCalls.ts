@@ -23,6 +23,8 @@ import InviteSystemAbi from "./abi/InviteSystem.abi.json";
 import ExchangeSystemAbi from "./abi/ExchangeSystem.abi.json";
 import popCraftSystemAbi from "./abi/PopCraftSystem.abi.json";
 import popCraftSystemAbiMode from "./abi/PopCraftSystemMode.abi.json";
+import CommonBuyAbi from "./abi/CommonBuySystem.abi.json";
+import MintBuyAbi from "./abi/MintBuySystem.abi.json";
 import { numToEntityID, addr2NumToEntityID } from "../components/rightPart"
 import { moveMatrixArray, regenerateBottomRows, dfsPopCraft, checkPopAccess } from "./Utils/opUtils"
 import { plantsResourceHex, missionResourceHex, bonusResourceHex, InviteResourceHex, ExchangeResourceHex } from "./Utils/systemResourceHex"
@@ -513,7 +515,6 @@ export function createSystemCalls(
     }
     let hashValpublic;
     const payArgs = await getPayArgs(methodParametersArray, totalValue)
-
     const nonce = await getAccountNonce();
     const encodeData = encodeFunctionData({
       abi: payArgs.abi,
@@ -558,9 +559,9 @@ export function createSystemCalls(
   };
 
   const getPayArgs = async (methodParametersArray: any[], theTotalValue = 0n) => {
-    const args = [];
+    let args = [];
     let totalValue = BigInt(0);
-    let abi = popCraftRedstoneBuyAbi
+    let abi = CommonBuyAbi;
     const chainIdHex = await window.ethereum.request({
       method: "eth_chainId",
     });
@@ -582,12 +583,16 @@ export function createSystemCalls(
         args.push(arg_single);
       }
     } else {
+      
       for (let i = 0; i < methodParametersArray.length; i++) {
         const params = methodParametersArray[i];
         const value = BigInt(params.value);
         totalValue += value;
+        
         const arg_single = {
-          call_data: [params.calldata, Payments.encodeRefundETH()],
+          call_data: chainId === 185
+          ? [params.calldata, Payments.encodeRefundETH()]
+          : params.calldata,
           value: value,
           token_info: {
             token_addr: params.tokenAddress,
@@ -596,7 +601,7 @@ export function createSystemCalls(
         }
         args.push(arg_single);
       }
-      abi = popCraftMintChainBuyAbi;
+      abi = chainId === 185 ? MintBuyAbi : CommonBuyAbi;
       if (theTotalValue > 0n) {
         totalValue = theTotalValue
       }
@@ -650,7 +655,7 @@ export function createSystemCalls(
       const [updatedMatrixArray, finalEliminateAmount ] = dfsPopCraft(matrixIndex, targetValue, matrixArray, 0, popIndexArr);
       
       eliminateAmount = finalEliminateAmount;
-      if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && eliminateAmount >= 5) {
+      if (MISSION_BOUNS_CHAIN_IDS.includes(chainId) && eliminateAmount >= 5 && tokenAddr != "0xe2E7D83dFBd25407045Fd061e4c17cC76007deaD") {
         const comboRewardGamesData = getComponentValue(ComboRewardGames, playerEntity);
 
         if (comboRewardGamesData && Number(comboRewardGamesData.games) > 3 && Number(comboRewardGamesData.addedTime) == getCurrentCommon(5)) {

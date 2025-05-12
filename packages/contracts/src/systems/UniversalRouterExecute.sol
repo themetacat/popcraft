@@ -6,7 +6,7 @@ import {Position, UniversalRouterParams, TokenInfo} from "../index.sol";
 import { ERC20TokenBalance } from "../codegen/index.sol";
 import { IERC20 } from "@latticexyz/world-modules/src/modules/erc20-puppet/IERC20.sol";
 import { System } from "@latticexyz/world/src/System.sol";
-import { IMintSwapRouter } from "../interface/IMintSwapRouter.sol";
+// import { IMintSwapRouter } from "../interface/IMintSwapRouter.sol";
 
 contract RouterExecute is System{
   // address public constant UniversalRouter = 0x3b16F87CF97519ED948740b28bb6CE0c15a39083;

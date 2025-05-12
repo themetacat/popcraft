@@ -97,3 +97,25 @@ export async function generateRouteMintChain(tokenAddress: string, amount: numbe
       
     return res
 }
+
+
+export async function generateRouteMorphChain(tokenAddress: string, amount: number, recipient: string) {
+    const lowerCaseTokenAddress = tokenAddress.toLowerCase()
+    const tokenOut = TOKEN_MAP[lowerCaseTokenAddress];
+    const outputAmount = amount * 10 ** tokenOut.decimals
+    
+    const response = await fetch('https://api.bulbaswap.io/v1/quote?amount='+BigInt(outputAmount)+'&tokenInAddress=ETH&tokenOutAddress='+lowerCaseTokenAddress+'&type=1&slippage=0.5&recipient='+recipient+'&deadline=600&protocols=v2,v3');
+    const data = await response.json();
+    if (!data?.methodParameters?.calldata || !data?.methodParameters?.value) {
+        return undefined
+    }
+    const res = {
+        methodParameters: {
+            calldata: data.methodParameters.calldata,
+            value: Number(BigInt(data.methodParameters.value))
+        },
+        price: Number(BigInt(data.methodParameters.value)) / 1e18,
+      };
+      
+    return res
+}
