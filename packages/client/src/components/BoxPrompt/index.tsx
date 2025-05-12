@@ -23,7 +23,7 @@ import HowToPlayBtnImg from "../../images/HowToPlay/howToPlayBtn.webp";
 import RewardsImg from "../../images/HowToPlay/rewardsBtn.webp";
 import SimbaImg from "../../../public/image/private/SIMBA.webp";
 import KoalaImg from "../../../public/image/private/KOALA.webp";
-import { generateRoute, generateRouteMintChain } from '../../uniswap_routing/routing'
+import { generateRoute, generateRouteMintChain, generateRouteMorphChain } from '../../uniswap_routing/routing'
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useTopUp, MODE_GAME_CHAIN_IDS } from "../select";
 import { encodeEntity } from "@latticexyz/store-sync/recs";
@@ -85,6 +85,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
   const [isPriceLoaded, setIsPriceLoaded] = useState(false);
   const [prices, setPrices] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPriPrice, setTotalPriPrice] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -296,7 +297,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
     const methodParametersArray = itemsToPay.map(item => prices[item.key]?.methodParameters);
     const payFunctionTwo = payFunction(
       methodParametersArray,
-      discount > 0 ? (BigInt(Math.floor(totalPrice * 10 ** 18)) * BigInt(100 - discount) / 100n) : 0n
+      discount > 0 ? (BigInt(Math.floor(totalPriPrice * 10 ** 18)) * BigInt(100 - discount) / 100n + (BigInt(Math.floor(totalPrice * 10 ** 18))-BigInt(Math.floor(totalPriPrice * 10 ** 18)))) : 0n
     );
     setcresa(true);
     payFunctionTwo.then((result) => {
@@ -377,6 +378,14 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
             const route = getPriTokenPrice(key, quantity)
             price = route.price;
             routeMethodParameters = route.methodParameters
+          } else {
+            if (chainId === 2818 || chainId === 31337) {
+              const route = await generateRouteMorphChain(key, quantity, recipient);
+              if (route) {
+                price = route.price;
+                routeMethodParameters = route.methodParameters
+              }
+            }
           }
         }
         const methodParameters = {
@@ -438,7 +447,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
         balanceData
       );
       await fetchPrices(matchedData);
-    }, 10000);
+    }, 15000);
 
     return () => clearInterval(interval);
   }, [fetchPrices, getEoaContractData, balanceData]);
@@ -473,8 +482,17 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
             const route = getPriTokenPrice(key, quantity)
             price = route.price;
             routeMethodParameters = route.methodParameters;
+          } else {
+            if (chainId === 2818 || chainId === 31337) {
+              const route = await generateRouteMorphChain(key, quantity, recipient);
+              if (route) {
+                price = route.price;
+                routeMethodParameters = route.methodParameters
+              }
+            }
           }
         }
+
         const methodParameters = {
           ...routeMethodParameters,
           tokenAddress: key,
@@ -562,11 +580,16 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
 
   //计算总价
   const updateTotalPrice = () => {
+    let priTotalPrice = 0;
     const total = Object.entries(numberData).reduce((sum, [key, num]) => {
       const price = prices[key] ? prices[key].price : 0;
+      if (priTokenAddress.includes(key)) {
+        priTotalPrice += Number(price)
+      }
       return sum + Number(price);
     }, 0);
 
+    setTotalPriPrice(priTotalPrice);
     setTotalPrice(total);
   };
 
@@ -779,7 +802,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                   :
                 </span>
                 <span>
-                  -{formatAmount(totalPrice * (discount / 100))} {nativeToken}
+                  -{formatAmount(totalPriPrice * (discount / 100))} {nativeToken}
                 </span>
               </div>
               <div className={style.totalAmount}>
@@ -787,7 +810,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                   Final TOTAL:
                 </span>
                 <span style={{ fontSize: "19px" }}>
-                  {formatAmount(totalPrice * ((100 - discount) / 100))} {nativeToken}
+                {formatAmount(totalPriPrice * ((100 - discount) / 100) + (totalPrice-totalPriPrice))} {nativeToken}
                 </span>
               </div>
               <div className={style.payBtnBox}>
@@ -1407,7 +1430,7 @@ export default function BoxPrompt({ timeControl, playFun, handleEoaContractData,
                     Final TOTAL:
                   </span>
                   <span style={{ fontSize: "19px" }}>
-                    {formatAmount(totalPrice * ((100 - discount) / 100))} {nativeToken}
+                  {formatAmount(totalPriPrice * ((100 - discount) / 100) + (totalPrice-totalPriPrice))} {nativeToken}
                   </span>
                 </div>
               </div>

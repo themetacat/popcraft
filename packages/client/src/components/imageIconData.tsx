@@ -155,4 +155,8 @@ export const imageIconData = {
         src: 'image/private/SIMBA.webp',
         name: "SIMBA",
     },
+    '0xe2E7D83dFBd25407045Fd061e4c17cC76007deaD': {
+        src: 'image/private/BAI.webp',
+        name: "BAI",
+    },
 };

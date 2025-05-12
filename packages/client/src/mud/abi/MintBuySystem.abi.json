@@ -1,0 +1,44 @@
+[
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "name": "call_data",
+            "type": "bytes[]",
+            "internalType": "bytes[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "token_addr",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct TokenInfo",
+            "name": "token_info",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct UniversalRouterParams[]",
+        "name": "universalRouterParams",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "buyToken",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  }
+]
