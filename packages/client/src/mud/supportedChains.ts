@@ -208,12 +208,12 @@ const base = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['https://base-mainnet.g.alchemy.com/v2/dQjpLPlJJGpuL51NhyhIl'],
-      webSocket: ['wss://base-mainnet.g.alchemy.com/v2/dQjpLPlJJGpuL51NhyhIl'],
+      http: ['https://rpc.ankr.com/base'],
+      webSocket: ['wss://mainnet.base.org'],
     },
     public: {
-      http: ['https://base-mainnet.g.alchemy.com/v2/dQjpLPlJJGpuL51NhyhIl'],
-      webSocket: ['wss://base-mainnet.g.alchemy.com/v2/dQjpLPlJJGpuL51NhyhIl'],
+      http: ['https://rpc.ankr.com/base'],
+      webSocket: ['wss://mainnet.base.org'],
     },
   },
   blockExplorers: {
