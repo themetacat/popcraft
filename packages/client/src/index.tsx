@@ -53,7 +53,7 @@ const config = getDefaultConfig({
   }],
   chains: [
     morph,
-    // hashkey,
+    hashkey,
     // b3,
     // base,
     // happyTest,
